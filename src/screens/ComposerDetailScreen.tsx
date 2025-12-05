@@ -13,6 +13,8 @@ import { useRoute, RouteProp } from '@react-navigation/native';
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
 import { useFavorites } from '../context/FavoritesContext';
+import { useAudio, Track } from '../context/AudioContext';
+import { haptic } from '../utils/haptics';
 import { RootStackParamList, Composer } from '../types';
 import { markComposerViewed } from '../utils/storage';
 import { getComposerPortrait } from '../utils/images';
@@ -20,6 +22,7 @@ import { NetworkImage } from '../components/NetworkImage';
 
 import composersData from '../data/composers.json';
 import periodsData from '../data/periods.json';
+import audioSamples from '../data/audioSamples.json';
 
 type ComposerDetailRouteProp = RouteProp<RootStackParamList, 'ComposerDetail'>;
 
@@ -27,10 +30,14 @@ export default function ComposerDetailScreen() {
   const route = useRoute<ComposerDetailRouteProp>();
   const { theme, themeName } = useTheme();
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { playTrack, currentTrack, isPlaying } = useAudio();
   const t = theme;
   const isBrutal = themeName === 'neobrutalist';
   const { composerId } = route.params;
   const isLiked = isFavorite(composerId, 'composer');
+  
+  // Get audio samples for this composer
+  const composerSamples = (audioSamples.samples as any)[composerId] || [];
 
   const composer = composersData.composers.find(c => c.id === composerId) as Composer | undefined;
   const period = periodsData.periods.find(p => p.id === composer?.period);
@@ -58,6 +65,18 @@ export default function ComposerDetailScreen() {
   const openYouTube = () => {
     const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(composer.youtubeSearch)}`;
     Linking.openURL(searchUrl);
+  };
+
+  const handlePlaySample = (sample: any) => {
+    haptic('light');
+    const track: Track = {
+      id: sample.id,
+      title: sample.title,
+      composer: sample.composer,
+      audioUrl: sample.audioUrl,
+      duration: sample.duration,
+    };
+    playTrack(track);
   };
 
   return (
@@ -102,9 +121,53 @@ export default function ComposerDetailScreen() {
         </View>
       </View>
 
-      {/* Quick Listen */}
+      {/* Audio Samples - In App */}
+      {composerSamples.length > 0 && (
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: t.colors.text }]}>🎵 Listen Now</Text>
+          <Text style={[styles.sectionSubtitle, { color: t.colors.textMuted }]}>
+            Free samples • No ads • Public domain
+          </Text>
+          {composerSamples.map((sample: any) => {
+            const isCurrentTrack = currentTrack?.id === sample.id;
+            return (
+              <TouchableOpacity
+                key={sample.id}
+                style={[
+                  styles.sampleCard, 
+                  { backgroundColor: t.colors.surface },
+                  isCurrentTrack && { borderColor: t.colors.primary, borderWidth: 2 },
+                  isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm
+                ]}
+                onPress={() => handlePlaySample(sample)}
+              >
+                <View style={[styles.sampleIcon, { backgroundColor: t.colors.primary + '20' }]}>
+                  <Ionicons 
+                    name={isCurrentTrack && isPlaying ? 'pause' : 'play'} 
+                    size={20} 
+                    color={t.colors.primary} 
+                  />
+                </View>
+                <View style={styles.sampleInfo}>
+                  <Text style={[styles.sampleTitle, { color: t.colors.text }]}>{sample.title}</Text>
+                  <Text style={[styles.sampleDuration, { color: t.colors.textMuted }]}>
+                    {Math.floor(sample.duration / 60)}:{(sample.duration % 60).toString().padStart(2, '0')}
+                  </Text>
+                </View>
+                {isCurrentTrack && (
+                  <View style={[styles.nowPlaying, { backgroundColor: t.colors.primary }]}>
+                    <Text style={styles.nowPlayingText}>Playing</Text>
+                  </View>
+                )}
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      )}
+
+      {/* Quick Listen - External */}
       <View style={[styles.listenCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
-        <Text style={[styles.listenTitle, { color: t.colors.text }]}>🎧 Start Here</Text>
+        <Text style={[styles.listenTitle, { color: t.colors.text }]}>🎧 More on Streaming</Text>
         <Text style={[styles.listenText, { color: t.colors.textSecondary }]}>{composer.listenFirst}</Text>
         <View style={styles.listenButtons}>
           <TouchableOpacity style={[styles.listenButton, { backgroundColor: t.colors.surfaceLight }]} onPress={openSpotify}>
@@ -175,8 +238,16 @@ const styles = StyleSheet.create({
   listenButton: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: spacing.md, paddingVertical: spacing.sm, borderRadius: borderRadius.md, gap: spacing.xs },
   listenButtonText: { fontSize: fontSize.md, fontWeight: '500' },
   section: { marginBottom: spacing.lg },
-  sectionTitle: { fontSize: fontSize.lg, fontWeight: '700', marginBottom: spacing.md },
+  sectionTitle: { fontSize: fontSize.lg, fontWeight: '700', marginBottom: spacing.xs },
+  sectionSubtitle: { fontSize: fontSize.sm, marginBottom: spacing.md },
   bio: { fontSize: fontSize.md, lineHeight: 24 },
+  sampleCard: { flexDirection: 'row', alignItems: 'center', borderRadius: borderRadius.md, padding: spacing.md, marginBottom: spacing.sm, gap: spacing.md },
+  sampleIcon: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
+  sampleInfo: { flex: 1 },
+  sampleTitle: { fontSize: fontSize.md, fontWeight: '600' },
+  sampleDuration: { fontSize: fontSize.sm, marginTop: 2 },
+  nowPlaying: { paddingHorizontal: spacing.sm, paddingVertical: 4, borderRadius: borderRadius.sm },
+  nowPlayingText: { fontSize: fontSize.xs, fontWeight: '600', color: '#fff' },
   funFactCard: { flexDirection: 'row', alignItems: 'flex-start', borderRadius: borderRadius.md, padding: spacing.md, marginBottom: spacing.lg, gap: spacing.sm },
   funFactText: { flex: 1, fontSize: fontSize.md, fontStyle: 'italic', lineHeight: 22 },
   workCard: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderRadius: borderRadius.md, padding: spacing.md, marginBottom: spacing.sm },

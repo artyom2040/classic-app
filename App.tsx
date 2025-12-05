@@ -10,6 +10,8 @@ import { BlurView } from 'expo-blur';
 import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 import { SettingsProvider } from './src/context/SettingsContext';
 import { FavoritesProvider } from './src/context/FavoritesContext';
+import { AudioProvider } from './src/context/AudioContext';
+import MiniPlayer from './src/components/MiniPlayer';
 import { RootStackParamList, TabParamList } from './src/types';
 import { getProgress } from './src/utils/storage';
 
@@ -264,7 +266,10 @@ export default function App() {
     <ThemeProvider>
       <SettingsProvider>
         <FavoritesProvider>
-          <AppNavigator />
+          <AudioProvider>
+            <AppNavigator />
+            <MiniPlayer />
+          </AudioProvider>
         </FavoritesProvider>
       </SettingsProvider>
     </ThemeProvider>
