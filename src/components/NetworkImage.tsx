@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { View, Image, StyleSheet, ActivityIndicator, Text } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
-import { Icon } from './Icon';
+import { 
+  ComposerPlaceholder, 
+  AlbumPlaceholder, 
+  FormPlaceholder,
+  MusicNotePlaceholder 
+} from './placeholders';
 
 interface NetworkImageProps {
   uri: string | null | undefined;
@@ -14,17 +19,11 @@ interface NetworkImageProps {
   style?: any;
 }
 
-const FALLBACK_ICONS: Record<string, string> = {
-  composer: 'person',
-  album: 'disc',
-  era: 'time',
-  default: 'musical-note',
-};
-
 const FALLBACK_COLORS: Record<string, string> = {
   composer: '#8B5CF6',
   album: '#EC4899',
   era: '#F59E0B',
+  form: '#10B981',
   default: '#6B7280',
 };
 
@@ -49,8 +48,23 @@ export function NetworkImage({
   const imageHeight = height || size || 80;
   const radius = borderRadius ?? (isBrutal ? 0 : Math.min(imageWidth, imageHeight) / 2);
   
-  const fallbackColor = FALLBACK_COLORS[fallbackType];
-  const fallbackIcon = FALLBACK_ICONS[fallbackType];
+  const fallbackColor = FALLBACK_COLORS[fallbackType] || FALLBACK_COLORS.default;
+  
+  // Render appropriate SVG placeholder based on type
+  const renderPlaceholder = () => {
+    const size = Math.min(imageWidth, imageHeight);
+    
+    switch (fallbackType) {
+      case 'composer':
+        return <ComposerPlaceholder size={size} color={fallbackColor} name={fallbackText} />;
+      case 'album':
+        return <AlbumPlaceholder size={size} color={fallbackColor} />;
+      case 'era':
+        return <MusicNotePlaceholder size={size} color={fallbackColor} />;
+      default:
+        return <MusicNotePlaceholder size={size} color={fallbackColor} />;
+    }
+  };
   
   // Show fallback if no URI or error occurred
   if (!uri || error) {
@@ -61,22 +75,12 @@ export function NetworkImage({
           width: imageWidth,
           height: imageHeight,
           borderRadius: radius,
-          backgroundColor: fallbackColor + '25',
+          overflow: 'hidden',
         },
         isBrutal && { borderWidth: 2, borderColor: t.colors.border },
         style,
       ]}>
-        {fallbackText ? (
-          <Text style={[styles.fallbackText, { color: fallbackColor, fontSize: imageWidth * 0.4 }]}>
-            {fallbackText.charAt(0).toUpperCase()}
-          </Text>
-        ) : (
-          <Icon 
-            name={fallbackIcon} 
-            size={Math.min(imageWidth, imageHeight) * 0.4} 
-            color={fallbackColor}
-          />
-        )}
+        {renderPlaceholder()}
       </View>
     );
   }
