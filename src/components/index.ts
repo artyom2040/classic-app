@@ -40,3 +40,6 @@ export {
 
 // Navigation
 export { QuickNav } from './QuickNav';
+
+// Glass components
+export { GlassCard, GlassBackground, GlassPill, GlassTabBar } from './GlassCard';

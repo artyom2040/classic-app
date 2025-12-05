@@ -7,11 +7,14 @@ import {
   StyleSheet,
   Dimensions,
   Image,
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import { useTheme } from '../context/ThemeContext';
 import { RootStackParamList, UserProgress } from '../types';
@@ -49,17 +52,40 @@ export default function HomeScreen() {
   const kickstartProgress = progress?.kickstartDay || 0;
   const showKickstart = progress && !progress.kickstartCompleted;
   const isBrutal = themeName === 'neobrutalist';
+  const isGlass = themeName === 'liquidglass';
 
   // Card style based on theme
   const cardStyle = {
-    backgroundColor: t.colors.surface,
+    backgroundColor: isGlass ? 'rgba(255, 255, 255, 0.6)' : t.colors.surface,
     borderRadius: t.borderRadius.lg,
-    ...(isBrutal ? { borderWidth: 3, borderColor: t.colors.border } : t.shadows.sm),
+    ...(isBrutal ? { borderWidth: 3, borderColor: t.colors.border } : {}),
+    ...(isGlass ? { 
+      borderWidth: 1, 
+      borderColor: 'rgba(255, 255, 255, 0.5)',
+      overflow: 'hidden' as const,
+    } : t.shadows.sm),
   };
 
-  return (
+  // Glass card wrapper component
+  const GlassWrapper = ({ children, style }: { children: React.ReactNode; style?: any }) => {
+    if (!isGlass) return <>{children}</>;
+    
+    return (
+      <View style={[style, { overflow: 'hidden' }]}>
+        {Platform.OS === 'ios' ? (
+          <BlurView intensity={40} tint="light" style={StyleSheet.absoluteFill} />
+        ) : (
+          <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(255, 255, 255, 0.7)' }]} />
+        )}
+        {children}
+      </View>
+    );
+  };
+
+  // Main content wrapped in gradient for glass theme
+  const renderContent = () => (
     <ScrollView
-      style={[styles.container, { backgroundColor: t.colors.background }]}
+      style={[styles.container, !isGlass && { backgroundColor: t.colors.background }]}
       contentContainerStyle={[styles.content, { paddingTop: insets.top + 16 }]}
       showsVerticalScrollIndicator={false}
     >
@@ -292,10 +318,10 @@ export default function HomeScreen() {
           <Text style={[styles.composerLabel, { color: t.colors.textMuted }]}>Discover Today</Text>
           <Text style={[styles.composerName, { color: t.colors.text }]}>{featuredComposer.name}</Text>
           <Text style={[styles.composerDates, { color: t.colors.textSecondary }]}>
-            {featuredComposer.birth} – {featuredComposer.death}
+            {featuredComposer.years}
           </Text>
           <Text style={[styles.composerBio, { color: t.colors.textMuted }]} numberOfLines={2}>
-            {featuredComposer.bio}
+            {featuredComposer.shortBio}
           </Text>
         </View>
         <View style={[styles.composerArrow, { backgroundColor: t.colors.primary + '20' }]}>
@@ -306,6 +332,23 @@ export default function HomeScreen() {
       <View style={{ height: 32 }} />
     </ScrollView>
   );
+
+  // Wrap in gradient for glass theme
+  if (isGlass) {
+    return (
+      <View style={styles.container}>
+        <LinearGradient
+          colors={['#667eea', '#764ba2', '#f093fb', '#f5576c']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={StyleSheet.absoluteFill}
+        />
+        {renderContent()}
+      </View>
+    );
+  }
+
+  return renderContent();
 }
 
 function getGreeting(): string {

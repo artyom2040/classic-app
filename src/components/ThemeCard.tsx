@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Theme, ThemeName } from '../theme/themes';
 import { useTheme } from '../context/ThemeContext';
 
@@ -51,33 +53,65 @@ export default function ThemeCard({ themeOption, isSelected, onSelect }: ThemeCa
       </View>
 
       {/* Mini preview card */}
-      <View
-        style={[
-          styles.miniPreview,
-          {
-            backgroundColor: t.colors.background,
-            borderRadius: t.borderRadius.md,
-            ...(t.cardStyle === 'brutal' ? { borderWidth: 2, borderColor: t.colors.border } : {}),
-          },
-        ]}
-      >
+      {t.cardStyle === 'glass' ? (
+        // Special glass preview with gradient background
         <View
           style={[
-            styles.miniCard,
+            styles.miniPreview,
             {
-              backgroundColor: t.colors.surface,
-              borderRadius: t.borderRadius.sm,
-              ...(t.cardStyle === 'brutal'
-                ? { borderWidth: 2, borderColor: t.colors.border }
-                : {}),
+              borderRadius: t.borderRadius.md,
+              overflow: 'hidden',
             },
           ]}
         >
-          <View style={[styles.miniAccent, { backgroundColor: t.colors.primary }]} />
-          <View style={[styles.miniLine, { backgroundColor: t.colors.text, opacity: 0.8 }]} />
-          <View style={[styles.miniLine, { backgroundColor: t.colors.textSecondary, width: '60%' }]} />
+          <LinearGradient
+            colors={['#667eea', '#764ba2', '#f093fb']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={StyleSheet.absoluteFill}
+          />
+          <View style={styles.glassMiniCard}>
+            {Platform.OS === 'ios' ? (
+              <BlurView intensity={60} tint="light" style={StyleSheet.absoluteFill} />
+            ) : (
+              <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(255,255,255,0.7)' }]} />
+            )}
+            <View style={styles.glassCardContent}>
+              <View style={[styles.miniAccent, { backgroundColor: t.colors.primary }]} />
+              <View style={[styles.miniLine, { backgroundColor: t.colors.text, opacity: 0.8 }]} />
+              <View style={[styles.miniLine, { backgroundColor: t.colors.textSecondary, width: '60%' }]} />
+            </View>
+          </View>
         </View>
-      </View>
+      ) : (
+        <View
+          style={[
+            styles.miniPreview,
+            {
+              backgroundColor: t.colors.background,
+              borderRadius: t.borderRadius.md,
+              ...(t.cardStyle === 'brutal' ? { borderWidth: 2, borderColor: t.colors.border } : {}),
+            },
+          ]}
+        >
+          <View
+            style={[
+              styles.miniCard,
+              {
+                backgroundColor: t.colors.surface,
+                borderRadius: t.borderRadius.sm,
+                ...(t.cardStyle === 'brutal'
+                  ? { borderWidth: 2, borderColor: t.colors.border }
+                  : {}),
+              },
+            ]}
+          >
+            <View style={[styles.miniAccent, { backgroundColor: t.colors.primary }]} />
+            <View style={[styles.miniLine, { backgroundColor: t.colors.text, opacity: 0.8 }]} />
+            <View style={[styles.miniLine, { backgroundColor: t.colors.textSecondary, width: '60%' }]} />
+          </View>
+        </View>
+      )}
     </TouchableOpacity>
   );
 }
@@ -133,5 +167,17 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     marginBottom: 4,
     width: '80%',
+  },
+  // Glass theme styles
+  glassMiniCard: {
+    margin: 12,
+    padding: 10,
+    borderRadius: 12,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.4)',
+  },
+  glassCardContent: {
+    zIndex: 1,
   },
 });

@@ -7,6 +7,7 @@ interface ThemeContextType {
   themeName: ThemeName;
   setTheme: (name: ThemeName) => void;
   isDark: boolean;
+  isGlass: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType>({
@@ -14,6 +15,7 @@ const ThemeContext = createContext<ThemeContextType>({
   themeName: 'dark',
   setTheme: () => {},
   isDark: true,
+  isGlass: false,
 });
 
 const THEME_STORAGE_KEY = '@context_composer_theme';
@@ -46,10 +48,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   };
 
   const theme = themes[themeName];
-  const isDark = themeName !== 'light' && themeName !== 'neobrutalist';
+  const isDark = themeName !== 'light' && themeName !== 'neobrutalist' && themeName !== 'liquidglass';
+  const isGlass = themeName === 'liquidglass';
 
   return (
-    <ThemeContext.Provider value={{ theme, themeName, setTheme, isDark }}>
+    <ThemeContext.Provider value={{ theme, themeName, setTheme, isDark, isGlass }}>
       {children}
     </ThemeContext.Provider>
   );

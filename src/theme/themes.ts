@@ -1,6 +1,6 @@
 // Theme definitions for Context Composer
 
-export type ThemeName = 'dark' | 'light' | 'classic' | 'skeuomorphic' | 'neobrutalist';
+export type ThemeName = 'dark' | 'light' | 'classic' | 'skeuomorphic' | 'neobrutalist' | 'liquidglass';
 
 export interface Theme {
   name: ThemeName;
@@ -273,6 +273,55 @@ export const neobrutalistTheme: Theme = {
   cardStyle: 'brutal',
 };
 
+// ============================================
+// LIQUID GLASS THEME (Apple-style Glassmorphism)
+// ============================================
+export const liquidGlassTheme: Theme = {
+  name: 'liquidglass',
+  displayName: 'Liquid Glass',
+  description: 'Translucent, airy, Apple-inspired design',
+  colors: {
+    // Base colors - soft, muted, with transparency in mind
+    background: '#F2F2F7',           // iOS system gray 6
+    surface: 'rgba(255, 255, 255, 0.72)',  // Glass white
+    surfaceLight: 'rgba(255, 255, 255, 0.5)',
+    surfaceElevated: 'rgba(255, 255, 255, 0.85)',
+    // Accent colors - vibrant but refined
+    primary: '#007AFF',              // iOS blue
+    primaryLight: '#5AC8FA',         // iOS light blue
+    secondary: '#AF52DE',            // iOS purple
+    accent: '#FF9500',               // iOS orange
+    // Text - high contrast on glass
+    text: '#1C1C1E',                 // iOS label
+    textSecondary: '#3C3C43',        // iOS secondary label (99% opacity)
+    textMuted: '#8E8E93',            // iOS tertiary label
+    textInverse: '#FFFFFF',
+    // Borders - subtle, light
+    border: 'rgba(60, 60, 67, 0.12)', // iOS separator
+    borderLight: 'rgba(60, 60, 67, 0.06)',
+    // Status colors
+    success: '#34C759',              // iOS green
+    warning: '#FF9500',              // iOS orange
+    error: '#FF3B30',                // iOS red
+    // Gradients
+    gradientStart: 'rgba(255, 255, 255, 0.8)',
+    gradientEnd: 'rgba(242, 242, 247, 0.9)',
+  },
+  spacing: { xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48 },
+  borderRadius: { xs: 8, sm: 12, md: 16, lg: 22, xl: 28, full: 9999 },
+  shadows: {
+    // Soft, diffused shadows for glass effect
+    sm: { shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.04, shadowRadius: 8, elevation: 2 },
+    md: { shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.06, shadowRadius: 16, elevation: 4 },
+    lg: { shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.08, shadowRadius: 32, elevation: 8 },
+  },
+  typography: {
+    fontFamily: 'System',
+    sizes: { xs: 11, sm: 13, md: 15, lg: 17, xl: 22, xxl: 28, hero: 34 },
+  },
+  cardStyle: 'glass',
+};
+
 // Theme map for easy access
 export const themes: Record<ThemeName, Theme> = {
   dark: darkTheme,
@@ -280,6 +329,7 @@ export const themes: Record<ThemeName, Theme> = {
   classic: classicTheme,
   skeuomorphic: skeuomorphicTheme,
   neobrutalist: neobrutalistTheme,
+  liquidglass: liquidGlassTheme,
 };
 
 export const themeList = Object.values(themes);

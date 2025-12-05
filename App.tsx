@@ -4,7 +4,8 @@ import { NavigationContainer, DefaultTheme, DarkTheme, Theme as NavTheme } from 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, Platform, StyleSheet } from 'react-native';
+import { BlurView } from 'expo-blur';
 
 import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 import { SettingsProvider } from './src/context/SettingsContext';
@@ -32,7 +33,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
 
 function TabNavigator() {
-  const { theme, isDark } = useTheme();
+  const { theme, isDark, isGlass } = useTheme();
   const t = theme;
 
   return (
@@ -64,21 +65,35 @@ function TabNavigator() {
           return <Ionicons name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: t.colors.primary,
-        tabBarInactiveTintColor: t.colors.textMuted,
+        tabBarInactiveTintColor: isGlass ? '#3C3C43' : t.colors.textMuted,
         tabBarStyle: {
-          backgroundColor: t.colors.surface,
-          borderTopColor: t.colors.border,
+          backgroundColor: isGlass ? 'transparent' : t.colors.surface,
+          borderTopColor: isGlass ? 'rgba(60, 60, 67, 0.12)' : t.colors.border,
           paddingTop: 8,
           height: 88,
+          position: isGlass ? 'absolute' : 'relative',
         },
+        tabBarBackground: isGlass ? () => (
+          Platform.OS === 'ios' ? (
+            <BlurView 
+              intensity={100} 
+              tint="light" 
+              style={StyleSheet.absoluteFill} 
+            />
+          ) : (
+            <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(255, 255, 255, 0.9)' }]} />
+          )
+        ) : undefined,
         tabBarLabelStyle: {
           fontSize: 12,
           fontWeight: '500',
           marginTop: 4,
         },
         headerStyle: {
-          backgroundColor: t.colors.background,
+          backgroundColor: isGlass ? 'transparent' : t.colors.background,
         },
+        headerTransparent: isGlass,
+        headerBlurEffect: isGlass ? 'light' : undefined,
         headerTintColor: t.colors.text,
         headerTitleStyle: {
           fontWeight: '600',
@@ -115,7 +130,7 @@ function TabNavigator() {
 }
 
 function AppNavigator() {
-  const { theme, isDark } = useTheme();
+  const { theme, isDark, isGlass } = useTheme();
   const t = theme;
   const [isLoading, setIsLoading] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -130,17 +145,18 @@ function AppNavigator() {
   }, []);
 
   // Custom navigation theme
-  const navTheme: NavTheme = {
+  const navTheme = {
+    ...DefaultTheme,
     dark: isDark,
     colors: {
+      ...DefaultTheme.colors,
       primary: t.colors.primary,
-      background: t.colors.background,
-      card: t.colors.surface,
+      background: isGlass ? 'transparent' : t.colors.background,
+      card: isGlass ? 'rgba(255, 255, 255, 0.8)' : t.colors.surface,
       text: t.colors.text,
       border: t.colors.border,
       notification: t.colors.primary,
     },
-    fonts: DefaultTheme.fonts,
   };
 
   if (isLoading) {
