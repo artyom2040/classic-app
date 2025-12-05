@@ -14,6 +14,8 @@ import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
 import { RootStackParamList, Composer } from '../types';
 import { markComposerViewed } from '../utils/storage';
+import { getComposerPortrait } from '../utils/images';
+import { NetworkImage } from '../components/NetworkImage';
 
 import composersData from '../data/composers.json';
 import periodsData from '../data/periods.json';
@@ -63,11 +65,14 @@ export default function ComposerDetailScreen() {
     >
       {/* Header */}
       <View style={styles.header}>
-        <View style={[styles.avatar, { backgroundColor: accentColor + '40' }]}>
-          <Text style={[styles.avatarText, { color: accentColor }]}>
-            {composer.name.charAt(0)}
-          </Text>
-        </View>
+        <NetworkImage
+          uri={getComposerPortrait(composer.id)}
+          size={100}
+          borderRadius={isBrutal ? 0 : 50}
+          fallbackType="composer"
+          fallbackText={composer.name}
+          style={isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : {}}
+        />
         <Text style={[styles.name, { color: t.colors.text }]}>{composer.name}</Text>
         <Text style={[styles.years, { color: t.colors.textSecondary }]}>{composer.years}</Text>
         <View style={styles.tags}>
@@ -141,9 +146,7 @@ const styles = StyleSheet.create({
   content: { padding: spacing.md },
   errorText: { fontSize: fontSize.lg, textAlign: 'center', marginTop: spacing.xxl },
   header: { alignItems: 'center', marginBottom: spacing.lg },
-  avatar: { width: 100, height: 100, borderRadius: 50, alignItems: 'center', justifyContent: 'center', marginBottom: spacing.md },
-  avatarText: { fontSize: 40, fontWeight: 'bold' },
-  name: { fontSize: fontSize.xxl, fontWeight: 'bold', textAlign: 'center' },
+  name: { fontSize: fontSize.xxl, fontWeight: 'bold', textAlign: 'center', marginTop: spacing.md },
   years: { fontSize: fontSize.md, marginTop: spacing.xs },
   tags: { flexDirection: 'row', gap: spacing.sm, marginTop: spacing.sm },
   tag: { paddingHorizontal: spacing.sm, paddingVertical: spacing.xs, borderRadius: borderRadius.sm },
