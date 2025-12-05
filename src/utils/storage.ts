@@ -94,12 +94,22 @@ export async function resetProgress(): Promise<void> {
   await AsyncStorage.removeItem(STORAGE_KEY);
 }
 
+// Kickstart badge IDs to remove on reset
+const KICKSTART_BADGE_IDS = [
+  'first_listen',
+  'orchestra_explorer', 
+  'time_traveler',
+  'form_finder',
+  'journey_begun'
+];
+
 export async function resetKickstart(): Promise<void> {
   const progress = await getProgress();
   progress.kickstartDay = 0;
   progress.kickstartCompleted = false;
+  progress.firstLaunch = false; // Keep as not first launch
   // Remove kickstart badges
-  progress.badges = progress.badges.filter(b => !b.startsWith('kickstart'));
+  progress.badges = progress.badges.filter(b => !KICKSTART_BADGE_IDS.includes(b));
   await saveProgress(progress);
 }
 

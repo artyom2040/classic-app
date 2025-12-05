@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { spacing, fontSize, borderRadius } from '../theme';
@@ -30,14 +30,22 @@ export default function ProfileScreen() {
   const isBrutal = themeName === 'neobrutalist';
   const [progress, setProgress] = useState<UserProgress | null>(null);
 
-  useEffect(() => {
-    loadProgress();
-  }, []);
-
-  const loadProgress = async () => {
+  const loadProgress = useCallback(async () => {
     const p = await getProgress();
     setProgress(p);
-  };
+  }, []);
+
+  // Load on mount
+  useEffect(() => {
+    loadProgress();
+  }, [loadProgress]);
+
+  // Refresh when screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      loadProgress();
+    }, [loadProgress])
+  );
 
   const handleReset = () => {
     Alert.alert(

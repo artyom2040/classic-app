@@ -137,45 +137,85 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* Compact Kickstart Progress */}
-      {showKickstart && (
+      {/* Featured Section - 3 Cards */}
+      <View style={styles.featuredGrid}>
+        {/* 5-Day Kickstart - Always visible */}
         <TouchableOpacity
-          style={[styles.kickstartCard, cardStyle, { borderLeftWidth: 4, borderLeftColor: t.colors.primary }]}
+          style={[styles.featuredCard, cardStyle, { borderTopWidth: 3, borderTopColor: t.colors.primary }]}
           onPress={() => navigation.navigate('Kickstart')}
           activeOpacity={0.8}
         >
-          <View style={styles.kickstartRow}>
-            <View style={[styles.kickstartIcon, { backgroundColor: t.colors.primary + '20' }]}>
-              <Ionicons name="rocket" size={20} color={t.colors.primary} />
-            </View>
-            <View style={styles.kickstartInfo}>
-              <Text style={[styles.kickstartTitle, { color: t.colors.text }]}>
-                5-Day Kickstart
-              </Text>
-              <Text style={[styles.kickstartSub, { color: t.colors.textSecondary }]}>
-                {kickstartProgress === 0 ? 'Start your journey' : `Day ${kickstartProgress + 1} of 5`}
-              </Text>
-            </View>
-            <View style={styles.progressDots}>
-              {[0, 1, 2, 3, 4].map((day) => (
-                <View
-                  key={day}
-                  style={[
-                    styles.dot,
-                    {
-                      backgroundColor: day < kickstartProgress
-                        ? t.colors.primary
-                        : day === kickstartProgress
-                        ? t.colors.secondary
-                        : t.colors.border,
-                    },
-                  ]}
-                />
-              ))}
-            </View>
+          <View style={[styles.featuredIcon, { backgroundColor: t.colors.primary + '20' }]}>
+            <Ionicons name="rocket" size={28} color={t.colors.primary} />
           </View>
+          <Text style={[styles.featuredLabel, { color: t.colors.primary }]}>5-Day Kickstart</Text>
+          {progress?.kickstartCompleted ? (
+            <>
+              <Text style={[styles.featuredTitle, { color: t.colors.text }]}>Completed! 🎉</Text>
+              <Text style={[styles.featuredSub, { color: t.colors.textMuted }]}>Tap to review</Text>
+            </>
+          ) : (
+            <>
+              <Text style={[styles.featuredTitle, { color: t.colors.text }]}>
+                {kickstartProgress === 0 ? 'Start Now' : `Day ${kickstartProgress + 1}`}
+              </Text>
+              <View style={styles.progressDots}>
+                {[0, 1, 2, 3, 4].map((day) => (
+                  <View
+                    key={day}
+                    style={[
+                      styles.dot,
+                      {
+                        backgroundColor: day < kickstartProgress
+                          ? t.colors.success
+                          : day === kickstartProgress
+                          ? t.colors.primary
+                          : t.colors.border,
+                      },
+                    ]}
+                  />
+                ))}
+              </View>
+            </>
+          )}
         </TouchableOpacity>
-      )}
+
+        {/* Weekly Album */}
+        <TouchableOpacity
+          style={[styles.featuredCard, cardStyle, { borderTopWidth: 3, borderTopColor: t.colors.secondary }]}
+          onPress={() => navigation.navigate('WeeklyAlbum')}
+          activeOpacity={0.8}
+        >
+          <View style={[styles.featuredIcon, { backgroundColor: t.colors.secondary + '20' }]}>
+            <Ionicons name="disc" size={28} color={t.colors.secondary} />
+          </View>
+          <Text style={[styles.featuredLabel, { color: t.colors.secondary }]}>Weekly Pick</Text>
+          <Text style={[styles.featuredTitle, { color: t.colors.text }]} numberOfLines={1}>
+            {weeklyAlbum.title}
+          </Text>
+          <Text style={[styles.featuredSub, { color: t.colors.textMuted }]} numberOfLines={1}>
+            {weeklyAlbum.artist}
+          </Text>
+        </TouchableOpacity>
+
+        {/* Monthly Spotlight */}
+        <TouchableOpacity
+          style={[styles.featuredCard, cardStyle, { borderTopWidth: 3, borderTopColor: t.colors.warning }]}
+          onPress={() => navigation.navigate('MonthlySpotlight')}
+          activeOpacity={0.8}
+        >
+          <View style={[styles.featuredIcon, { backgroundColor: t.colors.warning + '20' }]}>
+            <Ionicons name="star" size={28} color={t.colors.warning} />
+          </View>
+          <Text style={[styles.featuredLabel, { color: t.colors.warning }]}>This Month</Text>
+          <Text style={[styles.featuredTitle, { color: t.colors.text }]} numberOfLines={1}>
+            {monthlySpotlight.title}
+          </Text>
+          <Text style={[styles.featuredSub, { color: t.colors.textMuted }]} numberOfLines={1}>
+            {monthlySpotlight.subtitle}
+          </Text>
+        </TouchableOpacity>
+      </View>
 
       {/* Daily Discovery Section */}
       <Text style={[styles.sectionTitle, { color: t.colors.text }]}>
@@ -211,71 +251,6 @@ export default function HomeScreen() {
           </View>
         </View>
       </TouchableOpacity>
-
-      {/* Two Column Cards */}
-      <View style={styles.twoColumn}>
-        {/* Weekly Album */}
-        <TouchableOpacity
-          style={[styles.halfCard, cardStyle]}
-          onPress={() => navigation.navigate('WeeklyAlbum')}
-          activeOpacity={0.8}
-        >
-          <View style={[styles.cardIcon, { backgroundColor: t.colors.primary + '20' }]}>
-            <Ionicons name="disc" size={24} color={t.colors.primary} />
-          </View>
-          <Text style={[styles.cardLabel, { color: t.colors.primary }]}>Weekly Pick</Text>
-          <Text style={[styles.cardTitle, { color: t.colors.text }]} numberOfLines={2}>
-            {weeklyAlbum.title}
-          </Text>
-          <Text style={[styles.cardSub, { color: t.colors.textMuted }]} numberOfLines={1}>
-            {weeklyAlbum.artist}
-          </Text>
-          <View style={styles.listenRow}>
-            <TouchableOpacity
-              style={[styles.miniButton, { backgroundColor: '#1DB954' }]}
-              onPress={(e) => {
-                e.stopPropagation();
-                openInMusicService(`${weeklyAlbum.title} ${weeklyAlbum.artist}`, 'spotify');
-              }}
-            >
-              <Ionicons name="play" size={12} color="#fff" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.miniButton, { backgroundColor: '#FF0000' }]}
-              onPress={(e) => {
-                e.stopPropagation();
-                openInMusicService(`${weeklyAlbum.title} ${weeklyAlbum.artist}`, 'youtube');
-              }}
-            >
-              <Ionicons name="logo-youtube" size={12} color="#fff" />
-            </TouchableOpacity>
-          </View>
-        </TouchableOpacity>
-
-        {/* Monthly Spotlight */}
-        <TouchableOpacity
-          style={[styles.halfCard, cardStyle]}
-          onPress={() => navigation.navigate('MonthlySpotlight')}
-          activeOpacity={0.8}
-        >
-          <View style={[styles.cardIcon, { backgroundColor: t.colors.warning + '20' }]}>
-            <Ionicons name="star" size={24} color={t.colors.warning} />
-          </View>
-          <Text style={[styles.cardLabel, { color: t.colors.warning }]}>This Month</Text>
-          <Text style={[styles.cardTitle, { color: t.colors.text }]} numberOfLines={2}>
-            {monthlySpotlight.title}
-          </Text>
-          <Text style={[styles.cardSub, { color: t.colors.textMuted }]} numberOfLines={1}>
-            {monthlySpotlight.subtitle}
-          </Text>
-          <View style={[styles.challengePreview, { backgroundColor: t.colors.surfaceLight }]}>
-            <Ionicons name="trophy" size={10} color={t.colors.secondary} />
-            <Text style={[styles.challengePreviewText, { color: t.colors.textSecondary }]} numberOfLines={1}>
-              Challenge included
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
 
       {/* Quick Stats */}
       <View style={[styles.statsRow, cardStyle, { padding: 16 }]}>
@@ -396,14 +371,15 @@ const styles = StyleSheet.create({
   title: { fontSize: 26, fontWeight: '700' },
   settingsButton: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
   
-  kickstartCard: { padding: 14, marginBottom: 20 },
-  kickstartRow: { flexDirection: 'row', alignItems: 'center' },
-  kickstartIcon: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
-  kickstartInfo: { flex: 1, marginLeft: 12 },
-  kickstartTitle: { fontSize: 15, fontWeight: '600' },
-  kickstartSub: { fontSize: 12, marginTop: 1 },
-  progressDots: { flexDirection: 'row', gap: 6 },
-  dot: { width: 8, height: 8, borderRadius: 4 },
+  // Featured grid (3 cards: kickstart, weekly, monthly)
+  featuredGrid: { flexDirection: 'row', gap: 10, marginBottom: 20 },
+  featuredCard: { flex: 1, padding: 12, alignItems: 'center' },
+  featuredIcon: { width: 48, height: 48, borderRadius: 24, alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
+  featuredLabel: { fontSize: 10, fontWeight: '600', textAlign: 'center' },
+  featuredTitle: { fontSize: 13, fontWeight: '700', textAlign: 'center', marginTop: 4 },
+  featuredSub: { fontSize: 10, textAlign: 'center', marginTop: 2 },
+  progressDots: { flexDirection: 'row', gap: 4, marginTop: 6 },
+  dot: { width: 6, height: 6, borderRadius: 3 },
   
   sectionTitle: { fontSize: 20, fontWeight: '700', marginBottom: 12 },
   

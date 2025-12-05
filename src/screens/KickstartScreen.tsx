@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -23,13 +23,22 @@ export default function KickstartScreen() {
   const isBrutal = themeName === 'neobrutalist';
   const [progress, setProgress] = useState<UserProgress | null>(null);
 
-  useEffect(() => {
-    const loadProgress = async () => {
-      const p = await getProgress();
-      setProgress(p);
-    };
-    loadProgress();
+  const loadProgress = useCallback(async () => {
+    const p = await getProgress();
+    setProgress(p);
   }, []);
+
+  // Load on mount
+  useEffect(() => {
+    loadProgress();
+  }, [loadProgress]);
+
+  // Refresh when screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      loadProgress();
+    }, [loadProgress])
+  );
 
   const handleStartKickstart = async () => {
     await saveProgress({ firstLaunch: false });
