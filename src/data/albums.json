@@ -1,0 +1,301 @@
+{
+  "weeklyAlbums": [
+    {
+      "week": 1,
+      "title": "Beethoven: Symphony No. 5",
+      "artist": "Carlos Kleiber / Vienna Philharmonic",
+      "year": 1974,
+      "description": "The legendary recording that defines this symphony. Kleiber's electric intensity brings out every detail of Beethoven's vision—from the famous four-note motif to the triumphant finale.",
+      "whyListen": "This is THE recording to understand why Beethoven 5 matters. Kleiber's tempo choices and dynamic control are revelatory.",
+      "spotifyUri": "spotify:album:1234",
+      "appleMusicUrl": "https://music.apple.com",
+      "keyMoments": [
+        {"time": "0:00", "description": "The famous fate motif—four notes that drive everything"},
+        {"time": "7:23", "description": "Second movement's peaceful contrast"},
+        {"time": "21:45", "description": "The bridge from darkness to the triumphant finale"}
+      ]
+    },
+    {
+      "week": 2,
+      "title": "Bach: Goldberg Variations",
+      "artist": "Glenn Gould (1981 Recording)",
+      "year": 1981,
+      "description": "Gould's final studio recording—slower, more profound than his famous 1955 debut. Thirty variations of infinite beauty and intellectual depth.",
+      "whyListen": "Experience Bach's architecture through a master pianist's mature vision. The 1981 version has depth that reveals itself over many listens.",
+      "spotifyUri": "spotify:album:5678",
+      "appleMusicUrl": "https://music.apple.com",
+      "keyMoments": [
+        {"time": "0:00", "description": "The Aria—the theme from which all grows"},
+        {"time": "25:00", "description": "Variation 15—a profound, introspective canon"},
+        {"time": "51:00", "description": "The Quodlibet—Bach's musical joke"}
+      ]
+    },
+    {
+      "week": 3,
+      "title": "Debussy: Orchestral Works",
+      "artist": "Claudio Abbado / London Symphony",
+      "year": 1999,
+      "description": "La Mer, Prélude à l'après-midi d'un faune, and Nocturnes in luminous performances. The colors of Impressionism captured perfectly.",
+      "whyListen": "If you think classical music is heavy and formal, this will change your mind. Debussy is pure color and atmosphere.",
+      "spotifyUri": "spotify:album:9012",
+      "appleMusicUrl": "https://music.apple.com",
+      "keyMoments": [
+        {"time": "0:00", "description": "La Mer opens with the sea at dawn"},
+        {"time": "23:00", "description": "Prélude—the famous flute melody evoking a faun's dream"}
+      ]
+    },
+    {
+      "week": 4,
+      "title": "Chopin: Nocturnes",
+      "artist": "Maurizio Pollini",
+      "year": 2005,
+      "description": "All 21 Nocturnes performed with aristocratic poise and deep feeling. The perfect introduction to Romantic piano music.",
+      "whyListen": "Chopin invented the piano nocturne. These pieces are the soul of Romantic pianism—beauty without excess.",
+      "spotifyUri": "spotify:album:3456",
+      "appleMusicUrl": "https://music.apple.com",
+      "keyMoments": [
+        {"time": "6:30", "description": "Op. 9 No. 2—the most famous nocturne"},
+        {"time": "45:00", "description": "Op. 48 No. 1—a nocturne with dramatic depth"}
+      ]
+    },
+    {
+      "week": 5,
+      "title": "Mozart: Requiem",
+      "artist": "John Eliot Gardiner / English Baroque Soloists",
+      "year": 1986,
+      "description": "Mozart's unfinished masterpiece in a lean, dramatic performance on period instruments. The Dies Irae is terrifying; the Lacrimosa is heartbreaking.",
+      "whyListen": "Mozart died writing this work. The combination of mortality and divine beauty makes it uniquely powerful.",
+      "spotifyUri": "spotify:album:7890",
+      "appleMusicUrl": "https://music.apple.com",
+      "keyMoments": [
+        {"time": "0:00", "description": "Introit—immediate, somber beauty"},
+        {"time": "5:30", "description": "Dies Irae—the Day of Wrath explodes"},
+        {"time": "35:00", "description": "Lacrimosa—where Mozart's pen stopped"}
+      ]
+    },
+    {
+      "week": 6,
+      "title": "Vivaldi: The Four Seasons",
+      "artist": "Europa Galante / Fabio Biondi",
+      "year": 1991,
+      "description": "A historically-informed performance that strips away centuries of heavy interpretation. The result is vivid, immediate, and exciting.",
+      "whyListen": "You've heard Four Seasons in every coffee shop—but not like this. Period instruments reveal Vivaldi's original colors.",
+      "spotifyUri": "spotify:album:1111",
+      "appleMusicUrl": "https://music.apple.com",
+      "keyMoments": [
+        {"time": "0:00", "description": "Spring—birds, brooks, and storms"},
+        {"time": "20:00", "description": "Summer's violent thunderstorm"},
+        {"time": "32:00", "description": "Winter's icy chill and warmth by the fire"}
+      ]
+    },
+    {
+      "week": 7,
+      "title": "Brahms: Symphony No. 4",
+      "artist": "Carlos Kleiber / Vienna Philharmonic",
+      "year": 1980,
+      "description": "Another Kleiber miracle. The fourth symphony's autumnal melancholy and final passacaglia are rendered with perfect balance of structure and emotion.",
+      "whyListen": "Brahms' final symphony is a meditation on endings. The last movement's variations are among the greatest pages in all music.",
+      "spotifyUri": "spotify:album:2222",
+      "appleMusicUrl": "https://music.apple.com",
+      "keyMoments": [
+        {"time": "0:00", "description": "The sighing opening melody"},
+        {"time": "29:00", "description": "Fourth movement passacaglia begins"}
+      ]
+    },
+    {
+      "week": 8,
+      "title": "Stravinsky: The Rite of Spring",
+      "artist": "Pierre Boulez / Cleveland Orchestra",
+      "year": 1991,
+      "description": "The work that changed music forever, in a performance of crystalline clarity. Every explosive rhythm and strange harmony is perfectly balanced.",
+      "whyListen": "This caused a riot at its 1913 premiere. A century later, it still sounds revolutionary.",
+      "spotifyUri": "spotify:album:3333",
+      "appleMusicUrl": "https://music.apple.com",
+      "keyMoments": [
+        {"time": "0:00", "description": "The mysterious bassoon solo"},
+        {"time": "3:30", "description": "The Augurs of Spring—pounding, dissonant chords"},
+        {"time": "28:00", "description": "Sacrificial Dance—primal rhythmic violence"}
+      ]
+    },
+    {
+      "week": 9,
+      "title": "Tchaikovsky: Swan Lake Suite",
+      "artist": "Herbert von Karajan / Vienna Philharmonic",
+      "year": 1965,
+      "description": "The essence of the beloved ballet in orchestral highlights. The famous theme, the dance of the cygnets, and the tragic finale.",
+      "whyListen": "Pure Romantic melody and orchestral color. Tchaikovsky's gift for tune-writing is on full display.",
+      "spotifyUri": "spotify:album:4444",
+      "appleMusicUrl": "https://music.apple.com",
+      "keyMoments": [
+        {"time": "0:00", "description": "The iconic swan theme on oboe"},
+        {"time": "8:00", "description": "Dance of the Little Swans—delightful precision"}
+      ]
+    },
+    {
+      "week": 10,
+      "title": "Handel: Messiah (Highlights)",
+      "artist": "Trevor Pinnock / The English Concert",
+      "year": 1988,
+      "description": "Period-instrument performance bringing freshness to the beloved oratorio. The Hallelujah Chorus as you've never heard it.",
+      "whyListen": "This isn't just Christmas music. Handel's drama and melody speak to everyone.",
+      "spotifyUri": "spotify:album:5555",
+      "appleMusicUrl": "https://music.apple.com",
+      "keyMoments": [
+        {"time": "0:00", "description": "Every Valley—the opening tenor aria"},
+        {"time": "24:00", "description": "The Hallelujah Chorus"}
+      ]
+    },
+    {
+      "week": 11,
+      "title": "Ravel: Piano Concerto in G",
+      "artist": "Krystian Zimerman / Pierre Boulez / Cleveland Orchestra",
+      "year": 1994,
+      "description": "Jazz-inflected brilliance meets French elegance. The slow movement is one of the most beautiful things Ravel ever wrote.",
+      "whyListen": "Proof that 20th-century classical music can be immediately appealing. The slow movement will haunt you.",
+      "spotifyUri": "spotify:album:6666",
+      "appleMusicUrl": "https://music.apple.com",
+      "keyMoments": [
+        {"time": "0:00", "description": "The whip crack that opens the work"},
+        {"time": "8:30", "description": "Second movement—simple, profound beauty"},
+        {"time": "18:00", "description": "Finale—jazzy virtuosity"}
+      ]
+    },
+    {
+      "week": 12,
+      "title": "Dvorak: Symphony No. 9 'From the New World'",
+      "artist": "Rafael Kubelík / Bavarian Radio Symphony",
+      "year": 1970,
+      "description": "A Czech composer's love letter to America, performed by a Czech émigré conductor. The famous Largo is unforgettable.",
+      "whyListen": "One of the most approachable symphonies ever written. The melodies feel like folk songs you already know.",
+      "spotifyUri": "spotify:album:7777",
+      "appleMusicUrl": "https://music.apple.com",
+      "keyMoments": [
+        {"time": "0:00", "description": "Introduction building to the main theme"},
+        {"time": "11:00", "description": "The Largo—'Going Home' melody on English horn"},
+        {"time": "35:00", "description": "Finale—all themes return in triumph"}
+      ]
+    }
+  ],
+  "monthlySpotlights": [
+    {
+      "month": 1,
+      "type": "composer",
+      "id": "bach",
+      "title": "Johann Sebastian Bach",
+      "subtitle": "The Foundation of Western Music",
+      "description": "January we explore the composer who is the foundation of everything that came after. Bach's mastery of counterpoint, harmony, and form established the grammar of Western classical music.",
+      "featuredWorks": ["Goldberg Variations", "Mass in B Minor", "Brandenburg Concertos"],
+      "challenge": "Listen to one complete Brandenburg Concerto each week"
+    },
+    {
+      "month": 2,
+      "type": "era",
+      "id": "romantic",
+      "title": "The Romantic Era",
+      "subtitle": "When Music Became Personal",
+      "description": "February—the month of love—belongs to the Romantics. This era freed music from courtly restraint and let composers pour out their souls.",
+      "featuredWorks": ["Chopin: Nocturnes", "Brahms: Symphony No. 3", "Wagner: Tristan und Isolde Prelude"],
+      "challenge": "Compare the same emotion expressed by three different Romantic composers"
+    },
+    {
+      "month": 3,
+      "type": "composer",
+      "id": "beethoven",
+      "title": "Ludwig van Beethoven",
+      "subtitle": "The Revolutionary",
+      "description": "March is for revolution—and no composer was more revolutionary than Beethoven. From the Classical elegance of his early works to the radical late quartets, witness music's transformation.",
+      "featuredWorks": ["Symphony No. 5", "Symphony No. 9", "Piano Sonata No. 14 'Moonlight'"],
+      "challenge": "Listen to symphonies 1, 5, and 9 to hear Beethoven's evolution"
+    },
+    {
+      "month": 4,
+      "type": "era",
+      "id": "baroque",
+      "title": "The Baroque Era",
+      "subtitle": "Ornament, Drama, and Grandeur",
+      "description": "April brings spring's ornate blossoms—and the Baroque's ornate music. Discover the era when opera was born and counterpoint reached its peak.",
+      "featuredWorks": ["Vivaldi: The Four Seasons", "Handel: Water Music", "Bach: Toccata in D minor"],
+      "challenge": "Learn to identify the basso continuo in three different Baroque works"
+    },
+    {
+      "month": 5,
+      "type": "composer",
+      "id": "mozart",
+      "title": "Wolfgang Amadeus Mozart",
+      "subtitle": "Divine Grace",
+      "description": "Mozart's music sparkles like spring turning to summer. His seeming effortlessness conceals profound depth. This month, we look past the genius myth to the real music.",
+      "featuredWorks": ["Symphony No. 40", "Piano Concerto No. 21", "The Marriage of Figaro"],
+      "challenge": "Compare Mozart's opera writing with his instrumental writing"
+    },
+    {
+      "month": 6,
+      "type": "form",
+      "id": "symphony",
+      "title": "The Symphony",
+      "subtitle": "The Pinnacle of Orchestral Art",
+      "description": "June celebrates the grandest of forms. From Haydn's invention through Mahler's expansion, trace how composers used the symphony to express their deepest thoughts.",
+      "featuredWorks": ["Haydn: Symphony No. 94", "Beethoven: Symphony No. 6", "Brahms: Symphony No. 1"],
+      "challenge": "Listen to the first movements of three symphonies and identify sonata form"
+    },
+    {
+      "month": 7,
+      "type": "composer",
+      "id": "chopin",
+      "title": "Frédéric Chopin",
+      "subtitle": "The Poet of the Piano",
+      "description": "Summer evenings call for Chopin's nocturnes. The most pianistic of composers created works that seem to breathe and sing.",
+      "featuredWorks": ["Nocturne Op. 9 No. 2", "Ballade No. 1", "Polonaise 'Heroic'"],
+      "challenge": "Listen to nocturnes at different times of day and note how they feel different"
+    },
+    {
+      "month": 8,
+      "type": "era",
+      "id": "modern",
+      "title": "The Modern Era",
+      "subtitle": "Breaking All the Rules",
+      "description": "August heat brings radical change. Explore how 20th-century composers shattered expectations and created entirely new sound worlds.",
+      "featuredWorks": ["Stravinsky: The Rite of Spring", "Debussy: La Mer", "Bartók: Music for Strings"],
+      "challenge": "Listen to one 'difficult' modern work three times and track how your perception changes"
+    },
+    {
+      "month": 9,
+      "type": "composer",
+      "id": "brahms",
+      "title": "Johannes Brahms",
+      "subtitle": "The Romantic Classicist",
+      "description": "As fall begins, we turn to Brahms' autumnal warmth. He fused Romantic passion with Classical architecture in works of immense power.",
+      "featuredWorks": ["Symphony No. 4", "Piano Concerto No. 2", "German Requiem"],
+      "challenge": "The Brahms Symphonies Challenge: Listen to all four symphonies this month"
+    },
+    {
+      "month": 10,
+      "type": "form",
+      "id": "opera",
+      "title": "Opera",
+      "subtitle": "When Music Tells Stories",
+      "description": "October's drama calls for opera. From Mozart's comedies to Wagner's myths, discover how composers used voices and orchestra to tell humanity's greatest stories.",
+      "featuredWorks": ["Mozart: Don Giovanni", "Verdi: La Traviata", "Puccini: La Bohème"],
+      "challenge": "Watch one opera with subtitles—then listen again without visuals"
+    },
+    {
+      "month": 11,
+      "type": "composer",
+      "id": "tchaikovsky",
+      "title": "Pyotr Ilyich Tchaikovsky",
+      "subtitle": "Heart on Sleeve",
+      "description": "November's approaching holidays bring Tchaikovsky—master of melody and the composer of The Nutcracker. Experience Russian Romanticism at its most direct.",
+      "featuredWorks": ["The Nutcracker", "Symphony No. 6", "Piano Concerto No. 1"],
+      "challenge": "Listen to The Nutcracker while following the story"
+    },
+    {
+      "month": 12,
+      "type": "form",
+      "id": "requiem",
+      "title": "The Requiem",
+      "subtitle": "Music for Eternity",
+      "description": "December invites reflection. The Requiem—music for the dead—is paradoxically some of the most life-affirming music ever written.",
+      "featuredWorks": ["Mozart: Requiem", "Verdi: Requiem", "Brahms: German Requiem"],
+      "challenge": "Listen to all three requiems and compare how each composer approaches mortality"
+    }
+  ]
+}

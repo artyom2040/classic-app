@@ -1,0 +1,285 @@
+// Theme definitions for Context Composer
+
+export type ThemeName = 'dark' | 'light' | 'classic' | 'skeuomorphic' | 'neobrutalist';
+
+export interface Theme {
+  name: ThemeName;
+  displayName: string;
+  description: string;
+  colors: {
+    background: string;
+    surface: string;
+    surfaceLight: string;
+    surfaceElevated: string;
+    primary: string;
+    primaryLight: string;
+    secondary: string;
+    accent: string;
+    text: string;
+    textSecondary: string;
+    textMuted: string;
+    textInverse: string;
+    border: string;
+    borderLight: string;
+    success: string;
+    warning: string;
+    error: string;
+    gradientStart: string;
+    gradientEnd: string;
+  };
+  spacing: {
+    xs: number;
+    sm: number;
+    md: number;
+    lg: number;
+    xl: number;
+    xxl: number;
+  };
+  borderRadius: {
+    xs: number;
+    sm: number;
+    md: number;
+    lg: number;
+    xl: number;
+    full: number;
+  };
+  shadows: {
+    sm: object;
+    md: object;
+    lg: object;
+  };
+  typography: {
+    fontFamily: string;
+    sizes: {
+      xs: number;
+      sm: number;
+      md: number;
+      lg: number;
+      xl: number;
+      xxl: number;
+      hero: number;
+    };
+  };
+  cardStyle: 'flat' | 'elevated' | 'outlined' | 'glass' | 'brutal';
+}
+
+// ============================================
+// DARK THEME (Current Default)
+// ============================================
+export const darkTheme: Theme = {
+  name: 'dark',
+  displayName: 'Midnight',
+  description: 'Dark elegance for night listening',
+  colors: {
+    background: '#0D0D12',
+    surface: '#1A1A24',
+    surfaceLight: '#252532',
+    surfaceElevated: '#2A2A3A',
+    primary: '#D4AF37',
+    primaryLight: '#E8C860',
+    secondary: '#9B7DD4',
+    accent: '#4ECDC4',
+    text: '#FFFFFF',
+    textSecondary: '#B0B0C0',
+    textMuted: '#6B6B80',
+    textInverse: '#0D0D12',
+    border: '#2A2A3A',
+    borderLight: '#3A3A4A',
+    success: '#4CAF50',
+    warning: '#FFB74D',
+    error: '#EF5350',
+    gradientStart: '#1A1A24',
+    gradientEnd: '#0D0D12',
+  },
+  spacing: { xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48 },
+  borderRadius: { xs: 4, sm: 8, md: 12, lg: 16, xl: 24, full: 9999 },
+  shadows: {
+    sm: { shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 3 },
+    md: { shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 8, elevation: 6 },
+    lg: { shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.5, shadowRadius: 16, elevation: 12 },
+  },
+  typography: {
+    fontFamily: 'System',
+    sizes: { xs: 10, sm: 12, md: 14, lg: 16, xl: 20, xxl: 28, hero: 36 },
+  },
+  cardStyle: 'elevated',
+};
+
+// ============================================
+// LIGHT THEME
+// ============================================
+export const lightTheme: Theme = {
+  name: 'light',
+  displayName: 'Daylight',
+  description: 'Clean and bright for easy reading',
+  colors: {
+    background: '#F8F9FA',
+    surface: '#FFFFFF',
+    surfaceLight: '#F0F2F5',
+    surfaceElevated: '#FFFFFF',
+    primary: '#8B6914',
+    primaryLight: '#C9A227',
+    secondary: '#6B4CA8',
+    accent: '#2A9D8F',
+    text: '#1A1A2E',
+    textSecondary: '#4A4A5A',
+    textMuted: '#8A8A9A',
+    textInverse: '#FFFFFF',
+    border: '#E0E0E8',
+    borderLight: '#F0F0F5',
+    success: '#2E7D32',
+    warning: '#F57C00',
+    error: '#C62828',
+    gradientStart: '#FFFFFF',
+    gradientEnd: '#F0F2F5',
+  },
+  spacing: { xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48 },
+  borderRadius: { xs: 4, sm: 8, md: 12, lg: 16, xl: 24, full: 9999 },
+  shadows: {
+    sm: { shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.08, shadowRadius: 4, elevation: 2 },
+    md: { shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.12, shadowRadius: 8, elevation: 4 },
+    lg: { shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.16, shadowRadius: 16, elevation: 8 },
+  },
+  typography: {
+    fontFamily: 'System',
+    sizes: { xs: 10, sm: 12, md: 14, lg: 16, xl: 20, xxl: 28, hero: 36 },
+  },
+  cardStyle: 'elevated',
+};
+
+// ============================================
+// CLASSIC THEME (Warm, Concert Hall Inspired)
+// ============================================
+export const classicTheme: Theme = {
+  name: 'classic',
+  displayName: 'Concert Hall',
+  description: 'Warm tones inspired by classic venues',
+  colors: {
+    background: '#1C1410',
+    surface: '#2A2018',
+    surfaceLight: '#3A2E24',
+    surfaceElevated: '#453830',
+    primary: '#C9A227',
+    primaryLight: '#E8C860',
+    secondary: '#8B4513',
+    accent: '#CD853F',
+    text: '#F5F0E8',
+    textSecondary: '#D4C8B8',
+    textMuted: '#9A8A7A',
+    textInverse: '#1C1410',
+    border: '#4A3E34',
+    borderLight: '#5A4E44',
+    success: '#6B8E23',
+    warning: '#DAA520',
+    error: '#B22222',
+    gradientStart: '#2A2018',
+    gradientEnd: '#1C1410',
+  },
+  spacing: { xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48 },
+  borderRadius: { xs: 2, sm: 4, md: 8, lg: 12, xl: 16, full: 9999 },
+  shadows: {
+    sm: { shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.4, shadowRadius: 4, elevation: 3 },
+    md: { shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.5, shadowRadius: 8, elevation: 6 },
+    lg: { shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.6, shadowRadius: 16, elevation: 12 },
+  },
+  typography: {
+    fontFamily: 'Georgia',
+    sizes: { xs: 10, sm: 12, md: 14, lg: 16, xl: 20, xxl: 28, hero: 36 },
+  },
+  cardStyle: 'elevated',
+};
+
+// ============================================
+// SKEUOMORPHIC THEME (Textured, 3D elements)
+// ============================================
+export const skeuomorphicTheme: Theme = {
+  name: 'skeuomorphic',
+  displayName: 'Vinyl',
+  description: 'Rich textures like vintage equipment',
+  colors: {
+    background: '#2C2C2C',
+    surface: '#3D3D3D',
+    surfaceLight: '#4A4A4A',
+    surfaceElevated: '#505050',
+    primary: '#FFD700',
+    primaryLight: '#FFE44D',
+    secondary: '#C0C0C0',
+    accent: '#FF6B35',
+    text: '#F0F0F0',
+    textSecondary: '#C8C8C8',
+    textMuted: '#888888',
+    textInverse: '#1A1A1A',
+    border: '#5A5A5A',
+    borderLight: '#6A6A6A',
+    success: '#32CD32',
+    warning: '#FFA500',
+    error: '#DC143C',
+    gradientStart: '#4A4A4A',
+    gradientEnd: '#2C2C2C',
+  },
+  spacing: { xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48 },
+  borderRadius: { xs: 6, sm: 10, md: 14, lg: 20, xl: 28, full: 9999 },
+  shadows: {
+    sm: { shadowColor: '#000', shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.5, shadowRadius: 4, elevation: 4 },
+    md: { shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.6, shadowRadius: 10, elevation: 8 },
+    lg: { shadowColor: '#000', shadowOffset: { width: 2, height: 10 }, shadowOpacity: 0.7, shadowRadius: 20, elevation: 16 },
+  },
+  typography: {
+    fontFamily: 'System',
+    sizes: { xs: 10, sm: 12, md: 14, lg: 16, xl: 20, xxl: 28, hero: 36 },
+  },
+  cardStyle: 'glass',
+};
+
+// ============================================
+// NEOBRUTALIST THEME (Bold, Raw, High Contrast)
+// ============================================
+export const neobrutalistTheme: Theme = {
+  name: 'neobrutalist',
+  displayName: 'Brutalist',
+  description: 'Bold, raw, and unapologetically loud',
+  colors: {
+    background: '#FFFEF0',
+    surface: '#FFFFFF',
+    surfaceLight: '#FFF8DC',
+    surfaceElevated: '#FFFFFF',
+    primary: '#FF5722',
+    primaryLight: '#FF8A65',
+    secondary: '#000000',
+    accent: '#FFEB3B',
+    text: '#000000',
+    textSecondary: '#333333',
+    textMuted: '#666666',
+    textInverse: '#FFFFFF',
+    border: '#000000',
+    borderLight: '#333333',
+    success: '#00C853',
+    warning: '#FFD600',
+    error: '#FF1744',
+    gradientStart: '#FFFEF0',
+    gradientEnd: '#FFF8DC',
+  },
+  spacing: { xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48 },
+  borderRadius: { xs: 0, sm: 0, md: 0, lg: 0, xl: 0, full: 9999 },
+  shadows: {
+    sm: { shadowColor: '#000', shadowOffset: { width: 3, height: 3 }, shadowOpacity: 1, shadowRadius: 0, elevation: 3 },
+    md: { shadowColor: '#000', shadowOffset: { width: 5, height: 5 }, shadowOpacity: 1, shadowRadius: 0, elevation: 5 },
+    lg: { shadowColor: '#000', shadowOffset: { width: 8, height: 8 }, shadowOpacity: 1, shadowRadius: 0, elevation: 8 },
+  },
+  typography: {
+    fontFamily: 'System',
+    sizes: { xs: 10, sm: 12, md: 14, lg: 17, xl: 22, xxl: 32, hero: 42 },
+  },
+  cardStyle: 'brutal',
+};
+
+// Theme map for easy access
+export const themes: Record<ThemeName, Theme> = {
+  dark: darkTheme,
+  light: lightTheme,
+  classic: classicTheme,
+  skeuomorphic: skeuomorphicTheme,
+  neobrutalist: neobrutalistTheme,
+};
+
+export const themeList = Object.values(themes);

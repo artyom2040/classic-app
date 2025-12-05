@@ -1,0 +1,108 @@
+{
+  "periods": [
+    {
+      "id": "medieval",
+      "name": "Medieval",
+      "years": "500-1400",
+      "description": "The earliest documented music of the Western classical tradition. Characterized by monophonic plainchant and the emergence of polyphony.",
+      "keyCharacteristics": [
+        "Gregorian chant",
+        "Sacred music dominance",
+        "Modal scales",
+        "Organum (early polyphony)"
+      ],
+      "composers": ["hildegard", "machaut", "perotin"],
+      "color": "#8B4513"
+    },
+    {
+      "id": "renaissance",
+      "name": "Renaissance",
+      "years": "1400-1600",
+      "description": "A rebirth of artistic expression with richer polyphony, the rise of secular music, and the printing press enabling wider distribution.",
+      "keyCharacteristics": [
+        "Complex polyphony",
+        "Madrigals and motets",
+        "Rise of instrumental music",
+        "Word painting"
+      ],
+      "composers": ["palestrina", "josquin", "byrd", "monteverdi_early"],
+      "color": "#654321"
+    },
+    {
+      "id": "baroque",
+      "name": "Baroque",
+      "years": "1600-1750",
+      "description": "An era of dramatic expression, ornate melodies, and the birth of opera. Characterized by contrast, movement, and elaborate ornamentation.",
+      "keyCharacteristics": [
+        "Basso continuo",
+        "Ornamentation",
+        "Terraced dynamics",
+        "Fugue and counterpoint",
+        "Birth of opera"
+      ],
+      "composers": ["bach", "handel", "vivaldi", "monteverdi", "purcell", "scarlatti"],
+      "color": "#B8860B"
+    },
+    {
+      "id": "classical",
+      "name": "Classical",
+      "years": "1750-1820",
+      "description": "Clarity, balance, and form define this period. The symphony, sonata, and string quartet emerged as primary genres.",
+      "keyCharacteristics": [
+        "Sonata form",
+        "Homophonic texture",
+        "Clear phrases and cadences",
+        "Symphony and concerto development",
+        "Alberti bass"
+      ],
+      "composers": ["mozart", "haydn", "beethoven_early", "gluck"],
+      "color": "#DAA520"
+    },
+    {
+      "id": "romantic",
+      "name": "Romantic",
+      "years": "1820-1900",
+      "description": "Emotional expression, nationalism, and individualism flourished. Orchestras expanded, and virtuoso performers became stars.",
+      "keyCharacteristics": [
+        "Emotional intensity",
+        "Program music",
+        "Nationalism",
+        "Expanded orchestra",
+        "Chromatic harmony",
+        "Virtuosity"
+      ],
+      "composers": ["beethoven", "chopin", "brahms", "liszt", "wagner", "tchaikovsky", "schumann", "mendelssohn", "dvorak", "verdi"],
+      "color": "#DC143C"
+    },
+    {
+      "id": "modern",
+      "name": "Modern",
+      "years": "1900-1975",
+      "description": "A period of experimentation breaking from tradition. Atonality, serialism, and new timbres challenged conventional harmony.",
+      "keyCharacteristics": [
+        "Atonality",
+        "Twelve-tone technique",
+        "Polyrhythm",
+        "Extended techniques",
+        "Electronic elements"
+      ],
+      "composers": ["stravinsky", "schoenberg", "debussy", "ravel", "bartok", "prokofiev", "shostakovich", "copland"],
+      "color": "#4169E1"
+    },
+    {
+      "id": "contemporary",
+      "name": "Contemporary",
+      "years": "1975-Present",
+      "description": "A pluralistic era where all styles coexist. Minimalism, neo-romanticism, and electronic fusion define the landscape.",
+      "keyCharacteristics": [
+        "Minimalism",
+        "Neo-romanticism",
+        "World music fusion",
+        "Digital composition",
+        "Eclecticism"
+      ],
+      "composers": ["glass", "reich", "part", "adams", "williams"],
+      "color": "#9932CC"
+    }
+  ]
+}

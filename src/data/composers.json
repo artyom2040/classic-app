@@ -1,0 +1,410 @@
+{
+  "composers": [
+    {
+      "id": "bach",
+      "name": "Johann Sebastian Bach",
+      "years": "1685-1750",
+      "period": "baroque",
+      "nationality": "German",
+      "portrait": "bach.jpg",
+      "shortBio": "The supreme master of counterpoint and one of the greatest composers in Western music history.",
+      "fullBio": "Bach worked as a church musician, court composer, and teacher throughout Germany. His mastery of counterpoint and harmonic organization produced works of unparalleled structural complexity and spiritual depth. Though underappreciated in his lifetime, he is now regarded as one of the greatest composers ever.",
+      "keyWorks": [
+        {"title": "The Well-Tempered Clavier", "type": "Keyboard", "year": "1722/1742"},
+        {"title": "Brandenburg Concertos", "type": "Orchestral", "year": "1721"},
+        {"title": "Mass in B Minor", "type": "Choral", "year": "1749"},
+        {"title": "Goldberg Variations", "type": "Keyboard", "year": "1741"},
+        {"title": "Cello Suites", "type": "Chamber", "year": "1717-1723"}
+      ],
+      "funFact": "Bach had 20 children with two wives, and several of his sons became famous composers.",
+      "listenFirst": "Brandenburg Concerto No. 3 - An energetic introduction to Baroque orchestral writing.",
+      "spotifyUri": "spotify:artist:5aIqB5nVVvmFsvSdExz408",
+      "youtubeSearch": "Bach Brandenburg Concerto 3"
+    },
+    {
+      "id": "mozart",
+      "name": "Wolfgang Amadeus Mozart",
+      "years": "1756-1791",
+      "period": "classical",
+      "nationality": "Austrian",
+      "portrait": "mozart.jpg",
+      "shortBio": "A child prodigy who became the archetypal Classical composer, mastering every genre of his era.",
+      "fullBio": "Mozart began composing at age 5 and performed for European royalty as a child. His short life of 35 years produced over 600 works of extraordinary beauty and perfection. His operas, symphonies, and concertos define the Classical style with their balance, clarity, and emotional range.",
+      "keyWorks": [
+        {"title": "Symphony No. 40", "type": "Symphony", "year": "1788"},
+        {"title": "The Marriage of Figaro", "type": "Opera", "year": "1786"},
+        {"title": "Piano Concerto No. 21", "type": "Concerto", "year": "1785"},
+        {"title": "Requiem", "type": "Choral", "year": "1791"},
+        {"title": "Eine kleine Nachtmusik", "type": "Chamber", "year": "1787"}
+      ],
+      "funFact": "Mozart had a famously crude sense of humor and wrote several pieces with vulgar lyrics for his friends.",
+      "listenFirst": "Symphony No. 40 in G minor - Dramatic and accessible, showcasing Mozart's emotional depth.",
+      "spotifyUri": "spotify:artist:4NJhFmfw43RLBLjQvxDuRS",
+      "youtubeSearch": "Mozart Symphony 40"
+    },
+    {
+      "id": "beethoven",
+      "name": "Ludwig van Beethoven",
+      "years": "1770-1827",
+      "period": "romantic",
+      "nationality": "German",
+      "portrait": "beethoven.jpg",
+      "shortBio": "The revolutionary who bridged Classical and Romantic eras, composing masterpieces even after becoming deaf.",
+      "fullBio": "Beethoven transformed music from courtly entertainment to personal expression. His increasing deafness, beginning in his late 20s, led to profound isolation but also deeper introspection. His nine symphonies, 32 piano sonatas, and string quartets expanded every form he touched.",
+      "keyWorks": [
+        {"title": "Symphony No. 5", "type": "Symphony", "year": "1808"},
+        {"title": "Symphony No. 9", "type": "Symphony", "year": "1824"},
+        {"title": "Moonlight Sonata", "type": "Piano", "year": "1801"},
+        {"title": "Für Elise", "type": "Piano", "year": "1810"},
+        {"title": "Violin Concerto", "type": "Concerto", "year": "1806"}
+      ],
+      "funFact": "Beethoven was completely deaf when he composed his Ninth Symphony and never heard it performed.",
+      "listenFirst": "Symphony No. 5 - The famous four-note opening is instantly recognizable and leads to triumph.",
+      "spotifyUri": "spotify:artist:2wOqMjp9TyABvtHdOSOTUS",
+      "youtubeSearch": "Beethoven Symphony 5"
+    },
+    {
+      "id": "chopin",
+      "name": "Frédéric Chopin",
+      "years": "1810-1849",
+      "period": "romantic",
+      "nationality": "Polish",
+      "portrait": "chopin.jpg",
+      "shortBio": "The poet of the piano who revolutionized keyboard technique and composition.",
+      "fullBio": "Chopin composed almost exclusively for solo piano, elevating it to unprecedented expressive heights. His Polish heritage infused his music with mazurkas and polonaises, while his Parisian life exposed him to salon culture. His nocturnes, études, and preludes remain central to the piano repertoire.",
+      "keyWorks": [
+        {"title": "Nocturne Op. 9 No. 2", "type": "Piano", "year": "1832"},
+        {"title": "Ballade No. 1", "type": "Piano", "year": "1835"},
+        {"title": "Polonaise 'Heroic'", "type": "Piano", "year": "1842"},
+        {"title": "Étude Op. 10 No. 3", "type": "Piano", "year": "1832"},
+        {"title": "Piano Concerto No. 1", "type": "Concerto", "year": "1830"}
+      ],
+      "funFact": "Chopin gave fewer than 30 public performances in his entire life, preferring intimate salon settings.",
+      "listenFirst": "Nocturne Op. 9 No. 2 - A dreamy, singing melody that defines Romantic piano music.",
+      "spotifyUri": "spotify:artist:7y97mc3bZRFXzT2kflWMLr",
+      "youtubeSearch": "Chopin Nocturne Op 9 No 2"
+    },
+    {
+      "id": "brahms",
+      "name": "Johannes Brahms",
+      "years": "1833-1897",
+      "period": "romantic",
+      "nationality": "German",
+      "portrait": "brahms.jpg",
+      "shortBio": "The great synthesizer who combined Romantic passion with Classical structure.",
+      "fullBio": "Brahms saw himself as a guardian of the Classical tradition while embracing Romantic expression. His four symphonies took years to complete due to his perfectionism and the shadow of Beethoven. His chamber music and piano works show meticulous craftsmanship and deep emotion.",
+      "keyWorks": [
+        {"title": "Symphony No. 4", "type": "Symphony", "year": "1885"},
+        {"title": "Hungarian Dances", "type": "Orchestral", "year": "1869"},
+        {"title": "Piano Concerto No. 2", "type": "Concerto", "year": "1881"},
+        {"title": "German Requiem", "type": "Choral", "year": "1868"},
+        {"title": "Violin Concerto", "type": "Concerto", "year": "1878"}
+      ],
+      "funFact": "Brahms was so self-critical he destroyed many of his compositions, including 20 string quartets.",
+      "listenFirst": "Hungarian Dance No. 5 - An energetic, folk-inspired piece showcasing Brahms' melodic gifts.",
+      "spotifyUri": "spotify:artist:5wTAi7QkpP6kp8a54lmTOq",
+      "youtubeSearch": "Brahms Hungarian Dance 5"
+    },
+    {
+      "id": "tchaikovsky",
+      "name": "Pyotr Ilyich Tchaikovsky",
+      "years": "1840-1893",
+      "period": "romantic",
+      "nationality": "Russian",
+      "portrait": "tchaikovsky.jpg",
+      "shortBio": "Russia's most popular composer, known for soaring melodies and emotional depth.",
+      "fullBio": "Tchaikovsky blended Russian folk elements with Western Romantic tradition. His ballets, including Swan Lake and The Nutcracker, revolutionized the art form. His symphonies and concertos are celebrated for their passionate melodies and orchestral color.",
+      "keyWorks": [
+        {"title": "Swan Lake", "type": "Ballet", "year": "1876"},
+        {"title": "The Nutcracker", "type": "Ballet", "year": "1892"},
+        {"title": "Symphony No. 6 'Pathétique'", "type": "Symphony", "year": "1893"},
+        {"title": "Piano Concerto No. 1", "type": "Concerto", "year": "1875"},
+        {"title": "1812 Overture", "type": "Orchestral", "year": "1882"}
+      ],
+      "funFact": "The 1812 Overture calls for actual cannons in its score, making it one of the loudest classical pieces.",
+      "listenFirst": "The Nutcracker Suite - Enchanting melodies perfect for discovering orchestral color.",
+      "spotifyUri": "spotify:artist:3MKCzCnpzw3TjUYs2v7vDA",
+      "youtubeSearch": "Tchaikovsky Nutcracker Suite"
+    },
+    {
+      "id": "vivaldi",
+      "name": "Antonio Vivaldi",
+      "years": "1678-1741",
+      "period": "baroque",
+      "nationality": "Italian",
+      "portrait": "vivaldi.jpg",
+      "shortBio": "The 'Red Priest' who revolutionized the concerto form and Baroque orchestral music.",
+      "fullBio": "Vivaldi was an ordained priest who spent much of his career teaching at an orphanage for girls in Venice. He composed over 500 concertos and established the three-movement concerto form. His music influenced Bach and countless others.",
+      "keyWorks": [
+        {"title": "The Four Seasons", "type": "Concerto", "year": "1725"},
+        {"title": "Gloria in D major", "type": "Choral", "year": "1715"},
+        {"title": "L'estro armonico", "type": "Concerto", "year": "1711"},
+        {"title": "Mandolin Concerto", "type": "Concerto", "year": "1725"}
+      ],
+      "funFact": "Vivaldi was known as 'The Red Priest' because of his distinctive red hair.",
+      "listenFirst": "The Four Seasons: Spring - Vivid musical painting of nature through the violin.",
+      "spotifyUri": "spotify:artist:2QOIawHpSlOwXDvSqQ9YJR",
+      "youtubeSearch": "Vivaldi Four Seasons Spring"
+    },
+    {
+      "id": "handel",
+      "name": "George Frideric Handel",
+      "years": "1685-1759",
+      "period": "baroque",
+      "nationality": "German-British",
+      "portrait": "handel.jpg",
+      "shortBio": "Master of opera and oratorio who defined English Baroque music.",
+      "fullBio": "Born in Germany, Handel made his career in London, becoming a British subject. After his Italian operas fell out of fashion, he pioneered the English oratorio. His Messiah remains one of the most performed choral works in history.",
+      "keyWorks": [
+        {"title": "Messiah", "type": "Oratorio", "year": "1741"},
+        {"title": "Water Music", "type": "Orchestral", "year": "1717"},
+        {"title": "Music for the Royal Fireworks", "type": "Orchestral", "year": "1749"},
+        {"title": "Zadok the Priest", "type": "Choral", "year": "1727"}
+      ],
+      "funFact": "Handel composed Messiah in just 24 days, often forgetting to eat during the process.",
+      "listenFirst": "Water Music Suite - Elegant outdoor music for King George I's Thames river party.",
+      "spotifyUri": "spotify:artist:1TCvNmAKVELQTrwFeDxcSj",
+      "youtubeSearch": "Handel Water Music"
+    },
+    {
+      "id": "debussy",
+      "name": "Claude Debussy",
+      "years": "1862-1918",
+      "period": "modern",
+      "nationality": "French",
+      "portrait": "debussy.jpg",
+      "shortBio": "The pioneer of musical Impressionism who dissolved traditional harmony.",
+      "fullBio": "Debussy rejected the German Romantic tradition in favor of color, atmosphere, and suggestion. His revolutionary harmony used whole-tone scales and parallel chords. His orchestral and piano works evoke images and sensations rather than tell stories.",
+      "keyWorks": [
+        {"title": "Clair de Lune", "type": "Piano", "year": "1905"},
+        {"title": "Prélude à l'après-midi d'un faune", "type": "Orchestral", "year": "1894"},
+        {"title": "La Mer", "type": "Orchestral", "year": "1905"},
+        {"title": "Arabesque No. 1", "type": "Piano", "year": "1891"}
+      ],
+      "funFact": "Debussy hated being called an 'Impressionist,' preferring to see himself as a 'Symbolist.'",
+      "listenFirst": "Clair de Lune - Moonlit atmosphere captured in piano, accessible yet sophisticated.",
+      "spotifyUri": "spotify:artist:1Uff91EOsvd99rtAupatMP",
+      "youtubeSearch": "Debussy Clair de Lune"
+    },
+    {
+      "id": "stravinsky",
+      "name": "Igor Stravinsky",
+      "years": "1882-1971",
+      "period": "modern",
+      "nationality": "Russian-American",
+      "portrait": "stravinsky.jpg",
+      "shortBio": "The chameleon of 20th-century music whose Rite of Spring caused a riot.",
+      "fullBio": "Stravinsky's early ballets revolutionized rhythm and orchestration. He then embraced neoclassicism before exploring serialism late in life. His ability to reinvent himself while maintaining a distinctive voice made him the most influential composer of the 20th century.",
+      "keyWorks": [
+        {"title": "The Rite of Spring", "type": "Ballet", "year": "1913"},
+        {"title": "The Firebird", "type": "Ballet", "year": "1910"},
+        {"title": "Petrushka", "type": "Ballet", "year": "1911"},
+        {"title": "Symphony of Psalms", "type": "Choral", "year": "1930"}
+      ],
+      "funFact": "The premiere of The Rite of Spring caused a near-riot due to its revolutionary music and choreography.",
+      "listenFirst": "The Firebird Suite - Magical and accessible, bridging late Romanticism and Modernism.",
+      "spotifyUri": "spotify:artist:1nQz8cnYAtQmkxMWwfbuwT",
+      "youtubeSearch": "Stravinsky Firebird Suite"
+    },
+    {
+      "id": "haydn",
+      "name": "Joseph Haydn",
+      "years": "1732-1809",
+      "period": "classical",
+      "nationality": "Austrian",
+      "portrait": "haydn.jpg",
+      "shortBio": "The 'Father of the Symphony' and 'Father of the String Quartet' who established Classical forms.",
+      "fullBio": "Haydn spent most of his career serving the wealthy Esterházy family, which gave him freedom to experiment. His 104 symphonies and 68 string quartets established the forms that Mozart and Beethoven would inherit. His wit and inventiveness made him beloved in his own time.",
+      "keyWorks": [
+        {"title": "Symphony No. 94 'Surprise'", "type": "Symphony", "year": "1791"},
+        {"title": "The Creation", "type": "Oratorio", "year": "1798"},
+        {"title": "Trumpet Concerto", "type": "Concerto", "year": "1796"},
+        {"title": "String Quartet Op. 76 No. 3 'Emperor'", "type": "Chamber", "year": "1797"}
+      ],
+      "funFact": "The 'Surprise' Symphony gets its name from a sudden loud chord meant to wake up dozing audience members.",
+      "listenFirst": "Symphony No. 94 'Surprise' - Elegant, witty, and perfectly structured Classical music.",
+      "spotifyUri": "spotify:artist:6daWghjd8cN4ZuY1VLs4kI",
+      "youtubeSearch": "Haydn Surprise Symphony"
+    },
+    {
+      "id": "liszt",
+      "name": "Franz Liszt",
+      "years": "1811-1886",
+      "period": "romantic",
+      "nationality": "Hungarian",
+      "portrait": "liszt.jpg",
+      "shortBio": "The greatest piano virtuoso of his age who invented the solo recital.",
+      "fullBio": "Liszt was the rock star of his era—women fainted at his concerts, and 'Lisztomania' was a recognized phenomenon. Beyond his virtuosity, he invented the symphonic poem and mentored countless composers including Wagner. His late experimental works anticipated 20th-century music.",
+      "keyWorks": [
+        {"title": "Hungarian Rhapsody No. 2", "type": "Piano", "year": "1847"},
+        {"title": "Liebestraum No. 3", "type": "Piano", "year": "1850"},
+        {"title": "Piano Sonata in B minor", "type": "Piano", "year": "1853"},
+        {"title": "Les Préludes", "type": "Orchestral", "year": "1854"}
+      ],
+      "funFact": "Liszt was so famous that fans collected his cigar butts and coffee dregs as souvenirs.",
+      "listenFirst": "Liebestraum No. 3 - 'Dreams of Love' in beautiful, singing piano melodies.",
+      "spotifyUri": "spotify:artist:1T3VJjQsB0mqJFvjzoZZgG",
+      "youtubeSearch": "Liszt Liebestraum"
+    },
+    {
+      "id": "wagner",
+      "name": "Richard Wagner",
+      "years": "1813-1883",
+      "period": "romantic",
+      "nationality": "German",
+      "portrait": "wagner.jpg",
+      "shortBio": "The revolutionary who transformed opera into music drama with his epic Ring Cycle.",
+      "fullBio": "Wagner's vision of the 'Gesamtkunstwerk' (total artwork) united music, poetry, and staging. His leitmotif technique—using musical themes to represent characters and ideas—influenced film music. His harmony pushed tonality to its limits, paving the way for Modernism.",
+      "keyWorks": [
+        {"title": "Ride of the Valkyries", "type": "Opera", "year": "1870"},
+        {"title": "Tristan und Isolde", "type": "Opera", "year": "1865"},
+        {"title": "The Ring Cycle", "type": "Opera", "year": "1876"},
+        {"title": "Lohengrin", "type": "Opera", "year": "1850"}
+      ],
+      "funFact": "Wagner built his own opera house in Bayreuth specifically designed for his works.",
+      "listenFirst": "Ride of the Valkyries - Iconic, powerful, and instantly recognizable orchestral drama.",
+      "spotifyUri": "spotify:artist:1H1lMFgqjPzXNxBMDEKsE3",
+      "youtubeSearch": "Wagner Ride of the Valkyries"
+    },
+    {
+      "id": "schumann",
+      "name": "Robert Schumann",
+      "years": "1810-1856",
+      "period": "romantic",
+      "nationality": "German",
+      "portrait": "schumann.jpg",
+      "shortBio": "The literary Romantic whose piano works and songs express deep poetry and emotion.",
+      "fullBio": "Schumann was also an influential music critic who championed Chopin and Brahms. His piano works are deeply poetic, often inspired by literary ideas. Mental illness tragically ended his career early, but his wife Clara preserved and promoted his legacy.",
+      "keyWorks": [
+        {"title": "Kinderszenen", "type": "Piano", "year": "1838"},
+        {"title": "Piano Concerto", "type": "Concerto", "year": "1845"},
+        {"title": "Dichterliebe", "type": "Song Cycle", "year": "1840"},
+        {"title": "Symphony No. 3 'Rhenish'", "type": "Symphony", "year": "1850"}
+      ],
+      "funFact": "Schumann injured his hand trying to strengthen it for piano, ending his performing career.",
+      "listenFirst": "Träumerei from Kinderszenen - A gentle, nostalgic reverie loved by all.",
+      "spotifyUri": "spotify:artist:2auvOVdhSzSD9bHD6Rz8JT",
+      "youtubeSearch": "Schumann Träumerei"
+    },
+    {
+      "id": "dvorak",
+      "name": "Antonín Dvořák",
+      "years": "1841-1904",
+      "period": "romantic",
+      "nationality": "Czech",
+      "portrait": "dvorak.jpg",
+      "shortBio": "The Czech master who blended folk music with symphonic grandeur.",
+      "fullBio": "Dvořák's music combines Bohemian folk elements with the Romantic symphonic tradition. His three years in America inspired his most famous symphony. His chamber music, especially the 'American' Quartet, shows his gift for memorable melody.",
+      "keyWorks": [
+        {"title": "Symphony No. 9 'From the New World'", "type": "Symphony", "year": "1893"},
+        {"title": "Cello Concerto", "type": "Concerto", "year": "1895"},
+        {"title": "Slavonic Dances", "type": "Orchestral", "year": "1878"},
+        {"title": "String Quartet No. 12 'American'", "type": "Chamber", "year": "1893"}
+      ],
+      "funFact": "Dvořák was an avid train spotter who would visit stations to record locomotive numbers.",
+      "listenFirst": "Symphony No. 9 'New World' - Sweeping melodies that feel both Czech and American.",
+      "spotifyUri": "spotify:artist:6n7nd5iceYpXVwcx8VPpxF",
+      "youtubeSearch": "Dvorak New World Symphony"
+    },
+    {
+      "id": "ravel",
+      "name": "Maurice Ravel",
+      "years": "1875-1937",
+      "period": "modern",
+      "nationality": "French",
+      "portrait": "ravel.jpg",
+      "shortBio": "The Swiss watchmaker of music—precise, colorful, and perfectly crafted.",
+      "fullBio": "Ravel's meticulous craftsmanship earned him comparison to a Swiss watchmaker. His orchestrations are among the most brilliant ever written. Though often grouped with Debussy, his clearer structures and Spanish/Basque heritage give his music a distinct character.",
+      "keyWorks": [
+        {"title": "Boléro", "type": "Orchestral", "year": "1928"},
+        {"title": "Piano Concerto in G", "type": "Concerto", "year": "1931"},
+        {"title": "Pavane for a Dead Princess", "type": "Piano/Orchestral", "year": "1899"},
+        {"title": "Daphnis et Chloé", "type": "Ballet", "year": "1912"}
+      ],
+      "funFact": "Boléro consists of one melody repeated over and over with different orchestration—Ravel called it 'orchestral tissue without music.'",
+      "listenFirst": "Boléro - A hypnotic crescendo that builds from whisper to thunderous climax.",
+      "spotifyUri": "spotify:artist:17hR0sYHpx7VYTMRfFUOmY",
+      "youtubeSearch": "Ravel Bolero"
+    },
+    {
+      "id": "mendelssohn",
+      "name": "Felix Mendelssohn",
+      "years": "1809-1847",
+      "period": "romantic",
+      "nationality": "German",
+      "portrait": "mendelssohn.jpg",
+      "shortBio": "The child prodigy who revived Bach and composed music of grace and clarity.",
+      "fullBio": "From a wealthy, cultured family, Mendelssohn had every advantage. He conducted the first performance of Bach's St. Matthew Passion since Bach's death, sparking a revival. His own music combines Romantic warmth with Classical balance.",
+      "keyWorks": [
+        {"title": "A Midsummer Night's Dream", "type": "Orchestral", "year": "1842"},
+        {"title": "Violin Concerto", "type": "Concerto", "year": "1844"},
+        {"title": "Symphony No. 4 'Italian'", "type": "Symphony", "year": "1833"},
+        {"title": "Songs Without Words", "type": "Piano", "year": "1829-1845"}
+      ],
+      "funFact": "Mendelssohn wrote his famous Overture to A Midsummer Night's Dream when he was just 17.",
+      "listenFirst": "Violin Concerto - One of the most beloved concertos, passionate yet elegant.",
+      "spotifyUri": "spotify:artist:3dqLIJjYBwuMmPHq0S6iIb",
+      "youtubeSearch": "Mendelssohn Violin Concerto"
+    },
+    {
+      "id": "shostakovich",
+      "name": "Dmitri Shostakovich",
+      "years": "1906-1975",
+      "period": "modern",
+      "nationality": "Russian",
+      "portrait": "shostakovich.jpg",
+      "shortBio": "The great Soviet symphonist who encoded dissent within his powerful music.",
+      "fullBio": "Shostakovich lived under constant threat from Stalin's regime. His music navigates between public conformity and private rebellion. His 15 symphonies and 15 string quartets form the greatest body of such work since Beethoven.",
+      "keyWorks": [
+        {"title": "Symphony No. 5", "type": "Symphony", "year": "1937"},
+        {"title": "Symphony No. 7 'Leningrad'", "type": "Symphony", "year": "1942"},
+        {"title": "String Quartet No. 8", "type": "Chamber", "year": "1960"},
+        {"title": "Piano Concerto No. 2", "type": "Concerto", "year": "1957"}
+      ],
+      "funFact": "Shostakovich kept a packed suitcase by his bed during Stalin's purges, expecting arrest at any moment.",
+      "listenFirst": "Symphony No. 5 - Triumph or irony? The ambiguity makes it endlessly fascinating.",
+      "spotifyUri": "spotify:artist:6s1pBNUK4iIYtJAaV8c8th",
+      "youtubeSearch": "Shostakovich Symphony 5"
+    },
+    {
+      "id": "verdi",
+      "name": "Giuseppe Verdi",
+      "years": "1813-1901",
+      "period": "romantic",
+      "nationality": "Italian",
+      "portrait": "verdi.jpg",
+      "shortBio": "Italy's greatest opera composer whose works defined Romantic Italian theater.",
+      "fullBio": "Verdi's operas became symbols of Italian unification—his very name was an acronym for the first Italian king. His gift for melody, dramatic pacing, and character made him the dominant force in opera for 50 years.",
+      "keyWorks": [
+        {"title": "La Traviata", "type": "Opera", "year": "1853"},
+        {"title": "Rigoletto", "type": "Opera", "year": "1851"},
+        {"title": "Aida", "type": "Opera", "year": "1871"},
+        {"title": "Requiem", "type": "Choral", "year": "1874"}
+      ],
+      "funFact": "'Viva VERDI' was a secret political slogan—it stood for 'Viva Vittorio Emanuele Re D'Italia.'",
+      "listenFirst": "La donna è mobile from Rigoletto - An unforgettable melody known worldwide.",
+      "spotifyUri": "spotify:artist:5gS8kiZLlNiTxSrzGBFSFD",
+      "youtubeSearch": "Verdi La donna e mobile"
+    },
+    {
+      "id": "glass",
+      "name": "Philip Glass",
+      "years": "1937-",
+      "period": "contemporary",
+      "nationality": "American",
+      "portrait": "glass.jpg",
+      "shortBio": "The pioneer of minimalism who brought classical music to new audiences.",
+      "fullBio": "Glass's repetitive, gradually evolving structures created a new musical language. His operas, film scores, and symphonies have made him one of the most performed living composers. His influence extends from concert halls to film to popular music.",
+      "keyWorks": [
+        {"title": "Glassworks", "type": "Chamber", "year": "1982"},
+        {"title": "Einstein on the Beach", "type": "Opera", "year": "1976"},
+        {"title": "Koyaanisqatsi", "type": "Film Score", "year": "1982"},
+        {"title": "Metamorphosis", "type": "Piano", "year": "1988"}
+      ],
+      "funFact": "Glass drove a taxi and worked as a plumber in New York while composing his early masterpieces.",
+      "listenFirst": "Opening from Glassworks - Hypnotic and accessible entry to minimalism.",
+      "spotifyUri": "spotify:artist:69lxxQvsfAIiJuIDv1MHFB",
+      "youtubeSearch": "Philip Glass Glassworks Opening"
+    }
+  ]
+}
