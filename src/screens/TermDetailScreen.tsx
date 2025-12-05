@@ -5,6 +5,7 @@ import { useRoute, RouteProp } from '@react-navigation/native';
 
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
+import { useFavorites } from '../context/FavoritesContext';
 import { RootStackParamList, Term } from '../types';
 import { markTermViewed } from '../utils/storage';
 
@@ -16,10 +17,12 @@ type TermDetailRouteProp = RouteProp<RootStackParamList, 'TermDetail'>;
 export default function TermDetailScreen() {
   const route = useRoute<TermDetailRouteProp>();
   const { theme, themeName } = useTheme();
+  const { isFavorite, toggleFavorite } = useFavorites();
   const t = theme;
   const isBrutal = themeName === 'neobrutalist';
   const { termId } = route.params;
   const term = glossaryData.terms.find(item => item.id === termId) as Term | undefined;
+  const isLiked = isFavorite(termId, 'term');
 
   const categoryColors: { [key: string]: string } = {
     Tempo: '#E74C3C', Form: '#9B59B6', Harmony: '#3498DB', Technique: '#1ABC9C',
@@ -39,7 +42,19 @@ export default function TermDetailScreen() {
   return (
     <ScrollView style={[styles.container, { backgroundColor: t.colors.background }]} contentContainerStyle={styles.content}>
       <View style={styles.header}>
-        <Text style={[styles.term, { color: t.colors.text }]}>{term.term}</Text>
+        <View style={styles.titleRow}>
+          <Text style={[styles.term, { color: t.colors.text }]}>{term.term}</Text>
+          <TouchableOpacity 
+            style={[styles.favoriteButton, { backgroundColor: isLiked ? t.colors.error + '20' : t.colors.surfaceLight }]}
+            onPress={() => toggleFavorite(termId, 'term')}
+          >
+            <Ionicons 
+              name={isLiked ? 'heart' : 'heart-outline'} 
+              size={22} 
+              color={isLiked ? t.colors.error : t.colors.textMuted} 
+            />
+          </TouchableOpacity>
+        </View>
         <View style={[styles.categoryBadge, { backgroundColor: categoryColor + '30' }]}>
           <Text style={[styles.categoryText, { color: categoryColor }]}>{term.category}</Text>
         </View>
@@ -74,7 +89,9 @@ const styles = StyleSheet.create({
   content: { padding: spacing.md },
   errorText: { fontSize: fontSize.lg, textAlign: 'center', marginTop: spacing.xxl },
   header: { marginBottom: spacing.lg },
-  term: { fontSize: fontSize.xxxl, fontWeight: 'bold', marginBottom: spacing.sm },
+  titleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: spacing.sm },
+  term: { fontSize: fontSize.xxxl, fontWeight: 'bold', flex: 1 },
+  favoriteButton: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
   categoryBadge: { alignSelf: 'flex-start', paddingHorizontal: spacing.md, paddingVertical: spacing.xs, borderRadius: borderRadius.full },
   categoryText: { fontSize: fontSize.sm, fontWeight: '600' },
   definitionCard: { flexDirection: 'row', alignItems: 'flex-start', borderRadius: borderRadius.lg, padding: spacing.md, marginBottom: spacing.lg, gap: spacing.sm },

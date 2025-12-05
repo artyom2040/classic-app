@@ -129,12 +129,20 @@ export default function HomeScreen() {
             Context Composer
           </Text>
         </View>
-        <TouchableOpacity
-          style={[styles.settingsButton, { backgroundColor: t.colors.surfaceLight }]}
-          onPress={() => navigation.navigate('Settings' as any)}
-        >
-          <Ionicons name="settings-outline" size={22} color={t.colors.text} />
-        </TouchableOpacity>
+        <View style={styles.headerButtons}>
+          <TouchableOpacity
+            style={[styles.headerButton, { backgroundColor: t.colors.surfaceLight }]}
+            onPress={() => navigation.navigate('Search')}
+          >
+            <Ionicons name="search-outline" size={22} color={t.colors.text} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.headerButton, { backgroundColor: t.colors.surfaceLight }]}
+            onPress={() => navigation.navigate('Settings')}
+          >
+            <Ionicons name="settings-outline" size={22} color={t.colors.text} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Featured Section - 3 Cards */}
@@ -283,9 +291,9 @@ export default function HomeScreen() {
 
       <View style={styles.exploreGrid}>
         {[
+          { icon: 'help-circle', label: 'Daily Quiz', sub: '5 Questions', color: t.colors.error, screen: 'Quiz' },
           { icon: 'time', label: 'Timeline', sub: 'Eras & History', color: '#6B8E23', screen: 'Timeline' },
           { icon: 'book', label: 'Glossary', sub: '150 Terms', color: t.colors.primary, screen: 'Glossary' },
-          { icon: 'musical-notes', label: 'Forms', sub: 'Structures', color: '#8B4513', screen: 'Forms' },
           { icon: 'ribbon', label: 'Badges', sub: 'Achievements', color: t.colors.success, screen: 'Badges' },
         ].map((item) => (
           <TouchableOpacity
@@ -299,8 +307,8 @@ export default function HomeScreen() {
               },
             ]}
             onPress={() => {
-              if (item.screen === 'Badges') {
-                navigation.navigate('Badges');
+              if (item.screen === 'Badges' || item.screen === 'Quiz') {
+                navigation.navigate(item.screen as any);
               } else {
                 navigation.navigate('MainTabs', { screen: item.screen } as any);
               }
@@ -369,7 +377,8 @@ const styles = StyleSheet.create({
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
   greeting: { fontSize: 14 },
   title: { fontSize: 26, fontWeight: '700' },
-  settingsButton: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
+  headerButtons: { flexDirection: 'row', gap: 8 },
+  headerButton: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
   
   // Featured grid (3 cards: kickstart, weekly, monthly)
   featuredGrid: { flexDirection: 'row', gap: 10, marginBottom: 20 },

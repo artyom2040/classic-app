@@ -12,6 +12,7 @@ import { useRoute, RouteProp } from '@react-navigation/native';
 
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
+import { useFavorites } from '../context/FavoritesContext';
 import { RootStackParamList, Composer } from '../types';
 import { markComposerViewed } from '../utils/storage';
 import { getComposerPortrait } from '../utils/images';
@@ -25,9 +26,11 @@ type ComposerDetailRouteProp = RouteProp<RootStackParamList, 'ComposerDetail'>;
 export default function ComposerDetailScreen() {
   const route = useRoute<ComposerDetailRouteProp>();
   const { theme, themeName } = useTheme();
+  const { isFavorite, toggleFavorite } = useFavorites();
   const t = theme;
   const isBrutal = themeName === 'neobrutalist';
   const { composerId } = route.params;
+  const isLiked = isFavorite(composerId, 'composer');
 
   const composer = composersData.composers.find(c => c.id === composerId) as Composer | undefined;
   const period = periodsData.periods.find(p => p.id === composer?.period);
@@ -73,7 +76,19 @@ export default function ComposerDetailScreen() {
           fallbackText={composer.name}
           style={isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : {}}
         />
-        <Text style={[styles.name, { color: t.colors.text }]}>{composer.name}</Text>
+        <View style={styles.nameRow}>
+          <Text style={[styles.name, { color: t.colors.text }]}>{composer.name}</Text>
+          <TouchableOpacity 
+            style={[styles.favoriteButton, { backgroundColor: isLiked ? t.colors.error + '20' : t.colors.surfaceLight }]}
+            onPress={() => toggleFavorite(composerId, 'composer')}
+          >
+            <Ionicons 
+              name={isLiked ? 'heart' : 'heart-outline'} 
+              size={22} 
+              color={isLiked ? t.colors.error : t.colors.textMuted} 
+            />
+          </TouchableOpacity>
+        </View>
         <Text style={[styles.years, { color: t.colors.textSecondary }]}>{composer.years}</Text>
         <View style={styles.tags}>
           <View style={[styles.tag, { backgroundColor: accentColor + '30' }]}>
@@ -146,7 +161,9 @@ const styles = StyleSheet.create({
   content: { padding: spacing.md },
   errorText: { fontSize: fontSize.lg, textAlign: 'center', marginTop: spacing.xxl },
   header: { alignItems: 'center', marginBottom: spacing.lg },
-  name: { fontSize: fontSize.xxl, fontWeight: 'bold', textAlign: 'center', marginTop: spacing.md },
+  nameRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginTop: spacing.md },
+  name: { fontSize: fontSize.xxl, fontWeight: 'bold', textAlign: 'center' },
+  favoriteButton: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
   years: { fontSize: fontSize.md, marginTop: spacing.xs },
   tags: { flexDirection: 'row', gap: spacing.sm, marginTop: spacing.sm },
   tag: { paddingHorizontal: spacing.sm, paddingVertical: spacing.xs, borderRadius: borderRadius.sm },

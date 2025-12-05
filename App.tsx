@@ -9,6 +9,7 @@ import { BlurView } from 'expo-blur';
 
 import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 import { SettingsProvider } from './src/context/SettingsContext';
+import { FavoritesProvider } from './src/context/FavoritesContext';
 import { RootStackParamList, TabParamList } from './src/types';
 import { getProgress } from './src/utils/storage';
 
@@ -28,6 +29,8 @@ import WeeklyAlbumScreen from './src/screens/WeeklyAlbumScreen';
 import MonthlySpotlightScreen from './src/screens/MonthlySpotlightScreen';
 import BadgesScreen from './src/screens/BadgesScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
+import SearchScreen from './src/screens/SearchScreen';
+import QuizScreen from './src/screens/QuizScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
@@ -241,6 +244,16 @@ function AppNavigator() {
           component={SettingsScreen}
           options={{ title: 'Settings' }}
         />
+        <Stack.Screen 
+          name="Search" 
+          component={SearchScreen}
+          options={{ title: 'Search', headerShown: false }}
+        />
+        <Stack.Screen 
+          name="Quiz" 
+          component={QuizScreen}
+          options={{ title: 'Daily Quiz', headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -250,7 +263,9 @@ export default function App() {
   return (
     <ThemeProvider>
       <SettingsProvider>
-        <AppNavigator />
+        <FavoritesProvider>
+          <AppNavigator />
+        </FavoritesProvider>
       </SettingsProvider>
     </ThemeProvider>
   );

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { haptic } from '../utils/haptics';
 
 const FAVORITES_KEY = 'context_composer_favorites';
 
@@ -66,6 +67,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       // Remove from favorites
       newFavorites = favorites.filter(f => !(f.id === id && f.type === type));
       wasAdded = false;
+      haptic('light');
     } else {
       // Add to favorites
       const newItem: FavoriteItem = {
@@ -75,6 +77,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       };
       newFavorites = [...favorites, newItem];
       wasAdded = true;
+      haptic('success');
     }
     
     setFavorites(newFavorites);

@@ -166,6 +166,8 @@ export type RootStackParamList = {
   MonthlySpotlight: undefined;
   Badges: undefined;
   Settings: undefined;
+  Search: undefined;
+  Quiz: undefined;
 };
 
 export type TabParamList = {
