@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { View, ActivityIndicator } from 'react-native';
 
 import { ThemeProvider, useTheme } from './src/context/ThemeContext';
+import { SettingsProvider } from './src/context/SettingsContext';
 import { RootStackParamList, TabParamList } from './src/types';
 import { getProgress } from './src/utils/storage';
 
@@ -232,7 +233,9 @@ function AppNavigator() {
 export default function App() {
   return (
     <ThemeProvider>
-      <AppNavigator />
+      <SettingsProvider>
+        <AppNavigator />
+      </SettingsProvider>
     </ThemeProvider>
   );
 }
