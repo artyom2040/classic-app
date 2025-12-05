@@ -18,9 +18,12 @@ import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { useTheme } from '../context/ThemeContext';
+import { spacing, fontSize, borderRadius } from '../theme';
 import { RootStackParamList, UserProgress } from '../types';
 import { getProgress, getWeekNumber, getDayOfYear, getCurrentMonth } from '../utils/storage';
 import { openInMusicService } from '../utils/musicLinks';
+import { hapticSelection } from '../utils/haptics';
+import { SkeletonHeroCard, SkeletonGrid } from '../components';
 
 import glossaryData from '../data/glossary.json';
 import albumsData from '../data/albums.json';
@@ -36,6 +39,7 @@ export default function HomeScreen() {
   const t = theme;
 
   const [progress, setProgress] = useState<UserProgress | null>(null);
+  const [progressLoading, setProgressLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const weekNumber = getWeekNumber();
@@ -48,8 +52,10 @@ export default function HomeScreen() {
   const featuredComposer = composersData.composers[dayOfYear % composersData.composers.length];
 
   const loadProgress = useCallback(async () => {
+    setProgressLoading(true);
     const p = await getProgress();
     setProgress(p);
+    setProgressLoading(false);
   }, []);
 
   // Load on mount
@@ -66,6 +72,7 @@ export default function HomeScreen() {
 
   // Pull-to-refresh handler
   const onRefresh = useCallback(async () => {
+    hapticSelection();
     setRefreshing(true);
     await loadProgress();
     setRefreshing(false);
@@ -119,6 +126,16 @@ export default function HomeScreen() {
         />
       }
     >
+      {progressLoading ? (
+        <>
+          <SkeletonHeroCard />
+          <View style={{ marginTop: spacing.md }}>
+            <SkeletonGrid count={3} />
+          </View>
+          <View style={{ height: spacing.xxl }} />
+        </>
+      ) : (
+        <>
       {/* Header */}
       <View style={styles.header}>
         <View>
@@ -291,9 +308,11 @@ export default function HomeScreen() {
 
       <View style={styles.exploreGrid}>
         {[
-          { icon: 'help-circle', label: 'Daily Quiz', sub: '5 Questions', color: t.colors.error, screen: 'Quiz' },
+          { icon: 'people', label: 'Composers', sub: `${composersData.composers.length} Profiles`, color: t.colors.primary, screen: 'Composers' },
           { icon: 'time', label: 'Timeline', sub: 'Eras & History', color: '#6B8E23', screen: 'Timeline' },
-          { icon: 'book', label: 'Glossary', sub: '150 Terms', color: t.colors.primary, screen: 'Glossary' },
+          { icon: 'book', label: 'Glossary', sub: `${glossaryData.terms.length} Terms`, color: t.colors.secondary, screen: 'Glossary' },
+          { icon: 'albums', label: 'Spotlight', sub: 'Monthly Feature', color: t.colors.warning, screen: 'MonthlySpotlight' },
+          { icon: 'help-circle', label: 'Daily Quiz', sub: '5 Questions', color: t.colors.error, screen: 'Quiz' },
           { icon: 'ribbon', label: 'Badges', sub: 'Achievements', color: t.colors.success, screen: 'Badges' },
         ].map((item) => (
           <TouchableOpacity
@@ -307,11 +326,11 @@ export default function HomeScreen() {
               },
             ]}
             onPress={() => {
-              if (item.screen === 'Badges' || item.screen === 'Quiz') {
+              if (item.screen === 'Composers' || item.screen === 'MonthlySpotlight' || item.screen === 'Badges' || item.screen === 'Quiz') {
                 navigation.navigate(item.screen as any);
-              } else {
-                navigation.navigate('MainTabs', { screen: item.screen } as any);
+                return;
               }
+              navigation.navigate('MainTabs', { screen: item.screen } as any);
             }}
           >
             <Ionicons name={item.icon as any} size={28} color={item.color} />
@@ -342,7 +361,9 @@ export default function HomeScreen() {
         </View>
       </TouchableOpacity>
 
-      <View style={{ height: 32 }} />
+          <View style={{ height: 32 }} />
+        </>
+      )}
     </ScrollView>
   );
 

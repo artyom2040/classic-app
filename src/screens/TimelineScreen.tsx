@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
+  RefreshControl,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -14,6 +15,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
 import { RootStackParamList, Period, Composer } from '../types';
+import { hapticSelection } from '../utils/haptics';
 
 import periodsData from '../data/periods.json';
 import composersData from '../data/composers.json';
@@ -26,9 +28,16 @@ export default function TimelineScreen() {
   const t = theme;
   const isBrutal = themeName === 'neobrutalist';
   const [selectedPeriod, setSelectedPeriod] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const periods: Period[] = periodsData.periods;
   const composers: Composer[] = composersData.composers;
+
+  const onRefresh = useCallback(() => {
+    hapticSelection();
+    setRefreshing(true);
+    setTimeout(() => setRefreshing(false), 400);
+  }, []);
 
   const getComposersForPeriod = (periodId: string) => {
     return composers.filter(c => c.period === periodId);
@@ -139,6 +148,14 @@ export default function TimelineScreen() {
       style={[styles.container, dynamicStyles.container]}
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl 
+          refreshing={refreshing} 
+          onRefresh={onRefresh} 
+          tintColor={t.colors.primary}
+          colors={[t.colors.primary]}
+        />
+      }
     >
       <Text style={[styles.intro, dynamicStyles.intro]}>
         Explore classical music through the ages. Tap any era to see its composers and characteristics.

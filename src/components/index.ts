@@ -19,6 +19,7 @@ export { PlaceholderImage } from './PlaceholderImage';
 export { SearchBar } from './SearchBar';
 export { FavoriteButton, FavoriteButtonWithLabel } from './FavoriteButton';
 export { Toast, ToastProvider, useToast } from './Toast';
+export { ErrorBoundary, ThemedErrorFallback } from './ErrorBoundary';
 export { 
   Skeleton, 
   SkeletonCard, 

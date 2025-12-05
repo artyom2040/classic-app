@@ -8,7 +8,8 @@ import {
   Linking,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useRoute, RouteProp } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
@@ -19,6 +20,7 @@ import { RootStackParamList, Composer } from '../types';
 import { markComposerViewed } from '../utils/storage';
 import { getComposerPortrait } from '../utils/images';
 import { NetworkImage } from '../components/NetworkImage';
+import { SkeletonComposerDetail } from '../components';
 
 import composersData from '../data/composers.json';
 import periodsData from '../data/periods.json';
@@ -28,6 +30,7 @@ type ComposerDetailRouteProp = RouteProp<RootStackParamList, 'ComposerDetail'>;
 
 export default function ComposerDetailScreen() {
   const route = useRoute<ComposerDetailRouteProp>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { theme, themeName } = useTheme();
   const { isFavorite, toggleFavorite } = useFavorites();
   const { playTrack, currentTrack, isPlaying } = useAudio();
@@ -35,6 +38,7 @@ export default function ComposerDetailScreen() {
   const isBrutal = themeName === 'neobrutalist';
   const { composerId } = route.params;
   const isLiked = isFavorite(composerId, 'composer');
+  const [loading, setLoading] = React.useState(true);
   
   // Get audio samples for this composer
   const composerSamples = (audioSamples.samples as any)[composerId] || [];
@@ -42,11 +46,19 @@ export default function ComposerDetailScreen() {
   const composer = composersData.composers.find(c => c.id === composerId) as Composer | undefined;
   const period = periodsData.periods.find(p => p.id === composer?.period);
   const accentColor = period?.color || t.colors.primary;
+  const yearsText = composer?.years || ((composer as any)?.birth && (composer as any)?.death
+    ? `${(composer as any).birth}-${(composer as any).death}`
+    : composer?.years || '');
+  const relatedComposers = composersData.composers
+    .filter(c => c.period === composer?.period && c.id !== composer?.id)
+    .slice(0, 3);
 
   useEffect(() => {
     if (composerId) {
       markComposerViewed(composerId);
     }
+    const timer = setTimeout(() => setLoading(false), 150);
+    return () => clearTimeout(timer);
   }, [composerId]);
 
   if (!composer) {
@@ -54,6 +66,18 @@ export default function ComposerDetailScreen() {
       <View style={[styles.container, { backgroundColor: t.colors.background }]}>
         <Text style={[styles.errorText, { color: t.colors.error }]}>Composer not found</Text>
       </View>
+    );
+  }
+
+  if (loading) {
+    return (
+      <ScrollView 
+        style={[styles.container, { backgroundColor: t.colors.background }]}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
+        <SkeletonComposerDetail />
+      </ScrollView>
     );
   }
 
@@ -108,7 +132,7 @@ export default function ComposerDetailScreen() {
             />
           </TouchableOpacity>
         </View>
-        <Text style={[styles.years, { color: t.colors.textSecondary }]}>{composer.years}</Text>
+        <Text style={[styles.years, { color: t.colors.textSecondary }]}>{yearsText}</Text>
         <View style={styles.tags}>
           <View style={[styles.tag, { backgroundColor: accentColor + '30' }]}>
             <Text style={[styles.tagText, { color: accentColor }]}>
@@ -214,6 +238,33 @@ export default function ComposerDetailScreen() {
         ))}
       </View>
 
+      {relatedComposers.length > 0 && (
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: t.colors.text }]}>
+            Related {period?.name || 'Composers'}
+          </Text>
+          {relatedComposers.map((c) => (
+            <TouchableOpacity
+              key={c.id}
+              style={[styles.relatedCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}
+              onPress={() => navigation.navigate('ComposerDetail', { composerId: c.id })}
+              activeOpacity={0.8}
+            >
+              <View style={[styles.relatedAvatar, { backgroundColor: accentColor + '30' }]}>
+                <Text style={[styles.relatedInitial, { color: accentColor }]}>
+                  {c.name.charAt(0)}
+                </Text>
+              </View>
+              <View style={styles.relatedInfo}>
+                <Text style={[styles.relatedName, { color: t.colors.text }]} numberOfLines={1}>{c.name}</Text>
+                <Text style={[styles.relatedYears, { color: t.colors.textMuted }]} numberOfLines={1}>{c.years}</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={18} color={t.colors.textMuted} />
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
+
       <View style={{ height: spacing.xxl }} />
     </ScrollView>
   );
@@ -256,4 +307,10 @@ const styles = StyleSheet.create({
   workMeta: { flexDirection: 'row', gap: spacing.sm, marginTop: 4 },
   workType: { fontSize: fontSize.sm },
   workYear: { fontSize: fontSize.sm },
+  relatedCard: { flexDirection: 'row', alignItems: 'center', borderRadius: borderRadius.md, padding: spacing.sm, marginTop: spacing.xs },
+  relatedAvatar: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', marginRight: spacing.sm },
+  relatedInitial: { fontSize: fontSize.lg, fontWeight: '700' },
+  relatedInfo: { flex: 1 },
+  relatedName: { fontSize: fontSize.md, fontWeight: '600' },
+  relatedYears: { fontSize: fontSize.xs },
 });

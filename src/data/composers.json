@@ -1,6 +1,210 @@
 {
   "composers": [
     {
+      "id": "hildegard",
+      "name": "Hildegard von Bingen",
+      "years": "1098-1179",
+      "period": "medieval",
+      "nationality": "German",
+      "portrait": "hildegard.jpg",
+      "shortBio": "Benedictine abbess, mystic, and composer of soaring monophonic chants.",
+      "fullBio": "Hildegard wrote visionary texts and liturgical songs that marry spiritual ecstasy with vivid imagery. Her unique melodies and expansive range stand out in medieval chant repertoire.",
+      "keyWorks": [
+        { "title": "O vis aeternitatis", "type": "Chant", "year": "12th c." },
+        { "title": "Ordo Virtutum", "type": "Sacred drama", "year": "1151" },
+        { "title": "Symphonia armonie celestium revelationum", "type": "Chants", "year": "12th c." }
+      ],
+      "funFact": "She also wrote about herbal medicine, science, and recorded her visions in detail.",
+      "listenFirst": "O vis aeternitatis",
+      "spotifyUri": "spotify:artist:3JtapDodZq9GnK6NR6eZfU",
+      "youtubeSearch": "Hildegard von Bingen O vis aeternitatis"
+    },
+    {
+      "id": "machaut",
+      "name": "Guillaume de Machaut",
+      "years": "c. 1300-1377",
+      "period": "medieval",
+      "nationality": "French",
+      "portrait": "machaut.jpg",
+      "shortBio": "Poet-composer who shaped the Ars Nova with intricate motets and songs.",
+      "fullBio": "Machaut blended courtly poetry with innovative rhythm and harmony. His Messe de Nostre Dame is the first known complete mass by a single composer.",
+      "keyWorks": [
+        { "title": "Messe de Nostre Dame", "type": "Mass", "year": "c. 1360" },
+        { "title": "Douce dame jolie", "type": "Virelai", "year": "14th c." },
+        { "title": "Ma fin est mon commencement", "type": "Rondeau", "year": "14th c." }
+      ],
+      "funFact": "He served as a secretary and diplomat for royal patrons across France and Bohemia.",
+      "listenFirst": "Messe de Nostre Dame – Kyrie",
+      "spotifyUri": "spotify:artist:5NfkpewnY2bkdMOelVmEF0",
+      "youtubeSearch": "Machaut Messe de Nostre Dame Kyrie"
+    },
+    {
+      "id": "perotin",
+      "name": "Pérotin",
+      "years": "fl. c. 1200",
+      "period": "medieval",
+      "nationality": "French",
+      "portrait": "perotin.jpg",
+      "shortBio": "Notre Dame school composer who expanded organum to 3 and 4 voices.",
+      "fullBio": "Pérotin’s polyphonic works like Viderunt omnes showcase early rhythmic notation and layered voices, a leap beyond plainchant.",
+      "keyWorks": [
+        { "title": "Viderunt omnes", "type": "Organum", "year": "1198" },
+        { "title": "Sederunt principes", "type": "Organum", "year": "1199" },
+        { "title": "Alleluia nativitas", "type": "Organum", "year": "c. 1200" }
+      ],
+      "funFact": "He likely worked at Notre Dame Cathedral in Paris during a peak of musical innovation.",
+      "listenFirst": "Viderunt omnes (4-voice)",
+      "spotifyUri": "spotify:artist:3sCpQzQj7k12BoSRM5c7UU",
+      "youtubeSearch": "Perotin Viderunt omnes"
+    },
+    {
+      "id": "leonin",
+      "name": "Léonin",
+      "years": "fl. late 12th c.",
+      "period": "medieval",
+      "nationality": "French",
+      "portrait": "leonin.jpg",
+      "shortBio": "Founder of Notre Dame polyphony who codified early organum.",
+      "fullBio": "Léonin compiled the Magnus Liber Organi, introducing measured rhythm to chant. His two-voice organum set the stage for Pérotin’s later expansions.",
+      "keyWorks": [
+        { "title": "Viderunt omnes (2-voice organum)", "type": "Organum", "year": "c. 1170" },
+        { "title": "Alleluia Pascha nostrum", "type": "Organum", "year": "12th c." }
+      ],
+      "funFact": "He paired long sustained chant notes with florid upper lines—radical for its time.",
+      "listenFirst": "Viderunt omnes (2-voice)",
+      "spotifyUri": "spotify:artist:2rNL0bQJmqCfTlf5nQbo6l",
+      "youtubeSearch": "Leonin Viderunt omnes organum"
+    },
+    {
+      "id": "guido_arezzo",
+      "name": "Guido of Arezzo",
+      "years": "c. 991-1033",
+      "period": "medieval",
+      "nationality": "Italian",
+      "portrait": "guido_arezzo.jpg",
+      "shortBio": "Theorist who developed staff notation and solmization (do-re-mi).",
+      "fullBio": "Guido’s Micrologus introduced the four-line staff and the Guidonian hand for teaching sight-singing, transforming how music could be taught and preserved.",
+      "keyWorks": [
+        { "title": "Micrologus", "type": "Treatise", "year": "c. 1025" }
+      ],
+      "funFact": "His solfege syllables came from the hymn Ut queant laxis.",
+      "listenFirst": "Explore Micrologus concepts (tutorials/overviews)",
+      "spotifyUri": "spotify:artist:6NzN1dAvGmTwD1IEy8FxcI",
+      "youtubeSearch": "Guido of Arezzo Micrologus"
+    },
+    {
+      "id": "adam_st_victor",
+      "name": "Adam of St. Victor",
+      "years": "c. 1112-1192",
+      "period": "medieval",
+      "nationality": "French",
+      "portrait": "adam_st_victor.jpg",
+      "shortBio": "Poet-composer of refined Latin sequences celebrated in medieval Paris.",
+      "fullBio": "Working at the Abbey of St. Victor, Adam crafted sequences with intricate poetry and melody that spread widely in liturgical use.",
+      "keyWorks": [
+        { "title": "Superne matris gaudia", "type": "Sequence", "year": "12th c." },
+        { "title": "Laudes crucis attollamus", "type": "Sequence", "year": "12th c." }
+      ],
+      "funFact": "Over 40 sequences are attributed to him, reflecting both learning and lyrical grace.",
+      "listenFirst": "Laudes crucis attollamus",
+      "spotifyUri": "spotify:artist:1A3EXEZ3yt8Z2GM2AXy89c",
+      "youtubeSearch": "Adam of St Victor sequence"
+    },
+    {
+      "id": "adam_de_la_halle",
+      "name": "Adam de la Halle",
+      "years": "c. 1240-1288",
+      "period": "medieval",
+      "nationality": "French",
+      "portrait": "adam_de_la_halle.jpg",
+      "shortBio": "Trouvère who wrote both courtly songs and one of the earliest secular plays with music.",
+      "fullBio": "Adam blended monophonic songs with early polyphony. His Jeu de Robin et Marion is a pastoral play with music, hinting at later opera traditions.",
+      "keyWorks": [
+        { "title": "Jeu de Robin et Marion", "type": "Pastoral play", "year": "c. 1283" },
+        { "title": "Le Jeu de la Feuillée", "type": "Play", "year": "c. 1276" },
+        { "title": "Je muir, je muir d’amourette", "type": "Chanson", "year": "13th c." }
+      ],
+      "funFact": "He is sometimes called 'Adam le Bossu' though he likely wasn’t hunchbacked.",
+      "listenFirst": "Jeu de Robin et Marion (excerpts)",
+      "spotifyUri": "spotify:artist:7u6RnWOvD0ptN7eSQN4r54",
+      "youtubeSearch": "Adam de la Halle Jeu de Robin et Marion"
+    },
+    {
+      "id": "troubadours",
+      "name": "Troubadours (collective)",
+      "years": "12th-13th c.",
+      "period": "medieval",
+      "nationality": "Occitan",
+      "portrait": "troubadours.jpg",
+      "shortBio": "Court poet-musicians who created secular song traditions in Occitan.",
+      "fullBio": "Troubadours composed lyric poetry on love, politics, and valor, using modal melodies that influenced later trouvères and the rise of vernacular song.",
+      "keyWorks": [
+        { "title": "Can vei la lauzeta mover (Bernart de Ventadorn)", "type": "Song", "year": "12th c." },
+        { "title": "A chantar m’er (Comtessa de Dia)", "type": "Song", "year": "12th c." }
+      ],
+      "funFact": "They performed in noble courts, spreading themes of courtly love across Europe.",
+      "listenFirst": "Can vei la lauzeta mover",
+      "spotifyUri": "spotify:artist:5kx7N6QSNHzCAfzZ7bzSOa",
+      "youtubeSearch": "Can vei la lauzeta mover Bernart de Ventadorn"
+    },
+    {
+      "id": "le_jeune",
+      "name": "Claude Le Jeune",
+      "years": "1528-1600",
+      "period": "medieval",
+      "nationality": "French",
+      "portrait": "le_jeune.jpg",
+      "shortBio": "Franco-Flemish composer linked to musique mesurée and late Renaissance chanson.",
+      "fullBio": "Though bridging into Renaissance, Le Jeune’s metric experiments and psalm settings connect modal traditions with emerging tonal clarity.",
+      "keyWorks": [
+        { "title": "Revecy venir du printemps", "type": "Chanson", "year": "1585" },
+        { "title": "150 Pseaumes", "type": "Psalms", "year": "1598" }
+      ],
+      "funFact": "He was associated with the Académie de Poésie et de Musique in Paris.",
+      "listenFirst": "Revecy venir du printemps",
+      "spotifyUri": "spotify:artist:3mja4J3oJG7c8uTnJukbmI",
+      "youtubeSearch": "Le Jeune Revecy venir du printemps"
+    },
+    {
+      "id": "dunstable",
+      "name": "John Dunstable",
+      "years": "c. 1390-1453",
+      "period": "medieval",
+      "nationality": "English",
+      "portrait": "dunstable.jpg",
+      "shortBio": "English composer whose sweet consonance influenced Burgundian style.",
+      "fullBio": "Dunstable’s use of full triads (la contenance angloise) shaped early Renaissance harmony. His motets and Mass sections circulated widely on the continent.",
+      "keyWorks": [
+        { "title": "Quam pulchra es", "type": "Motet", "year": "15th c." },
+        { "title": "Veni creator spiritus / Veni sancte spiritus", "type": "Motet", "year": "15th c." }
+      ],
+      "funFact": "He may have been an astronomer and mathematician alongside composing.",
+      "listenFirst": "Quam pulchra es",
+      "spotifyUri": "spotify:artist:74MrDfUXGSRfWoOCuMEW8S",
+      "youtubeSearch": "Dunstable Quam pulchra es"
+    },
+    {
+      "id": "byrd",
+      "name": "William Byrd",
+      "years": "c. 1539/40-1623",
+      "period": "renaissance",
+      "nationality": "English",
+      "portrait": "byrd.jpg",
+      "shortBio": "English Renaissance master of sacred and secular music who elevated keyboard writing.",
+      "fullBio": "A pupil of Thomas Tallis, Byrd served as a Gentleman of the Chapel Royal under Queen Elizabeth I. A devoted Catholic in Protestant England, he wrote for both Anglican and Catholic liturgies, pairing expressive Latin polyphony with sharp text setting. He and Tallis held a rare royal monopoly on music printing, underscoring his stature. His virginal and consort works shaped the English keyboard school.",
+      "keyWorks": [
+        {"title": "Mass for Four Voices", "type": "Choral (Sacred)", "year": "c. 1592-1593"},
+        {"title": "Ave verum corpus", "type": "Motet (Sacred)", "year": "1605"},
+        {"title": "My Lady Nevell's Book", "type": "Keyboard (Virginal)", "year": "1591"},
+        {"title": "Gradualia (Two Books)", "type": "Choral (Sacred)", "year": "1605/1607"},
+        {"title": "The Fitzwilliam Virginal Book (contributions)", "type": "Keyboard", "year": "c. 1600"}
+      ],
+      "funFact": "Byrd's reputation and royal favor shielded him from penalties that many Catholics faced under Elizabeth I.",
+      "listenFirst": "Ave verum corpus - Short, lyrical motet that shows his poised polyphony and spiritual warmth.",
+      "spotifyUri": "spotify:artist:2Q2ChWzSaY7BfD2CrfC9Gk",
+      "youtubeSearch": "William Byrd Ave verum corpus"
+    },
+    {
       "id": "bach",
       "name": "Johann Sebastian Bach",
       "years": "1685-1750",
@@ -405,6 +609,747 @@
       "listenFirst": "Opening from Glassworks - Hypnotic and accessible entry to minimalism.",
       "spotifyUri": "spotify:artist:69lxxQvsfAIiJuIDv1MHFB",
       "youtubeSearch": "Philip Glass Glassworks Opening"
+    },
+    {
+      "id": "palestrina",
+      "name": "Giovanni Pierluigi da Palestrina",
+      "years": "1525-1594",
+      "period": "renaissance",
+      "nationality": "Italian",
+      "portrait": "palestrina.jpg",
+      "shortBio": "Master of smooth Renaissance polyphony whose style defined sacred music.",
+      "fullBio": "Working in Rome for much of his life, Palestrina wrote over 100 masses and hundreds of motets. His transparent counterpoint became the model for Catholic church music and later textbook harmony.",
+      "keyWorks": [
+        {"title": "Missa Papae Marcelli", "type": "Mass", "year": "1567"},
+        {"title": "Sicut cervus", "type": "Motet", "year": "1584"},
+        {"title": "Stabat Mater", "type": "Motet", "year": "1590"}
+      ],
+      "funFact": "His music was held up as proof that complex polyphony could still make the text understandable.",
+      "listenFirst": "Missa Papae Marcelli – Kyrie",
+      "spotifyUri": "spotify:artist:1qlfRO6kblbZ24sRfrIcAt",
+      "youtubeSearch": "Palestrina Missa Papae Marcelli"
+    },
+    {
+      "id": "josquin",
+      "name": "Josquin des Prez",
+      "years": "c. 1450-1521",
+      "period": "renaissance",
+      "nationality": "Franco-Flemish",
+      "portrait": "josquin.jpg",
+      "shortBio": "The most celebrated composer of the High Renaissance, famed for expressive motets.",
+      "fullBio": "Josquin served in courts and chapels across Italy and France. His mastery of imitation and text expression influenced composers for generations and cemented his reputation as the era's giant.",
+      "keyWorks": [
+        {"title": "Ave Maria ... virgo serena", "type": "Motet", "year": "c. 1485"},
+        {"title": "Missa Pange lingua", "type": "Mass", "year": "c. 1515"},
+        {"title": "El grillo", "type": "Frottola", "year": "c. 1500"}
+      ],
+      "funFact": "Printers used Josquin's name to sell music, even when he didn’t write it.",
+      "listenFirst": "Ave Maria ... virgo serena",
+      "spotifyUri": "spotify:artist:3znJ7jDmFHClHPiBQYKhEc",
+      "youtubeSearch": "Josquin Ave Maria"
+    },
+    {
+      "id": "tallis",
+      "name": "Thomas Tallis",
+      "years": "c. 1505-1585",
+      "period": "renaissance",
+      "nationality": "English",
+      "portrait": "tallis.jpg",
+      "shortBio": "Versatile English composer who navigated turbulent religious shifts with timeless choral works.",
+      "fullBio": "Serving under four English monarchs, Tallis wrote Latin motets and English anthems that balanced clarity and rich harmony. He mentored William Byrd and co-held a royal music printing monopoly.",
+      "keyWorks": [
+        {"title": "Spem in alium", "type": "Motet (40 parts)", "year": "c. 1570"},
+        {"title": "If Ye Love Me", "type": "Anthem", "year": "c. 1549"},
+        {"title": "Lamentations of Jeremiah", "type": "Motet", "year": "c. 1565"}
+      ],
+      "funFact": "Spem in alium uses 40 independent vocal lines arranged in eight choirs.",
+      "listenFirst": "If Ye Love Me",
+      "spotifyUri": "spotify:artist:0K6trKXEwrKuhuGVVgqlTA",
+      "youtubeSearch": "Tallis If Ye Love Me"
+    },
+    {
+      "id": "lassus",
+      "name": "Orlando di Lasso",
+      "years": "1532-1594",
+      "period": "renaissance",
+      "nationality": "Franco-Flemish",
+      "portrait": "lassus.jpg",
+      "shortBio": "Prolific cosmopolitan who wrote in multiple languages and styles with effortless craft.",
+      "fullBio": "Lasso worked across Italy and Germany, absorbing diverse traditions. His output of over 2,000 works spans sacred and secular genres, showcasing melodic flair and expressive word setting.",
+      "keyWorks": [
+        {"title": "Penitential Psalms", "type": "Sacred", "year": "c. 1560"},
+        {"title": "Matona, mia cara", "type": "Villanella", "year": "1581"},
+        {"title": "Tristis est anima mea", "type": "Motet", "year": "1565"}
+      ],
+      "funFact": "He wrote in Latin, Italian, French, and German, tailoring style to each text.",
+      "listenFirst": "Tristis est anima mea",
+      "spotifyUri": "spotify:artist:5mdD2VwxM31MvmL176JV9h",
+      "youtubeSearch": "Lassus Tristis est anima mea"
+    },
+    {
+      "id": "gabrieli",
+      "name": "Giovanni Gabrieli",
+      "years": "c. 1554-1612",
+      "period": "renaissance",
+      "nationality": "Italian",
+      "portrait": "gabrieli.jpg",
+      "shortBio": "Venetian master of antiphonal brass writing, paving the way for Baroque sonority.",
+      "fullBio": "As organist at St. Mark's Basilica, Gabrieli exploited the church's opposing balconies to create spatial music with choirs and brass. His concerted style influenced early Baroque composers.",
+      "keyWorks": [
+        {"title": "Canzoni e Sonate", "type": "Instrumental", "year": "1615"},
+        {"title": "In ecclesiis", "type": "Sacred Concerto", "year": "c. 1615"},
+        {"title": "Sonata pian’ e forte", "type": "Brass", "year": "1597"}
+      ],
+      "funFact": "He was among the first to publish dynamic markings like piano and forte.",
+      "listenFirst": "Sonata pian’ e forte",
+      "spotifyUri": "spotify:artist:2ZbLMcMihqzOxWM8KpqEJJ",
+      "youtubeSearch": "Gabrieli Sonata pian e forte"
+    },
+    {
+      "id": "victoria",
+      "name": "Tomás Luis de Victoria",
+      "years": "1548-1611",
+      "period": "renaissance",
+      "nationality": "Spanish",
+      "portrait": "victoria.jpg",
+      "shortBio": "Spanish priest-composer whose intense sacred music blends mysticism and clarity.",
+      "fullBio": "Victoria studied in Rome and served Spanish religious institutions. His motets and masses favor expressive harmonic color and clear text delivery, standing as high points of late Renaissance polyphony.",
+      "keyWorks": [
+        {"title": "O magnum mysterium", "type": "Motet", "year": "1572"},
+        {"title": "Tenebrae Responsories", "type": "Sacred", "year": "1585"},
+        {"title": "Requiem (Officium Defunctorum)", "type": "Mass", "year": "1605"}
+      ],
+      "funFact": "He spent much of his career in Madrid at a convent for royal nuns.",
+      "listenFirst": "O magnum mysterium",
+      "spotifyUri": "spotify:artist:17wZr0Q5Hw6OrHzTCKmJjY",
+      "youtubeSearch": "Victoria O magnum mysterium"
+    },
+    {
+      "id": "dowland",
+      "name": "John Dowland",
+      "years": "1563-1626",
+      "period": "renaissance",
+      "nationality": "English",
+      "portrait": "dowland.jpg",
+      "shortBio": "Lutenist and songwriter whose melancholic ayres became Elizabethan hits.",
+      "fullBio": "Dowland served courts across Europe and published popular lute songs. His gift for bittersweet melody and rich harmony made him the emblem of English lute music.",
+      "keyWorks": [
+        {"title": "Flow My Tears", "type": "Lute Song", "year": "1600"},
+        {"title": "Lachrimae", "type": "Consort", "year": "1604"},
+        {"title": "Come Again", "type": "Lute Song", "year": "1597"}
+      ],
+      "funFact": "He often referenced tears and melancholy, yet his music was widely beloved.",
+      "listenFirst": "Flow My Tears",
+      "spotifyUri": "spotify:artist:1sktn6nBQOVPUclLN3vfFq",
+      "youtubeSearch": "Dowland Flow My Tears"
+    },
+    {
+      "id": "gesualdo",
+      "name": "Carlo Gesualdo",
+      "years": "1566-1613",
+      "period": "renaissance",
+      "nationality": "Italian",
+      "portrait": "gesualdo.jpg",
+      "shortBio": "Prince-composer notorious for bold chromatic madrigals and a turbulent life.",
+      "fullBio": "Gesualdo's late madrigals push harmonic boundaries far ahead of their time, depicting anguish and intensity. His notorious personal scandals shadowed his musical innovations.",
+      "keyWorks": [
+        {"title": "Madrigals, Book 6", "type": "Madrigals", "year": "1611"},
+        {"title": "Miserere", "type": "Sacred", "year": "1611"},
+        {"title": "Responsoria et alia ad Officium Hebdomadae Sanctae spectantia", "type": "Sacred", "year": "1611"}
+      ],
+      "funFact": "His extreme chromaticism wouldn’t be echoed until the 20th century.",
+      "listenFirst": "Moro, lasso, al mio duolo",
+      "spotifyUri": "spotify:artist:2tEjlCmcuvGW7kyI3T6cE7",
+      "youtubeSearch": "Gesualdo Moro lasso"
+    },
+    {
+      "id": "monteverdi_early",
+      "name": "Claudio Monteverdi",
+      "years": "1567-1643",
+      "period": "renaissance",
+      "nationality": "Italian",
+      "portrait": "monteverdi.jpg",
+      "shortBio": "Bridge from Renaissance to Baroque; innovator of opera and expressive madrigals.",
+      "fullBio": "Monteverdi's early madrigals stretched harmony and text expression, paving the path to Baroque drama. His later operas and sacred works defined early Baroque style.",
+      "keyWorks": [
+        {"title": "L'Orfeo", "type": "Opera", "year": "1607"},
+        {"title": "Vespro della Beata Vergine", "type": "Sacred", "year": "1610"},
+        {"title": "Madrigals, Book 5", "type": "Madrigals", "year": "1605"}
+      ],
+      "funFact": "He served as maestro di cappella at St. Mark's in Venice for three decades.",
+      "listenFirst": "L'Orfeo - Toccata",
+      "spotifyUri": "spotify:artist:2WStGNiQobAxYkJxLuzLVt",
+      "youtubeSearch": "Monteverdi Orfeo Toccata"
+    },
+    {
+      "id": "purcell",
+      "name": "Henry Purcell",
+      "years": "1659-1695",
+      "period": "baroque",
+      "nationality": "English",
+      "portrait": "purcell.jpg",
+      "shortBio": "England’s greatest Baroque composer, blending Italian and French styles with English song.",
+      "fullBio": "Purcell wrote theater music, operas, and sacred works with poignant harmonies and catchy ground basses. His music defined English Baroque and influenced later composers.",
+      "keyWorks": [
+        {"title": "Dido and Aeneas", "type": "Opera", "year": "1689"},
+        {"title": "Abdelazer", "type": "Suite", "year": "1695"},
+        {"title": "Funeral Music for Queen Mary", "type": "Sacred", "year": "1695"}
+      ],
+      "funFact": "The famous 'Rondeau' from Abdelazer became Britten’s Young Person’s Guide theme.",
+      "listenFirst": "Dido’s Lament (Dido and Aeneas)",
+      "spotifyUri": "spotify:artist:7Dzq08Gxq6LFX4gfb59qj2",
+      "youtubeSearch": "Purcell Dido and Aeneas"
+    },
+    {
+      "id": "d_scarlatti",
+      "name": "Domenico Scarlatti",
+      "years": "1685-1757",
+      "period": "baroque",
+      "nationality": "Italian",
+      "portrait": "domenico_scarlatti.jpg",
+      "shortBio": "Virtuoso keyboard composer famed for 555 inventive sonatas.",
+      "fullBio": "Working in Portugal and Spain, Scarlatti fused Iberian rhythms with dazzling keyboard techniques. His one-movement sonatas expanded the instrument’s possibilities.",
+      "keyWorks": [
+        {"title": "Sonata in E major, K.380", "type": "Keyboard", "year": "c. 1752"},
+        {"title": "Sonata in D minor, K.141", "type": "Keyboard", "year": "c. 1738"},
+        {"title": "Essercizi per Gravicembalo", "type": "Keyboard", "year": "1738"}
+      ],
+      "funFact": "He reportedly dueled with Handel on keyboard; both were born in 1685.",
+      "listenFirst": "Sonata in E major, K.380",
+      "spotifyUri": "spotify:artist:3KGhVHQpVxQ8Xfunn7hae5",
+      "youtubeSearch": "Scarlatti Sonata K 380"
+    },
+    {
+      "id": "telemann",
+      "name": "Georg Philipp Telemann",
+      "years": "1681-1767",
+      "period": "baroque",
+      "nationality": "German",
+      "portrait": "telemann.jpg",
+      "shortBio": "Prolific German composer whose versatility spanned church, chamber, and opera.",
+      "fullBio": "Telemann wrote over 3,000 works and was renowned in his lifetime. He blended French, Italian, and Polish influences, producing approachable, tuneful music.",
+      "keyWorks": [
+        {"title": "Tafelmusik", "type": "Orchestral/Chamber", "year": "1733"},
+        {"title": "Viola Concerto in G", "type": "Concerto", "year": "c. 1720"},
+        {"title": "Paris Quartets", "type": "Chamber", "year": "1738"}
+      ],
+      "funFact": "He was Bach’s contemporary and godfather to Bach’s son Carl Philipp Emanuel.",
+      "listenFirst": "Viola Concerto in G",
+      "spotifyUri": "spotify:artist:0bPm1D7ZB0qi1hjepDFTV6",
+      "youtubeSearch": "Telemann Viola Concerto"
+    },
+    {
+      "id": "rameau",
+      "name": "Jean-Philippe Rameau",
+      "years": "1683-1764",
+      "period": "baroque",
+      "nationality": "French",
+      "portrait": "rameau.jpg",
+      "shortBio": "French Baroque innovator in opera and music theory.",
+      "fullBio": "Rameau’s operas brought rich harmony and orchestration to the French stage, while his theoretical treatise shaped the understanding of tonal harmony.",
+      "keyWorks": [
+        {"title": "Hippolyte et Aricie", "type": "Opera", "year": "1733"},
+        {"title": "Les Indes galantes", "type": "Opera-ballet", "year": "1735"},
+        {"title": "Pièces de clavecin", "type": "Keyboard", "year": "1724"}
+      ],
+      "funFact": "Before opera success, he spent decades as a church organist and theorist.",
+      "listenFirst": "Les Indes galantes – ouverture",
+      "spotifyUri": "spotify:artist:1sDqegID1y3o2fc4AqxBdS",
+      "youtubeSearch": "Rameau Les Indes galantes ouverture"
+    },
+    {
+      "id": "lully",
+      "name": "Jean-Baptiste Lully",
+      "years": "1632-1687",
+      "period": "baroque",
+      "nationality": "Italian-French",
+      "portrait": "lully.jpg",
+      "shortBio": "Court composer to Louis XIV who defined French Baroque opera and dance.",
+      "fullBio": "Lully’s collaborations with Molière and dominance at Versailles established the French overture style and grand operas that glorified the Sun King.",
+      "keyWorks": [
+        {"title": "Atys", "type": "Opera", "year": "1676"},
+        {"title": "Armide", "type": "Opera", "year": "1686"},
+        {"title": "Le Bourgeois gentilhomme", "type": "Comedy-ballet", "year": "1670"}
+      ],
+      "funFact": "He died after striking his foot with a conducting staff during a performance.",
+      "listenFirst": "Armide – Passacaille",
+      "spotifyUri": "spotify:artist:2NnhZjvlYwBIS8XKCHHC93",
+      "youtubeSearch": "Lully Armide passacaille"
+    },
+    {
+      "id": "corelli",
+      "name": "Arcangelo Corelli",
+      "years": "1653-1713",
+      "period": "baroque",
+      "nationality": "Italian",
+      "portrait": "corelli.jpg",
+      "shortBio": "Violin virtuoso whose concerti grossi shaped Baroque instrumental style.",
+      "fullBio": "Corelli’s disciplined counterpoint and singing violin lines influenced generations. His orchestral and chamber works spread across Europe and set standards for violin technique.",
+      "keyWorks": [
+        {"title": "Concerti Grossi, Op. 6", "type": "Orchestral", "year": "1714"},
+        {"title": "Violin Sonatas, Op. 5", "type": "Chamber", "year": "1700"},
+        {"title": "Christmas Concerto", "type": "Concerto Grosso", "year": "1690"}
+      ],
+      "funFact": "He rarely traveled but his music circulated widely and was revered by Handel and Bach.",
+      "listenFirst": "Concerto Grosso in G minor, Op. 6 No. 8",
+      "spotifyUri": "spotify:artist:1AjJ8TukBvbtQHjTc1ulnt",
+      "youtubeSearch": "Corelli Christmas Concerto"
+    },
+    {
+      "id": "a_scarlatti",
+      "name": "Alessandro Scarlatti",
+      "years": "1660-1725",
+      "period": "baroque",
+      "nationality": "Italian",
+      "portrait": "alessandro_scarlatti.jpg",
+      "shortBio": "Operatic craftsman who helped standardize the Italian overture and da capo aria.",
+      "fullBio": "Father of Domenico, Alessandro wrote over 100 operas and many cantatas. His dramatic sense and melodic style fueled the rise of Neapolitan opera.",
+      "keyWorks": [
+        {"title": "La Griselda", "type": "Opera", "year": "1721"},
+        {"title": "Stabat Mater", "type": "Sacred", "year": "1724"},
+        {"title": "Il Mitridate Eupatore", "type": "Opera", "year": "1707"}
+      ],
+      "funFact": "He bridged early and late Baroque opera, influencing Handel and later composers.",
+      "listenFirst": "Stabat Mater",
+      "spotifyUri": "spotify:artist:6t5WFN3xLCJZePD0EDLNzG",
+      "youtubeSearch": "Alessandro Scarlatti Stabat Mater"
+    },
+    {
+      "id": "gluck",
+      "name": "Christoph Willibald Gluck",
+      "years": "1714-1787",
+      "period": "classical",
+      "nationality": "German",
+      "portrait": "gluck.jpg",
+      "shortBio": "Opera reformer who prioritized drama and simplicity over vocal fireworks.",
+      "fullBio": "Gluck stripped opera of excess ornamentation, aiming for natural drama and clear text. His Paris and Vienna operas paved the way for Mozart’s stage works.",
+      "keyWorks": [
+        {"title": "Orfeo ed Euridice", "type": "Opera", "year": "1762"},
+        {"title": "Alceste", "type": "Opera", "year": "1767"},
+        {"title": "Iphigénie en Tauride", "type": "Opera", "year": "1779"}
+      ],
+      "funFact": "He rewrote Orfeo for a castrato in Vienna and later for a high tenor in Paris.",
+      "listenFirst": "Orfeo ed Euridice – Che farò senza Euridice",
+      "spotifyUri": "spotify:artist:6K2z6OsPeZv2EYSbkPrlLz",
+      "youtubeSearch": "Gluck Orfeo Che farò senza Euridice"
+    },
+    {
+      "id": "cpe_bach",
+      "name": "Carl Philipp Emanuel Bach",
+      "years": "1714-1788",
+      "period": "classical",
+      "nationality": "German",
+      "portrait": "cpe_bach.jpg",
+      "shortBio": "J.S. Bach’s son who pioneered the expressive Empfindsamkeit style.",
+      "fullBio": "Working in Berlin and Hamburg, C.P.E. Bach wrote keyboard works and symphonies full of surprises and emotional shifts, bridging Baroque counterpoint and Classical clarity.",
+      "keyWorks": [
+        {"title": "Hamburg Symphonies", "type": "Symphony", "year": "1773"},
+        {"title": "Keyboard Sonatas, Wq. 55", "type": "Keyboard", "year": "1779"},
+        {"title": "Magnificat", "type": "Sacred", "year": "1749"}
+      ],
+      "funFact": "Haydn and Beethoven admired his bold harmonies and rhetorical flair.",
+      "listenFirst": "Hamburg Symphony No. 1",
+      "spotifyUri": "spotify:artist:2vmYFwJ5rsJ6CvTbqGZC5U",
+      "youtubeSearch": "CPE Bach Hamburg Symphony"
+    },
+    {
+      "id": "jc_bach",
+      "name": "Johann Christian Bach",
+      "years": "1735-1782",
+      "period": "classical",
+      "nationality": "German",
+      "portrait": "jc_bach.jpg",
+      "shortBio": "The 'London Bach' whose galant style influenced young Mozart.",
+      "fullBio": "Settling in London, J.C. Bach wrote elegant symphonies, concertos, and operas that favored melody and light textures, shaping early Classical taste.",
+      "keyWorks": [
+        {"title": "Symphony in G minor, Op. 6 No. 6", "type": "Symphony", "year": "1769"},
+        {"title": "Keyboard Concerto in E-flat, Op. 7 No. 5", "type": "Concerto", "year": "1770"},
+        {"title": "Amadis de Gaule", "type": "Opera", "year": "1779"}
+      ],
+      "funFact": "Mozart arranged some of his keyboard sonatas into piano concertos as a child.",
+      "listenFirst": "Symphony in G minor, Op. 6 No. 6",
+      "spotifyUri": "spotify:artist:2LQ4qrCkMYG4lYqst1HMuX",
+      "youtubeSearch": "J.C. Bach Symphony in G minor Op 6 No 6"
+    },
+    {
+      "id": "clementi",
+      "name": "Muzio Clementi",
+      "years": "1752-1832",
+      "period": "classical",
+      "nationality": "Italian-English",
+      "portrait": "clementi.jpg",
+      "shortBio": "Father of the piano sonata and influential teacher/publisher.",
+      "fullBio": "Clementi’s sonatas shaped piano technique and form. As a businessman, he published major composers and built pianos, spreading the instrument’s popularity.",
+      "keyWorks": [
+        {"title": "Piano Sonata in B-flat, Op. 24 No. 2", "type": "Piano", "year": "1781"},
+        {"title": "Gradus ad Parnassum", "type": "Etudes", "year": "1817"},
+        {"title": "Symphony No. 1", "type": "Symphony", "year": "c. 1813"}
+      ],
+      "funFact": "He had a famed piano duel with Mozart in 1781.",
+      "listenFirst": "Piano Sonata in B-flat, Op. 24 No. 2",
+      "spotifyUri": "spotify:artist:0SaeHAhwxvKyL0F1Q3jWYm",
+      "youtubeSearch": "Clementi Piano Sonata Op 24 No 2"
+    },
+    {
+      "id": "boccherini",
+      "name": "Luigi Boccherini",
+      "years": "1743-1805",
+      "period": "classical",
+      "nationality": "Italian",
+      "portrait": "boccherini.jpg",
+      "shortBio": "Cellist-composer renowned for graceful chamber music and guitar quintets.",
+      "fullBio": "Working in Spain, Boccherini wrote stylish string quartets and quintets that favor lyrical cello writing and elegant textures.",
+      "keyWorks": [
+        {"title": "String Quintet in E, Op. 11 No. 5 'Minuet'", "type": "Chamber", "year": "1771"},
+        {"title": "Cello Concerto in B-flat", "type": "Concerto", "year": "c. 1770"},
+        {"title": "Guitar Quintets", "type": "Chamber", "year": "1798"}
+      ],
+      "funFact": "His famous minuet appears in countless films and commercials.",
+      "listenFirst": "String Quintet in E, Op. 11 No. 5 – Minuet",
+      "spotifyUri": "spotify:artist:5ekzJ3Lr3tsYGTY3r5rGKd",
+      "youtubeSearch": "Boccherini Minuet"
+    },
+    {
+      "id": "salieri",
+      "name": "Antonio Salieri",
+      "years": "1750-1825",
+      "period": "classical",
+      "nationality": "Italian",
+      "portrait": "salieri.jpg",
+      "shortBio": "Court composer and teacher whose operas thrived across Europe.",
+      "fullBio": "Kapellmeister in Vienna, Salieri composed dozens of operas and sacred works. He taught Beethoven, Schubert, and Liszt, influencing the next generation.",
+      "keyWorks": [
+        {"title": "Les Danaïdes", "type": "Opera", "year": "1784"},
+        {"title": "Requiem in C minor", "type": "Sacred", "year": "1804"},
+        {"title": "Tarare", "type": "Opera", "year": "1787"}
+      ],
+      "funFact": "Contrary to myth, he and Mozart often collaborated and respected each other.",
+      "listenFirst": "Les Danaïdes – Overture",
+      "spotifyUri": "spotify:artist:6BfVlg3SkVW9PMSzQFMutR",
+      "youtubeSearch": "Salieri Les Danaides overture"
+    },
+    {
+      "id": "hummel",
+      "name": "Johann Nepomuk Hummel",
+      "years": "1778-1837",
+      "period": "classical",
+      "nationality": "Austrian",
+      "portrait": "hummel.jpg",
+      "shortBio": "Virtuoso pianist-composer bridging Classical elegance and early Romantic color.",
+      "fullBio": "A student of Mozart and Haydn, Hummel wrote concertos and chamber music full of lyrical melodies and brilliant keyboard writing.",
+      "keyWorks": [
+        {"title": "Trumpet Concerto in E", "type": "Concerto", "year": "1803"},
+        {"title": "Piano Concerto in A minor, Op. 85", "type": "Concerto", "year": "1816"},
+        {"title": "Septet No. 1, Op. 74", "type": "Chamber", "year": "1816"}
+      ],
+      "funFact": "He was considered one of Europe’s top pianists before Liszt rose to fame.",
+      "listenFirst": "Trumpet Concerto in E",
+      "spotifyUri": "spotify:artist:0BxzYUTrI74E5dyemEcu9x",
+      "youtubeSearch": "Hummel Trumpet Concerto"
+    },
+    {
+      "id": "paganini",
+      "name": "Niccolò Paganini",
+      "years": "1782-1840",
+      "period": "classical",
+      "nationality": "Italian",
+      "portrait": "paganini.jpg",
+      "shortBio": "Legendary violin virtuoso whose techniques stunned Europe.",
+      "fullBio": "Paganini’s Caprices and concertos introduced dazzling techniques and a charismatic performer persona that influenced Liszt and the rise of the virtuoso.",
+      "keyWorks": [
+        {"title": "24 Caprices for Solo Violin, Op. 1", "type": "Solo Violin", "year": "1819"},
+        {"title": "Violin Concerto No. 1", "type": "Concerto", "year": "1817"},
+        {"title": "Moto Perpetuo", "type": "Violin/Orchestra", "year": "1835"}
+      ],
+      "funFact": "His extreme skills fueled rumors of a pact with the devil.",
+      "listenFirst": "Caprice No. 24",
+      "spotifyUri": "spotify:artist:2Ma53v5Up95U7tbvw1ckCo",
+      "youtubeSearch": "Paganini Caprice 24"
+    },
+    {
+      "id": "bartok",
+      "name": "Béla Bartók",
+      "years": "1881-1945",
+      "period": "modern",
+      "nationality": "Hungarian",
+      "portrait": "bartok.jpg",
+      "shortBio": "Modernist who fused folk roots with bold rhythm and harmony.",
+      "fullBio": "Bartók collected folk songs across Eastern Europe and integrated their rhythms and modes into concert works, pushing modern harmony while staying connected to roots.",
+      "keyWorks": [
+        {"title": "Concerto for Orchestra", "type": "Orchestral", "year": "1943"},
+        {"title": "Music for Strings, Percussion and Celesta", "type": "Orchestral", "year": "1936"},
+        {"title": "Mikrokosmos", "type": "Piano", "year": "1939"}
+      ],
+      "funFact": "He was also a pioneering ethnomusicologist and field recorder.",
+      "listenFirst": "Concerto for Orchestra – II",
+      "spotifyUri": "spotify:artist:7Hqr8tZzC06JFl7l0mfkPN",
+      "youtubeSearch": "Bartok Concerto for Orchestra"
+    },
+    {
+      "id": "prokofiev",
+      "name": "Sergei Prokofiev",
+      "years": "1891-1953",
+      "period": "modern",
+      "nationality": "Russian",
+      "portrait": "prokofiev.jpg",
+      "shortBio": "Sharp-edged melodist who wrote ballets, symphonies, and film scores with bite.",
+      "fullBio": "Prokofiev’s style blends motor rhythms, bold harmonies, and memorable tunes. He navigated emigration and Soviet return, producing enduring concert works.",
+      "keyWorks": [
+        {"title": "Romeo and Juliet", "type": "Ballet", "year": "1938"},
+        {"title": "Symphony No. 5", "type": "Symphony", "year": "1944"},
+        {"title": "Peter and the Wolf", "type": "Narrated Suite", "year": "1936"}
+      ],
+      "funFact": "He and Stalin died on the same day in 1953.",
+      "listenFirst": "Romeo and Juliet – Dance of the Knights",
+      "spotifyUri": "spotify:artist:5f8hn7S2l7gX6p9qjHQf4G",
+      "youtubeSearch": "Prokofiev Dance of the Knights"
+    },
+    {
+      "id": "copland",
+      "name": "Aaron Copland",
+      "years": "1900-1990",
+      "period": "modern",
+      "nationality": "American",
+      "portrait": "copland.jpg",
+      "shortBio": "Voice of American classical music with open harmonies and folk inspirations.",
+      "fullBio": "Copland’s ballets and orchestral works use wide intervals and folk tunes to evoke American landscapes. He also championed contemporary composers as a teacher and conductor.",
+      "keyWorks": [
+        {"title": "Appalachian Spring", "type": "Ballet", "year": "1944"},
+        {"title": "Rodeo", "type": "Ballet", "year": "1942"},
+        {"title": "Fanfare for the Common Man", "type": "Brass/Orchestra", "year": "1942"}
+      ],
+      "funFact": "He incorporated Shaker tunes like 'Simple Gifts' into Appalachian Spring.",
+      "listenFirst": "Appalachian Spring – Simple Gifts",
+      "spotifyUri": "spotify:artist:3kUKKD2haGz0alrFyTQ1FK",
+      "youtubeSearch": "Copland Appalachian Spring Simple Gifts"
+    },
+    {
+      "id": "holst",
+      "name": "Gustav Holst",
+      "years": "1874-1934",
+      "period": "modern",
+      "nationality": "English",
+      "portrait": "holst.jpg",
+      "shortBio": "English composer famous for vivid orchestration and The Planets.",
+      "fullBio": "Holst blended English folk tunes with bold orchestration. His suite The Planets became a staple, and he explored Eastern texts and modalities in other works.",
+      "keyWorks": [
+        {"title": "The Planets", "type": "Orchestral Suite", "year": "1918"},
+        {"title": "St. Paul’s Suite", "type": "Orchestral", "year": "1913"},
+        {"title": "Hymn of Jesus", "type": "Choral/Orchestral", "year": "1917"}
+      ],
+      "funFact": "Mars from The Planets influenced countless film scores.",
+      "listenFirst": "The Planets – Jupiter",
+      "spotifyUri": "spotify:artist:6hlRjMgXSrzch3DSh7ZZlb",
+      "youtubeSearch": "Holst Jupiter"
+    },
+    {
+      "id": "vaughan_williams",
+      "name": "Ralph Vaughan Williams",
+      "years": "1872-1958",
+      "period": "modern",
+      "nationality": "English",
+      "portrait": "vaughan_williams.jpg",
+      "shortBio": "English symphonist who wove folk song and pastoral lyricism into modern forms.",
+      "fullBio": "Collecting folk songs and editing hymnals, Vaughan Williams created symphonies and choral works with luminous harmony and modal flavor.",
+      "keyWorks": [
+        {"title": "Fantasia on a Theme by Thomas Tallis", "type": "Orchestral", "year": "1910"},
+        {"title": "The Lark Ascending", "type": "Violin/Orchestra", "year": "1914"},
+        {"title": "Symphony No. 5", "type": "Symphony", "year": "1943"}
+      ],
+      "funFact": "He served as a medic in WWI, experiences that colored his music.",
+      "listenFirst": "The Lark Ascending",
+      "spotifyUri": "spotify:artist:4BclvQ3oIVMU9YDn2WrLxB",
+      "youtubeSearch": "Vaughan Williams The Lark Ascending"
+    },
+    {
+      "id": "ives",
+      "name": "Charles Ives",
+      "years": "1874-1954",
+      "period": "modern",
+      "nationality": "American",
+      "portrait": "ives.jpg",
+      "shortBio": "Insurance executive-composer whose radical experiments predated his time.",
+      "fullBio": "Ives layered marching bands, hymns, and dissonance to evoke American life. He self-published many works and was celebrated late in life for his originality.",
+      "keyWorks": [
+        {"title": "Concord Sonata", "type": "Piano", "year": "1920"},
+        {"title": "Three Places in New England", "type": "Orchestral", "year": "1921"},
+        {"title": "Symphony No. 2", "type": "Symphony", "year": "1901"}
+      ],
+      "funFact": "He kept his day job in insurance while composing groundbreaking music at night.",
+      "listenFirst": "The Unanswered Question",
+      "spotifyUri": "spotify:artist:1O8iRgNQakBEH77QXGmElG",
+      "youtubeSearch": "Ives The Unanswered Question"
+    },
+    {
+      "id": "john_adams",
+      "name": "John Adams",
+      "years": "1947-",
+      "period": "contemporary",
+      "nationality": "American",
+      "portrait": "john_adams.jpg",
+      "shortBio": "Post-minimalist with propulsive rhythms and vibrant orchestration.",
+      "fullBio": "Adams blends minimalism with jazz and Romantic sweep in operas, concertos, and orchestral showpieces that captured wide audiences.",
+      "keyWorks": [
+        {"title": "Short Ride in a Fast Machine", "type": "Orchestral", "year": "1986"},
+        {"title": "Doctor Atomic", "type": "Opera", "year": "2005"},
+        {"title": "Harmonielehre", "type": "Orchestral", "year": "1985"}
+      ],
+      "funFact": "He often conducts his own works with major orchestras worldwide.",
+      "listenFirst": "Short Ride in a Fast Machine",
+      "spotifyUri": "spotify:artist:52CxI1BEI6ZGzs34GudGdP",
+      "youtubeSearch": "John Adams Short Ride in a Fast Machine"
+    },
+    {
+      "id": "steve_reich",
+      "name": "Steve Reich",
+      "years": "1936-",
+      "period": "contemporary",
+      "nationality": "American",
+      "portrait": "reich.jpg",
+      "shortBio": "Minimalist pioneer known for phasing patterns and pulsing grooves.",
+      "fullBio": "Reich’s tape loops and rhythmic canons shaped minimalism. Works for percussion and ensemble introduced hypnotic repetition to concert halls.",
+      "keyWorks": [
+        {"title": "Music for 18 Musicians", "type": "Ensemble", "year": "1976"},
+        {"title": "Different Trains", "type": "String Quartet/Tape", "year": "1988"},
+        {"title": "Drumming", "type": "Percussion", "year": "1971"}
+      ],
+      "funFact": "He studied drumming in Ghana, influencing his rhythmic language.",
+      "listenFirst": "Music for 18 Musicians",
+      "spotifyUri": "spotify:artist:1v9J3fNRgC3jIR9Sp4jG3a",
+      "youtubeSearch": "Steve Reich Music for 18 Musicians"
+    },
+    {
+      "id": "arvo_part",
+      "name": "Arvo Pärt",
+      "years": "1935-",
+      "period": "contemporary",
+      "nationality": "Estonian",
+      "portrait": "arvo_part.jpg",
+      "shortBio": "Creator of tintinnabuli style, pairing austerity with spiritual calm.",
+      "fullBio": "After early modernist works, Pärt developed a bell-like minimalist language rooted in chant. His sacred pieces are widely beloved for their serenity.",
+      "keyWorks": [
+        {"title": "Spiegel im Spiegel", "type": "Chamber", "year": "1978"},
+        {"title": "Tabula Rasa", "type": "Concerto", "year": "1977"},
+        {"title": "Te Deum", "type": "Choral/Orchestral", "year": "1984"}
+      ],
+      "funFact": "He left Soviet Estonia for the West, later settling in Berlin.",
+      "listenFirst": "Spiegel im Spiegel",
+      "spotifyUri": "spotify:artist:4tX2TplrkIP4v05BNC903e",
+      "youtubeSearch": "Arvo Part Spiegel im Spiegel"
+    },
+    {
+      "id": "tan_dun",
+      "name": "Tan Dun",
+      "years": "1957-",
+      "period": "contemporary",
+      "nationality": "Chinese",
+      "portrait": "tan_dun.jpg",
+      "shortBio": "Composer-conductor blending East/West traditions and organic sounds.",
+      "fullBio": "Tan Dun’s concert works and film scores use water, paper, and ceramic instruments alongside orchestra, creating vivid sonic worlds.",
+      "keyWorks": [
+        {"title": "Crouching Tiger, Hidden Dragon (Score)", "type": "Film Score", "year": "2000"},
+        {"title": "Water Concerto", "type": "Concerto", "year": "1998"},
+        {"title": "Buddha Passion", "type": "Oratorio", "year": "2018"}
+      ],
+      "funFact": "He won both an Academy Award and a Grammy for Crouching Tiger, Hidden Dragon.",
+      "listenFirst": "Water Concerto",
+      "spotifyUri": "spotify:artist:6y3GxO5f1ZanJXR1dOBbLM",
+      "youtubeSearch": "Tan Dun Water Concerto"
+    },
+    {
+      "id": "sofia_gubaidulina",
+      "name": "Sofia Gubaidulina",
+      "years": "1931-",
+      "period": "contemporary",
+      "nationality": "Russian",
+      "portrait": "gubaidulina.jpg",
+      "shortBio": "Deeply spiritual modern voice using unusual timbres and symbolism.",
+      "fullBio": "Gubaidulina combines folk instruments, avant-garde techniques, and religious imagery. Her works often feature stark contrasts and contemplative pacing.",
+      "keyWorks": [
+        {"title": "Offertorium", "type": "Violin Concerto", "year": "1980"},
+        {"title": "In tempus praesens", "type": "Violin Concerto", "year": "2007"},
+        {"title": "Seven Last Words", "type": "Cello/Accordion/Strings", "year": "1982"}
+      ],
+      "funFact": "Shostakovich encouraged her to 'continue down her own, incorrect path.'",
+      "listenFirst": "Offertorium",
+      "spotifyUri": "spotify:artist:4dFEjrOwpaYYEy1nmsz0Pg",
+      "youtubeSearch": "Gubaidulina Offertorium"
+    },
+    {
+      "id": "caroline_shaw",
+      "name": "Caroline Shaw",
+      "years": "1982-",
+      "period": "contemporary",
+      "nationality": "American",
+      "portrait": "caroline_shaw.jpg",
+      "shortBio": "Pulitzer-winning composer-singer known for inventive vocal textures.",
+      "fullBio": "Shaw’s music plays with baroque fragments, folk colors, and extended vocal techniques. She collaborates widely across classical and indie scenes.",
+      "keyWorks": [
+        {"title": "Partita for 8 Voices", "type": "Vocal Ensemble", "year": "2012"},
+        {"title": "Orange", "type": "String Quartet", "year": "2019"},
+        {"title": "The Listeners", "type": "Orchestral/Choral", "year": "2021"}
+      ],
+      "funFact": "She was the youngest Pulitzer music winner at age 30.",
+      "listenFirst": "Partita for 8 Voices",
+      "spotifyUri": "spotify:artist:3JmPSgeXcwzlVmYA1ZfheZ",
+      "youtubeSearch": "Caroline Shaw Partita for 8 Voices"
+    },
+    {
+      "id": "jennifer_higdon",
+      "name": "Jennifer Higdon",
+      "years": "1962-",
+      "period": "contemporary",
+      "nationality": "American",
+      "portrait": "higdon.jpg",
+      "shortBio": "American composer with vibrant orchestration and approachable lyricism.",
+      "fullBio": "Higdon writes concertos and orchestral pieces known for color and momentum. She has won multiple Grammys and a Pulitzer for her accessible modern style.",
+      "keyWorks": [
+        {"title": "Blue Cathedral", "type": "Orchestral", "year": "1999"},
+        {"title": "Violin Concerto", "type": "Concerto", "year": "2008"},
+        {"title": "Percussion Concerto", "type": "Concerto", "year": "2005"}
+      ],
+      "funFact": "She taught herself flute as a child and came to composition later.",
+      "listenFirst": "Blue Cathedral",
+      "spotifyUri": "spotify:artist:7mLdKJ5vBfGIPFUYJabCrn",
+      "youtubeSearch": "Jennifer Higdon Blue Cathedral"
+    },
+    {
+      "id": "max_richter",
+      "name": "Max Richter",
+      "years": "1966-",
+      "period": "contemporary",
+      "nationality": "German-British",
+      "portrait": "max_richter.jpg",
+      "shortBio": "Post-minimalist blending electronics, strings, and ambient soundscapes.",
+      "fullBio": "Richter’s albums bridge classical and electronic, with emotional themes and gradual development that connect with broad audiences.",
+      "keyWorks": [
+        {"title": "Recomposed: Vivaldi – The Four Seasons", "type": "Orchestral/Electronic", "year": "2012"},
+        {"title": "On The Nature of Daylight", "type": "Chamber/Strings", "year": "2004"},
+        {"title": "Sleep", "type": "8-hour Ambient", "year": "2015"}
+      ],
+      "funFact": "His 8-hour piece Sleep was designed to accompany a full night’s rest.",
+      "listenFirst": "On The Nature of Daylight",
+      "spotifyUri": "spotify:artist:2VZNmg4vCnew4Pavo8zDdW",
+      "youtubeSearch": "Max Richter On The Nature of Daylight"
+    },
+    {
+      "id": "kaija_saariaho",
+      "name": "Kaija Saariaho",
+      "years": "1952-2023",
+      "period": "contemporary",
+      "nationality": "Finnish",
+      "portrait": "saariaho.jpg",
+      "shortBio": "Spectralist known for luminous textures and electronics.",
+      "fullBio": "Saariaho’s operas and orchestral works use timbre as a structural element, weaving live instruments with electronics for immersive sound.",
+      "keyWorks": [
+        {"title": "L’Amour de loin", "type": "Opera", "year": "2000"},
+        {"title": "Graal théâtre", "type": "Violin Concerto", "year": "1994"},
+        {"title": "Orion", "type": "Orchestral", "year": "2002"}
+      ],
+      "funFact": "Her opera L’Amour de loin was one of the few by a woman staged at the Metropolitan Opera.",
+      "listenFirst": "L’Amour de loin – Act I",
+      "spotifyUri": "spotify:artist:4Ew9R6hul2BtOIvmQLNuwL",
+      "youtubeSearch": "Saariaho L amour de loin"
     }
   ]
 }

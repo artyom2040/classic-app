@@ -1,0 +1,61 @@
+{
+  "composers": [
+    {
+      "id": "hildegard",
+      "name": "Hildegard von Bingen",
+      "years": "1098-1179",
+      "period": "medieval",
+      "nationality": "German",
+      "portrait": "hildegard.jpg",
+      "shortBio": "Benedictine abbess, mystic, and composer of soaring monophonic chants.",
+      "fullBio": "Hildegard wrote visionary texts and liturgical songs that marry spiritual ecstasy with vivid imagery. Her unique melodies and expansive range stand out in medieval chant repertoire.",
+      "keyWorks": [
+        { "title": "O vis aeternitatis", "type": "Chant", "year": "12th c." },
+        { "title": "Ordo Virtutum", "type": "Sacred drama", "year": "1151" },
+        { "title": "Symphonia armonie celestium revelationum", "type": "Chants", "year": "12th c." }
+      ],
+      "funFact": "She also wrote about herbal medicine, science, and recorded her visions in detail.",
+      "listenFirst": "O vis aeternitatis",
+      "spotifyUri": "spotify:artist:3JtapDodZq9GnK6NR6eZfU",
+      "youtubeSearch": "Hildegard von Bingen O vis aeternitatis"
+    },
+    {
+      "id": "machaut",
+      "name": "Guillaume de Machaut",
+      "years": "c. 1300-1377",
+      "period": "medieval",
+      "nationality": "French",
+      "portrait": "machaut.jpg",
+      "shortBio": "Poet-composer who shaped the Ars Nova with intricate motets and songs.",
+      "fullBio": "Machaut blended courtly poetry with innovative rhythm and harmony. His Messe de Nostre Dame is the first known complete mass by a single composer.",
+      "keyWorks": [
+        { "title": "Messe de Nostre Dame", "type": "Mass", "year": "c. 1360" },
+        { "title": "Douce dame jolie", "type": "Virelai", "year": "14th c." },
+        { "title": "Ma fin est mon commencement", "type": "Rondeau", "year": "14th c." }
+      ],
+      "funFact": "He served as a secretary and diplomat for royal patrons across France and Bohemia.",
+      "listenFirst": "Messe de Nostre Dame – Kyrie",
+      "spotifyUri": "spotify:artist:5NfkpewnY2bkdMOelVmEF0",
+      "youtubeSearch": "Machaut Messe de Nostre Dame Kyrie"
+    },
+    {
+      "id": "perotin",
+      "name": "Pérotin",
+      "years": "fl. c. 1200",
+      "period": "medieval",
+      "nationality": "French",
+      "portrait": "perotin.jpg",
+      "shortBio": "Notre Dame school composer who expanded organum to 3 and 4 voices.",
+      "fullBio": "Pérotin’s polyphonic works like Viderunt omnes showcase early rhythmic notation and layered voices, a leap beyond plainchant.",
+      "keyWorks": [
+        { "title": "Viderunt omnes", "type": "Organum", "year": "1198" },
+        { "title": "Sederunt principes", "type": "Organum", "year": "1199" },
+        { "title": "Alleluia nativitas", "type": "Organum", "year": "c. 1200" }
+      ],
+      "funFact": "He likely worked at Notre Dame Cathedral in Paris during a peak of musical innovation.",
+      "listenFirst": "Viderunt omnes (4-voice)",
+      "spotifyUri": "spotify:artist:3sCpQzQj7k12BoSRM5c7UU",
+      "youtubeSearch": "Perotin Viderunt omnes"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useState, useRef, ReactNode, useCallback } from 'react';
-import { Audio } from 'expo-av';
+import React, { createContext, useContext, useState, useRef, ReactNode, useCallback, useEffect } from 'react';
 import { Platform } from 'react-native';
+import { createAudioPlayer, AudioPlayer, AudioStatus } from 'expo-audio';
+import { useToast } from '../components';
 
 export interface Track {
   id: string;
@@ -35,39 +36,85 @@ interface AudioContextType {
 const AudioContext = createContext<AudioContextType | undefined>(undefined);
 
 export function AudioProvider({ children }: { children: ReactNode }) {
+  const { showToast } = useToast();
+  const isWeb = Platform.OS === 'web';
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [position, setPosition] = useState(0);
   const [duration, setDuration] = useState(0);
   const [queue, setQueue] = useState<Track[]>([]);
-  
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const playerRef = useRef<AudioPlayer | null>(null);
+
+  // Native player lifecycle (expo-audio)
+  useEffect(() => {
+    if (isWeb) return;
+
+    const player = createAudioPlayer(null, { updateInterval: 300, keepAudioSessionActive: false });
+    playerRef.current = player;
+
+    const sub = player.addListener?.('playbackStatusUpdate', (status: AudioStatus) => {
+      setIsLoading(!status.isLoaded || status.isBuffering);
+      setPosition(status.currentTime * 1000);
+      setDuration(status.duration * 1000);
+      setIsPlaying(status.playing);
+      if (status.didJustFinish) {
+        setIsPlaying(false);
+        setPosition(0);
+      }
+    });
+
+    return () => {
+      sub?.remove?.();
+      player.remove?.();
+      playerRef.current = null;
+    };
+  }, [isWeb]);
+
+  const ensureUrlAvailable = useCallback(async (url: string) => {
+    try {
+      const res = await fetch(url, { method: 'HEAD' });
+      return res.ok;
+    } catch {
+      return false;
+    }
+  }, []);
 
   const playTrack = useCallback(async (track: Track) => {
     try {
       // If same track, just toggle play
       if (currentTrack?.id === track.id) {
-        if (isPlaying) {
-          audioRef.current?.pause();
-          setIsPlaying(false);
-        } else {
-          audioRef.current?.play();
-          setIsPlaying(true);
+        if (isWeb) {
+          if (audioRef.current) {
+            if (isPlaying) {
+              audioRef.current.pause();
+              setIsPlaying(false);
+            } else {
+              await audioRef.current.play();
+              setIsPlaying(true);
+            }
+          }
+        } else if (playerRef.current) {
+          if (isPlaying) {
+            playerRef.current.pause();
+          } else {
+            playerRef.current.play();
+          }
         }
         return;
       }
 
       setIsLoading(true);
       
-      // Stop previous audio
+      // Stop previous web audio
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current.src = '';
       }
 
-      // Create new audio element for web
-      if (Platform.OS === 'web') {
+      // Web: use HTMLAudioElement for simplicity/CORS handling
+      if (isWeb) {
         const audio = new window.Audio(track.audioUrl);
         audioRef.current = audio;
         
@@ -85,8 +132,9 @@ export function AudioProvider({ children }: { children: ReactNode }) {
           setPosition(0);
         };
         
-        audio.onerror = (e) => {
+        audio.onerror = () => {
           console.error('Audio error - file may not be available');
+          showToast('Audio unavailable. Try another sample.', 'error');
           setIsLoading(false);
           setCurrentTrack(null); // Clear the track to hide player
         };
@@ -94,65 +142,78 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         await audio.play();
         setCurrentTrack(track);
         setIsPlaying(true);
-      } else {
-        // For native, use expo-av
-        const { sound } = await Audio.Sound.createAsync(
-          { uri: track.audioUrl },
-          { shouldPlay: true },
-          (status) => {
-            if (status.isLoaded) {
-              setPosition(status.positionMillis);
-              setDuration(status.durationMillis || 0);
-              setIsPlaying(status.isPlaying);
-              if (status.didJustFinish) {
-                setIsPlaying(false);
-                setPosition(0);
-              }
-            }
-          }
-        );
-        setCurrentTrack(track);
-        setIsPlaying(true);
-        setIsLoading(false);
+        return;
       }
+
+      // Native: use expo-audio
+      const player = playerRef.current;
+      if (!player) {
+        setIsLoading(false);
+        showToast('Audio unavailable. Please try again.', 'error');
+        return;
+      }
+
+      const reachable = await ensureUrlAvailable(track.audioUrl);
+      if (!reachable) {
+        showToast('Audio unavailable. Try another sample.', 'error');
+        setIsLoading(false);
+        setCurrentTrack(null);
+        return;
+      }
+
+      player.replace(track.audioUrl);
+      player.play();
+      setCurrentTrack(track);
+      setIsPlaying(true);
+      setIsLoading(false);
     } catch (error) {
       console.error('Error playing track:', error);
+      showToast('Unable to play audio. Please try again.', 'error');
       setIsLoading(false);
     }
-  }, [currentTrack?.id, isPlaying]);
+  }, [currentTrack?.id, isPlaying, showToast, isWeb, ensureUrlAvailable]);
 
   const pause = useCallback(async () => {
-    if (Platform.OS === 'web') {
+    if (isWeb) {
       audioRef.current?.pause();
+    } else {
+      playerRef.current?.pause();
     }
     setIsPlaying(false);
-  }, []);
+  }, [isWeb]);
 
   const resume = useCallback(async () => {
-    if (Platform.OS === 'web') {
-      audioRef.current?.play();
+    if (isWeb) {
+      await audioRef.current?.play();
+    } else {
+      playerRef.current?.play();
     }
     setIsPlaying(true);
-  }, []);
+  }, [isWeb]);
 
   const stop = useCallback(async () => {
-    if (Platform.OS === 'web' && audioRef.current) {
+    if (isWeb && audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
       audioRef.current.src = '';
+    } else if (playerRef.current) {
+      playerRef.current.pause();
+      playerRef.current.seekTo(0);
     }
     setCurrentTrack(null);
     setIsPlaying(false);
     setPosition(0);
     setDuration(0);
-  }, []);
+  }, [isWeb]);
 
   const seekTo = useCallback(async (positionMs: number) => {
-    if (Platform.OS === 'web' && audioRef.current) {
+    if (isWeb && audioRef.current) {
       audioRef.current.currentTime = positionMs / 1000;
+    } else if (playerRef.current) {
+      await playerRef.current.seekTo(positionMs / 1000);
     }
     setPosition(positionMs);
-  }, []);
+  }, [isWeb]);
 
   const addToQueue = useCallback((track: Track) => {
     setQueue(q => [...q, track]);

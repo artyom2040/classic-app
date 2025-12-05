@@ -12,6 +12,7 @@ import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 import { SettingsProvider } from './src/context/SettingsContext';
 import { FavoritesProvider } from './src/context/FavoritesContext';
 import { AudioProvider } from './src/context/AudioContext';
+import { ToastProvider, ErrorBoundary, ThemedErrorFallback } from './src/components';
 import MiniPlayer from './src/components/MiniPlayer';
 import { RootStackParamList, TabParamList } from './src/types';
 import { getProgress } from './src/utils/storage';
@@ -22,6 +23,7 @@ import TimelineScreen from './src/screens/TimelineScreen';
 import GlossaryScreen from './src/screens/GlossaryScreen';
 import FormsScreen from './src/screens/FormsScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
+import ComposersScreen from './src/screens/ComposersScreen';
 import ComposerDetailScreen from './src/screens/ComposerDetailScreen';
 import PeriodDetailScreen from './src/screens/PeriodDetailScreen';
 import FormDetailScreen from './src/screens/FormDetailScreen';
@@ -203,6 +205,11 @@ function AppNavigator() {
           options={{ title: 'Composer' }}
         />
         <Stack.Screen 
+          name="Composers" 
+          component={ComposersScreen}
+          options={{ title: 'Composers' }}
+        />
+        <Stack.Screen 
           name="PeriodDetail" 
           component={PeriodDetailScreen}
           options={{ title: 'Period' }}
@@ -266,14 +273,20 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-        <SettingsProvider>
-          <FavoritesProvider>
-            <AudioProvider>
-              <AppNavigator />
-              <MiniPlayer />
-            </AudioProvider>
-          </FavoritesProvider>
-        </SettingsProvider>
+        <ToastProvider>
+          <ErrorBoundary renderFallback={(error, reset) => (
+            <ThemedErrorFallback error={error} onReset={reset} />
+          )}>
+            <SettingsProvider>
+              <FavoritesProvider>
+                <AudioProvider>
+                  <AppNavigator />
+                  <MiniPlayer />
+                </AudioProvider>
+              </FavoritesProvider>
+            </SettingsProvider>
+          </ErrorBoundary>
+        </ToastProvider>
       </ThemeProvider>
     </SafeAreaProvider>
   );

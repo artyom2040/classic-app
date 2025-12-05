@@ -156,6 +156,7 @@ export interface UserProgress {
 // Navigation types
 export type RootStackParamList = {
   MainTabs: undefined;
+  Composers: undefined;
   ComposerDetail: { composerId: string };
   PeriodDetail: { periodId: string };
   FormDetail: { formId: string };

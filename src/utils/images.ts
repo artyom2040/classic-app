@@ -2,6 +2,18 @@
 // These are all historical portraits in the public domain
 
 export const COMPOSER_PORTRAITS: Record<string, string> = {
+  // Medieval (placeholders / Wikimedia where available)
+  hildegard: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Heiligenlexikon_Hildegard_von_Bingen.jpg/220px-Heiligenlexikon_Hildegard_von_Bingen.jpg',
+  machaut: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Guillaume_de_Machaut.jpg/220px-Guillaume_de_Machaut.jpg',
+  perotin: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Perotin.jpg/220px-Perotin.jpg',
+  leonin: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Perotinus.jpg/220px-Perotinus.jpg',
+  guido_arezzo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Guido_von_Arezzo.jpg/220px-Guido_von_Arezzo.jpg',
+  adam_st_victor: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Adam_of_Saint_Victor_-_Stained_Glass_Window.jpg/220px-Adam_of_Saint_Victor_-_Stained_Glass_Window.jpg',
+  adam_de_la_halle: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Adam_de_la_Halle.png/220px-Adam_de_la_Halle.png',
+  troubadours: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Chansonnier_du_Roy_1.jpg/220px-Chansonnier_du_Roy_1.jpg',
+  le_jeune: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Claude_Le_Jeune_-_1580.jpg/220px-Claude_Le_Jeune_-_1580.jpg',
+  dunstable: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Dunstaple.jpg/220px-Dunstaple.jpg',
+
   // Baroque
   bach: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Johann_Sebastian_Bach.jpg/220px-Johann_Sebastian_Bach.jpg',
   vivaldi: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Vivaldi.jpg/220px-Vivaldi.jpg',

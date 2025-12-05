@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
@@ -27,13 +28,20 @@ export default function BadgesScreen() {
   const isBrutal = themeName === 'neobrutalist';
   const [progress, setProgress] = useState<UserProgress | null>(null);
 
-  useEffect(() => {
-    const loadProgress = async () => {
-      const p = await getProgress();
-      setProgress(p);
-    };
-    loadProgress();
+  const loadProgress = useCallback(async () => {
+    const p = await getProgress();
+    setProgress(p);
   }, []);
+
+  useEffect(() => {
+    loadProgress();
+  }, [loadProgress]);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadProgress();
+    }, [loadProgress])
+  );
 
   const earnedBadges = progress?.badges || [];
   const badgesByCategory = ALL_BADGES.reduce((acc, badge) => {

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Keyboard,
+  RefreshControl,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -17,6 +18,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../context/ThemeContext';
 import { RootStackParamList } from '../types';
 import { spacing, fontSize, borderRadius } from '../theme';
+import { hapticSelection } from '../utils/haptics';
+import { SkeletonListItem } from '../components';
 
 // Import all data
 import composersData from '../data/composers.json';
@@ -48,13 +51,20 @@ export default function SearchScreen() {
   const [query, setQuery] = useState('');
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [isFocused, setIsFocused] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [recentsLoading, setRecentsLoading] = useState(true);
 
   // Load recent searches
-  useEffect(() => {
-    AsyncStorage.getItem(RECENT_SEARCHES_KEY).then((data) => {
-      if (data) setRecentSearches(JSON.parse(data));
-    });
+  const loadRecentSearches = useCallback(async () => {
+    setRecentsLoading(true);
+    const data = await AsyncStorage.getItem(RECENT_SEARCHES_KEY);
+    setRecentSearches(data ? JSON.parse(data) : []);
+    setRecentsLoading(false);
   }, []);
+
+  useEffect(() => {
+    loadRecentSearches();
+  }, [loadRecentSearches]);
 
   // Save to recent searches
   const saveRecentSearch = useCallback(async (searchTerm: string) => {
@@ -71,6 +81,13 @@ export default function SearchScreen() {
     setRecentSearches([]);
     await AsyncStorage.removeItem(RECENT_SEARCHES_KEY);
   };
+
+  const onRefresh = useCallback(async () => {
+    hapticSelection();
+    setRefreshing(true);
+    await loadRecentSearches();
+    setRefreshing(false);
+  }, [loadRecentSearches]);
 
   // Search logic with fuzzy matching
   const searchResults = useMemo(() => {
@@ -205,6 +222,15 @@ export default function SearchScreen() {
     <View style={[styles.container, { backgroundColor: t.colors.background, paddingTop: insets.top }]}>
       {/* Search Header */}
       <View style={styles.header}>
+        <TouchableOpacity
+          style={[styles.backButton, { backgroundColor: t.colors.surfaceLight }, isBrutal && { borderWidth: 2, borderColor: t.colors.border }]}
+          onPress={() => {
+            hapticSelection();
+            navigation.goBack();
+          }}
+        >
+          <Ionicons name="arrow-back" size={20} color={t.colors.text} />
+        </TouchableOpacity>
         <View style={[styles.searchBar, { backgroundColor: t.colors.surface }, isBrutal && { borderWidth: 2, borderColor: t.colors.border }]}>
           <Ionicons name="search" size={20} color={t.colors.textMuted} />
           <TextInput
@@ -231,11 +257,30 @@ export default function SearchScreen() {
         style={styles.content} 
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={t.colors.primary}
+            colors={[t.colors.primary]}
+          />
+        }
       >
         {/* No query - show recent searches */}
         {!query.trim() && (
           <>
-            {recentSearches.length > 0 && (
+            {recentsLoading && (
+              <View style={styles.section}>
+                <View style={styles.sectionHeader}>
+                  <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Recent Searches</Text>
+                </View>
+                {[0, 1, 2].map((i) => (
+                  <SkeletonListItem key={i} />
+                ))}
+              </View>
+            )}
+
+            {!recentsLoading && recentSearches.length > 0 && (
               <View style={styles.section}>
                 <View style={styles.sectionHeader}>
                   <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Recent Searches</Text>
@@ -350,7 +395,8 @@ export default function SearchScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  header: { padding: spacing.md, paddingBottom: spacing.sm },
+  header: { padding: spacing.md, paddingBottom: spacing.sm, flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+  backButton: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',

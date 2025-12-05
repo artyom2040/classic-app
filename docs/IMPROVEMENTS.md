@@ -5,7 +5,7 @@
 | Area | Current State | Priority |
 |------|--------------|----------|
 | Architecture | Good foundation, needs optimization | Medium |
-| Features | Core complete, engagement features missing | High |
+| Features | Core + partial search/favorites/audio, engagement features missing | High |
 | Performance | Basic, no optimization | Medium |
 | UX/UI | Functional, needs polish | High |
 | Data | Good content, needs expansion | Medium |
@@ -13,28 +13,26 @@
 
 ---
 
-## 🚀 HIGH PRIORITY IMPROVEMENTS
+## 🚀 HIGH PRIORITY IMPROVEMENTS (WITH REALITY CHECK)
 
-### 1. **Search & Discovery System**
-Currently missing: Global search across all content.
-
-**Add:**
-- Full-text search across composers, terms, forms, periods
-- Recent searches history
-- Search suggestions with fuzzy matching
-- Filter by category, era, difficulty
-
-### 2. **Audio Integration**
-Current: External links only. Users leave the app.
+### 1. **Search & Discovery System (partial)**
+Current: Global search screen + SearchBar exist.
 
 **Add:**
-- In-app audio previews (30-60 sec snippets)
-- Background audio player with mini-player UI
-- Integration with expo-av for audio playback
-- Curated audio samples for each Kickstart lesson
+- Fuzzy suggestions, recent history, and ranking
+- Filters by category/era/difficulty
+- Indexed search cache (avoid recomputing on every keystroke)
 
-### 3. **Notifications & Reminders**
-Currently missing: No engagement hooks.
+### 2. **Audio Integration (partial)**
+Current: AudioContext + mini-player; relies on fragile URLs.
+
+**Add:**
+- Replace broken links with stable public MP3s (Archive/Wikimedia/self-hosted)
+- Platform-aware fallback (web/native), graceful errors, and loading states
+- Curated samples for Kickstart lessons
+
+### 3. **Notifications & Reminders** *(blocked by push keys/config)*
+Currently missing: No engagement hooks. Requires Expo push setup/credentials.
 
 **Add:**
 - Daily "Term of the Day" push notification
@@ -42,11 +40,11 @@ Currently missing: No engagement hooks.
 - Weekly album notifications
 - Streak tracking with reminders
 
-### 4. **Favorites & Collections**
-Current: Only viewing history tracked.
+### 4. **Favorites & Collections (partial)**
+Current: FavoritesContext exists; needs richer surfaces.
 
 **Add:**
-- Favorite composers, terms, works
+- Favorite composers, terms, works with clear UI entry points
 - Personal playlists/collections
 - "Want to listen" list
 - Notes on composers/works
@@ -266,11 +264,18 @@ Current: English only.
 
 ## 🗓 Suggested Implementation Order
 
+### Sprint 0 (Stabilization)
+- [ ] Replace broken audio URLs; add 2-3 verified samples
+- [ ] Add pull-to-refresh + haptics on content lists
+- [ ] Add error boundary + toast/snackbar for failures
+- [ ] Use FlatList for long lists; ensure focus-based refresh
+- [ ] One Jest/RTL smoke test to prove test harness works
+
 ### Sprint 1 (Week 1-2)
-- [ ] Global search system
-- [ ] Favorites system
-- [ ] Toast notifications
-- [ ] Pull-to-refresh
+- [ ] Search enhancements (suggestions/filters/cache)
+- [ ] Favorites surface (list screen, detail toggles)
+- [ ] Toast notifications (user feedback)
+- [ ] Pull-to-refresh (if not done in Sprint 0)
 
 ### Sprint 2 (Week 3-4)
 - [ ] Daily streak tracking
@@ -332,11 +337,11 @@ src/
 
 ## ✅ Quick Wins (Can Do Today)
 
-1. **Add pull-to-refresh** on HomeScreen
-2. **Add haptic feedback** on button presses
-3. **Add loading skeletons** instead of spinners
-4. **Add "Related" sections** to detail screens
-5. **Fix composer data** - `birth`/`death` vs `years` inconsistency
-6. **Add progress refresh** when screen focuses (not just mount)
-7. **Add swipe-to-go-back** gesture indicators
+1. **Fix audio links**: verify `audioSamples.json` and swap broken URLs for stable ones
+2. **Add pull-to-refresh + haptics** on Home/Timeline/Search lists
+3. **Add error boundary + toast/snackbar** for fetch/playback failures
+4. **Add loading skeletons** instead of spinners for lists/detail
+5. **Add "Related" sections** to detail screens
+6. **Normalize composer data** - fix `birth`/`death` vs `years` inconsistency
+7. **Add progress refresh** when screen focuses (not just mount)
 8. **Add keyboard avoidance** on forms
