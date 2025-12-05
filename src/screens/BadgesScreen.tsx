@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { colors, spacing, fontSize, borderRadius, shadows } from '../theme';
+import { spacing, fontSize, borderRadius } from '../theme';
+import { useTheme } from '../context/ThemeContext';
 import { UserProgress } from '../types';
 import { getProgress } from '../utils/storage';
 
@@ -21,6 +22,9 @@ const ALL_BADGES = [
 ];
 
 export default function BadgesScreen() {
+  const { theme, themeName } = useTheme();
+  const t = theme;
+  const isBrutal = themeName === 'neobrutalist';
   const [progress, setProgress] = useState<UserProgress | null>(null);
 
   useEffect(() => {
@@ -39,41 +43,41 @@ export default function BadgesScreen() {
   }, {} as { [key: string]: typeof ALL_BADGES });
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <ScrollView style={[styles.container, { backgroundColor: t.colors.background }]} contentContainerStyle={styles.content}>
       <View style={styles.header}>
-        <View style={styles.statsCard}>
-          <Text style={styles.statsNumber}>{earnedBadges.length}</Text>
-          <Text style={styles.statsLabel}>of {ALL_BADGES.length} badges earned</Text>
+        <View style={[styles.statsCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
+          <Text style={[styles.statsNumber, { color: t.colors.secondary }]}>{earnedBadges.length}</Text>
+          <Text style={[styles.statsLabel, { color: t.colors.textSecondary }]}>of {ALL_BADGES.length} badges earned</Text>
         </View>
       </View>
 
       {Object.entries(badgesByCategory).map(([category, badges]) => (
         <View key={category} style={styles.categorySection}>
-          <Text style={styles.categoryTitle}>{category}</Text>
+          <Text style={[styles.categoryTitle, { color: t.colors.text }]}>{category}</Text>
           <View style={styles.badgesGrid}>
             {badges.map(badge => {
               const isEarned = earnedBadges.includes(badge.id);
               return (
                 <View
                   key={badge.id}
-                  style={[styles.badgeCard, !isEarned && styles.badgeCardLocked]}
+                  style={[styles.badgeCard, { backgroundColor: t.colors.surface }, !isEarned && styles.badgeCardLocked, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}
                 >
-                  <View style={[styles.badgeIcon, isEarned ? styles.badgeIconEarned : styles.badgeIconLocked]}>
+                  <View style={[styles.badgeIcon, { backgroundColor: isEarned ? t.colors.secondary + '30' : t.colors.surfaceLight }]}>
                     <Ionicons
                       name={badge.icon as any}
                       size={28}
-                      color={isEarned ? colors.text : colors.textMuted}
+                      color={isEarned ? t.colors.text : t.colors.textMuted}
                     />
                   </View>
-                  <Text style={[styles.badgeName, !isEarned && styles.textLocked]}>
+                  <Text style={[styles.badgeName, { color: isEarned ? t.colors.text : t.colors.textMuted }]}>
                     {badge.name}
                   </Text>
-                  <Text style={[styles.badgeDescription, !isEarned && styles.textLocked]}>
+                  <Text style={[styles.badgeDescription, { color: isEarned ? t.colors.textSecondary : t.colors.textMuted }]}>
                     {badge.description}
                   </Text>
                   {!isEarned && (
                     <View style={styles.lockedOverlay}>
-                      <Ionicons name="lock-closed" size={16} color={colors.textMuted} />
+                      <Ionicons name="lock-closed" size={16} color={t.colors.textMuted} />
                     </View>
                   )}
                 </View>
@@ -89,22 +93,19 @@ export default function BadgesScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
+  container: { flex: 1 },
   content: { padding: spacing.md },
   header: { marginBottom: spacing.lg },
-  statsCard: { backgroundColor: colors.surface, borderRadius: borderRadius.lg, padding: spacing.lg, alignItems: 'center', ...shadows.sm },
-  statsNumber: { fontSize: 48, fontWeight: 'bold', color: colors.secondary },
-  statsLabel: { fontSize: fontSize.md, color: colors.textSecondary, marginTop: spacing.xs },
+  statsCard: { borderRadius: borderRadius.lg, padding: spacing.lg, alignItems: 'center' },
+  statsNumber: { fontSize: 48, fontWeight: 'bold' },
+  statsLabel: { fontSize: fontSize.md, marginTop: spacing.xs },
   categorySection: { marginBottom: spacing.lg },
-  categoryTitle: { fontSize: fontSize.lg, fontWeight: '700', color: colors.text, marginBottom: spacing.md },
+  categoryTitle: { fontSize: fontSize.lg, fontWeight: '700', marginBottom: spacing.md },
   badgesGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
-  badgeCard: { width: '48%', backgroundColor: colors.surface, borderRadius: borderRadius.lg, padding: spacing.md, alignItems: 'center', ...shadows.sm },
+  badgeCard: { width: '48%', borderRadius: borderRadius.lg, padding: spacing.md, alignItems: 'center' },
   badgeCardLocked: { opacity: 0.6 },
   badgeIcon: { width: 56, height: 56, borderRadius: 28, alignItems: 'center', justifyContent: 'center', marginBottom: spacing.sm },
-  badgeIconEarned: { backgroundColor: colors.secondary + '30' },
-  badgeIconLocked: { backgroundColor: colors.surfaceLight },
-  badgeName: { fontSize: fontSize.md, fontWeight: '600', color: colors.text, textAlign: 'center' },
-  badgeDescription: { fontSize: fontSize.xs, color: colors.textSecondary, textAlign: 'center', marginTop: 4 },
-  textLocked: { color: colors.textMuted },
+  badgeName: { fontSize: fontSize.md, fontWeight: '600', textAlign: 'center' },
+  badgeDescription: { fontSize: fontSize.xs, textAlign: 'center', marginTop: 4 },
   lockedOverlay: { position: 'absolute', top: spacing.sm, right: spacing.sm },
 });

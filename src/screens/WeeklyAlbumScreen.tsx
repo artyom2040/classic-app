@@ -2,12 +2,16 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { colors, spacing, fontSize, borderRadius, shadows } from '../theme';
+import { spacing, fontSize, borderRadius } from '../theme';
+import { useTheme } from '../context/ThemeContext';
 import { getWeekNumber } from '../utils/storage';
 
 import albumsData from '../data/albums.json';
 
 export default function WeeklyAlbumScreen() {
+  const { theme, themeName } = useTheme();
+  const t = theme;
+  const isBrutal = themeName === 'neobrutalist';
   const weekNumber = getWeekNumber();
   const album = albumsData.weeklyAlbums[(weekNumber - 1) % albumsData.weeklyAlbums.length];
 
@@ -15,46 +19,46 @@ export default function WeeklyAlbumScreen() {
   const openYouTube = () => Linking.openURL(`https://www.youtube.com/results?search_query=${encodeURIComponent(album.title + ' ' + album.artist)}`);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <ScrollView style={[styles.container, { backgroundColor: t.colors.background }]} contentContainerStyle={styles.content}>
       <View style={styles.header}>
-        <Text style={styles.weekLabel}>Week {weekNumber} Pick</Text>
-        <Text style={styles.title}>{album.title}</Text>
-        <Text style={styles.artist}>{album.artist}</Text>
-        <Text style={styles.year}>{album.year}</Text>
+        <Text style={[styles.weekLabel, { color: t.colors.primary }]}>Week {weekNumber} Pick</Text>
+        <Text style={[styles.title, { color: t.colors.text }]}>{album.title}</Text>
+        <Text style={[styles.artist, { color: t.colors.textSecondary }]}>{album.artist}</Text>
+        <Text style={[styles.year, { color: t.colors.textMuted }]}>{album.year}</Text>
       </View>
 
       <View style={styles.listenButtons}>
         <TouchableOpacity style={[styles.listenButton, { backgroundColor: '#1DB954' }]} onPress={openSpotify}>
-          <Ionicons name="play-circle" size={24} color={colors.text} />
-          <Text style={styles.listenButtonText}>Listen on Spotify</Text>
+          <Ionicons name="play-circle" size={24} color="#FFFFFF" />
+          <Text style={[styles.listenButtonText, { color: '#FFFFFF' }]}>Listen on Spotify</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.listenButton, { backgroundColor: '#FF0000' }]} onPress={openYouTube}>
-          <Ionicons name="logo-youtube" size={24} color={colors.text} />
-          <Text style={styles.listenButtonText}>Watch on YouTube</Text>
+          <Ionicons name="logo-youtube" size={24} color="#FFFFFF" />
+          <Text style={[styles.listenButtonText, { color: '#FFFFFF' }]}>Watch on YouTube</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>About This Recording</Text>
-        <Text style={styles.description}>{album.description}</Text>
+        <Text style={[styles.sectionTitle, { color: t.colors.text }]}>About This Recording</Text>
+        <Text style={[styles.description, { color: t.colors.textSecondary }]}>{album.description}</Text>
       </View>
 
-      <View style={styles.whyCard}>
-        <Ionicons name="bulb" size={20} color={colors.secondary} />
+      <View style={[styles.whyCard, { backgroundColor: t.colors.secondary + '20' }]}>
+        <Ionicons name="bulb" size={20} color={t.colors.secondary} />
         <View style={styles.whyContent}>
-          <Text style={styles.whyLabel}>Why Listen?</Text>
-          <Text style={styles.whyText}>{album.whyListen}</Text>
+          <Text style={[styles.whyLabel, { color: t.colors.secondary }]}>Why Listen?</Text>
+          <Text style={[styles.whyText, { color: t.colors.text }]}>{album.whyListen}</Text>
         </View>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Key Moments</Text>
+        <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Key Moments</Text>
         {album.keyMoments.map((moment, idx) => (
-          <View key={idx} style={styles.momentCard}>
-            <View style={styles.momentTime}>
-              <Text style={styles.momentTimeText}>{moment.time}</Text>
+          <View key={idx} style={[styles.momentCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
+            <View style={[styles.momentTime, { backgroundColor: t.colors.primary + '30' }]}>
+              <Text style={[styles.momentTimeText, { color: t.colors.primary }]}>{moment.time}</Text>
             </View>
-            <Text style={styles.momentDescription}>{moment.description}</Text>
+            <Text style={[styles.momentDescription, { color: t.colors.textSecondary }]}>{moment.description}</Text>
           </View>
         ))}
       </View>
@@ -65,25 +69,25 @@ export default function WeeklyAlbumScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
+  container: { flex: 1 },
   content: { padding: spacing.md },
   header: { alignItems: 'center', marginBottom: spacing.lg },
-  weekLabel: { fontSize: fontSize.sm, color: colors.primary, fontWeight: '600' },
-  title: { fontSize: fontSize.xxl, fontWeight: 'bold', color: colors.text, textAlign: 'center', marginTop: spacing.xs },
-  artist: { fontSize: fontSize.md, color: colors.textSecondary, marginTop: spacing.xs, textAlign: 'center' },
-  year: { fontSize: fontSize.sm, color: colors.textMuted, marginTop: 2 },
+  weekLabel: { fontSize: fontSize.sm, fontWeight: '600' },
+  title: { fontSize: fontSize.xxl, fontWeight: 'bold', textAlign: 'center', marginTop: spacing.xs },
+  artist: { fontSize: fontSize.md, marginTop: spacing.xs, textAlign: 'center' },
+  year: { fontSize: fontSize.sm, marginTop: 2 },
   listenButtons: { gap: spacing.sm, marginBottom: spacing.lg },
   listenButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: borderRadius.lg, padding: spacing.md, gap: spacing.sm },
-  listenButtonText: { fontSize: fontSize.md, fontWeight: '600', color: colors.text },
+  listenButtonText: { fontSize: fontSize.md, fontWeight: '600' },
   section: { marginBottom: spacing.lg },
-  sectionTitle: { fontSize: fontSize.lg, fontWeight: '700', color: colors.text, marginBottom: spacing.md },
-  description: { fontSize: fontSize.md, color: colors.textSecondary, lineHeight: 24 },
-  whyCard: { flexDirection: 'row', alignItems: 'flex-start', backgroundColor: colors.secondary + '20', borderRadius: borderRadius.lg, padding: spacing.md, marginBottom: spacing.lg, gap: spacing.sm },
+  sectionTitle: { fontSize: fontSize.lg, fontWeight: '700', marginBottom: spacing.md },
+  description: { fontSize: fontSize.md, lineHeight: 24 },
+  whyCard: { flexDirection: 'row', alignItems: 'flex-start', borderRadius: borderRadius.lg, padding: spacing.md, marginBottom: spacing.lg, gap: spacing.sm },
   whyContent: { flex: 1 },
-  whyLabel: { fontSize: fontSize.sm, fontWeight: '600', color: colors.secondary, marginBottom: spacing.xs },
-  whyText: { fontSize: fontSize.md, color: colors.text, lineHeight: 22 },
-  momentCard: { flexDirection: 'row', alignItems: 'flex-start', backgroundColor: colors.surface, borderRadius: borderRadius.md, padding: spacing.md, marginBottom: spacing.sm, gap: spacing.md, ...shadows.sm },
-  momentTime: { backgroundColor: colors.primary + '30', paddingHorizontal: spacing.sm, paddingVertical: spacing.xs, borderRadius: borderRadius.sm },
-  momentTimeText: { fontSize: fontSize.sm, fontWeight: '600', color: colors.primary },
-  momentDescription: { flex: 1, fontSize: fontSize.md, color: colors.textSecondary, lineHeight: 20 },
+  whyLabel: { fontSize: fontSize.sm, fontWeight: '600', marginBottom: spacing.xs },
+  whyText: { fontSize: fontSize.md, lineHeight: 22 },
+  momentCard: { flexDirection: 'row', alignItems: 'flex-start', borderRadius: borderRadius.md, padding: spacing.md, marginBottom: spacing.sm, gap: spacing.md },
+  momentTime: { paddingHorizontal: spacing.sm, paddingVertical: spacing.xs, borderRadius: borderRadius.sm },
+  momentTimeText: { fontSize: fontSize.sm, fontWeight: '600' },
+  momentDescription: { flex: 1, fontSize: fontSize.md, lineHeight: 20 },
 });
