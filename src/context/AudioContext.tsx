@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useRef, ReactNode, useCallback } from 'react';
-import { Audio, AVPlaybackStatus } from 'expo-av';
+import { useAudioPlayer, useAudioPlayerStatus, AudioPlayer } from 'expo-audio';
 
 export interface Track {
   id: string;
@@ -20,10 +20,10 @@ interface AudioContextType {
   
   // Controls
   playTrack: (track: Track) => Promise<void>;
-  pause: () => Promise<void>;
-  resume: () => Promise<void>;
-  stop: () => Promise<void>;
-  seekTo: (position: number) => Promise<void>;
+  pause: () => void;
+  resume: () => void;
+  stop: () => void;
+  seekTo: (position: number) => void;
   
   // Queue (for future use)
   queue: Track[];
@@ -35,110 +35,60 @@ const AudioContext = createContext<AudioContextType | undefined>(undefined);
 
 export function AudioProvider({ children }: { children: ReactNode }) {
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [position, setPosition] = useState(0);
-  const [duration, setDuration] = useState(0);
   const [queue, setQueue] = useState<Track[]>([]);
   
-  const soundRef = useRef<Audio.Sound | null>(null);
+  // Create the audio player
+  const player = useAudioPlayer(currentTrack?.audioUrl || '');
+  const status = useAudioPlayerStatus(player);
 
-  // Configure audio mode on mount
-  useEffect(() => {
-    Audio.setAudioModeAsync({
-      allowsRecordingIOS: false,
-      staysActiveInBackground: true,
-      playsInSilentModeIOS: true,
-      shouldDuckAndroid: true,
-      playThroughEarpieceAndroid: false,
-    });
-
-    // Cleanup on unmount
-    return () => {
-      if (soundRef.current) {
-        soundRef.current.unloadAsync();
-      }
-    };
-  }, []);
-
-  // Playback status update handler
-  const onPlaybackStatusUpdate = useCallback((status: AVPlaybackStatus) => {
-    if (!status.isLoaded) {
-      if (status.error) {
-        console.error('Audio error:', status.error);
-      }
-      return;
-    }
-
-    setPosition(status.positionMillis);
-    setDuration(status.durationMillis || 0);
-    setIsPlaying(status.isPlaying);
-    setIsLoading(status.isBuffering);
-
-    // Track finished
-    if (status.didJustFinish) {
-      setIsPlaying(false);
-      setPosition(0);
-    }
-  }, []);
+  // Derive state from player status
+  const isPlaying = status.playing;
+  const isLoading = status.isBuffering;
+  const position = Math.floor((status.currentTime || 0) * 1000); // convert to ms
+  const duration = Math.floor((status.duration || 0) * 1000); // convert to ms
 
   const playTrack = async (track: Track) => {
     try {
-      setIsLoading(true);
-      
-      // Unload previous sound
-      if (soundRef.current) {
-        await soundRef.current.unloadAsync();
-        soundRef.current = null;
+      // If same track, just toggle play
+      if (currentTrack?.id === track.id) {
+        if (isPlaying) {
+          player.pause();
+        } else {
+          player.play();
+        }
+        return;
       }
 
-      // Create and load new sound
-      const { sound } = await Audio.Sound.createAsync(
-        { uri: track.audioUrl },
-        { shouldPlay: true },
-        onPlaybackStatusUpdate
-      );
-
-      soundRef.current = sound;
+      // Set new track and play
       setCurrentTrack(track);
-      setIsPlaying(true);
-      setIsLoading(false);
     } catch (error) {
       console.error('Error playing track:', error);
-      setIsLoading(false);
     }
   };
 
-  const pause = async () => {
-    if (soundRef.current) {
-      await soundRef.current.pauseAsync();
-      setIsPlaying(false);
+  // Auto-play when track changes
+  useEffect(() => {
+    if (currentTrack && player) {
+      player.play();
     }
+  }, [currentTrack?.id]);
+
+  const pause = () => {
+    player.pause();
   };
 
-  const resume = async () => {
-    if (soundRef.current) {
-      await soundRef.current.playAsync();
-      setIsPlaying(true);
-    }
+  const resume = () => {
+    player.play();
   };
 
-  const stop = async () => {
-    if (soundRef.current) {
-      await soundRef.current.stopAsync();
-      await soundRef.current.unloadAsync();
-      soundRef.current = null;
-    }
+  const stop = () => {
+    player.pause();
+    player.seekTo(0);
     setCurrentTrack(null);
-    setIsPlaying(false);
-    setPosition(0);
-    setDuration(0);
   };
 
-  const seekTo = async (positionMs: number) => {
-    if (soundRef.current) {
-      await soundRef.current.setPositionAsync(positionMs);
-    }
+  const seekTo = (positionMs: number) => {
+    player.seekTo(positionMs / 1000); // convert to seconds
   };
 
   const addToQueue = (track: Track) => {

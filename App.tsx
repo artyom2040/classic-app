@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { View, ActivityIndicator, Platform, StyleSheet } from 'react-native';
 import { BlurView } from 'expo-blur';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 import { SettingsProvider } from './src/context/SettingsContext';
@@ -263,15 +264,17 @@ function AppNavigator() {
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <SettingsProvider>
-        <FavoritesProvider>
-          <AudioProvider>
-            <AppNavigator />
-            <MiniPlayer />
-          </AudioProvider>
-        </FavoritesProvider>
-      </SettingsProvider>
-    </ThemeProvider>
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <SettingsProvider>
+          <FavoritesProvider>
+            <AudioProvider>
+              <AppNavigator />
+              <MiniPlayer />
+            </AudioProvider>
+          </FavoritesProvider>
+        </SettingsProvider>
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 }
