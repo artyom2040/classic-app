@@ -38,8 +38,8 @@ fi
 pm2 delete classic-app 2>/dev/null || true
 
 # Start the server
-echo "🚀 Starting server on port 3000..."
-pm2 serve dist --name "classic-app" --port 3000 --spa
+echo "🚀 Starting server on port 8081..."
+pm2 serve dist --name "classic-app" --port 8081 --spa
 
 # Save PM2 config
 pm2 save
@@ -47,7 +47,7 @@ pm2 save
 echo ""
 echo "✅ Deployment complete!"
 echo ""
-echo "🌐 Access your app at: http://185.194.140.57:3000"
+echo "🌐 Access your app at: http://185.194.140.57:8081"
 echo ""
 echo "📋 Useful commands:"
 echo "   pm2 logs classic-app  - View logs"
