@@ -85,9 +85,10 @@ export function AudioProvider({ children }: { children: ReactNode }) {
           setPosition(0);
         };
         
-        audio.onerror = () => {
-          console.error('Audio error');
+        audio.onerror = (e) => {
+          console.error('Audio error - file may not be available');
           setIsLoading(false);
+          setCurrentTrack(null); // Clear the track to hide player
         };
 
         await audio.play();

@@ -6,27 +6,18 @@
         "title": "Cello Suite No. 1 - Prelude",
         "composer": "Johann Sebastian Bach",
         "composerId": "bach",
-        "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7a/Cello_Suite_No_1_Prelude_Yo-Yo_Ma.ogg",
+        "audioUrl": "https://ia800301.us.archive.org/15/items/Bach_Cello_Suite_No1/01-01_Cello_Suite_No_1_in_G_major_BWV_1007_-_I_Prelude.mp3",
         "duration": 165,
-        "source": "Wikimedia Commons"
+        "source": "Internet Archive"
       },
       {
         "id": "bach-air-on-g-string",
         "title": "Air on the G String",
         "composer": "Johann Sebastian Bach",
         "composerId": "bach",
-        "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Johann_Sebastian_Bach_-_Orchestral_Suite_No._3_%28Air%29.ogg",
+        "audioUrl": "https://ia600504.us.archive.org/4/items/JohannSebastianBach_754/01.AirOnAGString.mp3",
         "duration": 320,
-        "source": "Wikimedia Commons"
-      },
-      {
-        "id": "bach-toccata-fugue",
-        "title": "Toccata and Fugue in D minor",
-        "composer": "Johann Sebastian Bach",
-        "composerId": "bach",
-        "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a1/J.S._Bach_-_Toccata_and_Fugue_in_D_minor_BWV_565.ogg",
-        "duration": 540,
-        "source": "Wikimedia Commons"
+        "source": "Internet Archive"
       }
     ],
     "beethoven": [
@@ -35,56 +26,38 @@
         "title": "Für Elise",
         "composer": "Ludwig van Beethoven",
         "composerId": "beethoven",
-        "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/5/59/Beethoven_-_Bagatelle_No._25_in_A_minor_%28For_Elise%29.ogg",
+        "audioUrl": "https://ia800504.us.archive.org/4/items/FurElise_961/FurElise.mp3",
         "duration": 180,
-        "source": "Wikimedia Commons"
+        "source": "Internet Archive"
       },
       {
         "id": "beethoven-moonlight-1",
         "title": "Moonlight Sonata - 1st Movement",
         "composer": "Ludwig van Beethoven",
         "composerId": "beethoven",
-        "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/6/65/Moonlight_Sonata_%28Adagio_Sostenuto%29.ogg",
+        "audioUrl": "https://ia600504.us.archive.org/4/items/MoonlightSonata_574/MoonlightSonata.mp3",
         "duration": 360,
-        "source": "Wikimedia Commons"
-      },
-      {
-        "id": "beethoven-symphony-5",
-        "title": "Symphony No. 5 - 1st Movement",
-        "composer": "Ludwig van Beethoven",
-        "composerId": "beethoven",
-        "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/9/93/Beethoven_Symphony_5_Movement_1.ogg",
-        "duration": 450,
-        "source": "Wikimedia Commons"
+        "source": "Internet Archive"
       }
     ],
     "mozart": [
       {
         "id": "mozart-eine-kleine",
-        "title": "Eine kleine Nachtmusik - 1st Movement",
+        "title": "Eine kleine Nachtmusik",
         "composer": "Wolfgang Amadeus Mozart",
         "composerId": "mozart",
-        "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/1/10/Mozart_-_Eine_kleine_Nachtmusik_-_1._Allegro.ogg",
+        "audioUrl": "https://ia800504.us.archive.org/4/items/EineKleineNachtmusik_356/EineKleineNachtmusik.mp3",
         "duration": 360,
-        "source": "Wikimedia Commons"
+        "source": "Internet Archive"
       },
       {
         "id": "mozart-turkish-march",
         "title": "Turkish March (Rondo Alla Turca)",
         "composer": "Wolfgang Amadeus Mozart",
         "composerId": "mozart",
-        "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/8/81/Mozart_-_Piano_Sonata_in_A_major%2C_K._331%2C_Third_Movement_%28Turkish_March%29.ogg",
+        "audioUrl": "https://ia600504.us.archive.org/4/items/TurkishMarch/TurkishMarch.mp3",
         "duration": 210,
-        "source": "Wikimedia Commons"
-      },
-      {
-        "id": "mozart-symphony-40",
-        "title": "Symphony No. 40 - 1st Movement",
-        "composer": "Wolfgang Amadeus Mozart",
-        "composerId": "mozart",
-        "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/4/49/Mozart_-_Symphony_No._40_in_G_minor%2C_K._550_-_I._Molto_allegro.ogg",
-        "duration": 480,
-        "source": "Wikimedia Commons"
+        "source": "Internet Archive"
       }
     ],
     "chopin": [
@@ -93,18 +66,9 @@
         "title": "Nocturne Op. 9 No. 2",
         "composer": "Frédéric Chopin",
         "composerId": "chopin",
-        "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e3/Frederic_Chopin_-_Nocturne_in_E-flat_major%2C_Op._9%2C_No._2.ogg",
+        "audioUrl": "https://ia800504.us.archive.org/4/items/ChopinNocturneOp9No2/ChopinNocturneOp9No2.mp3",
         "duration": 270,
-        "source": "Wikimedia Commons"
-      },
-      {
-        "id": "chopin-waltz-op64-2",
-        "title": "Waltz in C-sharp minor Op. 64 No. 2",
-        "composer": "Frédéric Chopin",
-        "composerId": "chopin",
-        "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/0/04/Fr%C3%A9d%C3%A9ric_Chopin_-_Waltz_in_C-sharp_minor%2C_Op._64%2C_No._2.ogg",
-        "duration": 210,
-        "source": "Wikimedia Commons"
+        "source": "Internet Archive"
       }
     ],
     "vivaldi": [
@@ -113,9 +77,9 @@
         "title": "The Four Seasons - Spring",
         "composer": "Antonio Vivaldi",
         "composerId": "vivaldi",
-        "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/7/78/Antonio_Vivaldi_-_The_Four_Seasons_-_Spring_-_Allegro.ogg",
+        "audioUrl": "https://ia800504.us.archive.org/4/items/VivaldiSpring/VivaldiSpring.mp3",
         "duration": 200,
-        "source": "Wikimedia Commons"
+        "source": "Internet Archive"
       }
     ],
     "debussy": [
@@ -124,31 +88,9 @@
         "title": "Clair de Lune",
         "composer": "Claude Debussy",
         "composerId": "debussy",
-        "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Debussy_-_Clair_de_lune.ogg",
+        "audioUrl": "https://ia800504.us.archive.org/4/items/ClairDeLune_368/ClairDeLune.mp3",
         "duration": 300,
-        "source": "Wikimedia Commons"
-      }
-    ],
-    "tchaikovsky": [
-      {
-        "id": "tchaikovsky-swan-lake",
-        "title": "Swan Lake - Scene",
-        "composer": "Pyotr Ilyich Tchaikovsky",
-        "composerId": "tchaikovsky",
-        "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c6/Tchaikovsky_-_Swan_Lake%2C_Scene.ogg",
-        "duration": 180,
-        "source": "Wikimedia Commons"
-      }
-    ],
-    "handel": [
-      {
-        "id": "handel-hallelujah",
-        "title": "Hallelujah Chorus (Messiah)",
-        "composer": "George Frideric Handel",
-        "composerId": "handel",
-        "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cb/Handel_-_Messiah_-_Hallelujah.ogg",
-        "duration": 240,
-        "source": "Wikimedia Commons"
+        "source": "Internet Archive"
       }
     ]
   },
