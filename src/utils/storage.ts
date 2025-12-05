@@ -94,6 +94,15 @@ export async function resetProgress(): Promise<void> {
   await AsyncStorage.removeItem(STORAGE_KEY);
 }
 
+export async function resetKickstart(): Promise<void> {
+  const progress = await getProgress();
+  progress.kickstartDay = 0;
+  progress.kickstartCompleted = false;
+  // Remove kickstart badges
+  progress.badges = progress.badges.filter(b => !b.startsWith('kickstart'));
+  await saveProgress(progress);
+}
+
 // Utility functions
 export function getWeekNumber(): number {
   const now = new Date();

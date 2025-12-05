@@ -37,7 +37,9 @@ export default function KickstartScreen() {
   };
 
   const handleSkip = async () => {
-    await saveProgress({ firstLaunch: false, kickstartCompleted: true });
+    // Just mark first launch done, but DON'T mark kickstart completed
+    // So user can still see and access the kickstart later
+    await saveProgress({ firstLaunch: false });
     navigation.navigate('MainTabs');
   };
 

@@ -14,7 +14,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
 import { RootStackParamList, UserProgress } from '../types';
-import { getProgress, resetProgress } from '../utils/storage';
+import { getProgress, resetProgress, resetKickstart } from '../utils/storage';
 
 import composersData from '../data/composers.json';
 import periodsData from '../data/periods.json';
@@ -50,6 +50,23 @@ export default function ProfileScreen() {
           style: 'destructive',
           onPress: async () => {
             await resetProgress();
+            await loadProgress();
+          }
+        }
+      ]
+    );
+  };
+
+  const handleRestartKickstart = () => {
+    Alert.alert(
+      'Restart 5-Day Kickstart',
+      'This will reset your kickstart progress so you can start fresh. Your other progress will be kept.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { 
+          text: 'Restart', 
+          onPress: async () => {
+            await resetKickstart();
             await loadProgress();
           }
         }
@@ -196,6 +213,12 @@ export default function ProfileScreen() {
         <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('Settings')}>
           <Ionicons name="color-palette" size={20} color={t.colors.primary} />
           <Text style={[styles.settingText, { color: t.colors.text }]}>Theme & Preferences</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.settingItem} onPress={handleRestartKickstart}>
+          <Ionicons name="rocket" size={20} color={t.colors.secondary} />
+          <Text style={[styles.settingText, { color: t.colors.text }]}>
+            Restart 5-Day Kickstart
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.settingItem} onPress={handleReset}>
           <Ionicons name="refresh" size={20} color={t.colors.error} />

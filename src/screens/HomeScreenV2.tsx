@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -8,9 +8,10 @@ import {
   Dimensions,
   Image,
   Platform,
+  RefreshControl,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
@@ -35,6 +36,7 @@ export default function HomeScreen() {
   const t = theme;
 
   const [progress, setProgress] = useState<UserProgress | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const weekNumber = getWeekNumber();
   const dayOfYear = getDayOfYear();
@@ -45,9 +47,29 @@ export default function HomeScreen() {
   const termOfDay = glossaryData.terms[(dayOfYear - 1) % glossaryData.terms.length];
   const featuredComposer = composersData.composers[dayOfYear % composersData.composers.length];
 
-  useEffect(() => {
-    getProgress().then(setProgress);
+  const loadProgress = useCallback(async () => {
+    const p = await getProgress();
+    setProgress(p);
   }, []);
+
+  // Load on mount
+  useEffect(() => {
+    loadProgress();
+  }, [loadProgress]);
+
+  // Refresh when screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      loadProgress();
+    }, [loadProgress])
+  );
+
+  // Pull-to-refresh handler
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await loadProgress();
+    setRefreshing(false);
+  }, [loadProgress]);
 
   const kickstartProgress = progress?.kickstartDay || 0;
   const showKickstart = progress && !progress.kickstartCompleted;
@@ -88,6 +110,14 @@ export default function HomeScreen() {
       style={[styles.container, !isGlass && { backgroundColor: t.colors.background }]}
       contentContainerStyle={[styles.content, { paddingTop: insets.top + 16 }]}
       showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          tintColor={t.colors.primary}
+          colors={[t.colors.primary]}
+        />
+      }
     >
       {/* Header */}
       <View style={styles.header}>
