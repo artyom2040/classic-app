@@ -100,7 +100,7 @@ class DataServiceClass {
         case 'firebase':
           return this.fetchFromFirebase('composers');
         case 'supabase':
-          return this.fetchFromSupabase('composers');
+          return this.fetchWithSupabaseFallback('composers', composersData.composers as Composer[]);
         case 'api':
           return this.fetchFromAPI('/composers');
         default:
@@ -155,7 +155,7 @@ class DataServiceClass {
         case 'local':
           return Promise.resolve(formsData.forms as MusicalForm[]);
         case 'supabase':
-          return this.fetchFromSupabase('forms');
+          return this.fetchWithSupabaseFallback('forms', formsData.forms as MusicalForm[]);
         default:
           return Promise.resolve(formsData.forms as MusicalForm[]);
       }
@@ -177,7 +177,7 @@ class DataServiceClass {
         case 'local':
           return Promise.resolve(glossaryData.terms as Term[]);
         case 'supabase':
-          return this.fetchFromSupabase('terms');
+          return this.fetchWithSupabaseFallback('terms', glossaryData.terms as Term[]);
         default:
           return Promise.resolve(glossaryData.terms as Term[]);
       }
@@ -205,7 +205,7 @@ class DataServiceClass {
         case 'local':
           return Promise.resolve(albumsData.weeklyAlbums as WeeklyAlbum[]);
         case 'supabase':
-          return this.fetchFromSupabase('weeklyAlbums');
+          return this.fetchWithSupabaseFallback('weeklyAlbums', albumsData.weeklyAlbums as WeeklyAlbum[]);
         default:
           return Promise.resolve(albumsData.weeklyAlbums as WeeklyAlbum[]);
       }
@@ -228,7 +228,7 @@ class DataServiceClass {
         case 'local':
           return Promise.resolve(albumsData.monthlySpotlights as MonthlySpotlight[]);
         case 'supabase':
-          return this.fetchFromSupabase('monthlySpotlights');
+          return this.fetchWithSupabaseFallback('monthlySpotlights', albumsData.monthlySpotlights as MonthlySpotlight[]);
         default:
           return Promise.resolve(albumsData.monthlySpotlights as MonthlySpotlight[]);
       }
@@ -245,7 +245,7 @@ class DataServiceClass {
         case 'local':
           return Promise.resolve((albumsData as any).newReleases as NewRelease[]);
         case 'supabase':
-          return this.fetchFromSupabase('newReleases');
+          return this.fetchWithSupabaseFallback('newReleases', (albumsData as any).newReleases as NewRelease[]);
         default:
           return Promise.resolve((albumsData as any).newReleases as NewRelease[]);
       }
@@ -262,7 +262,7 @@ class DataServiceClass {
         case 'local':
           return Promise.resolve((albumsData as any).concertHalls as ConcertHall[]);
         case 'supabase':
-          return this.fetchFromSupabase('concertHalls');
+          return this.fetchWithSupabaseFallback('concertHalls', (albumsData as any).concertHalls as ConcertHall[]);
         default:
           return Promise.resolve((albumsData as any).concertHalls as ConcertHall[]);
       }
@@ -363,6 +363,15 @@ class DataServiceClass {
     }
 
     return response.json();
+  }
+
+  private async fetchWithSupabaseFallback<T>(collection: string, localData: T[]): Promise<T[]> {
+    try {
+      return await this.fetchFromSupabase<T>(collection);
+    } catch (error) {
+      console.warn(`[DataService] Supabase fetch failed for ${collection}, falling back to local.`, error);
+      return localData;
+    }
   }
 
   private async fetchFromAPI<T>(endpoint: string): Promise<T[]> {

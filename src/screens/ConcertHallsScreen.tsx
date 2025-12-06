@@ -8,7 +8,7 @@ import { ConcertHall } from '../types';
 
 import albumsData from '../data/albums.json';
 
-export default function ConcertHallsScreen() {
+export default function ConcertHallsScreen({ navigation }: any) {
   const { theme, themeName } = useTheme();
   const t = theme;
   const isBrutal = themeName === 'neobrutalist';
@@ -36,7 +36,7 @@ export default function ConcertHallsScreen() {
               isBrutal ? { borderWidth: 2, borderColor: t.colors.border, borderRadius: borderRadius.md } : t.shadows.sm,
             ]}
             activeOpacity={0.85}
-            onPress={() => openMap(hall)}
+            onPress={() => navigation.navigate('ConcertHallDetail', { hallId: hall.id })}
           >
             <View style={styles.headerRow}>
               <Text style={[styles.hallName, { color: t.colors.text }]}>{hall.name}</Text>

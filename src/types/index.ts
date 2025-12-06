@@ -198,7 +198,9 @@ export type RootStackParamList = {
   WeeklyAlbum: undefined;
   MonthlySpotlight: undefined;
   NewReleases: undefined;
+  ReleaseDetail: { releaseId: string };
   ConcertHalls: undefined;
+  ConcertHallDetail: { hallId: string };
   Badges: undefined;
   Settings: undefined;
   Search: undefined;

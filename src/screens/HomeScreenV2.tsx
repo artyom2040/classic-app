@@ -406,7 +406,7 @@ export default function HomeScreen() {
                   { width: width * 0.72, borderTopWidth: 3, borderTopColor: t.colors.secondary },
                 ]}
                 activeOpacity={0.9}
-                onPress={() => navigation.navigate('NewReleases')}
+                onPress={() => navigation.navigate('ReleaseDetail', { releaseId: release.id })}
               >
                 <View style={styles.releaseHeader}>
                   <Text style={[styles.releaseDate, { color: t.colors.secondary }]}>{formatReleaseDate(release.releaseDate)}</Text>
@@ -477,7 +477,7 @@ export default function HomeScreen() {
                   { width: width * 0.72, borderTopWidth: 3, borderTopColor: t.colors.warning },
                 ]}
                 activeOpacity={0.9}
-                onPress={() => navigation.navigate('ConcertHalls')}
+                onPress={() => navigation.navigate('ConcertHallDetail', { hallId: hall.id })}
               >
                 <View style={styles.hallHeader}>
                   <Text style={[styles.hallName, { color: t.colors.text }]} numberOfLines={1}>

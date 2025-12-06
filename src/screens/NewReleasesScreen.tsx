@@ -17,7 +17,7 @@ const LEVEL_FILTERS: Array<{ label: string; value: ListenerLevel | 'all' }> = [
   { label: 'Advanced', value: 'advanced' },
 ];
 
-export default function NewReleasesScreen() {
+export default function NewReleasesScreen({ navigation }: any) {
   const { theme, themeName } = useTheme();
   const { musicService } = useSettings();
   const t = theme;
@@ -81,7 +81,7 @@ export default function NewReleasesScreen() {
               isBrutal ? { borderWidth: 2, borderColor: t.colors.border, borderRadius: borderRadius.md } : t.shadows.sm,
             ]}
             activeOpacity={0.85}
-            onPress={() => openInMusicService(`${release.title} ${release.artist}`, preferredService)}
+            onPress={() => navigation.navigate('ReleaseDetail', { releaseId: release.id })}
           >
             <View style={styles.cardHeader}>
               <Text style={[styles.releaseDate, { color: t.colors.secondary }]}>{formatReleaseDate(release.releaseDate)}</Text>
