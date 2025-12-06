@@ -16,7 +16,8 @@
     "build:all:preview": "eas build --platform all --profile preview",
     "build:all:prod": "eas build --platform all --profile production",
     "build:local:android": "npx expo prebuild --platform android && cd android && ./gradlew assembleRelease",
-    "build:local:ios": "npx expo prebuild --platform ios && echo 'Open ios/*.xcworkspace in Xcode to build'"
+    "build:local:ios": "npx expo prebuild --platform ios && echo 'Open ios/*.xcworkspace in Xcode to build'",
+    "import:supabase": "tsx scripts/import-supabase-data.ts"
   },
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
