@@ -7,6 +7,7 @@ import { useTheme } from '../context/ThemeContext';
 import { getWeekNumber } from '../utils/storage';
 
 import albumsData from '../data/albums.json';
+import { ListenerLevel } from '../types';
 
 export default function WeeklyAlbumScreen() {
   const { theme, themeName } = useTheme();
@@ -14,6 +15,7 @@ export default function WeeklyAlbumScreen() {
   const isBrutal = themeName === 'neobrutalist';
   const weekNumber = getWeekNumber();
   const album = albumsData.weeklyAlbums[(weekNumber - 1) % albumsData.weeklyAlbums.length];
+  const level = album.listenerLevel as ListenerLevel | undefined;
 
   const openSpotify = () => Linking.openURL(`https://open.spotify.com/search/${encodeURIComponent(album.title + ' ' + album.artist)}`);
   const openYouTube = () => Linking.openURL(`https://www.youtube.com/results?search_query=${encodeURIComponent(album.title + ' ' + album.artist)}`);
@@ -25,6 +27,14 @@ export default function WeeklyAlbumScreen() {
         <Text style={[styles.title, { color: t.colors.text }]}>{album.title}</Text>
         <Text style={[styles.artist, { color: t.colors.textSecondary }]}>{album.artist}</Text>
         <Text style={[styles.year, { color: t.colors.textMuted }]}>{album.year}</Text>
+        {level && (
+          <View style={[styles.levelPill, { backgroundColor: t.colors.secondary + '20' }]}>
+            <Ionicons name="person" size={14} color={t.colors.secondary} />
+            <Text style={[styles.levelText, { color: t.colors.secondary }]}>
+              {level === 'beginner' ? 'Beginner friendly' : level === 'intermediate' ? 'Intermediate' : 'Advanced'}
+            </Text>
+          </View>
+        )}
       </View>
 
       <View style={styles.listenButtons}>
@@ -76,6 +86,8 @@ const styles = StyleSheet.create({
   title: { fontSize: fontSize.xxl, fontWeight: 'bold', textAlign: 'center', marginTop: spacing.xs },
   artist: { fontSize: fontSize.md, marginTop: spacing.xs, textAlign: 'center' },
   year: { fontSize: fontSize.sm, marginTop: 2 },
+  levelPill: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs, paddingHorizontal: spacing.sm, paddingVertical: spacing.xs, borderRadius: borderRadius.full, marginTop: spacing.xs },
+  levelText: { fontSize: fontSize.xs, fontWeight: '600' },
   listenButtons: { gap: spacing.sm, marginBottom: spacing.lg },
   listenButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: borderRadius.lg, padding: spacing.md, gap: spacing.sm },
   listenButtonText: { fontSize: fontSize.md, fontWeight: '600' },

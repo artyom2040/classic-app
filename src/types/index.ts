@@ -68,6 +68,8 @@ export interface MusicalForm {
   listenFor: string[];
 }
 
+export type ListenerLevel = 'beginner' | 'intermediate' | 'advanced';
+
 // Album types
 export interface KeyMoment {
   time: string;
@@ -84,6 +86,7 @@ export interface WeeklyAlbum {
   spotifyUri: string;
   appleMusicUrl: string;
   keyMoments: KeyMoment[];
+  listenerLevel?: ListenerLevel;
 }
 
 export interface MonthlySpotlight {
@@ -104,6 +107,7 @@ export interface NewRelease {
   releaseDate: string;
   description: string;
   highlightTrack?: string;
+  listenerLevel?: ListenerLevel;
 }
 
 export interface ConcertHall {
@@ -113,6 +117,7 @@ export interface ConcertHall {
   description: string;
   signatureSound?: string;
   mapUrl?: string;
+  listenerLevel?: ListenerLevel;
 }
 
 // Kickstart types
@@ -192,6 +197,8 @@ export type RootStackParamList = {
   KickstartDay: { day: number };
   WeeklyAlbum: undefined;
   MonthlySpotlight: undefined;
+  NewReleases: undefined;
+  ConcertHalls: undefined;
   Badges: undefined;
   Settings: undefined;
   Search: undefined;

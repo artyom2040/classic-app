@@ -19,7 +19,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import { useTheme } from '../context/ThemeContext';
 import { spacing, fontSize, borderRadius } from '../theme';
-import { RootStackParamList, UserProgress, NewRelease, ConcertHall, Term } from '../types';
+import { RootStackParamList, UserProgress, NewRelease, ConcertHall, Term, ListenerLevel } from '../types';
 import { getProgress, getWeekNumber, getDayOfYear, getCurrentMonth } from '../utils/storage';
 import { openInMusicService } from '../utils/musicLinks';
 import { hapticSelection } from '../utils/haptics';
@@ -95,6 +95,13 @@ export default function HomeScreen() {
     return isNaN(parsed.getTime())
       ? date
       : parsed.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+  };
+
+  const levelLabel = (level?: ListenerLevel) => {
+    if (!level) return null;
+    if (level === 'beginner') return 'Beginner friendly';
+    if (level === 'intermediate') return 'Intermediate';
+    return 'Advanced';
   };
 
   const openRelease = (release: NewRelease) => {
@@ -241,9 +248,19 @@ export default function HomeScreen() {
           <Text style={[styles.featuredTitle, { color: t.colors.text }]} numberOfLines={1}>
             {weeklyAlbum.title}
           </Text>
-          <Text style={[styles.featuredSub, { color: t.colors.textMuted }]} numberOfLines={1}>
-            {weeklyAlbum.artist}
-          </Text>
+          <View style={[styles.featuredSubRow]}>
+            <Text style={[styles.featuredSub, { color: t.colors.textMuted }]} numberOfLines={1}>
+              {weeklyAlbum.artist}
+            </Text>
+            {weeklyAlbum.listenerLevel && (
+              <View style={[styles.releasePill, { backgroundColor: t.colors.secondary + '20' }]}>
+                <Ionicons name="person" size={12} color={t.colors.secondary} />
+                <Text style={[styles.releasePillText, { color: t.colors.secondary }]} numberOfLines={1}>
+                  {levelLabel(weeklyAlbum.listenerLevel)}
+                </Text>
+              </View>
+            )}
+          </View>
         </TouchableOpacity>
 
         {/* Monthly Spotlight */}
@@ -366,7 +383,12 @@ export default function HomeScreen() {
       {/* New Releases */}
       {newReleases.length > 0 && (
         <>
-          <Text style={[styles.sectionTitle, { color: t.colors.text }]}>New Released Albums</Text>
+          <View style={[styles.sectionHeaderRow]}>
+            <Text style={[styles.sectionTitle, { color: t.colors.text }]}>New Released Albums</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('NewReleases')}>
+              <Text style={[styles.sectionLink, { color: t.colors.primary }]}>See all</Text>
+            </TouchableOpacity>
+          </View>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -401,6 +423,14 @@ export default function HomeScreen() {
                 <Text style={[styles.releaseArtist, { color: t.colors.textSecondary }]} numberOfLines={1}>
                   {release.artist}
                 </Text>
+                {release.listenerLevel && (
+                  <View style={[styles.releasePill, { backgroundColor: t.colors.primary + '20' }]}>
+                    <Ionicons name="person" size={14} color={t.colors.primary} />
+                    <Text style={[styles.releasePillText, { color: t.colors.primary }]} numberOfLines={1}>
+                      {levelLabel(release.listenerLevel)}
+                    </Text>
+                  </View>
+                )}
                 <Text style={[styles.releaseDescription, { color: t.colors.textMuted }]} numberOfLines={3}>
                   {release.description}
                 </Text>
@@ -420,7 +450,12 @@ export default function HomeScreen() {
       {/* Concert Halls */}
       {concertHalls.length > 0 && (
         <>
-          <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Concert Halls</Text>
+          <View style={[styles.sectionHeaderRow]}>
+            <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Concert Halls</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('ConcertHalls')}>
+              <Text style={[styles.sectionLink, { color: t.colors.primary }]}>See all</Text>
+            </TouchableOpacity>
+          </View>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -532,10 +567,13 @@ const styles = StyleSheet.create({
   featuredLabel: { fontSize: 10, fontWeight: '600', textAlign: 'center' },
   featuredTitle: { fontSize: 13, fontWeight: '700', textAlign: 'center', marginTop: 4 },
   featuredSub: { fontSize: 10, textAlign: 'center', marginTop: 2 },
+  featuredSubRow: { width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 6 },
   progressDots: { flexDirection: 'row', gap: 4, marginTop: 6 },
   dot: { width: 6, height: 6, borderRadius: 3 },
   
   sectionTitle: { fontSize: 20, fontWeight: '700', marginBottom: 12 },
+  sectionHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
+  sectionLink: { fontSize: 13, fontWeight: '600' },
   
   heroCard: { marginBottom: 16, overflow: 'hidden' },
   heroAccent: { height: 4 },

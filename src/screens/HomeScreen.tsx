@@ -14,7 +14,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { colors, spacing, fontSize, borderRadius, shadows } from '../theme';
-import { RootStackParamList, Term } from '../types';
+import { RootStackParamList, Term, ListenerLevel } from '../types';
 import { getProgress, getWeekNumber, getDayOfYear, getCurrentMonth } from '../utils/storage';
 import { UserProgress } from '../types';
 import { getShortDefinition } from '../utils/terms';
@@ -40,6 +40,12 @@ export default function HomeScreen() {
   const monthlySpotlight = albumsData.monthlySpotlights[(currentMonth - 1) % albumsData.monthlySpotlights.length];
   const termOfDay = glossaryData.terms[(dayOfYear - 1) % glossaryData.terms.length] as Term;
   const termSummary = getShortDefinition(termOfDay);
+  const levelLabel = (level?: ListenerLevel) => {
+    if (!level) return null;
+    if (level === 'beginner') return 'Beginner friendly';
+    if (level === 'intermediate') return 'Intermediate';
+    return 'Advanced';
+  };
 
   useEffect(() => {
     async function loadProgress() {
@@ -116,6 +122,12 @@ export default function HomeScreen() {
         </View>
         <Text style={styles.albumTitle}>{weeklyAlbum.title}</Text>
         <Text style={styles.albumArtist}>{weeklyAlbum.artist}</Text>
+        {weeklyAlbum.listenerLevel && (
+          <View style={styles.levelPill}>
+            <Ionicons name="person" size={14} color={colors.primary} />
+            <Text style={styles.levelText}>{levelLabel(weeklyAlbum.listenerLevel)}</Text>
+          </View>
+        )}
         <Text style={styles.albumDescription} numberOfLines={2}>
           {weeklyAlbum.whyListen}
         </Text>
@@ -324,6 +336,22 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     color: colors.textSecondary,
     marginBottom: spacing.sm,
+  },
+  levelPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    alignSelf: 'flex-start',
+    backgroundColor: colors.surfaceLight,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: borderRadius.full,
+    marginBottom: spacing.sm,
+  },
+  levelText: {
+    fontSize: fontSize.xs,
+    color: colors.primary,
+    fontWeight: '600',
   },
   albumDescription: {
     fontSize: fontSize.sm,

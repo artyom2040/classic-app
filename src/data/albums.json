@@ -86,7 +86,8 @@
         {"time": "0:00", "description": "Spring—birds, brooks, and storms"},
         {"time": "20:00", "description": "Summer's violent thunderstorm"},
         {"time": "32:00", "description": "Winter's icy chill and warmth by the fire"}
-      ]
+      ],
+      "listenerLevel": "beginner"
     },
     {
       "week": 7,
@@ -115,7 +116,8 @@
         {"time": "0:00", "description": "The mysterious bassoon solo"},
         {"time": "3:30", "description": "The Augurs of Spring—pounding, dissonant chords"},
         {"time": "28:00", "description": "Sacrificial Dance—primal rhythmic violence"}
-      ]
+      ],
+      "listenerLevel": "advanced"
     },
     {
       "week": 9,
@@ -305,7 +307,8 @@
       "artist": "Yuja Wang / Los Angeles Philharmonic / Gustavo Dudamel",
       "releaseDate": "2024-01-19",
       "description": "A high-voltage, audiophile-grade take on two Romantic warhorses. The live energy of Wang and Dudamel keeps familiar pages feeling dangerous.",
-      "highlightTrack": "Piano Concerto No. 3 — Finale"
+      "highlightTrack": "Piano Concerto No. 3 — Finale",
+      "listenerLevel": "advanced"
     },
     {
       "id": "mutter-violin-2024",
@@ -313,7 +316,8 @@
       "artist": "Anne-Sophie Mutter / The Mutter Virtuosi",
       "releaseDate": "2024-02-02",
       "description": "Newly recorded encores pairing film music with minimalism. Sparkling playing and close-mic engineering make this perfect headphone listening.",
-      "highlightTrack": "Philip Glass: Echorus"
+      "highlightTrack": "Philip Glass: Echorus",
+      "listenerLevel": "intermediate"
     },
     {
       "id": "berlin-mahler-10-2024",
@@ -321,7 +325,8 @@
       "artist": "Berliner Philharmoniker / Sir Simon Rattle",
       "releaseDate": "2024-03-08",
       "description": "Rattle revisits Mahler’s final symphony with Berlin. A transparent, modern recording that reveals every line of Cooke’s completion.",
-      "highlightTrack": "Adagio — opening viola line and cataclysmic climax"
+      "highlightTrack": "Adagio — opening viola line and cataclysmic climax",
+      "listenerLevel": "advanced"
     }
   ],
   "concertHalls": [

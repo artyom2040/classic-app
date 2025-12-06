@@ -32,6 +32,8 @@ import KickstartScreen from './src/screens/KickstartScreen';
 import KickstartDayScreen from './src/screens/KickstartDayScreen';
 import WeeklyAlbumScreen from './src/screens/WeeklyAlbumScreen';
 import MonthlySpotlightScreen from './src/screens/MonthlySpotlightScreen';
+import NewReleasesScreen from './src/screens/NewReleasesScreen';
+import ConcertHallsScreen from './src/screens/ConcertHallsScreen';
 import BadgesScreen from './src/screens/BadgesScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import SearchScreen from './src/screens/SearchScreen';
@@ -243,6 +245,16 @@ function AppNavigator() {
           name="MonthlySpotlight" 
           component={MonthlySpotlightScreen}
           options={{ title: 'Monthly Spotlight' }}
+        />
+        <Stack.Screen 
+          name="NewReleases" 
+          component={NewReleasesScreen}
+          options={{ title: 'New Releases' }}
+        />
+        <Stack.Screen 
+          name="ConcertHalls" 
+          component={ConcertHallsScreen}
+          options={{ title: 'Concert Halls' }}
         />
         <Stack.Screen 
           name="Badges" 
