@@ -14,6 +14,7 @@
  */
 
 import { Composer, Period, MusicalForm, Term, WeeklyAlbum, MonthlySpotlight, Badge, KickstartDay, NewRelease, ConcertHall } from '../types';
+import { isSupabaseConfigured, getSupabaseClient } from './supabaseClient';
 
 // Local data imports (will be replaced with API calls)
 import composersData from '../data/composers.json';
@@ -336,33 +337,17 @@ class DataServiceClass {
     throw new Error('Firebase not configured. Set up firebaseConfig in DATA_SOURCE.');
   }
 
-  private getSupabaseConfig() {
-    const cfg = this.config.supabaseConfig;
-    if (!cfg?.url || !cfg?.anonKey) {
-      throw new Error('Supabase not configured. Set EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY.');
-    }
-    return cfg;
-  }
-
   private async fetchFromSupabase<T>(collection: string): Promise<T[]> {
-    const cfg = this.getSupabaseConfig();
-    const table = this.supabaseTableMap[collection] || collection;
-    const url = `${cfg.url.replace(/\/$/, '')}/rest/v1/${table}?select=*`;
-
-    const response = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        apikey: cfg.anonKey,
-        Authorization: `Bearer ${cfg.anonKey}`,
-      },
-    });
-
-    if (!response.ok) {
-      const body = await response.text();
-      throw new Error(`Supabase error (${response.status}): ${body}`);
+    if (!isSupabaseConfigured()) {
+      throw new Error('Supabase not configured.');
     }
-
-    return response.json();
+    const supabase = getSupabaseClient();
+    const table = this.supabaseTableMap[collection] || collection;
+    const { data, error } = await supabase.from(table).select('*');
+    if (error) {
+      throw error;
+    }
+    return (data || []) as T[];
   }
 
   private async fetchWithSupabaseFallback<T>(collection: string, localData: T[]): Promise<T[]> {

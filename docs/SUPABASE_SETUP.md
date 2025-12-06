@@ -7,28 +7,48 @@ Goal: host Supabase yourself, migrate JSON content, enable CRUD/admin, and keep 
 - Supabase CLI (`npm i -g supabase`)
 - Domain + TLS via reverse proxy (Caddy/NGINX)
 
-## 2) Bootstrap Supabase locally/on VPS
+## 2) Bootstrap Supabase on VPS (185.194.140.57)
+Run these on the VPS (as a non-root user with docker permissions):
 ```bash
+sudo apt update && sudo apt install -y docker.io docker-compose-plugin
+npm install -g supabase
+
+mkdir -p ~/supabase/classic-app && cd ~/supabase/classic-app
 supabase init --project-name classic-app
-supabase start        # starts Postgres, REST, Studio locally
+supabase start  # optional locally; for VPS we use docker compose below
 ```
 
-For VPS:
-1. Copy the generated `docker-compose.yml` to the VPS.
-2. Set env values (`SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `JWT_SECRET` etc.).
-3. Run `docker compose up -d`.
-4. Put REST and Studio behind HTTPS (reverse proxy).
+Deploy services:
+```bash
+cd ~/supabase/classic-app
+docker compose up -d
+```
+
+Expose behind HTTPS (Caddy/NGINX) pointing to:
+- REST: 0.0.0.0:54321
+- Studio: 0.0.0.0:54323
+- Auth: 0.0.0.0:54322
 
 ## 3) Schema
-See `docs/supabase/schema.sql` (tables: releases, concert_halls, terms, periods, forms, composers, homepage_blocks, news_posts, users, user_progress, tags/work_tags). Apply with:
+See `docs/supabase/schema.sql` (tables) and `docs/supabase/rls.sql` (policies).
+Apply:
 ```bash
+# from repo root (with SUPABASE_DB_URL env that includes service role)
 supabase db push --db-url "$SUPABASE_DB_URL"
-# or locally: supabase db reset
+psql "$SUPABASE_DB_URL" -f docs/supabase/rls.sql
 ```
 
 ## 4) Import existing JSON
-- Export JSON to CSV or JSONL; use `supabase import` or direct `psql \copy`.
-- Minimal approach: `supabase db connect` then run `\copy releases from 'releases.csv' csv header;` etc.
+Option A: `supabase db connect` then `\copy` from CSV:
+```bash
+supabase db connect --db-url "$SUPABASE_DB_URL"
+\copy releases from '/path/releases.csv' csv header;
+\copy concert_halls from '/path/concert_halls.csv' csv header;
+... (repeat for other tables)
+```
+
+Option B: write a small node script to upsert via `@supabase/supabase-js` using the service role key (run locally, not in the app).
+
 - Keep `EXPO_PUBLIC_DATA_SOURCE=local` until data is loaded; switch to `supabase` after verifying.
 
 ## 5) Auth & RBAC
@@ -48,7 +68,7 @@ supabase db push --db-url "$SUPABASE_DB_URL"
   - `EXPO_PUBLIC_DATA_SOURCE=supabase`
   - `EXPO_PUBLIC_SUPABASE_URL=<your-url>`
   - `EXPO_PUBLIC_SUPABASE_ANON_KEY=<anon-key>`
-- DataService already falls back to local JSON if Supabase errors or env is missing.
+- DataService falls back to local JSON if Supabase errors or env is missing.
 
 ## 8) Ops
 - Nightly `pg_dump` backup + WAL (point-in-time).
