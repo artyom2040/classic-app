@@ -15,6 +15,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '../context/ThemeContext';
 import { RootStackParamList } from '../types';
 import { spacing, fontSize, borderRadius } from '../theme';
+import { getLongDefinition } from '../utils/terms';
 
 // Import data for searching
 import composersData from '../data/composers.json';
@@ -80,7 +81,7 @@ export function SearchBar({ placeholder = 'Search...', autoFocus = false, onClos
     glossaryData.terms.forEach(term => {
       if (
         term.term.toLowerCase().includes(lowerQuery) ||
-        term.definition.toLowerCase().includes(lowerQuery) ||
+        getLongDefinition(term as any).toLowerCase().includes(lowerQuery) ||
         term.category.toLowerCase().includes(lowerQuery)
       ) {
         searchResults.push({

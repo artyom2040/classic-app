@@ -33,12 +33,21 @@ export interface Composer {
 }
 
 // Glossary types
+export interface TermMedia {
+  label: string;
+  url: string;
+  type: 'youtube' | 'spotify' | 'audio';
+}
+
 export interface Term {
   id: number;
   term: string;
   category: string;
-  definition: string;
-  example: string;
+  shortDefinition?: string;
+  longDefinition?: string;
+  definition?: string;
+  example?: string;
+  media?: TermMedia[];
 }
 
 // Form types
@@ -86,6 +95,24 @@ export interface MonthlySpotlight {
   description: string;
   featuredWorks: string[];
   challenge: string;
+}
+
+export interface NewRelease {
+  id: string;
+  title: string;
+  artist: string;
+  releaseDate: string;
+  description: string;
+  highlightTrack?: string;
+}
+
+export interface ConcertHall {
+  id: string;
+  name: string;
+  city: string;
+  description: string;
+  signatureSound?: string;
+  mapUrl?: string;
 }
 
 // Kickstart types

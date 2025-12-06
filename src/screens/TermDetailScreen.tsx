@@ -8,6 +8,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useFavorites } from '../context/FavoritesContext';
 import { RootStackParamList, Term } from '../types';
 import { markTermViewed } from '../utils/storage';
+import { getLongDefinition, getShortDefinition, getTermMedia } from '../utils/terms';
 
 import glossaryData from '../data/glossary.json';
 
@@ -23,6 +24,9 @@ export default function TermDetailScreen() {
   const { termId } = route.params;
   const term = glossaryData.terms.find(item => item.id === termId) as Term | undefined;
   const isLiked = isFavorite(termId, 'term');
+  const longDefinition = term ? getLongDefinition(term) : '';
+  const shortDefinition = term ? getShortDefinition(term) : '';
+  const mediaItems = term ? getTermMedia(term) : [];
 
   const categoryColors: { [key: string]: string } = {
     Tempo: '#E74C3C', Form: '#9B59B6', Harmony: '#3498DB', Technique: '#1ABC9C',
@@ -62,20 +66,40 @@ export default function TermDetailScreen() {
 
       <View style={[styles.definitionCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
         <Ionicons name="book-outline" size={20} color={t.colors.primary} />
-        <Text style={[styles.definition, { color: t.colors.text }]}>{term.definition}</Text>
+        <Text style={[styles.definition, { color: t.colors.text }]}>{longDefinition}</Text>
       </View>
 
-      {term.example && (
+      {shortDefinition && (
         <View style={[styles.exampleCard, { backgroundColor: t.colors.surfaceLight }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
-          <Text style={[styles.exampleLabel, { color: t.colors.textMuted }]}>Example</Text>
-          <Text style={[styles.exampleText, { color: t.colors.textSecondary }]}>{term.example}</Text>
-          <TouchableOpacity
-            style={styles.listenButton}
-            onPress={() => Linking.openURL(`https://www.youtube.com/results?search_query=${encodeURIComponent(term.example)}`)}
-          >
-            <Ionicons name="play-circle-outline" size={18} color={t.colors.primary} />
-            <Text style={[styles.listenButtonText, { color: t.colors.primary }]}>Listen on YouTube</Text>
-          </TouchableOpacity>
+          <Text style={[styles.exampleLabel, { color: t.colors.textMuted }]}>Quick definition</Text>
+          <Text style={[styles.exampleText, { color: t.colors.textSecondary }]}>{shortDefinition}</Text>
+        </View>
+      )}
+
+      {mediaItems.length > 0 && (
+        <View style={[styles.exampleCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
+          <Text style={[styles.exampleLabel, { color: t.colors.textMuted }]}>Listen / Watch</Text>
+          {mediaItems.map((item, idx) => {
+            const iconName =
+              item.type === 'spotify'
+                ? 'musical-note'
+                : item.type === 'audio'
+                ? 'play-circle'
+                : 'logo-youtube';
+            const iconColor =
+              item.type === 'spotify'
+                ? t.colors.primary
+                : item.type === 'audio'
+                ? t.colors.secondary
+                : '#FF0000';
+
+            return (
+              <TouchableOpacity key={`${item.label}-${idx}`} style={styles.listenButton} onPress={() => Linking.openURL(item.url)}>
+                <Ionicons name={iconName as any} size={18} color={iconColor} />
+                <Text style={[styles.listenButtonText, { color: t.colors.text }]}>{item.label}</Text>
+              </TouchableOpacity>
+            );
+          })}
         </View>
       )}
 

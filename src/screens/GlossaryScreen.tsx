@@ -14,6 +14,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
 import { RootStackParamList, Term } from '../types';
+import { getLongDefinition, getShortDefinition } from '../utils/terms';
 
 import glossaryData from '../data/glossary.json';
 
@@ -53,7 +54,7 @@ export default function GlossaryScreen() {
   const filteredTerms = useMemo(() => {
     return terms.filter(term => {
       const matchesSearch = term.term.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           term.definition.toLowerCase().includes(searchQuery.toLowerCase());
+                           getLongDefinition(term).toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = selectedCategory === 'All' || term.category === selectedCategory;
       return matchesSearch && matchesCategory;
     });
@@ -61,6 +62,7 @@ export default function GlossaryScreen() {
 
   const renderTerm = ({ item }: { item: Term }) => {
     const categoryColor = categoryColors[item.category] || categoryColors.default;
+    const summary = getShortDefinition(item);
     
     return (
       <TouchableOpacity
@@ -77,7 +79,7 @@ export default function GlossaryScreen() {
           </View>
         </View>
         <Text style={[styles.termDefinition, { color: t.colors.textSecondary }]} numberOfLines={2}>
-          {item.definition}
+          {summary}
         </Text>
       </TouchableOpacity>
     );

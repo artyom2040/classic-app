@@ -18,6 +18,7 @@ import { RootStackParamList } from '../types';
 import { spacing, fontSize, borderRadius } from '../theme';
 import { haptic } from '../utils/haptics';
 import { getDayOfYear } from '../utils/storage';
+import { getLongDefinition } from '../utils/terms';
 
 // Import data
 import composersData from '../data/composers.json';
@@ -81,15 +82,16 @@ function generateQuestions(dayOfYear: number): Question[] {
     .filter((_, i) => i !== termIdx)
     .slice(0, 3)
     .map(t => t.term);
+  const termDefinition = getLongDefinition(term as any);
   
   const termOptions = [...wrongTerms, term.term].sort(() => seededRandom(2, 3) - 0.5);
   questions.push({
     id: 'q2',
     type: 'term',
-    question: `What musical term means: "${term.definition.substring(0, 100)}..."?`,
+    question: `What musical term means: "${termDefinition.substring(0, 100)}..."?`,
     options: termOptions,
     correctIndex: termOptions.indexOf(term.term),
-    explanation: `"${term.term}" - ${term.definition}`,
+    explanation: `"${term.term}" - ${termDefinition}`,
   });
 
   // Question 3: Period identification

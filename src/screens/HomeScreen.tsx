@@ -14,9 +14,10 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { colors, spacing, fontSize, borderRadius, shadows } from '../theme';
-import { RootStackParamList } from '../types';
+import { RootStackParamList, Term } from '../types';
 import { getProgress, getWeekNumber, getDayOfYear, getCurrentMonth } from '../utils/storage';
 import { UserProgress } from '../types';
+import { getShortDefinition } from '../utils/terms';
 
 import glossaryData from '../data/glossary.json';
 import albumsData from '../data/albums.json';
@@ -37,7 +38,8 @@ export default function HomeScreen() {
   // Get rotating content
   const weeklyAlbum = albumsData.weeklyAlbums[(weekNumber - 1) % albumsData.weeklyAlbums.length];
   const monthlySpotlight = albumsData.monthlySpotlights[(currentMonth - 1) % albumsData.monthlySpotlights.length];
-  const termOfDay = glossaryData.terms[(dayOfYear - 1) % glossaryData.terms.length];
+  const termOfDay = glossaryData.terms[(dayOfYear - 1) % glossaryData.terms.length] as Term;
+  const termSummary = getShortDefinition(termOfDay);
 
   useEffect(() => {
     async function loadProgress() {
@@ -95,7 +97,7 @@ export default function HomeScreen() {
         </View>
         <Text style={styles.termTitle}>{termOfDay.term}</Text>
         <Text style={styles.termDefinition} numberOfLines={2}>
-          {termOfDay.definition}
+          {termSummary}
         </Text>
         <View style={styles.termCategory}>
           <Text style={styles.termCategoryText}>{termOfDay.category}</Text>

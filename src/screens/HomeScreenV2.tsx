@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
-  Image,
   Platform,
+  Linking,
   RefreshControl,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -19,11 +19,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import { useTheme } from '../context/ThemeContext';
 import { spacing, fontSize, borderRadius } from '../theme';
-import { RootStackParamList, UserProgress } from '../types';
+import { RootStackParamList, UserProgress, NewRelease, ConcertHall, Term } from '../types';
 import { getProgress, getWeekNumber, getDayOfYear, getCurrentMonth } from '../utils/storage';
 import { openInMusicService } from '../utils/musicLinks';
 import { hapticSelection } from '../utils/haptics';
 import { SkeletonHeroCard, SkeletonGrid } from '../components';
+import { useSettings } from '../context/SettingsContext';
+import { getShortDefinition } from '../utils/terms';
 
 import glossaryData from '../data/glossary.json';
 import albumsData from '../data/albums.json';
@@ -37,6 +39,7 @@ export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { theme, themeName } = useTheme();
   const t = theme;
+  const { musicService } = useSettings();
 
   const [progress, setProgress] = useState<UserProgress | null>(null);
   const [progressLoading, setProgressLoading] = useState(true);
@@ -48,8 +51,11 @@ export default function HomeScreen() {
 
   const weeklyAlbum = albumsData.weeklyAlbums[(weekNumber - 1) % albumsData.weeklyAlbums.length];
   const monthlySpotlight = albumsData.monthlySpotlights[(currentMonth - 1) % albumsData.monthlySpotlights.length];
-  const termOfDay = glossaryData.terms[(dayOfYear - 1) % glossaryData.terms.length];
+  const newReleases = (albumsData.newReleases || []) as NewRelease[];
+  const concertHalls = (albumsData.concertHalls || []) as ConcertHall[];
+  const termOfDay = glossaryData.terms[(dayOfYear - 1) % glossaryData.terms.length] as Term;
   const featuredComposer = composersData.composers[dayOfYear % composersData.composers.length];
+  const termSummary = getShortDefinition(termOfDay);
 
   const loadProgress = useCallback(async () => {
     setProgressLoading(true);
@@ -82,6 +88,23 @@ export default function HomeScreen() {
   const showKickstart = progress && !progress.kickstartCompleted;
   const isBrutal = themeName === 'neobrutalist';
   const isGlass = themeName === 'liquidglass';
+  const preferredService = (musicService === 'apple' ? 'appleMusic' : musicService) as 'spotify' | 'appleMusic' | 'youtube';
+
+  const formatReleaseDate = (date: string) => {
+    const parsed = new Date(date);
+    return isNaN(parsed.getTime())
+      ? date
+      : parsed.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+  };
+
+  const openRelease = (release: NewRelease) => {
+    openInMusicService(`${release.title} ${release.artist}`, preferredService);
+  };
+
+  const openHallMap = (hall: ConcertHall) => {
+    const url = hall.mapUrl || `https://maps.google.com/?q=${encodeURIComponent(`${hall.name} ${hall.city}`)}`;
+    Linking.openURL(url);
+  };
 
   // Card style based on theme
   const cardStyle = {
@@ -266,7 +289,7 @@ export default function HomeScreen() {
           </View>
           <Text style={[styles.heroTitle, { color: t.colors.text }]}>{termOfDay.term}</Text>
           <Text style={[styles.heroDescription, { color: t.colors.textSecondary }]} numberOfLines={2}>
-            {termOfDay.definition}
+            {termSummary}
           </Text>
           <View style={styles.heroFooter}>
             <Text style={[styles.exampleLabel, { color: t.colors.textMuted }]}>Example:</Text>
@@ -339,6 +362,107 @@ export default function HomeScreen() {
           </TouchableOpacity>
         ))}
       </View>
+
+      {/* New Releases */}
+      {newReleases.length > 0 && (
+        <>
+          <Text style={[styles.sectionTitle, { color: t.colors.text }]}>New Released Albums</Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ gap: 12, paddingBottom: 4 }}
+            style={{ marginBottom: 12 }}
+          >
+            {newReleases.map((release) => (
+              <TouchableOpacity
+                key={release.id}
+                style={[
+                  styles.releaseCard,
+                  cardStyle,
+                  { width: width * 0.72, borderTopWidth: 3, borderTopColor: t.colors.secondary },
+                ]}
+                activeOpacity={0.85}
+                onPress={() => openRelease(release)}
+              >
+                <View style={styles.releaseHeader}>
+                  <Text style={[styles.releaseDate, { color: t.colors.secondary }]}>{formatReleaseDate(release.releaseDate)}</Text>
+                  {release.highlightTrack && (
+                    <View style={[styles.releasePill, { backgroundColor: t.colors.secondary + '20' }]}>
+                      <Ionicons name="musical-notes" size={14} color={t.colors.secondary} />
+                      <Text style={[styles.releasePillText, { color: t.colors.secondary }]} numberOfLines={1}>
+                        {release.highlightTrack}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+                <Text style={[styles.releaseTitle, { color: t.colors.text }]} numberOfLines={2}>
+                  {release.title}
+                </Text>
+                <Text style={[styles.releaseArtist, { color: t.colors.textSecondary }]} numberOfLines={1}>
+                  {release.artist}
+                </Text>
+                <Text style={[styles.releaseDescription, { color: t.colors.textMuted }]} numberOfLines={3}>
+                  {release.description}
+                </Text>
+                <View style={styles.releaseActions}>
+                  <View style={[styles.releasePill, { backgroundColor: t.colors.primary + '18' }]}>
+                    <Ionicons name="play" size={14} color={t.colors.primary} />
+                    <Text style={[styles.releasePillText, { color: t.colors.primary }]}>Listen</Text>
+                  </View>
+                  <Ionicons name="chevron-forward" size={18} color={t.colors.textMuted} />
+                </View>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </>
+      )}
+
+      {/* Concert Halls */}
+      {concertHalls.length > 0 && (
+        <>
+          <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Concert Halls</Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ gap: 12, paddingBottom: 4 }}
+            style={{ marginBottom: 12 }}
+          >
+            {concertHalls.map((hall) => (
+              <TouchableOpacity
+                key={hall.id}
+                style={[
+                  styles.hallCard,
+                  cardStyle,
+                  { width: width * 0.72, borderTopWidth: 3, borderTopColor: t.colors.warning },
+                ]}
+                activeOpacity={0.85}
+                onPress={() => openHallMap(hall)}
+              >
+                <View style={styles.hallHeader}>
+                  <Text style={[styles.hallName, { color: t.colors.text }]} numberOfLines={1}>
+                    {hall.name}
+                  </Text>
+                  <Ionicons name="map" size={18} color={t.colors.warning} />
+                </View>
+                <Text style={[styles.hallLocation, { color: t.colors.textSecondary }]} numberOfLines={1}>
+                  {hall.city}
+                </Text>
+                <Text style={[styles.hallDescription, { color: t.colors.textMuted }]} numberOfLines={3}>
+                  {hall.description}
+                </Text>
+                {hall.signatureSound && (
+                  <View style={[styles.releasePill, { backgroundColor: t.colors.warning + '20' }]}>
+                    <Ionicons name="volume-high" size={14} color={t.colors.warning} />
+                    <Text style={[styles.releasePillText, { color: t.colors.warning }]} numberOfLines={1}>
+                      {hall.signatureSound}
+                    </Text>
+                  </View>
+                )}
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </>
+      )}
 
       {/* Featured Composer Teaser */}
       <TouchableOpacity
@@ -447,6 +571,20 @@ const styles = StyleSheet.create({
   exploreCard: { width: (width - 32 - 10) / 2, padding: 16, alignItems: 'center' },
   exploreLabel: { fontSize: 14, fontWeight: '600', marginTop: 8 },
   exploreSub: { fontSize: 11, marginTop: 2 },
+  releaseCard: { padding: 14, justifyContent: 'space-between' },
+  releaseHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6, gap: 8 },
+  releaseDate: { fontSize: 12, fontWeight: '700' },
+  releaseTitle: { fontSize: 16, fontWeight: '700' },
+  releaseArtist: { fontSize: 13, marginTop: 2, marginBottom: 6 },
+  releaseDescription: { fontSize: 12, lineHeight: 18, flex: 1 },
+  releaseActions: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 },
+  releasePill: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 12 },
+  releasePillText: { fontSize: 12, fontWeight: '600' },
+  hallCard: { padding: 14 },
+  hallHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  hallName: { fontSize: 16, fontWeight: '700' },
+  hallLocation: { fontSize: 13, marginTop: 2 },
+  hallDescription: { fontSize: 12, lineHeight: 18, marginTop: 6, marginBottom: 8 },
   
   composerTeaser: { flexDirection: 'row', padding: 16, alignItems: 'center' },
   composerContent: { flex: 1 },

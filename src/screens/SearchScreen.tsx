@@ -20,6 +20,7 @@ import { RootStackParamList } from '../types';
 import { spacing, fontSize, borderRadius } from '../theme';
 import { hapticSelection } from '../utils/haptics';
 import { SkeletonListItem } from '../components';
+import { getLongDefinition } from '../utils/terms';
 
 // Import all data
 import composersData from '../data/composers.json';
@@ -113,7 +114,7 @@ export default function SearchScreen() {
 
     // Search terms
     glossaryData.terms.forEach((term) => {
-      const score = getMatchScore(q, [term.term, term.category, term.definition]);
+      const score = getMatchScore(q, [term.term, term.category, getLongDefinition(term as any)]);
       if (score > 0) {
         results.push({
           id: term.id,
