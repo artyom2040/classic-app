@@ -352,6 +352,8 @@ export default function HomeScreen() {
           { icon: 'time', label: 'Timeline', sub: 'Eras & History', color: '#6B8E23', screen: 'Timeline' },
           { icon: 'book', label: 'Glossary', sub: `${glossaryData.terms.length} Terms`, color: t.colors.secondary, screen: 'Glossary' },
           { icon: 'albums', label: 'Spotlight', sub: 'Monthly Feature', color: t.colors.warning, screen: 'MonthlySpotlight' },
+          { icon: 'musical-notes', label: 'New Releases', sub: 'Latest recordings', color: t.colors.secondary, screen: 'NewReleases' },
+          { icon: 'business', label: 'Concert Halls', sub: 'World venues', color: t.colors.warning, screen: 'ConcertHalls' },
           { icon: 'help-circle', label: 'Daily Quiz', sub: '5 Questions', color: t.colors.error, screen: 'Quiz' },
           { icon: 'ribbon', label: 'Badges', sub: 'Achievements', color: t.colors.success, screen: 'Badges' },
         ].map((item) => (
@@ -366,7 +368,7 @@ export default function HomeScreen() {
               },
             ]}
             onPress={() => {
-              if (item.screen === 'Composers' || item.screen === 'MonthlySpotlight' || item.screen === 'Badges' || item.screen === 'Quiz') {
+              if (['Composers', 'MonthlySpotlight', 'Badges', 'Quiz', 'NewReleases', 'ConcertHalls'].includes(item.screen)) {
                 navigation.navigate(item.screen as any);
                 return;
               }
@@ -403,8 +405,8 @@ export default function HomeScreen() {
                   cardStyle,
                   { width: width * 0.72, borderTopWidth: 3, borderTopColor: t.colors.secondary },
                 ]}
-                activeOpacity={0.85}
-                onPress={() => openRelease(release)}
+                activeOpacity={0.9}
+                onPress={() => navigation.navigate('NewReleases')}
               >
                 <View style={styles.releaseHeader}>
                   <Text style={[styles.releaseDate, { color: t.colors.secondary }]}>{formatReleaseDate(release.releaseDate)}</Text>
@@ -435,10 +437,14 @@ export default function HomeScreen() {
                   {release.description}
                 </Text>
                 <View style={styles.releaseActions}>
-                  <View style={[styles.releasePill, { backgroundColor: t.colors.primary + '18' }]}>
+                  <TouchableOpacity
+                    style={[styles.releasePill, { backgroundColor: t.colors.primary + '18' }]}
+                    onPress={() => openRelease(release)}
+                    activeOpacity={0.8}
+                  >
                     <Ionicons name="play" size={14} color={t.colors.primary} />
                     <Text style={[styles.releasePillText, { color: t.colors.primary }]}>Listen</Text>
-                  </View>
+                  </TouchableOpacity>
                   <Ionicons name="chevron-forward" size={18} color={t.colors.textMuted} />
                 </View>
               </TouchableOpacity>
@@ -470,8 +476,8 @@ export default function HomeScreen() {
                   cardStyle,
                   { width: width * 0.72, borderTopWidth: 3, borderTopColor: t.colors.warning },
                 ]}
-                activeOpacity={0.85}
-                onPress={() => openHallMap(hall)}
+                activeOpacity={0.9}
+                onPress={() => navigation.navigate('ConcertHalls')}
               >
                 <View style={styles.hallHeader}>
                   <Text style={[styles.hallName, { color: t.colors.text }]} numberOfLines={1}>
@@ -493,6 +499,17 @@ export default function HomeScreen() {
                     </Text>
                   </View>
                 )}
+                <View style={styles.releaseActions}>
+                  <TouchableOpacity
+                    style={[styles.releasePill, { backgroundColor: t.colors.primary + '18' }]}
+                    onPress={() => openHallMap(hall)}
+                    activeOpacity={0.8}
+                  >
+                    <Ionicons name="pin" size={14} color={t.colors.primary} />
+                    <Text style={[styles.releasePillText, { color: t.colors.primary }]}>Open map</Text>
+                  </TouchableOpacity>
+                  <Ionicons name="chevron-forward" size={18} color={t.colors.textMuted} />
+                </View>
               </TouchableOpacity>
             ))}
           </ScrollView>

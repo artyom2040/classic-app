@@ -13,7 +13,7 @@
  *   const composer = await DataService.getComposerById('bach');
  */
 
-import { Composer, Period, MusicalForm, Term, WeeklyAlbum, MonthlySpotlight, Badge, KickstartDay } from '../types';
+import { Composer, Period, MusicalForm, Term, WeeklyAlbum, MonthlySpotlight, Badge, KickstartDay, NewRelease, ConcertHall } from '../types';
 
 // Local data imports (will be replaced with API calls)
 import composersData from '../data/composers.json';
@@ -54,14 +54,12 @@ interface DataSourceConfig {
 
 // Current data source - change this to switch backends
 const DATA_SOURCE: DataSourceConfig = {
-  type: 'local',
-  // Uncomment and configure when ready:
-  // type: 'firebase',
-  // firebaseConfig: { ... }
-  // 
-  // type: 'supabase',
-  // supabaseConfig: { url: 'https://xxx.supabase.co', anonKey: '...' }
-  //
+  type: (process.env.EXPO_PUBLIC_DATA_SOURCE as DataSourceType) || 'local',
+  supabaseConfig: {
+    url: process.env.EXPO_PUBLIC_SUPABASE_URL || '',
+    anonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '',
+  },
+  // Uncomment and configure if switching:
   // type: 'api',
   // apiConfig: { baseUrl: 'https://api.yourserver.com' }
 };
@@ -74,6 +72,17 @@ class DataServiceClass {
   private config: DataSourceConfig;
   private cache: Map<string, { data: any; timestamp: number }> = new Map();
   private cacheTTL = 5 * 60 * 1000; // 5 minutes cache
+  private supabaseTableMap: Record<string, string> = {
+    composers: 'composers',
+    periods: 'periods',
+    forms: 'forms',
+    terms: 'terms',
+    weeklyAlbums: 'weekly_albums',
+    monthlySpotlights: 'monthly_spotlights',
+    kickstartDays: 'kickstart_days',
+    newReleases: 'releases',
+    concertHalls: 'concert_halls',
+  };
 
   constructor(config: DataSourceConfig) {
     this.config = config;
@@ -145,6 +154,8 @@ class DataServiceClass {
       switch (this.config.type) {
         case 'local':
           return Promise.resolve(formsData.forms as MusicalForm[]);
+        case 'supabase':
+          return this.fetchFromSupabase('forms');
         default:
           return Promise.resolve(formsData.forms as MusicalForm[]);
       }
@@ -165,6 +176,8 @@ class DataServiceClass {
       switch (this.config.type) {
         case 'local':
           return Promise.resolve(glossaryData.terms as Term[]);
+        case 'supabase':
+          return this.fetchFromSupabase('terms');
         default:
           return Promise.resolve(glossaryData.terms as Term[]);
       }
@@ -187,10 +200,12 @@ class DataServiceClass {
   // ---------------------------------------------------------------------------
 
   async getWeeklyAlbums(): Promise<WeeklyAlbum[]> {
-    return this.fetchData('albums', () => {
+    return this.fetchData('weeklyAlbums', () => {
       switch (this.config.type) {
         case 'local':
           return Promise.resolve(albumsData.weeklyAlbums as WeeklyAlbum[]);
+        case 'supabase':
+          return this.fetchFromSupabase('weeklyAlbums');
         default:
           return Promise.resolve(albumsData.weeklyAlbums as WeeklyAlbum[]);
       }
@@ -208,12 +223,48 @@ class DataServiceClass {
   // ---------------------------------------------------------------------------
 
   async getMonthlySpotlights(): Promise<MonthlySpotlight[]> {
-    return this.fetchData('spotlights', () => {
+    return this.fetchData('monthlySpotlights', () => {
       switch (this.config.type) {
         case 'local':
           return Promise.resolve(albumsData.monthlySpotlights as MonthlySpotlight[]);
+        case 'supabase':
+          return this.fetchFromSupabase('monthlySpotlights');
         default:
           return Promise.resolve(albumsData.monthlySpotlights as MonthlySpotlight[]);
+      }
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // NEW RELEASES
+  // ---------------------------------------------------------------------------
+
+  async getNewReleases(): Promise<NewRelease[]> {
+    return this.fetchData('newReleases', () => {
+      switch (this.config.type) {
+        case 'local':
+          return Promise.resolve((albumsData as any).newReleases as NewRelease[]);
+        case 'supabase':
+          return this.fetchFromSupabase('newReleases');
+        default:
+          return Promise.resolve((albumsData as any).newReleases as NewRelease[]);
+      }
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // CONCERT HALLS
+  // ---------------------------------------------------------------------------
+
+  async getConcertHalls(): Promise<ConcertHall[]> {
+    return this.fetchData('concertHalls', () => {
+      switch (this.config.type) {
+        case 'local':
+          return Promise.resolve((albumsData as any).concertHalls as ConcertHall[]);
+        case 'supabase':
+          return this.fetchFromSupabase('concertHalls');
+        default:
+          return Promise.resolve((albumsData as any).concertHalls as ConcertHall[]);
       }
     });
   }
@@ -285,13 +336,33 @@ class DataServiceClass {
     throw new Error('Firebase not configured. Set up firebaseConfig in DATA_SOURCE.');
   }
 
-  private async fetchFromSupabase<T>(table: string): Promise<T[]> {
-    // TODO: Implement Supabase fetch
-    // import { supabase } from '../config/supabase';
-    // const { data, error } = await supabase.from(table).select('*');
-    // if (error) throw error;
-    // return data;
-    throw new Error('Supabase not configured. Set up supabaseConfig in DATA_SOURCE.');
+  private getSupabaseConfig() {
+    const cfg = this.config.supabaseConfig;
+    if (!cfg?.url || !cfg?.anonKey) {
+      throw new Error('Supabase not configured. Set EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY.');
+    }
+    return cfg;
+  }
+
+  private async fetchFromSupabase<T>(collection: string): Promise<T[]> {
+    const cfg = this.getSupabaseConfig();
+    const table = this.supabaseTableMap[collection] || collection;
+    const url = `${cfg.url.replace(/\/$/, '')}/rest/v1/${table}?select=*`;
+
+    const response = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: cfg.anonKey,
+        Authorization: `Bearer ${cfg.anonKey}`,
+      },
+    });
+
+    if (!response.ok) {
+      const body = await response.text();
+      throw new Error(`Supabase error (${response.status}): ${body}`);
+    }
+
+    return response.json();
   }
 
   private async fetchFromAPI<T>(endpoint: string): Promise<T[]> {
