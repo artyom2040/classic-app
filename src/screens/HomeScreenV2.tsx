@@ -51,7 +51,7 @@ export default function HomeScreen() {
   const monthlySpotlight = albumsData.monthlySpotlights[(currentMonth - 1) % albumsData.monthlySpotlights.length] as MonthlySpotlight;
   const newReleases = (albumsData.newReleases || []) as NewRelease[];
   const concertHalls = (albumsData.concertHalls || []) as ConcertHall[];
-  const termOfDay = glossaryData.terms[(dayOfYear - 1) % glossaryData.terms.length] as Term;
+  const termOfDay = glossaryData.terms[(dayOfYear - 1) % glossaryData.terms.length];
   const featuredComposer = composersData.composers[dayOfYear % composersData.composers.length];
   const termSummary = getShortDefinition(termOfDay);
 
@@ -111,134 +111,134 @@ export default function HomeScreen() {
         </>
       ) : (
         <>
-      {/* Header */}
-      <View style={styles.header}>
-        <View>
-          <Text style={[styles.greeting, { color: t.colors.textSecondary }]}>
-            {getGreeting()}
-          </Text>
-          <Text style={[styles.title, { color: t.colors.text }]}>
-            Context Composer
-          </Text>
-        </View>
-        <View style={styles.headerButtons}>
-          <TouchableOpacity
-            style={[styles.headerButton, { backgroundColor: t.colors.surfaceLight }]}
-            onPress={() => navigation.navigate('Search')}
-          >
-            <Ionicons name="search-outline" size={22} color={t.colors.text} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.headerButton, { backgroundColor: t.colors.surfaceLight }]}
-            onPress={() => navigation.navigate('Settings')}
-          >
-            <Ionicons name="settings-outline" size={22} color={t.colors.text} />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* Featured Section - 3 Cards */}
-      <FeaturedGrid
-        progress={progress}
-        weeklyAlbum={weeklyAlbum}
-        monthlySpotlight={monthlySpotlight}
-      />
-
-      {/* Daily Discovery Section */}
-      <Text style={[styles.sectionTitle, { color: t.colors.text }]}>
-        Today's Discovery
-      </Text>
-
-      {/* Term of the Day - Hero Card */}
-      <TouchableOpacity
-        style={[styles.heroCard, cardStyle]}
-        onPress={() => navigation.navigate('TermDetail', { termId: termOfDay.id })}
-        activeOpacity={0.8}
-      >
-        <View style={[styles.heroAccent, { backgroundColor: t.colors.secondary }]} />
-        <View style={styles.heroContent}>
-          <View style={styles.heroHeader}>
-            <View style={[styles.badge, { backgroundColor: t.colors.secondary + '20' }]}>
-              <Ionicons name="bulb" size={14} color={t.colors.secondary} />
-              <Text style={[styles.badgeText, { color: t.colors.secondary }]}>Term of the Day</Text>
+          {/* Header */}
+          <View style={styles.header}>
+            <View>
+              <Text style={[styles.greeting, { color: t.colors.textSecondary }]}>
+                {getGreeting()}
+              </Text>
+              <Text style={[styles.title, { color: t.colors.text }]}>
+                Context Composer
+              </Text>
             </View>
-            <Text style={[styles.categoryBadge, { color: t.colors.textMuted, backgroundColor: t.colors.surfaceLight }]}>
-              {termOfDay.category}
-            </Text>
+            <View style={styles.headerButtons}>
+              <TouchableOpacity
+                style={[styles.headerButton, { backgroundColor: t.colors.surfaceLight }]}
+                onPress={() => navigation.navigate('Search')}
+              >
+                <Ionicons name="search-outline" size={22} color={t.colors.text} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.headerButton, { backgroundColor: t.colors.surfaceLight }]}
+                onPress={() => navigation.navigate('Settings')}
+              >
+                <Ionicons name="settings-outline" size={22} color={t.colors.text} />
+              </TouchableOpacity>
+            </View>
           </View>
-          <Text style={[styles.heroTitle, { color: t.colors.text }]}>{termOfDay.term}</Text>
-          <Text style={[styles.heroDescription, { color: t.colors.textSecondary }]} numberOfLines={2}>
-            {termSummary}
+
+          {/* Featured Section - 3 Cards */}
+          <FeaturedGrid
+            progress={progress}
+            weeklyAlbum={weeklyAlbum}
+            monthlySpotlight={monthlySpotlight}
+          />
+
+          {/* Daily Discovery Section */}
+          <Text style={[styles.sectionTitle, { color: t.colors.text }]}>
+            Today's Discovery
           </Text>
-          <View style={styles.heroFooter}>
-            <Text style={[styles.exampleLabel, { color: t.colors.textMuted }]}>Example:</Text>
-            <Text style={[styles.exampleText, { color: t.colors.primary }]} numberOfLines={1}>
-              {termOfDay.example}
-            </Text>
+
+          {/* Term of the Day - Hero Card */}
+          <TouchableOpacity
+            style={[styles.heroCard, cardStyle]}
+            onPress={() => navigation.navigate('TermDetail', { termId: String(termOfDay.id) })}
+            activeOpacity={0.8}
+          >
+            <View style={[styles.heroAccent, { backgroundColor: t.colors.secondary }]} />
+            <View style={styles.heroContent}>
+              <View style={styles.heroHeader}>
+                <View style={[styles.badge, { backgroundColor: t.colors.secondary + '20' }]}>
+                  <Ionicons name="bulb" size={14} color={t.colors.secondary} />
+                  <Text style={[styles.badgeText, { color: t.colors.secondary }]}>Term of the Day</Text>
+                </View>
+                <Text style={[styles.categoryBadge, { color: t.colors.textMuted, backgroundColor: t.colors.surfaceLight }]}>
+                  {termOfDay.category}
+                </Text>
+              </View>
+              <Text style={[styles.heroTitle, { color: t.colors.text }]}>{termOfDay.term}</Text>
+              <Text style={[styles.heroDescription, { color: t.colors.textSecondary }]} numberOfLines={2}>
+                {termSummary}
+              </Text>
+              <View style={styles.heroFooter}>
+                <Text style={[styles.exampleLabel, { color: t.colors.textMuted }]}>Example:</Text>
+                <Text style={[styles.exampleText, { color: t.colors.primary }]} numberOfLines={1}>
+                  {termOfDay.example}
+                </Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+
+          {/* Quick Stats */}
+          <View style={[styles.statsRow, cardStyle, { padding: 16 }]}>
+            <View style={styles.stat}>
+              <Text style={[styles.statNumber, { color: t.colors.primary }]}>
+                {progress?.viewedTerms?.length || 0}
+              </Text>
+              <Text style={[styles.statLabel, { color: t.colors.textMuted }]}>Terms Learned</Text>
+            </View>
+            <View style={[styles.statDivider, { backgroundColor: t.colors.border }]} />
+            <View style={styles.stat}>
+              <Text style={[styles.statNumber, { color: t.colors.secondary }]}>
+                {progress?.viewedComposers?.length || 0}
+              </Text>
+              <Text style={[styles.statLabel, { color: t.colors.textMuted }]}>Composers</Text>
+            </View>
+            <View style={[styles.statDivider, { backgroundColor: t.colors.border }]} />
+            <View style={styles.stat}>
+              <Text style={[styles.statNumber, { color: t.colors.warning }]}>
+                {progress?.badges?.length || 0}
+              </Text>
+              <Text style={[styles.statLabel, { color: t.colors.textMuted }]}>Badges</Text>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
 
-      {/* Quick Stats */}
-      <View style={[styles.statsRow, cardStyle, { padding: 16 }]}>
-        <View style={styles.stat}>
-          <Text style={[styles.statNumber, { color: t.colors.primary }]}>
-            {progress?.viewedTerms?.length || 0}
+          {/* Explore Section */}
+          <Text style={[styles.sectionTitle, { color: t.colors.text, marginTop: 8 }]}>
+            Explore
           </Text>
-          <Text style={[styles.statLabel, { color: t.colors.textMuted }]}>Terms Learned</Text>
-        </View>
-        <View style={[styles.statDivider, { backgroundColor: t.colors.border }]} />
-        <View style={styles.stat}>
-          <Text style={[styles.statNumber, { color: t.colors.secondary }]}>
-            {progress?.viewedComposers?.length || 0}
-          </Text>
-          <Text style={[styles.statLabel, { color: t.colors.textMuted }]}>Composers</Text>
-        </View>
-        <View style={[styles.statDivider, { backgroundColor: t.colors.border }]} />
-        <View style={styles.stat}>
-          <Text style={[styles.statNumber, { color: t.colors.warning }]}>
-            {progress?.badges?.length || 0}
-          </Text>
-          <Text style={[styles.statLabel, { color: t.colors.textMuted }]}>Badges</Text>
-        </View>
-      </View>
 
-      {/* Explore Section */}
-      <Text style={[styles.sectionTitle, { color: t.colors.text, marginTop: 8 }]}>
-        Explore
-      </Text>
+          <ExploreGrid
+            composersCount={composersData.composers.length}
+            termsCount={glossaryData.terms.length}
+          />
 
-      <ExploreGrid
-        composersCount={composersData.composers.length}
-        termsCount={glossaryData.terms.length}
-      />
+          {/* New Releases */}
+          <NewReleasesCarousel releases={newReleases} musicService={preferredService} />
 
-      {/* New Releases */}
-      <NewReleasesCarousel releases={newReleases} musicService={preferredService} />
+          {/* Concert Halls */}
+          <ConcertHallsCarousel halls={concertHalls} />
 
-      {/* Concert Halls */}
-      <ConcertHallsCarousel halls={concertHalls} />
-
-      {/* Featured Composer Teaser */}
-      <TouchableOpacity
-        style={[styles.composerTeaser, cardStyle]}
-        onPress={() => navigation.navigate('ComposerDetail', { composerId: featuredComposer.id })}
-        activeOpacity={0.8}
-      >
-        <View style={styles.composerContent}>
-          <Text style={[styles.composerLabel, { color: t.colors.textMuted }]}>Discover Today</Text>
-          <Text style={[styles.composerName, { color: t.colors.text }]}>{featuredComposer.name}</Text>
-          <Text style={[styles.composerDates, { color: t.colors.textSecondary }]}>
-            {featuredComposer.years}
-          </Text>
-          <Text style={[styles.composerBio, { color: t.colors.textMuted }]} numberOfLines={2}>
-            {featuredComposer.shortBio}
-          </Text>
-        </View>
-        <View style={[styles.composerArrow, { backgroundColor: t.colors.primary + '20' }]}>
-          <Ionicons name="arrow-forward" size={20} color={t.colors.primary} />
-        </View>
-      </TouchableOpacity>
+          {/* Featured Composer Teaser */}
+          <TouchableOpacity
+            style={[styles.composerTeaser, cardStyle]}
+            onPress={() => navigation.navigate('ComposerDetail', { composerId: featuredComposer.id })}
+            activeOpacity={0.8}
+          >
+            <View style={styles.composerContent}>
+              <Text style={[styles.composerLabel, { color: t.colors.textMuted }]}>Discover Today</Text>
+              <Text style={[styles.composerName, { color: t.colors.text }]}>{featuredComposer.name}</Text>
+              <Text style={[styles.composerDates, { color: t.colors.textSecondary }]}>
+                {featuredComposer.years}
+              </Text>
+              <Text style={[styles.composerBio, { color: t.colors.textMuted }]} numberOfLines={2}>
+                {featuredComposer.shortBio}
+              </Text>
+            </View>
+            <View style={[styles.composerArrow, { backgroundColor: t.colors.primary + '20' }]}>
+              <Ionicons name="arrow-forward" size={20} color={t.colors.primary} />
+            </View>
+          </TouchableOpacity>
 
           <View style={{ height: 32 }} />
         </>
@@ -279,11 +279,11 @@ const styles = StyleSheet.create({
   title: { fontSize: 26, fontWeight: '700' },
   headerButtons: { flexDirection: 'row', gap: 8 },
   headerButton: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
-  
+
   // Featured grid styles moved to extracted components
-  
+
   sectionTitle: { fontSize: 20, fontWeight: '700', marginBottom: 12 },
-  
+
   heroCard: { marginBottom: 16, overflow: 'hidden' },
   heroAccent: { height: 4 },
   heroContent: { padding: 16 },
@@ -296,15 +296,15 @@ const styles = StyleSheet.create({
   heroFooter: { marginTop: 12, flexDirection: 'row', alignItems: 'center', gap: 6 },
   exampleLabel: { fontSize: 11 },
   exampleText: { fontSize: 12, fontWeight: '500', flex: 1 },
-  
+
   statsRow: { flexDirection: 'row', marginBottom: 20 },
   stat: { flex: 1, alignItems: 'center' },
   statNumber: { fontSize: 24, fontWeight: '700' },
   statLabel: { fontSize: 11, marginTop: 2 },
   statDivider: { width: 1, marginVertical: 4 },
-  
+
   // Explore and Release styles moved to extracted components
-  
+
   composerTeaser: { flexDirection: 'row', padding: 16, alignItems: 'center' },
   composerContent: { flex: 1 },
   composerLabel: { fontSize: 11, marginBottom: 4 },

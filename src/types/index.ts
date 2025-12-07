@@ -56,7 +56,7 @@ export interface TermMedia {
 }
 
 export interface Term {
-  id: number;
+  id: string;
   term: string;
   category: string;
   shortDefinition?: string;
@@ -196,7 +196,7 @@ export interface UserProgress {
   viewedComposers: string[];
   viewedPeriods: string[];
   viewedForms: string[];
-  viewedTerms: number[];
+  viewedTerms: string[];
   badges: string[];
   firstLaunch: boolean;
 }
@@ -207,14 +207,14 @@ export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   ForgotPassword: undefined;
-  
+
   // Main app
   MainTabs: undefined;
   Composers: undefined;
   ComposerDetail: { composerId: string };
   PeriodDetail: { periodId: string };
   FormDetail: { formId: string };
-  TermDetail: { termId: number };
+  TermDetail: { termId: string };
   Kickstart: undefined;
   KickstartDay: { day: number };
   WeeklyAlbum: undefined;
@@ -227,7 +227,7 @@ export type RootStackParamList = {
   Settings: undefined;
   Search: undefined;
   Quiz: undefined;
-  
+
   // Dashboard screens
   UserDashboard: undefined;
   AdminDashboard: undefined;

@@ -13,10 +13,13 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
-import { RootStackParamList, Term } from '../types';
+import { RootStackParamList } from '../types';
 import { getLongDefinition, getShortDefinition } from '../utils/terms';
 
 import glossaryData from '../data/glossary.json';
+
+// Local type matching raw JSON structure
+type GlossaryTerm = typeof glossaryData.terms[number];
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -62,25 +65,25 @@ export default function GlossaryScreen() {
     return CATEGORY_COLORS[category] || t.colors.textMuted;
   }, [t.colors.primary, t.colors.textMuted]);
 
-  const terms = glossaryData.terms as Term[];
+  const terms = glossaryData.terms;
 
   const filteredTerms = useMemo(() => {
     return terms.filter(term => {
       const matchesSearch = term.term.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           getLongDefinition(term).toLowerCase().includes(searchQuery.toLowerCase());
+        getLongDefinition(term).toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = selectedCategory === 'All' || term.category === selectedCategory;
       return matchesSearch && matchesCategory;
     });
   }, [searchQuery, selectedCategory, terms]);
 
-  const renderTerm = useCallback(({ item }: { item: Term }) => {
+  const renderTerm = useCallback(({ item }: { item: GlossaryTerm }) => {
     const categoryColor = getCategoryColor(item.category);
     const summary = getShortDefinition(item);
-    
+
     return (
       <TouchableOpacity
         style={[styles.termCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}
-        onPress={() => navigation.navigate('TermDetail', { termId: item.id })}
+        onPress={() => navigation.navigate('TermDetail', { termId: String(item.id) })}
         activeOpacity={0.7}
         accessibilityRole="button"
         accessibilityLabel={`${item.term}, ${item.category}`}

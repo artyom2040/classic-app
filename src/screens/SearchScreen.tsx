@@ -71,7 +71,7 @@ export default function SearchScreen() {
   const saveRecentSearch = useCallback(async (searchTerm: string) => {
     const term = searchTerm.trim();
     if (!term) return;
-    
+
     const updated = [term, ...recentSearches.filter(s => s !== term)].slice(0, MAX_RECENT_SEARCHES);
     setRecentSearches(updated);
     await AsyncStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
@@ -164,16 +164,16 @@ export default function SearchScreen() {
   function getMatchScore(query: string, fields: string[]): number {
     let score = 0;
     const words = query.split(' ').filter(w => w.length > 0);
-    
+
     for (const field of fields) {
       if (!field) continue;
       const lower = field.toLowerCase();
-      
+
       // Exact match
       if (lower.includes(query)) {
         score += 10;
       }
-      
+
       // Word match
       for (const word of words) {
         if (lower.includes(word)) {
@@ -181,7 +181,7 @@ export default function SearchScreen() {
         }
       }
     }
-    
+
     return score;
   }
 
@@ -189,13 +189,13 @@ export default function SearchScreen() {
   const navigateToResult = (result: SearchResult) => {
     saveRecentSearch(query);
     Keyboard.dismiss();
-    
+
     switch (result.type) {
       case 'composer':
         navigation.navigate('ComposerDetail', { composerId: result.id as string });
         break;
       case 'term':
-        navigation.navigate('TermDetail', { termId: result.id as number });
+        navigation.navigate('TermDetail', { termId: String(result.id) });
         break;
       case 'form':
         navigation.navigate('FormDetail', { formId: result.id as string });
@@ -254,8 +254,8 @@ export default function SearchScreen() {
         </View>
       </View>
 
-      <ScrollView 
-        style={styles.content} 
+      <ScrollView
+        style={styles.content}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
         refreshControl={
@@ -317,10 +317,10 @@ export default function SearchScreen() {
                     key={idx}
                     style={[styles.categoryCard, cardStyle]}
                     onPress={() => navigation.navigate(
-                      idx === 0 ? 'Timeline' as any : 
-                      idx === 1 ? 'Glossary' as any : 
-                      idx === 2 ? 'Forms' as any : 
-                      'Timeline' as any
+                      idx === 0 ? 'Timeline' as any :
+                        idx === 1 ? 'Glossary' as any :
+                          idx === 2 ? 'Forms' as any :
+                            'Timeline' as any
                     )}
                   >
                     <View style={[styles.categoryIcon, { backgroundColor: cat.color + '20' }]}>
@@ -343,7 +343,7 @@ export default function SearchScreen() {
                 <Text style={[styles.resultCount, { color: t.colors.textSecondary }]}>
                   {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} for "{query}"
                 </Text>
-                
+
                 {/* Result type chips */}
                 <View style={styles.chipRow}>
                   {Object.entries(categoryCounts).map(([type, count]) => count > 0 && (
@@ -408,12 +408,12 @@ const styles = StyleSheet.create({
   },
   searchInput: { flex: 1, fontSize: fontSize.md, paddingVertical: spacing.xs },
   content: { flex: 1, paddingHorizontal: spacing.md },
-  
+
   section: { marginBottom: spacing.lg },
   sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.sm },
   sectionTitle: { fontSize: fontSize.lg, fontWeight: '700' },
   clearButton: { fontSize: fontSize.sm, fontWeight: '500' },
-  
+
   recentItem: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -422,18 +422,18 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   recentText: { flex: 1, fontSize: fontSize.md },
-  
+
   categoryGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
   categoryCard: { width: '48%', padding: spacing.md, alignItems: 'center' },
   categoryIcon: { width: 48, height: 48, borderRadius: 24, alignItems: 'center', justifyContent: 'center', marginBottom: spacing.sm },
   categoryLabel: { fontSize: fontSize.md, fontWeight: '600' },
   categoryCount: { fontSize: fontSize.sm, marginTop: 2 },
-  
+
   resultCount: { fontSize: fontSize.sm, marginBottom: spacing.sm },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs, marginBottom: spacing.md },
   chip: { paddingHorizontal: spacing.sm, paddingVertical: 4, borderRadius: borderRadius.sm },
   chipText: { fontSize: fontSize.xs },
-  
+
   resultItem: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -447,7 +447,7 @@ const styles = StyleSheet.create({
   resultSubtitle: { fontSize: fontSize.sm, marginTop: 2 },
   resultType: { paddingHorizontal: spacing.sm, paddingVertical: 4, borderRadius: borderRadius.sm },
   resultTypeText: { fontSize: fontSize.xs, fontWeight: '600', textTransform: 'capitalize' },
-  
+
   emptyState: { alignItems: 'center', paddingVertical: spacing.xxl },
   emptyTitle: { fontSize: fontSize.lg, fontWeight: '600', marginTop: spacing.md },
   emptySubtitle: { fontSize: fontSize.sm, textAlign: 'center', marginTop: spacing.xs },

@@ -44,14 +44,14 @@ export function SearchBar({ placeholder = 'Search...', autoFocus = false, onClos
   const t = theme;
   const isBrutal = themeName === 'neobrutalist';
   const navigation = useNavigation<NavigationProp>();
-  
+
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isFocused, setIsFocused] = useState(false);
 
   const search = useCallback((text: string) => {
     setQuery(text);
-    
+
     if (text.length < 2) {
       setResults([]);
       return;
@@ -140,13 +140,13 @@ export function SearchBar({ placeholder = 'Search...', autoFocus = false, onClos
     Keyboard.dismiss();
     setQuery('');
     setResults([]);
-    
+
     switch (result.type) {
       case 'composer':
         navigation.navigate('ComposerDetail', { composerId: result.id as string });
         break;
       case 'term':
-        navigation.navigate('TermDetail', { termId: result.id as number });
+        navigation.navigate('TermDetail', { termId: String(result.id) });
         break;
       case 'form':
         navigation.navigate('FormDetail', { formId: result.id as string });
@@ -155,7 +155,7 @@ export function SearchBar({ placeholder = 'Search...', autoFocus = false, onClos
         navigation.navigate('PeriodDetail', { periodId: result.id as string });
         break;
     }
-    
+
     onClose?.();
   };
 
@@ -178,7 +178,7 @@ export function SearchBar({ placeholder = 'Search...', autoFocus = false, onClos
     <View style={styles.container}>
       <View style={[
         styles.inputContainer,
-        { 
+        {
           backgroundColor: t.colors.surface,
           borderColor: isFocused ? t.colors.primary : t.colors.border,
         },

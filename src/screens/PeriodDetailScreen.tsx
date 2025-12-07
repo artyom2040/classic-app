@@ -102,7 +102,6 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   content: { padding: spacing.md },
   errorText: { fontSize: fontSize.lg, textAlign: 'center', marginTop: spacing.xxl },
-  errorText: { fontSize: fontSize.lg, textAlign: 'center', marginTop: spacing.xxl },
   headerOverlay: { alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 3 },
   // header: { borderRadius: borderRadius.lg, padding: spacing.lg, marginBottom: spacing.lg, alignItems: 'center' },
   title: { fontSize: fontSize.xxxl, fontWeight: 'bold' },

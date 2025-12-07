@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { haptic } from '../utils/haptics';
 import { STORAGE_KEYS } from '../constants';
@@ -47,11 +47,13 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const saveFavorites = async (newFavorites: FavoriteItem[]) => {
+  const saveFavorites = async (newFavorites: FavoriteItem[]): Promise<boolean> => {
     try {
       await AsyncStorage.setItem(FAVORITES_KEY, JSON.stringify(newFavorites));
+      return true;
     } catch (error) {
       console.error('Error saving favorites:', error);
+      return false;
     }
   };
 
@@ -61,10 +63,11 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
   const toggleFavorite = async (id: string | number, type: FavoriteType): Promise<boolean> => {
     const existing = favorites.find(f => f.id === id && f.type === type);
-    
+    const previousFavorites = [...favorites];
+
     let newFavorites: FavoriteItem[];
     let wasAdded: boolean;
-    
+
     if (existing) {
       // Remove from favorites
       newFavorites = favorites.filter(f => !(f.id === id && f.type === type));
@@ -81,10 +84,20 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       wasAdded = true;
       haptic('success');
     }
-    
+
+    // Optimistic update
     setFavorites(newFavorites);
-    await saveFavorites(newFavorites);
-    
+
+    // Persist to storage
+    const saved = await saveFavorites(newFavorites);
+
+    // Rollback on failure
+    if (!saved) {
+      setFavorites(previousFavorites);
+      haptic('error');
+      return !wasAdded; // Return opposite since we rolled back
+    }
+
     return wasAdded;
   };
 
@@ -98,8 +111,8 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <FavoritesContext.Provider 
-      value={{ 
+    <FavoritesContext.Provider
+      value={{
         favorites,
         isLoaded,
         isFavorite,
@@ -122,12 +135,24 @@ export function useFavorites() {
   return context;
 }
 
-// Convenience hook for a specific item
+// Convenience hook for a specific item with pending state
 export function useFavoriteItem(id: string | number, type: FavoriteType) {
-  const { isFavorite, toggleFavorite } = useFavorites();
-  
+  const { isFavorite, toggleFavorite, isLoaded } = useFavorites();
+  const [isPending, setIsPending] = useState(false);
+
+  const toggle = useCallback(async () => {
+    setIsPending(true);
+    try {
+      await toggleFavorite(id, type);
+    } finally {
+      setIsPending(false);
+    }
+  }, [id, type, toggleFavorite]);
+
   return {
     isFavorite: isFavorite(id, type),
-    toggle: () => toggleFavorite(id, type),
+    toggle,
+    isLoaded,
+    isPending,
   };
 }

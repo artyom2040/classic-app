@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   View,
   Text,
@@ -41,19 +41,24 @@ export default function ComposerDetailScreen() {
   const { composerId } = route.params;
   const isLiked = isFavorite(composerId, 'composer');
   const [loading, setLoading] = React.useState(true);
-  
+
   // Get audio samples for this composer
   const composerSamples: AudioSample[] = audioSamples.samples[composerId] || [];
 
-  const composer = composersData.composers.find(c => c.id === composerId) as Composer | undefined;
-  const period = periodsData.periods.find(p => p.id === composer?.period);
+  // Memoize expensive lookups
+  const { composer, period, relatedComposers } = useMemo(() => {
+    const c = composersData.composers.find(comp => comp.id === composerId) as Composer | undefined;
+    const p = periodsData.periods.find(per => per.id === c?.period);
+    const related = composersData.composers
+      .filter(comp => comp.period === c?.period && comp.id !== c?.id)
+      .slice(0, 3);
+    return { composer: c, period: p, relatedComposers: related };
+  }, [composerId]);
+
   const accentColor = period?.color || t.colors.primary;
   const yearsText = composer?.years || ((composer as any)?.birth && (composer as any)?.death
     ? `${(composer as any).birth}-${(composer as any).death}`
     : composer?.years || '');
-  const relatedComposers = composersData.composers
-    .filter(c => c.period === composer?.period && c.id !== composer?.id)
-    .slice(0, 3);
 
   useEffect(() => {
     if (composerId) {
@@ -73,7 +78,7 @@ export default function ComposerDetailScreen() {
 
   if (loading) {
     return (
-      <ScrollView 
+      <ScrollView
         style={[styles.container, { backgroundColor: t.colors.background }]}
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
@@ -106,7 +111,7 @@ export default function ComposerDetailScreen() {
   };
 
   return (
-    <ScrollView 
+    <ScrollView
       style={[styles.container, { backgroundColor: t.colors.background }]}
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
@@ -123,14 +128,14 @@ export default function ComposerDetailScreen() {
         />
         <View style={styles.nameRow}>
           <Text style={[styles.name, { color: t.colors.text }]}>{composer.name}</Text>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[styles.favoriteButton, { backgroundColor: isLiked ? t.colors.error + '20' : t.colors.surfaceLight }]}
             onPress={() => toggleFavorite(composerId, 'composer')}
           >
-            <Ionicons 
-              name={isLiked ? 'heart' : 'heart-outline'} 
-              size={22} 
-              color={isLiked ? t.colors.error : t.colors.textMuted} 
+            <Ionicons
+              name={isLiked ? 'heart' : 'heart-outline'}
+              size={22}
+              color={isLiked ? t.colors.error : t.colors.textMuted}
             />
           </TouchableOpacity>
         </View>
@@ -160,7 +165,7 @@ export default function ComposerDetailScreen() {
               <TouchableOpacity
                 key={sample.id}
                 style={[
-                  styles.sampleCard, 
+                  styles.sampleCard,
                   { backgroundColor: t.colors.surface },
                   isCurrentTrack && { borderColor: t.colors.primary, borderWidth: 2 },
                   isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm
@@ -168,10 +173,10 @@ export default function ComposerDetailScreen() {
                 onPress={() => handlePlaySample(sample)}
               >
                 <View style={[styles.sampleIcon, { backgroundColor: t.colors.primary + '20' }]}>
-                  <Ionicons 
-                    name={isCurrentTrack && isPlaying ? 'pause' : 'play'} 
-                    size={20} 
-                    color={t.colors.primary} 
+                  <Ionicons
+                    name={isCurrentTrack && isPlaying ? 'pause' : 'play'}
+                    size={20}
+                    color={t.colors.primary}
                   />
                 </View>
                 <View style={styles.sampleInfo}>
@@ -223,7 +228,7 @@ export default function ComposerDetailScreen() {
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Key Works</Text>
         {composer.keyWorks.map((work, index) => (
-          <TouchableOpacity 
+          <TouchableOpacity
             key={index}
             style={[styles.workCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}
             onPress={() => Linking.openURL(`https://www.youtube.com/results?search_query=${encodeURIComponent(composer.name + ' ' + work.title)}`)}

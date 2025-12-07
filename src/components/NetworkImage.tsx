@@ -10,7 +10,7 @@ import {
 } from './placeholders';
 
 interface NetworkImageProps {
-  uri?: string | null | undefined;
+  uri?: string | number | null | undefined;
   source?: any; // versatile type to handle requires and expo-image sources
   size?: number;
   width?: number;

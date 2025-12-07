@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { DataService } from '../services/dataService';
-import { 
-  Composer, 
-  Period, 
-  MusicalForm, 
-  Term, 
-  WeeklyAlbum, 
+import {
+  Composer,
+  Period,
+  MusicalForm,
+  Term,
+  WeeklyAlbum,
   MonthlySpotlight,
   NewRelease,
   ConcertHall,
@@ -208,7 +208,7 @@ export const useTerms = createDataHook<Term>(() => DataService.getTerms());
 /**
  * Hook to fetch a single term by ID
  */
-export function useTerm(id: string | number): UseDataResult<Term> {
+export function useTerm(id: string): UseDataResult<Term> {
   const [data, setData] = useState<Term | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);

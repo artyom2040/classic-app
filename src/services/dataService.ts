@@ -25,6 +25,16 @@ import glossaryData from '../data/glossary.json';
 import albumsData from '../data/albums.json';
 import kickstartData from '../data/kickstart.json';
 
+// Type for the albums data file structure
+interface AlbumsDataFile {
+  weeklyAlbums: WeeklyAlbum[];
+  monthlySpotlights: MonthlySpotlight[];
+  newReleases?: NewRelease[];
+  concertHalls?: ConcertHall[];
+}
+
+const typedAlbumsData = albumsData as AlbumsDataFile;
+
 // =============================================================================
 // DATA SOURCE CONFIGURATION
 // =============================================================================
@@ -93,7 +103,7 @@ class DataServiceClass {
   // ---------------------------------------------------------------------------
   // COMPOSERS
   // ---------------------------------------------------------------------------
-  
+
   async getComposers(): Promise<Composer[]> {
     return this.fetchData('composers', () => {
       switch (this.config.type) {
@@ -177,19 +187,29 @@ class DataServiceClass {
     return this.fetchData('terms', () => {
       switch (this.config.type) {
         case 'local':
-          return Promise.resolve(glossaryData.terms as Term[]);
+          // Transform IDs to strings for consistency
+          const transformedTerms = glossaryData.terms.map(t => ({
+            ...t,
+            id: String(t.id),
+          })) as Term[];
+          return Promise.resolve(transformedTerms);
         case 'supabase':
-          return this.fetchWithSupabaseFallback('terms', glossaryData.terms as Term[]);
+          return this.fetchWithSupabaseFallback('terms', glossaryData.terms.map(t => ({
+            ...t,
+            id: String(t.id),
+          })) as Term[]);
         default:
-          return Promise.resolve(glossaryData.terms as Term[]);
+          return Promise.resolve(glossaryData.terms.map(t => ({
+            ...t,
+            id: String(t.id),
+          })) as Term[]);
       }
     });
   }
 
-  async getTermById(id: string | number): Promise<Term | null> {
+  async getTermById(id: string): Promise<Term | null> {
     const terms = await this.getTerms();
-    const numId = typeof id === 'string' ? parseInt(id, 10) : id;
-    return terms.find(t => t.id === numId) || null;
+    return terms.find(t => String(t.id) === String(id)) || null;
   }
 
   async getTermsByCategory(category: string): Promise<Term[]> {
@@ -205,11 +225,11 @@ class DataServiceClass {
     return this.fetchData('weeklyAlbums', () => {
       switch (this.config.type) {
         case 'local':
-          return Promise.resolve(albumsData.weeklyAlbums as WeeklyAlbum[]);
+          return Promise.resolve(typedAlbumsData.weeklyAlbums as WeeklyAlbum[]);
         case 'supabase':
-          return this.fetchWithSupabaseFallback('weeklyAlbums', albumsData.weeklyAlbums as WeeklyAlbum[]);
+          return this.fetchWithSupabaseFallback('weeklyAlbums', typedAlbumsData.weeklyAlbums as WeeklyAlbum[]);
         default:
-          return Promise.resolve(albumsData.weeklyAlbums as WeeklyAlbum[]);
+          return Promise.resolve(typedAlbumsData.weeklyAlbums as WeeklyAlbum[]);
       }
     });
   }
@@ -228,11 +248,11 @@ class DataServiceClass {
     return this.fetchData('monthlySpotlights', () => {
       switch (this.config.type) {
         case 'local':
-          return Promise.resolve(albumsData.monthlySpotlights as MonthlySpotlight[]);
+          return Promise.resolve(typedAlbumsData.monthlySpotlights as MonthlySpotlight[]);
         case 'supabase':
-          return this.fetchWithSupabaseFallback('monthlySpotlights', albumsData.monthlySpotlights as MonthlySpotlight[]);
+          return this.fetchWithSupabaseFallback('monthlySpotlights', typedAlbumsData.monthlySpotlights as MonthlySpotlight[]);
         default:
-          return Promise.resolve(albumsData.monthlySpotlights as MonthlySpotlight[]);
+          return Promise.resolve(typedAlbumsData.monthlySpotlights as MonthlySpotlight[]);
       }
     });
   }
@@ -245,11 +265,11 @@ class DataServiceClass {
     return this.fetchData('newReleases', () => {
       switch (this.config.type) {
         case 'local':
-          return Promise.resolve((albumsData as any).newReleases as NewRelease[]);
+          return Promise.resolve((typedAlbumsData.newReleases || []) as NewRelease[]);
         case 'supabase':
-          return this.fetchWithSupabaseFallback('newReleases', (albumsData as any).newReleases as NewRelease[]);
+          return this.fetchWithSupabaseFallback('newReleases', (typedAlbumsData.newReleases || []) as NewRelease[]);
         default:
-          return Promise.resolve((albumsData as any).newReleases as NewRelease[]);
+          return Promise.resolve((typedAlbumsData.newReleases || []) as NewRelease[]);
       }
     });
   }
@@ -262,11 +282,11 @@ class DataServiceClass {
     return this.fetchData('concertHalls', () => {
       switch (this.config.type) {
         case 'local':
-          return Promise.resolve((albumsData as any).concertHalls as ConcertHall[]);
+          return Promise.resolve((typedAlbumsData.concertHalls || []) as ConcertHall[]);
         case 'supabase':
-          return this.fetchWithSupabaseFallback('concertHalls', (albumsData as any).concertHalls as ConcertHall[]);
+          return this.fetchWithSupabaseFallback('concertHalls', (typedAlbumsData.concertHalls || []) as ConcertHall[]);
         default:
-          return Promise.resolve((albumsData as any).concertHalls as ConcertHall[]);
+          return Promise.resolve((typedAlbumsData.concertHalls || []) as ConcertHall[]);
       }
     });
   }
@@ -356,20 +376,20 @@ class DataServiceClass {
     if (!this.config.apiConfig?.baseUrl) {
       throw new Error('API not configured. Set up apiConfig in DATA_SOURCE.');
     }
-    
+
     const response = await fetch(`${this.config.apiConfig.baseUrl}${endpoint}`, {
       headers: {
         'Content-Type': 'application/json',
-        ...(this.config.apiConfig.apiKey && { 
-          'Authorization': `Bearer ${this.config.apiConfig.apiKey}` 
+        ...(this.config.apiConfig.apiKey && {
+          'Authorization': `Bearer ${this.config.apiConfig.apiKey}`
         }),
       },
     });
-    
+
     if (!response.ok) {
       throw new Error(`API error: ${response.status}`);
     }
-    
+
     return response.json();
   }
 }

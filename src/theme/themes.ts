@@ -61,6 +61,7 @@ export interface Theme {
     };
   };
   cardStyle: 'flat' | 'elevated' | 'outlined' | 'glass' | 'brutal';
+  isDark: boolean;
 }
 
 // ============================================
@@ -103,6 +104,7 @@ export const darkTheme: Theme = {
     sizes: { xs: 10, sm: 12, md: 14, lg: 16, xl: 20, xxl: 28, hero: 36 },
   },
   cardStyle: 'elevated',
+  isDark: true,
 };
 
 // ============================================
@@ -145,6 +147,7 @@ export const lightTheme: Theme = {
     sizes: { xs: 10, sm: 12, md: 14, lg: 16, xl: 20, xxl: 28, hero: 36 },
   },
   cardStyle: 'elevated',
+  isDark: false,
 };
 
 // ============================================
@@ -187,6 +190,7 @@ export const classicTheme: Theme = {
     sizes: { xs: 10, sm: 12, md: 14, lg: 16, xl: 20, xxl: 28, hero: 36 },
   },
   cardStyle: 'elevated',
+  isDark: true,
 };
 
 // ============================================
@@ -229,6 +233,7 @@ export const skeuomorphicTheme: Theme = {
     sizes: { xs: 10, sm: 12, md: 14, lg: 16, xl: 20, xxl: 28, hero: 36 },
   },
   cardStyle: 'glass',
+  isDark: true,
 };
 
 // ============================================
@@ -271,6 +276,7 @@ export const neobrutalistTheme: Theme = {
     sizes: { xs: 10, sm: 12, md: 14, lg: 17, xl: 22, xxl: 32, hero: 42 },
   },
   cardStyle: 'brutal',
+  isDark: false,
 };
 
 // ============================================
@@ -320,6 +326,7 @@ export const liquidGlassTheme: Theme = {
     sizes: { xs: 11, sm: 13, md: 15, lg: 17, xl: 22, xxl: 28, hero: 34 },
   },
   cardStyle: 'glass',
+  isDark: false,
 };
 
 // Theme map for easy access

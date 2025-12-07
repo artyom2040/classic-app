@@ -6,11 +6,20 @@ import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-si
 import { supabase, isSupabaseConfigured } from '../services/supabaseClient';
 import { UserProfile, UserRole, AuthState } from '../types';
 
-// Configure Google Sign In
-GoogleSignin.configure({
-  webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || '',
-  iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || '',
-});
+// Configure Google Sign In safely
+function initializeGoogleSignIn() {
+  try {
+    GoogleSignin.configure({
+      webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || '',
+      iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || '',
+    });
+  } catch (error) {
+    console.error('[Auth] Google Sign-In initialization failed:', error);
+  }
+}
+
+// Initialize on module load
+initializeGoogleSignIn();
 
 // ============================================
 // Context Types
@@ -268,7 +277,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Update profile
   const updateProfile = useCallback(async (updates: Partial<Pick<UserProfile, 'displayName' | 'avatarUrl'>>) => {
     if (!supabase || !user) return { error: new Error('Not authenticated') };
-    
+
     const { error } = await supabase
       .from('profiles')
       .update({
@@ -277,11 +286,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
         updated_at: new Date().toISOString(),
       })
       .eq('id', user.id);
-    
+
     if (!error) {
       setUser(prev => prev ? { ...prev, ...updates } : null);
     }
-    
+
     return { error };
   }, [user]);
 

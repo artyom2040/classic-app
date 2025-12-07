@@ -22,7 +22,8 @@ export default function TermDetailScreen() {
   const t = theme;
   const isBrutal = themeName === 'neobrutalist';
   const { termId } = route.params;
-  const term = glossaryData.terms.find(item => item.id === termId) as Term | undefined;
+  // Compare as strings since termId is string but JSON has number IDs
+  const term = glossaryData.terms.find(item => String(item.id) === termId);
   const isLiked = isFavorite(termId, 'term');
   const longDefinition = term ? getLongDefinition(term) : '';
   const shortDefinition = term ? getShortDefinition(term) : '';
@@ -48,14 +49,14 @@ export default function TermDetailScreen() {
       <View style={styles.header}>
         <View style={styles.titleRow}>
           <Text style={[styles.term, { color: t.colors.text }]}>{term.term}</Text>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[styles.favoriteButton, { backgroundColor: isLiked ? t.colors.error + '20' : t.colors.surfaceLight }]}
             onPress={() => toggleFavorite(termId, 'term')}
           >
-            <Ionicons 
-              name={isLiked ? 'heart' : 'heart-outline'} 
-              size={22} 
-              color={isLiked ? t.colors.error : t.colors.textMuted} 
+            <Ionicons
+              name={isLiked ? 'heart' : 'heart-outline'}
+              size={22}
+              color={isLiked ? t.colors.error : t.colors.textMuted}
             />
           </TouchableOpacity>
         </View>
@@ -84,14 +85,14 @@ export default function TermDetailScreen() {
               item.type === 'spotify'
                 ? 'musical-note'
                 : item.type === 'audio'
-                ? 'play-circle'
-                : 'logo-youtube';
+                  ? 'play-circle'
+                  : 'logo-youtube';
             const iconColor =
               item.type === 'spotify'
                 ? t.colors.primary
                 : item.type === 'audio'
-                ? t.colors.secondary
-                : '#FF0000';
+                  ? t.colors.secondary
+                  : '#FF0000';
 
             return (
               <TouchableOpacity key={`${item.label}-${idx}`} style={styles.listenButton} onPress={() => Linking.openURL(item.url)}>

@@ -14,7 +14,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType>({
   theme: darkTheme,
   themeName: 'dark',
-  setTheme: () => {},
+  setTheme: () => { },
   isDark: true,
   isGlass: false,
 });
@@ -49,7 +49,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   };
 
   const theme = themes[themeName];
-  const isDark = themeName !== 'light' && themeName !== 'neobrutalist' && themeName !== 'liquidglass';
+  const isDark = theme.isDark;
   const isGlass = themeName === 'liquidglass';
 
   return (

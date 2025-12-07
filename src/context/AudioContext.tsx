@@ -19,14 +19,14 @@ interface AudioContextType {
   isLoading: boolean;
   position: number; // ms
   duration: number; // ms
-  
+
   // Controls
   playTrack: (track: Track) => Promise<void>;
   pause: () => Promise<void>;
   resume: () => Promise<void>;
   stop: () => Promise<void>;
   seekTo: (position: number) => Promise<void>;
-  
+
   // Queue (for future use)
   queue: Track[];
   addToQueue: (track: Track) => void;
@@ -106,32 +106,38 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       }
 
       setIsLoading(true);
-      
-      // Stop previous web audio
+
+      // Stop and cleanup previous web audio
       if (audioRef.current) {
         audioRef.current.pause();
-        audioRef.current.src = '';
+        audioRef.current.removeAttribute('src');
+        audioRef.current.load(); // Reset the audio element
+        audioRef.current.onloadedmetadata = null;
+        audioRef.current.ontimeupdate = null;
+        audioRef.current.onended = null;
+        audioRef.current.onerror = null;
+        audioRef.current = null;
       }
 
       // Web: use HTMLAudioElement for simplicity/CORS handling
       if (isWeb) {
         const audio = new window.Audio(track.audioUrl);
         audioRef.current = audio;
-        
+
         audio.onloadedmetadata = () => {
           setDuration(audio.duration * 1000);
           setIsLoading(false);
         };
-        
+
         audio.ontimeupdate = () => {
           setPosition(audio.currentTime * 1000);
         };
-        
+
         audio.onended = () => {
           setIsPlaying(false);
           setPosition(0);
         };
-        
+
         audio.onerror = () => {
           console.error('Audio error - file may not be available');
           showToast('Audio unavailable. Try another sample.', 'error');

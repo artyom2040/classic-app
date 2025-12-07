@@ -62,7 +62,7 @@ export async function markFormViewed(formId: string): Promise<void> {
   }
 }
 
-export async function markTermViewed(termId: number): Promise<void> {
+export async function markTermViewed(termId: string): Promise<void> {
   const progress = await getProgress();
   if (!progress.viewedTerms.includes(termId)) {
     progress.viewedTerms.push(termId);
@@ -98,7 +98,7 @@ export async function resetProgress(): Promise<void> {
 // Kickstart badge IDs to remove on reset
 const KICKSTART_BADGE_IDS = [
   'first_listen',
-  'orchestra_explorer', 
+  'orchestra_explorer',
   'time_traveler',
   'form_finder',
   'journey_begun'

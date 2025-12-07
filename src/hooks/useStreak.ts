@@ -1,7 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const STREAK_KEY = 'context_composer_streak';
+import { STORAGE_KEYS } from '../constants';
 
 interface StreakData {
   currentStreak: number;
@@ -34,27 +33,31 @@ export function useStreak() {
   const [streakData, setStreakData] = useState<StreakData>(defaultStreakData);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  // Ref to track latest state for async operations (prevents race conditions)
+  const streakDataRef = useRef<StreakData>(streakData);
+  streakDataRef.current = streakData;
+
   useEffect(() => {
     loadStreak();
   }, []);
 
   const loadStreak = async () => {
     try {
-      const stored = await AsyncStorage.getItem(STREAK_KEY);
+      const stored = await AsyncStorage.getItem(STORAGE_KEYS.STREAK);
       if (stored) {
         const data = JSON.parse(stored) as StreakData;
-        
+
         // Check if streak is still valid
         const today = getDateString();
         const yesterday = getDateString(new Date(Date.now() - 86400000));
-        
+
         if (data.lastActiveDate) {
           if (data.lastActiveDate !== today && data.lastActiveDate !== yesterday) {
             // Streak broken - reset current streak but keep longest
             data.currentStreak = 0;
           }
         }
-        
+
         setStreakData(data);
       }
     } catch (error) {
@@ -66,25 +69,28 @@ export function useStreak() {
 
   const saveStreak = async (data: StreakData) => {
     try {
-      await AsyncStorage.setItem(STREAK_KEY, JSON.stringify(data));
+      await AsyncStorage.setItem(STORAGE_KEYS.STREAK, JSON.stringify(data));
     } catch (error) {
       console.error('Error saving streak:', error);
     }
   };
 
-  const recordActivity = useCallback(async (): Promise<{ 
-    isNewDay: boolean; 
+  const recordActivity = useCallback(async (): Promise<{
+    isNewDay: boolean;
     streakIncreased: boolean;
     currentStreak: number;
   }> => {
     const today = getDateString();
-    
+
+    // Use ref for latest state to prevent race conditions
+    const currentData = streakDataRef.current;
+
     // Already recorded today
-    if (streakData.lastActiveDate === today) {
-      return { 
-        isNewDay: false, 
+    if (currentData.lastActiveDate === today) {
+      return {
+        isNewDay: false,
         streakIncreased: false,
-        currentStreak: streakData.currentStreak,
+        currentStreak: currentData.currentStreak,
       };
     }
 
@@ -92,18 +98,18 @@ export function useStreak() {
     let newCurrentStreak = 1;
     let streakIncreased = false;
 
-    if (streakData.lastActiveDate === yesterday) {
+    if (currentData.lastActiveDate === yesterday) {
       // Continuing streak
-      newCurrentStreak = streakData.currentStreak + 1;
+      newCurrentStreak = currentData.currentStreak + 1;
       streakIncreased = true;
     }
 
     const newData: StreakData = {
       currentStreak: newCurrentStreak,
-      longestStreak: Math.max(streakData.longestStreak, newCurrentStreak),
+      longestStreak: Math.max(currentData.longestStreak, newCurrentStreak),
       lastActiveDate: today,
-      totalDaysActive: streakData.totalDaysActive + 1,
-      streakHistory: [...streakData.streakHistory.slice(-365), today], // Keep last year
+      totalDaysActive: currentData.totalDaysActive + 1,
+      streakHistory: [...currentData.streakHistory.slice(-365), today], // Keep last year
     };
 
     setStreakData(newData);
@@ -114,19 +120,19 @@ export function useStreak() {
       streakIncreased,
       currentStreak: newCurrentStreak,
     };
-  }, [streakData]);
+  }, []); // No dependencies needed - uses ref for latest state
 
   const resetStreak = async () => {
     setStreakData(defaultStreakData);
-    await AsyncStorage.removeItem(STREAK_KEY);
+    await AsyncStorage.removeItem(STORAGE_KEYS.STREAK);
   };
 
   const getStreakStatus = (): 'active' | 'at_risk' | 'broken' => {
     if (!streakData.lastActiveDate) return 'broken';
-    
+
     const today = getDateString();
     const yesterday = getDateString(new Date(Date.now() - 86400000));
-    
+
     if (streakData.lastActiveDate === today) return 'active';
     if (streakData.lastActiveDate === yesterday) return 'at_risk';
     return 'broken';
