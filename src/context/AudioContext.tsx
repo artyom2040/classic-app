@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useRef, ReactNode, useCallb
 import { Platform } from 'react-native';
 import { createAudioPlayer, AudioPlayer, AudioStatus } from 'expo-audio';
 import { useToast } from '../components';
+import { configureAudioSession, supportsBackgroundAudio } from '../services/audioSession';
 
 export interface Track {
   id: string;
@@ -47,11 +48,22 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const playerRef = useRef<AudioPlayer | null>(null);
 
+  // Configure audio session for background playback on mount
+  useEffect(() => {
+    if (supportsBackgroundAudio()) {
+      configureAudioSession({
+        playsInSilentMode: true,
+        staysActiveInBackground: true,
+      });
+    }
+  }, []);
+
   // Native player lifecycle (expo-audio)
   useEffect(() => {
     if (isWeb) return;
 
-    const player = createAudioPlayer(null, { updateInterval: 300, keepAudioSessionActive: false });
+    // Keep audio session active for background playback
+    const player = createAudioPlayer(null, { updateInterval: 300, keepAudioSessionActive: true });
     playerRef.current = player;
 
     const sub = player.addListener?.('playbackStatusUpdate', (status: AudioStatus) => {

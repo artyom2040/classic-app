@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { View, ActivityIndicator, Platform, StyleSheet } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { QueryClientProvider } from '@tanstack/react-query';
 
 import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 import { SettingsProvider } from './src/context/SettingsContext';
@@ -17,6 +18,7 @@ import { ToastProvider, ErrorBoundary, ThemedErrorFallback, OfflineIndicator, Ha
 import MiniPlayer from './src/components/MiniPlayer';
 import { RootStackParamList, TabParamList } from './src/types';
 import { getProgress } from './src/utils/storage';
+import { queryClient } from './src/services/queryClient';
 
 // Screens
 import HomeScreen from './src/screens/HomeScreenV2';
@@ -47,6 +49,7 @@ import { LoginScreen, RegisterScreen, ForgotPasswordScreen } from './src/screens
 import UserDashboardScreen from './src/screens/UserDashboardScreen';
 import AdminDashboardScreen from './src/screens/AdminDashboardScreen';
 import { useAuthDeepLink } from './src/hooks/useAuthDeepLink';
+import { useNavigationPersistence } from './src/hooks/useNavigationPersistence';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
@@ -125,23 +128,23 @@ function TabNavigator() {
         component={HomeScreen}
         options={{ title: 'Home' }}
       />
-      <Tab.Screen 
-        name="Timeline" 
+      <Tab.Screen
+        name="Timeline"
         component={TimelineScreen}
         options={{ title: 'Timeline' }}
       />
-      <Tab.Screen 
-        name="Glossary" 
+      <Tab.Screen
+        name="Glossary"
         component={GlossaryScreen}
         options={{ title: 'Glossary' }}
       />
-      <Tab.Screen 
-        name="Forms" 
+      <Tab.Screen
+        name="Forms"
         component={FormsScreen}
         options={{ title: 'Forms' }}
       />
-      <Tab.Screen 
-        name="Profile" 
+      <Tab.Screen
+        name="Profile"
         component={ProfileScreen}
         options={{ title: 'Profile' }}
       />
@@ -157,6 +160,9 @@ function AppNavigator() {
 
   // Handle auth deep links (password reset, email verification, etc.)
   useAuthDeepLink();
+
+  // Navigation state persistence for crash recovery
+  const { isReady: navReady, initialState, onStateChange } = useNavigationPersistence();
 
   useEffect(() => {
     async function checkFirstLaunch() {
@@ -182,7 +188,7 @@ function AppNavigator() {
     },
   };
 
-  if (isLoading) {
+  if (isLoading || !navReady) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: t.colors.background }}>
         <ActivityIndicator size="large" color={t.colors.primary} />
@@ -191,7 +197,11 @@ function AppNavigator() {
   }
 
   return (
-    <NavigationContainer theme={navTheme}>
+    <NavigationContainer
+      theme={navTheme}
+      initialState={initialState}
+      onStateChange={onStateChange}
+    >
       <StatusBar style={isDark ? 'light' : 'dark'} />
       <Stack.Navigator
         initialRouteName={showOnboarding ? 'Kickstart' : 'MainTabs'}
@@ -209,122 +219,122 @@ function AppNavigator() {
           },
         }}
       >
-        <Stack.Screen 
-          name="MainTabs" 
+        <Stack.Screen
+          name="MainTabs"
           component={TabNavigator}
           options={{ headerShown: false }}
         />
-        <Stack.Screen 
-          name="ComposerDetail" 
+        <Stack.Screen
+          name="ComposerDetail"
           component={ComposerDetailScreen}
           options={{ title: 'Composer' }}
         />
-        <Stack.Screen 
-          name="Composers" 
+        <Stack.Screen
+          name="Composers"
           component={ComposersScreen}
           options={{ title: 'Composers' }}
         />
-        <Stack.Screen 
-          name="PeriodDetail" 
+        <Stack.Screen
+          name="PeriodDetail"
           component={PeriodDetailScreen}
           options={{ title: 'Period' }}
         />
-        <Stack.Screen 
-          name="FormDetail" 
+        <Stack.Screen
+          name="FormDetail"
           component={FormDetailScreen}
           options={{ title: 'Form' }}
         />
-        <Stack.Screen 
-          name="TermDetail" 
+        <Stack.Screen
+          name="TermDetail"
           component={TermDetailScreen}
           options={{ title: 'Term' }}
         />
-        <Stack.Screen 
-          name="Kickstart" 
+        <Stack.Screen
+          name="Kickstart"
           component={KickstartScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen 
-          name="KickstartDay" 
+        <Stack.Screen
+          name="KickstartDay"
           component={KickstartDayScreen}
           options={{ title: '5-Day Kickstart' }}
         />
-        <Stack.Screen 
-          name="WeeklyAlbum" 
+        <Stack.Screen
+          name="WeeklyAlbum"
           component={WeeklyAlbumScreen}
           options={{ title: 'Weekly Album' }}
         />
-        <Stack.Screen 
-          name="MonthlySpotlight" 
+        <Stack.Screen
+          name="MonthlySpotlight"
           component={MonthlySpotlightScreen}
           options={{ title: 'Monthly Spotlight' }}
         />
-        <Stack.Screen 
-          name="NewReleases" 
+        <Stack.Screen
+          name="NewReleases"
           component={NewReleasesScreen}
           options={{ title: 'New Releases' }}
         />
-        <Stack.Screen 
-          name="ReleaseDetail" 
+        <Stack.Screen
+          name="ReleaseDetail"
           component={ReleaseDetailScreen}
           options={{ title: 'Album' }}
         />
-        <Stack.Screen 
-          name="ConcertHalls" 
+        <Stack.Screen
+          name="ConcertHalls"
           component={ConcertHallsScreen}
           options={{ title: 'Concert Halls' }}
         />
-        <Stack.Screen 
-          name="ConcertHallDetail" 
+        <Stack.Screen
+          name="ConcertHallDetail"
           component={ConcertHallDetailScreen}
           options={{ title: 'Concert Hall' }}
         />
-        <Stack.Screen 
-          name="Badges" 
+        <Stack.Screen
+          name="Badges"
           component={BadgesScreen}
           options={{ title: 'Badges' }}
         />
-        <Stack.Screen 
-          name="Settings" 
+        <Stack.Screen
+          name="Settings"
           component={SettingsScreen}
           options={{ title: 'Settings' }}
         />
-        <Stack.Screen 
-          name="Search" 
+        <Stack.Screen
+          name="Search"
           component={SearchScreen}
           options={{ title: 'Search', headerShown: false }}
         />
-        <Stack.Screen 
-          name="Quiz" 
+        <Stack.Screen
+          name="Quiz"
           component={QuizScreen}
           options={{ title: 'Daily Quiz', headerShown: false }}
         />
-        
+
         {/* Auth Screens */}
-        <Stack.Screen 
-          name="Login" 
+        <Stack.Screen
+          name="Login"
           component={LoginScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen 
-          name="Register" 
+        <Stack.Screen
+          name="Register"
           component={RegisterScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen 
-          name="ForgotPassword" 
+        <Stack.Screen
+          name="ForgotPassword"
           component={ForgotPasswordScreen}
           options={{ headerShown: false }}
         />
-        
+
         {/* Dashboard Screens */}
-        <Stack.Screen 
-          name="UserDashboard" 
+        <Stack.Screen
+          name="UserDashboard"
           component={UserDashboardScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen 
-          name="AdminDashboard" 
+        <Stack.Screen
+          name="AdminDashboard"
           component={AdminDashboardScreen}
           options={{ headerShown: false }}
         />
@@ -335,26 +345,28 @@ function AppNavigator() {
 
 export default function App() {
   return (
-    <SafeAreaProvider>
-      <ThemeProvider>
-        <ToastProvider>
-          <ErrorBoundary renderFallback={(error, reset) => (
-            <ThemedErrorFallback error={error} onReset={reset} />
-          )}>
-            <SettingsProvider>
-              <FavoritesProvider>
-                <AuthProvider>
-                  <AudioProvider>
-                    <AppNavigator />
-                    <MiniPlayer />
-                    <OfflineIndicator />
-                  </AudioProvider>
-                </AuthProvider>
-              </FavoritesProvider>
-            </SettingsProvider>
-          </ErrorBoundary>
-        </ToastProvider>
-      </ThemeProvider>
-    </SafeAreaProvider>
+    <QueryClientProvider client={queryClient}>
+      <SafeAreaProvider>
+        <ThemeProvider>
+          <ToastProvider>
+            <ErrorBoundary renderFallback={(error, reset) => (
+              <ThemedErrorFallback error={error} onReset={reset} />
+            )}>
+              <SettingsProvider>
+                <FavoritesProvider>
+                  <AuthProvider>
+                    <AudioProvider>
+                      <AppNavigator />
+                      <MiniPlayer />
+                      <OfflineIndicator />
+                    </AudioProvider>
+                  </AuthProvider>
+                </FavoritesProvider>
+              </SettingsProvider>
+            </ErrorBoundary>
+          </ToastProvider>
+        </ThemeProvider>
+      </SafeAreaProvider>
+    </QueryClientProvider>
   );
 }

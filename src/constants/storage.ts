@@ -26,6 +26,9 @@ export const STORAGE_KEYS = {
 
   /** Supabase auth session */
   AUTH_SESSION: '@context_composer_auth',
+
+  /** Navigation state for crash recovery */
+  NAVIGATION_STATE: '@context_composer_nav_state',
 } as const;
 
 export type StorageKey = typeof STORAGE_KEYS[keyof typeof STORAGE_KEYS];

@@ -18,7 +18,13 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.contextcomposer.app",
-      "usesAppleSignIn": true
+      "usesAppleSignIn": true,
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "audio"
+        ],
+        "NSMicrophoneUsageDescription": "This app does not use the microphone."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -32,6 +38,12 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
+      [
+        "expo-av",
+        {
+          "microphonePermission": false
+        }
+      ],
       "expo-audio",
       "expo-web-browser",
       "expo-apple-authentication",

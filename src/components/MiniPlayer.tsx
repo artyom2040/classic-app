@@ -21,7 +21,7 @@ export default function MiniPlayer() {
   const { theme, themeName, isGlass } = useTheme();
   const t = theme;
   const isBrutal = themeName === 'neobrutalist';
-  
+
   const {
     currentTrack,
     isPlaying,
@@ -56,11 +56,11 @@ export default function MiniPlayer() {
     <>
       {/* Progress bar */}
       <View style={[styles.progressBar, { backgroundColor: t.colors.border }]}>
-        <View 
+        <View
           style={[
-            styles.progressFill, 
+            styles.progressFill,
             { width: `${progress}%`, backgroundColor: t.colors.primary }
-          ]} 
+          ]}
         />
       </View>
 
@@ -88,23 +88,29 @@ export default function MiniPlayer() {
         {/* Controls */}
         <View style={styles.controls}>
           {isLoading ? (
-            <ActivityIndicator size="small" color={t.colors.primary} />
+            <ActivityIndicator size="small" color={t.colors.primary} accessibilityLabel="Loading audio" />
           ) : (
-            <TouchableOpacity 
+            <TouchableOpacity
               style={[styles.playButton, { backgroundColor: t.colors.primary }]}
               onPress={handlePlayPause}
+              accessibilityRole="button"
+              accessibilityLabel={isPlaying ? 'Pause' : 'Play'}
+              accessibilityHint={isPlaying ? 'Pauses the current track' : 'Resumes playing the current track'}
             >
-              <Ionicons 
-                name={isPlaying ? 'pause' : 'play'} 
-                size={20} 
-                color="#fff" 
+              <Ionicons
+                name={isPlaying ? 'pause' : 'play'}
+                size={20}
+                color="#fff"
               />
             </TouchableOpacity>
           )}
-          
-          <TouchableOpacity 
+
+          <TouchableOpacity
             style={[styles.closeButton, { backgroundColor: t.colors.surfaceLight }]}
             onPress={handleClose}
+            accessibilityRole="button"
+            accessibilityLabel="Stop"
+            accessibilityHint="Stops playing and closes the player"
           >
             <Ionicons name="close" size={18} color={t.colors.textMuted} />
           </TouchableOpacity>
@@ -125,10 +131,10 @@ export default function MiniPlayer() {
   }
 
   return (
-    <View 
+    <View
       style={[
-        styles.container, 
-        { 
+        styles.container,
+        {
           bottom: insets.bottom + 88,
           backgroundColor: t.colors.surface,
           borderColor: t.colors.border,
