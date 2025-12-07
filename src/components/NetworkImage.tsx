@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { Image, ImageContentFit } from 'expo-image';
 import { useTheme } from '../context/ThemeContext';
-import { 
-  ComposerPlaceholder, 
-  AlbumPlaceholder, 
+import {
+  ComposerPlaceholder,
+  AlbumPlaceholder,
   FormPlaceholder,
-  MusicNotePlaceholder 
+  MusicNotePlaceholder
 } from './placeholders';
 
 interface NetworkImageProps {
-  uri: string | null | undefined;
+  uri?: string | null | undefined;
+  source?: any; // versatile type to handle requires and expo-image sources
   size?: number;
   width?: number;
   height?: number;
@@ -29,10 +30,12 @@ const FALLBACK_COLORS: Record<string, string> = {
   era: '#F59E0B',
   form: '#10B981',
   default: '#6B7280',
+  // ...
 };
 
 export function NetworkImage({
   uri,
+  source,
   size,
   width,
   height,
@@ -47,19 +50,35 @@ export function NetworkImage({
   const { theme, themeName } = useTheme();
   const t = theme;
   const isBrutal = themeName === 'neobrutalist';
-  
+
   const [error, setError] = useState(false);
-  
+
   const imageWidth = width || size || 80;
   const imageHeight = height || size || 80;
   const radius = borderRadius ?? (isBrutal ? 0 : Math.min(imageWidth, imageHeight) / 2);
-  
+
   const fallbackColor = FALLBACK_COLORS[fallbackType] || FALLBACK_COLORS.default;
-  
+
+  // Resolve the actual source for expo-image
+  // If source is provided, use it.
+  // If uri is a number (local require), use it directly.
+  // If uri is a string, use { uri }.
+  // If uri is anything else (e.g. object), it might be wrong, so ignore it or try to use it if it's a valid source.
+  let finalSource = source;
+  if (!finalSource) {
+    if (typeof uri === 'number') {
+      finalSource = uri;
+    } else if (typeof uri === 'string' && uri) {
+      finalSource = { uri };
+    } else if (typeof uri === 'object' && uri !== null) {
+      finalSource = uri;
+    }
+  }
+
   // Render appropriate SVG placeholder based on type
   const renderPlaceholder = () => {
     const size = Math.min(imageWidth, imageHeight);
-    
+
     switch (fallbackType) {
       case 'composer':
         return <ComposerPlaceholder size={size} color={fallbackColor} name={fallbackText} />;
@@ -71,9 +90,9 @@ export function NetworkImage({
         return <MusicNotePlaceholder size={size} color={fallbackColor} />;
     }
   };
-  
-  // Show fallback if no URI or error occurred
-  if (!uri || error) {
+
+  // Show fallback if no source/URI or error occurred
+  if (!finalSource || (error && !source)) { // Don't show error for local sources as easily
     return (
       <View style={[
         styles.fallback,
@@ -90,7 +109,7 @@ export function NetworkImage({
       </View>
     );
   }
-  
+
   return (
     <View style={[
       styles.container,
@@ -104,7 +123,7 @@ export function NetworkImage({
       style,
     ]}>
       <Image
-        source={{ uri }}
+        source={finalSource}
         style={[
           styles.image,
           {
@@ -119,7 +138,7 @@ export function NetworkImage({
         cachePolicy={cachePolicy}
         transition={200}
         placeholder={null}
-        recyclingKey={uri}
+        recyclingKey={typeof finalSource === 'string' ? finalSource : undefined}
       />
     </View>
   );

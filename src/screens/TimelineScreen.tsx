@@ -5,7 +5,6 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  FlatList,
   RefreshControl,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,6 +15,8 @@ import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
 import { RootStackParamList, Period, Composer } from '../types';
 import { hapticSelection } from '../utils/haptics';
+import { NetworkImage } from '../components/NetworkImage';
+import { getEraImage } from '../utils/images';
 
 import periodsData from '../data/periods.json';
 import composersData from '../data/composers.json';
@@ -46,6 +47,7 @@ export default function TimelineScreen() {
   const renderPeriodCard = (period: Period) => {
     const isSelected = selectedPeriod === period.id;
     const periodComposers = getComposersForPeriod(period.id);
+    const eraImage = getEraImage(period.id);
 
     return (
       <View key={period.id}>
@@ -59,6 +61,17 @@ export default function TimelineScreen() {
           onPress={() => setSelectedPeriod(isSelected ? null : period.id)}
           activeOpacity={0.8}
         >
+          <NetworkImage
+            uri={eraImage}
+            fallbackType="era"
+            style={{
+              width: '100%',
+              height: 140,
+              marginBottom: spacing.md,
+              borderRadius: borderRadius.md
+            }}
+            contentFit="cover"
+          />
           <View style={styles.periodHeader}>
             <View>
               <Text style={[styles.periodName, { color: t.colors.text }]}>{period.name}</Text>
@@ -66,17 +79,17 @@ export default function TimelineScreen() {
             </View>
             <View style={styles.periodMeta}>
               <Text style={[styles.composerCount, { color: t.colors.textMuted }]}>{periodComposers.length} composers</Text>
-              <Ionicons 
-                name={isSelected ? 'chevron-up' : 'chevron-down'} 
-                size={20} 
-                color={t.colors.textMuted} 
+              <Ionicons
+                name={isSelected ? 'chevron-up' : 'chevron-down'}
+                size={20}
+                color={t.colors.textMuted}
               />
             </View>
           </View>
           <Text style={[styles.periodDescription, { color: t.colors.textSecondary }]} numberOfLines={isSelected ? undefined : 2}>
             {period.description}
           </Text>
-          
+
           {isSelected && (
             <View style={styles.characteristics}>
               <Text style={[styles.characteristicsTitle, dynamicStyles.characteristicsTitle]}>Key Characteristics:</Text>
@@ -144,14 +157,14 @@ export default function TimelineScreen() {
   };
 
   return (
-    <ScrollView 
+    <ScrollView
       style={[styles.container, dynamicStyles.container]}
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
       refreshControl={
-        <RefreshControl 
-          refreshing={refreshing} 
-          onRefresh={onRefresh} 
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
           tintColor={t.colors.primary}
           colors={[t.colors.primary]}
         />

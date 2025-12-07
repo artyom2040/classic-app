@@ -8,6 +8,8 @@ import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
 import { RootStackParamList, Period, Composer } from '../types';
 import { markPeriodViewed } from '../utils/storage';
+import { NetworkImage } from '../components/NetworkImage';
+import { getEraImage } from '../utils/images';
 
 import periodsData from '../data/periods.json';
 import composersData from '../data/composers.json';
@@ -25,6 +27,7 @@ export default function PeriodDetailScreen() {
 
   const period = periodsData.periods.find(p => p.id === periodId) as Period | undefined;
   const composers = composersData.composers.filter(c => c.period === periodId) as Composer[];
+  const eraImage = period ? getEraImage(period.id) : null;
 
   useEffect(() => {
     if (periodId) markPeriodViewed(periodId);
@@ -36,13 +39,30 @@ export default function PeriodDetailScreen() {
 
   return (
     <ScrollView style={[styles.container, { backgroundColor: t.colors.background }]} contentContainerStyle={styles.content}>
-      <View style={[styles.header, { backgroundColor: period.color + '20' }]}>
-        <Text style={[styles.title, { color: period.color }]}>{period.name}</Text>
-        <Text style={[styles.years, { color: t.colors.textSecondary }]}>{period.years}</Text>
+      <View style={{ marginBottom: spacing.lg }}>
+        <NetworkImage
+          uri={eraImage}
+          fallbackType="era"
+          style={{ width: '100%', height: 200, borderRadius: borderRadius.lg }}
+          contentFit="cover"
+        />
+        <View style={[styles.headerOverlay, {
+          backgroundColor: period.color + '20',
+          marginTop: -40,
+          marginHorizontal: spacing.md,
+          borderRadius: borderRadius.lg,
+          padding: spacing.md,
+          alignItems: 'center',
+          borderWidth: 1,
+          borderColor: period.color + '40',
+        }]}>
+          <Text style={[styles.title, { color: period.color }]}>{period.name}</Text>
+          <Text style={[styles.years, { color: t.colors.textSecondary }]}>{period.years}</Text>
+        </View>
       </View>
-      
+
       <Text style={[styles.description, { color: t.colors.textSecondary }]}>{period.description}</Text>
-      
+
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Key Characteristics</Text>
         {period.keyCharacteristics.map((char, idx) => (
@@ -82,7 +102,9 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   content: { padding: spacing.md },
   errorText: { fontSize: fontSize.lg, textAlign: 'center', marginTop: spacing.xxl },
-  header: { borderRadius: borderRadius.lg, padding: spacing.lg, marginBottom: spacing.lg, alignItems: 'center' },
+  errorText: { fontSize: fontSize.lg, textAlign: 'center', marginTop: spacing.xxl },
+  headerOverlay: { alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 3 },
+  // header: { borderRadius: borderRadius.lg, padding: spacing.lg, marginBottom: spacing.lg, alignItems: 'center' },
   title: { fontSize: fontSize.xxxl, fontWeight: 'bold' },
   years: { fontSize: fontSize.lg, marginTop: spacing.xs },
   description: { fontSize: fontSize.md, lineHeight: 24, marginBottom: spacing.lg },
