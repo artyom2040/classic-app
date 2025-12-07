@@ -32,9 +32,20 @@ yarn-error.*
 .DS_Store
 *.pem
 
-# Local env files
-.env*.local
+# Environment & Secrets
 .env
+.env.local
+.env*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Supabase
+supabase/.env
+supabase/.env.local
+*service-role*
+*service_role*
+supabase/.temp/
 
 # TypeScript
 *.tsbuildinfo
