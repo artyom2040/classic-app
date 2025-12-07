@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Theme, ThemeName, themes, darkTheme } from '../theme/themes';
+import { STORAGE_KEYS } from '../constants';
 
 interface ThemeContextType {
   theme: Theme;
@@ -18,7 +19,7 @@ const ThemeContext = createContext<ThemeContextType>({
   isGlass: false,
 });
 
-const THEME_STORAGE_KEY = '@context_composer_theme';
+const THEME_STORAGE_KEY = STORAGE_KEYS.THEME;
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [themeName, setThemeName] = useState<ThemeName>('dark');

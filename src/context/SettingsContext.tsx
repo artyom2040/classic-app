@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { STORAGE_KEYS } from '../constants';
 
 export type IconPack = 'ionicons' | 'lucide' | 'phosphor';
 export type MusicService = 'youtube' | 'spotify' | 'apple';
@@ -18,7 +19,7 @@ const SettingsContext = createContext<SettingsContextType>({
   setMusicService: () => {},
 });
 
-const SETTINGS_STORAGE_KEY = '@context_composer_settings';
+const SETTINGS_STORAGE_KEY = STORAGE_KEYS.SETTINGS;
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const [iconPack, setIconPackState] = useState<IconPack>('ionicons');

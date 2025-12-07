@@ -14,22 +14,38 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "scheme": "contextcomposer",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.contextcomposer.app"
+      "bundleIdentifier": "com.contextcomposer.app",
+      "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1a1a2e"
       },
-      "package": "com.contextcomposer.app"
+      "package": "com.contextcomposer.app",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-audio"
-    ]
+      "expo-audio",
+      "expo-web-browser",
+      "expo-apple-authentication",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.YOUR_IOS_CLIENT_ID"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "your-project-id"
+      }
+    }
   }
 }

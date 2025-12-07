@@ -5,34 +5,32 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  Dimensions,
-  Platform,
-  Linking,
   RefreshControl,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { useTheme } from '../context/ThemeContext';
-import { spacing, fontSize, borderRadius } from '../theme';
-import { RootStackParamList, UserProgress, NewRelease, ConcertHall, Term, ListenerLevel } from '../types';
-import { getProgress, getWeekNumber, getDayOfYear, getCurrentMonth } from '../utils/storage';
-import { openInMusicService } from '../utils/musicLinks';
-import { hapticSelection } from '../utils/haptics';
-import { SkeletonHeroCard, SkeletonGrid } from '../components';
 import { useSettings } from '../context/SettingsContext';
+import { useCardStyle } from '../hooks/useCardStyle';
+import { spacing } from '../theme';
+import { RootStackParamList, UserProgress, NewRelease, ConcertHall, Term, WeeklyAlbum, MonthlySpotlight } from '../types';
+import { getProgress, getWeekNumber, getDayOfYear, getCurrentMonth } from '../utils/storage';
+import { hapticSelection } from '../utils/haptics';
 import { getShortDefinition } from '../utils/terms';
+import { SkeletonHeroCard, SkeletonGrid } from '../components';
+
+// Extracted components
+import { FeaturedGrid, ExploreGrid, NewReleasesCarousel, ConcertHallsCarousel } from './Home';
 
 import glossaryData from '../data/glossary.json';
 import albumsData from '../data/albums.json';
 import composersData from '../data/composers.json';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
-const { width } = Dimensions.get('window');
 
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp>();
@@ -49,8 +47,8 @@ export default function HomeScreen() {
   const dayOfYear = getDayOfYear();
   const currentMonth = getCurrentMonth();
 
-  const weeklyAlbum = albumsData.weeklyAlbums[(weekNumber - 1) % albumsData.weeklyAlbums.length];
-  const monthlySpotlight = albumsData.monthlySpotlights[(currentMonth - 1) % albumsData.monthlySpotlights.length];
+  const weeklyAlbum = albumsData.weeklyAlbums[(weekNumber - 1) % albumsData.weeklyAlbums.length] as WeeklyAlbum;
+  const monthlySpotlight = albumsData.monthlySpotlights[(currentMonth - 1) % albumsData.monthlySpotlights.length] as MonthlySpotlight;
   const newReleases = (albumsData.newReleases || []) as NewRelease[];
   const concertHalls = (albumsData.concertHalls || []) as ConcertHall[];
   const termOfDay = glossaryData.terms[(dayOfYear - 1) % glossaryData.terms.length] as Term;
@@ -84,62 +82,9 @@ export default function HomeScreen() {
     setRefreshing(false);
   }, [loadProgress]);
 
-  const kickstartProgress = progress?.kickstartDay || 0;
-  const showKickstart = progress && !progress.kickstartCompleted;
-  const isBrutal = themeName === 'neobrutalist';
   const isGlass = themeName === 'liquidglass';
   const preferredService = (musicService === 'apple' ? 'appleMusic' : musicService) as 'spotify' | 'appleMusic' | 'youtube';
-
-  const formatReleaseDate = (date: string) => {
-    const parsed = new Date(date);
-    return isNaN(parsed.getTime())
-      ? date
-      : parsed.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
-  };
-
-  const levelLabel = (level?: ListenerLevel) => {
-    if (!level) return null;
-    if (level === 'beginner') return 'Beginner friendly';
-    if (level === 'intermediate') return 'Intermediate';
-    return 'Advanced';
-  };
-
-  const openRelease = (release: NewRelease) => {
-    openInMusicService(`${release.title} ${release.artist}`, preferredService);
-  };
-
-  const openHallMap = (hall: ConcertHall) => {
-    const url = hall.mapUrl || `https://maps.google.com/?q=${encodeURIComponent(`${hall.name} ${hall.city}`)}`;
-    Linking.openURL(url);
-  };
-
-  // Card style based on theme
-  const cardStyle = {
-    backgroundColor: isGlass ? 'rgba(255, 255, 255, 0.6)' : t.colors.surface,
-    borderRadius: t.borderRadius.lg,
-    ...(isBrutal ? { borderWidth: 3, borderColor: t.colors.border } : {}),
-    ...(isGlass ? { 
-      borderWidth: 1, 
-      borderColor: 'rgba(255, 255, 255, 0.5)',
-      overflow: 'hidden' as const,
-    } : t.shadows.sm),
-  };
-
-  // Glass card wrapper component
-  const GlassWrapper = ({ children, style }: { children: React.ReactNode; style?: any }) => {
-    if (!isGlass) return <>{children}</>;
-    
-    return (
-      <View style={[style, { overflow: 'hidden' }]}>
-        {Platform.OS === 'ios' ? (
-          <BlurView intensity={40} tint="light" style={StyleSheet.absoluteFill} />
-        ) : (
-          <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(255, 255, 255, 0.7)' }]} />
-        )}
-        {children}
-      </View>
-    );
-  };
+  const { cardStyle } = useCardStyle();
 
   // Main content wrapped in gradient for glass theme
   const renderContent = () => (
@@ -193,94 +138,11 @@ export default function HomeScreen() {
       </View>
 
       {/* Featured Section - 3 Cards */}
-      <View style={styles.featuredGrid}>
-        {/* 5-Day Kickstart - Always visible */}
-        <TouchableOpacity
-          style={[styles.featuredCard, cardStyle, { borderTopWidth: 3, borderTopColor: t.colors.primary }]}
-          onPress={() => navigation.navigate('Kickstart')}
-          activeOpacity={0.8}
-        >
-          <View style={[styles.featuredIcon, { backgroundColor: t.colors.primary + '20' }]}>
-            <Ionicons name="rocket" size={28} color={t.colors.primary} />
-          </View>
-          <Text style={[styles.featuredLabel, { color: t.colors.primary }]}>5-Day Kickstart</Text>
-          {progress?.kickstartCompleted ? (
-            <>
-              <Text style={[styles.featuredTitle, { color: t.colors.text }]}>Completed! 🎉</Text>
-              <Text style={[styles.featuredSub, { color: t.colors.textMuted }]}>Tap to review</Text>
-            </>
-          ) : (
-            <>
-              <Text style={[styles.featuredTitle, { color: t.colors.text }]}>
-                {kickstartProgress === 0 ? 'Start Now' : `Day ${kickstartProgress + 1}`}
-              </Text>
-              <View style={styles.progressDots}>
-                {[0, 1, 2, 3, 4].map((day) => (
-                  <View
-                    key={day}
-                    style={[
-                      styles.dot,
-                      {
-                        backgroundColor: day < kickstartProgress
-                          ? t.colors.success
-                          : day === kickstartProgress
-                          ? t.colors.primary
-                          : t.colors.border,
-                      },
-                    ]}
-                  />
-                ))}
-              </View>
-            </>
-          )}
-        </TouchableOpacity>
-
-        {/* Weekly Album */}
-        <TouchableOpacity
-          style={[styles.featuredCard, cardStyle, { borderTopWidth: 3, borderTopColor: t.colors.secondary }]}
-          onPress={() => navigation.navigate('WeeklyAlbum')}
-          activeOpacity={0.8}
-        >
-          <View style={[styles.featuredIcon, { backgroundColor: t.colors.secondary + '20' }]}>
-            <Ionicons name="disc" size={28} color={t.colors.secondary} />
-          </View>
-          <Text style={[styles.featuredLabel, { color: t.colors.secondary }]}>Weekly Pick</Text>
-          <Text style={[styles.featuredTitle, { color: t.colors.text }]} numberOfLines={1}>
-            {weeklyAlbum.title}
-          </Text>
-          <View style={[styles.featuredSubRow]}>
-            <Text style={[styles.featuredSub, { color: t.colors.textMuted }]} numberOfLines={1}>
-              {weeklyAlbum.artist}
-            </Text>
-            {weeklyAlbum.listenerLevel && (
-              <View style={[styles.releasePill, { backgroundColor: t.colors.secondary + '20' }]}>
-                <Ionicons name="person" size={12} color={t.colors.secondary} />
-                <Text style={[styles.releasePillText, { color: t.colors.secondary }]} numberOfLines={1}>
-                  {levelLabel(weeklyAlbum.listenerLevel)}
-                </Text>
-              </View>
-            )}
-          </View>
-        </TouchableOpacity>
-
-        {/* Monthly Spotlight */}
-        <TouchableOpacity
-          style={[styles.featuredCard, cardStyle, { borderTopWidth: 3, borderTopColor: t.colors.warning }]}
-          onPress={() => navigation.navigate('MonthlySpotlight')}
-          activeOpacity={0.8}
-        >
-          <View style={[styles.featuredIcon, { backgroundColor: t.colors.warning + '20' }]}>
-            <Ionicons name="star" size={28} color={t.colors.warning} />
-          </View>
-          <Text style={[styles.featuredLabel, { color: t.colors.warning }]}>This Month</Text>
-          <Text style={[styles.featuredTitle, { color: t.colors.text }]} numberOfLines={1}>
-            {monthlySpotlight.title}
-          </Text>
-          <Text style={[styles.featuredSub, { color: t.colors.textMuted }]} numberOfLines={1}>
-            {monthlySpotlight.subtitle}
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <FeaturedGrid
+        progress={progress}
+        weeklyAlbum={weeklyAlbum}
+        monthlySpotlight={monthlySpotlight}
+      />
 
       {/* Daily Discovery Section */}
       <Text style={[styles.sectionTitle, { color: t.colors.text }]}>
@@ -346,175 +208,16 @@ export default function HomeScreen() {
         Explore
       </Text>
 
-      <View style={styles.exploreGrid}>
-        {[
-          { icon: 'people', label: 'Composers', sub: `${composersData.composers.length} Profiles`, color: t.colors.primary, screen: 'Composers' },
-          { icon: 'time', label: 'Timeline', sub: 'Eras & History', color: '#6B8E23', screen: 'Timeline' },
-          { icon: 'book', label: 'Glossary', sub: `${glossaryData.terms.length} Terms`, color: t.colors.secondary, screen: 'Glossary' },
-          { icon: 'albums', label: 'Spotlight', sub: 'Monthly Feature', color: t.colors.warning, screen: 'MonthlySpotlight' },
-          { icon: 'musical-notes', label: 'New Releases', sub: 'Latest recordings', color: t.colors.secondary, screen: 'NewReleases' },
-          { icon: 'business', label: 'Concert Halls', sub: 'World venues', color: t.colors.warning, screen: 'ConcertHalls' },
-          { icon: 'help-circle', label: 'Daily Quiz', sub: '5 Questions', color: t.colors.error, screen: 'Quiz' },
-          { icon: 'ribbon', label: 'Badges', sub: 'Achievements', color: t.colors.success, screen: 'Badges' },
-        ].map((item) => (
-          <TouchableOpacity
-            key={item.label}
-            style={[
-              styles.exploreCard,
-              {
-                backgroundColor: item.color + '15',
-                borderRadius: t.borderRadius.lg,
-                ...(isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : {}),
-              },
-            ]}
-            onPress={() => {
-              if (['Composers', 'MonthlySpotlight', 'Badges', 'Quiz', 'NewReleases', 'ConcertHalls'].includes(item.screen)) {
-                navigation.navigate(item.screen as any);
-                return;
-              }
-              navigation.navigate('MainTabs', { screen: item.screen } as any);
-            }}
-          >
-            <Ionicons name={item.icon as any} size={28} color={item.color} />
-            <Text style={[styles.exploreLabel, { color: t.colors.text }]}>{item.label}</Text>
-            <Text style={[styles.exploreSub, { color: t.colors.textMuted }]}>{item.sub}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+      <ExploreGrid
+        composersCount={composersData.composers.length}
+        termsCount={glossaryData.terms.length}
+      />
 
       {/* New Releases */}
-      {newReleases.length > 0 && (
-        <>
-          <View style={[styles.sectionHeaderRow]}>
-            <Text style={[styles.sectionTitle, { color: t.colors.text }]}>New Released Albums</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('NewReleases')}>
-              <Text style={[styles.sectionLink, { color: t.colors.primary }]}>See all</Text>
-            </TouchableOpacity>
-          </View>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ gap: 12, paddingBottom: 4 }}
-            style={{ marginBottom: 12 }}
-          >
-            {newReleases.map((release) => (
-              <TouchableOpacity
-                key={release.id}
-                style={[
-                  styles.releaseCard,
-                  cardStyle,
-                  { width: width * 0.72, borderTopWidth: 3, borderTopColor: t.colors.secondary },
-                ]}
-                activeOpacity={0.9}
-                onPress={() => navigation.navigate('ReleaseDetail', { releaseId: release.id })}
-              >
-                <View style={styles.releaseHeader}>
-                  <Text style={[styles.releaseDate, { color: t.colors.secondary }]}>{formatReleaseDate(release.releaseDate)}</Text>
-                  {release.highlightTrack && (
-                    <View style={[styles.releasePill, { backgroundColor: t.colors.secondary + '20' }]}>
-                      <Ionicons name="musical-notes" size={14} color={t.colors.secondary} />
-                      <Text style={[styles.releasePillText, { color: t.colors.secondary }]} numberOfLines={1}>
-                        {release.highlightTrack}
-                      </Text>
-                    </View>
-                  )}
-                </View>
-                <Text style={[styles.releaseTitle, { color: t.colors.text }]} numberOfLines={2}>
-                  {release.title}
-                </Text>
-                <Text style={[styles.releaseArtist, { color: t.colors.textSecondary }]} numberOfLines={1}>
-                  {release.artist}
-                </Text>
-                {release.listenerLevel && (
-                  <View style={[styles.releasePill, { backgroundColor: t.colors.primary + '20' }]}>
-                    <Ionicons name="person" size={14} color={t.colors.primary} />
-                    <Text style={[styles.releasePillText, { color: t.colors.primary }]} numberOfLines={1}>
-                      {levelLabel(release.listenerLevel)}
-                    </Text>
-                  </View>
-                )}
-                <Text style={[styles.releaseDescription, { color: t.colors.textMuted }]} numberOfLines={3}>
-                  {release.description}
-                </Text>
-                <View style={styles.releaseActions}>
-                  <TouchableOpacity
-                    style={[styles.releasePill, { backgroundColor: t.colors.primary + '18' }]}
-                    onPress={() => openRelease(release)}
-                    activeOpacity={0.8}
-                  >
-                    <Ionicons name="play" size={14} color={t.colors.primary} />
-                    <Text style={[styles.releasePillText, { color: t.colors.primary }]}>Listen</Text>
-                  </TouchableOpacity>
-                  <Ionicons name="chevron-forward" size={18} color={t.colors.textMuted} />
-                </View>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </>
-      )}
+      <NewReleasesCarousel releases={newReleases} musicService={preferredService} />
 
       {/* Concert Halls */}
-      {concertHalls.length > 0 && (
-        <>
-          <View style={[styles.sectionHeaderRow]}>
-            <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Concert Halls</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('ConcertHalls')}>
-              <Text style={[styles.sectionLink, { color: t.colors.primary }]}>See all</Text>
-            </TouchableOpacity>
-          </View>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ gap: 12, paddingBottom: 4 }}
-            style={{ marginBottom: 12 }}
-          >
-            {concertHalls.map((hall) => (
-              <TouchableOpacity
-                key={hall.id}
-                style={[
-                  styles.hallCard,
-                  cardStyle,
-                  { width: width * 0.72, borderTopWidth: 3, borderTopColor: t.colors.warning },
-                ]}
-                activeOpacity={0.9}
-                onPress={() => navigation.navigate('ConcertHallDetail', { hallId: hall.id })}
-              >
-                <View style={styles.hallHeader}>
-                  <Text style={[styles.hallName, { color: t.colors.text }]} numberOfLines={1}>
-                    {hall.name}
-                  </Text>
-                  <Ionicons name="map" size={18} color={t.colors.warning} />
-                </View>
-                <Text style={[styles.hallLocation, { color: t.colors.textSecondary }]} numberOfLines={1}>
-                  {hall.city}
-                </Text>
-                <Text style={[styles.hallDescription, { color: t.colors.textMuted }]} numberOfLines={3}>
-                  {hall.description}
-                </Text>
-                {hall.signatureSound && (
-                  <View style={[styles.releasePill, { backgroundColor: t.colors.warning + '20' }]}>
-                    <Ionicons name="volume-high" size={14} color={t.colors.warning} />
-                    <Text style={[styles.releasePillText, { color: t.colors.warning }]} numberOfLines={1}>
-                      {hall.signatureSound}
-                    </Text>
-                  </View>
-                )}
-                <View style={styles.releaseActions}>
-                  <TouchableOpacity
-                    style={[styles.releasePill, { backgroundColor: t.colors.primary + '18' }]}
-                    onPress={() => openHallMap(hall)}
-                    activeOpacity={0.8}
-                  >
-                    <Ionicons name="pin" size={14} color={t.colors.primary} />
-                    <Text style={[styles.releasePillText, { color: t.colors.primary }]}>Open map</Text>
-                  </TouchableOpacity>
-                  <Ionicons name="chevron-forward" size={18} color={t.colors.textMuted} />
-                </View>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </>
-      )}
+      <ConcertHallsCarousel halls={concertHalls} />
 
       {/* Featured Composer Teaser */}
       <TouchableOpacity
@@ -577,20 +280,9 @@ const styles = StyleSheet.create({
   headerButtons: { flexDirection: 'row', gap: 8 },
   headerButton: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
   
-  // Featured grid (3 cards: kickstart, weekly, monthly)
-  featuredGrid: { flexDirection: 'row', gap: 10, marginBottom: 20 },
-  featuredCard: { flex: 1, padding: 12, alignItems: 'center' },
-  featuredIcon: { width: 48, height: 48, borderRadius: 24, alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
-  featuredLabel: { fontSize: 10, fontWeight: '600', textAlign: 'center' },
-  featuredTitle: { fontSize: 13, fontWeight: '700', textAlign: 'center', marginTop: 4 },
-  featuredSub: { fontSize: 10, textAlign: 'center', marginTop: 2 },
-  featuredSubRow: { width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 6 },
-  progressDots: { flexDirection: 'row', gap: 4, marginTop: 6 },
-  dot: { width: 6, height: 6, borderRadius: 3 },
+  // Featured grid styles moved to extracted components
   
   sectionTitle: { fontSize: 20, fontWeight: '700', marginBottom: 12 },
-  sectionHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
-  sectionLink: { fontSize: 13, fontWeight: '600' },
   
   heroCard: { marginBottom: 16, overflow: 'hidden' },
   heroAccent: { height: 4 },
@@ -605,41 +297,13 @@ const styles = StyleSheet.create({
   exampleLabel: { fontSize: 11 },
   exampleText: { fontSize: 12, fontWeight: '500', flex: 1 },
   
-  twoColumn: { flexDirection: 'row', gap: 12, marginBottom: 16 },
-  halfCard: { flex: 1, padding: 14 },
-  cardIcon: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', marginBottom: 10 },
-  cardLabel: { fontSize: 11, fontWeight: '600', marginBottom: 4 },
-  cardTitle: { fontSize: 15, fontWeight: '600', marginBottom: 2 },
-  cardSub: { fontSize: 12, marginBottom: 10 },
-  listenRow: { flexDirection: 'row', gap: 8 },
-  miniButton: { width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
-  challengePreview: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8 },
-  challengePreviewText: { fontSize: 10 },
-  
   statsRow: { flexDirection: 'row', marginBottom: 20 },
   stat: { flex: 1, alignItems: 'center' },
   statNumber: { fontSize: 24, fontWeight: '700' },
   statLabel: { fontSize: 11, marginTop: 2 },
   statDivider: { width: 1, marginVertical: 4 },
   
-  exploreGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 20 },
-  exploreCard: { width: (width - 32 - 10) / 2, padding: 16, alignItems: 'center' },
-  exploreLabel: { fontSize: 14, fontWeight: '600', marginTop: 8 },
-  exploreSub: { fontSize: 11, marginTop: 2 },
-  releaseCard: { padding: 14, justifyContent: 'space-between' },
-  releaseHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6, gap: 8 },
-  releaseDate: { fontSize: 12, fontWeight: '700' },
-  releaseTitle: { fontSize: 16, fontWeight: '700' },
-  releaseArtist: { fontSize: 13, marginTop: 2, marginBottom: 6 },
-  releaseDescription: { fontSize: 12, lineHeight: 18, flex: 1 },
-  releaseActions: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 },
-  releasePill: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 12 },
-  releasePillText: { fontSize: 12, fontWeight: '600' },
-  hallCard: { padding: 14 },
-  hallHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  hallName: { fontSize: 16, fontWeight: '700' },
-  hallLocation: { fontSize: 13, marginTop: 2 },
-  hallDescription: { fontSize: 12, lineHeight: 18, marginTop: 6, marginBottom: 8 },
+  // Explore and Release styles moved to extracted components
   
   composerTeaser: { flexDirection: 'row', padding: 16, alignItems: 'center' },
   composerContent: { flex: 1 },

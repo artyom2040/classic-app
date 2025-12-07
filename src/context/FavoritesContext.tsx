@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { haptic } from '../utils/haptics';
+import { STORAGE_KEYS } from '../constants';
 
-const FAVORITES_KEY = 'context_composer_favorites';
+const FAVORITES_KEY = STORAGE_KEYS.FAVORITES;
 
 export type FavoriteType = 'composer' | 'term' | 'form' | 'period' | 'album';
 
@@ -14,6 +15,7 @@ interface FavoriteItem {
 
 interface FavoritesContextType {
   favorites: FavoriteItem[];
+  isLoaded: boolean;
   isFavorite: (id: string | number, type: FavoriteType) => boolean;
   toggleFavorite: (id: string | number, type: FavoriteType) => Promise<boolean>;
   getFavoritesByType: (type: FavoriteType) => FavoriteItem[];
@@ -99,6 +101,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     <FavoritesContext.Provider 
       value={{ 
         favorites,
+        isLoaded,
         isFavorite,
         toggleFavorite,
         getFavoritesByType,

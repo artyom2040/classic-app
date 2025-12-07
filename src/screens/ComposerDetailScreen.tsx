@@ -16,7 +16,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useFavorites } from '../context/FavoritesContext';
 import { useAudio, Track } from '../context/AudioContext';
 import { haptic } from '../utils/haptics';
-import { RootStackParamList, Composer } from '../types';
+import { RootStackParamList, Composer, AudioSample, AudioSamplesData } from '../types';
 import { markComposerViewed } from '../utils/storage';
 import { getComposerPortrait } from '../utils/images';
 import { NetworkImage } from '../components/NetworkImage';
@@ -24,7 +24,9 @@ import { SkeletonComposerDetail } from '../components';
 
 import composersData from '../data/composers.json';
 import periodsData from '../data/periods.json';
-import audioSamples from '../data/audioSamples.json';
+import audioSamplesJson from '../data/audioSamples.json';
+
+const audioSamples = audioSamplesJson as AudioSamplesData;
 
 type ComposerDetailRouteProp = RouteProp<RootStackParamList, 'ComposerDetail'>;
 
@@ -41,7 +43,7 @@ export default function ComposerDetailScreen() {
   const [loading, setLoading] = React.useState(true);
   
   // Get audio samples for this composer
-  const composerSamples = (audioSamples.samples as any)[composerId] || [];
+  const composerSamples: AudioSample[] = audioSamples.samples[composerId] || [];
 
   const composer = composersData.composers.find(c => c.id === composerId) as Composer | undefined;
   const period = periodsData.periods.find(p => p.id === composer?.period);
@@ -91,7 +93,7 @@ export default function ComposerDetailScreen() {
     Linking.openURL(searchUrl);
   };
 
-  const handlePlaySample = (sample: any) => {
+  const handlePlaySample = (sample: AudioSample) => {
     haptic('light');
     const track: Track = {
       id: sample.id,

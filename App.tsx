@@ -12,7 +12,8 @@ import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 import { SettingsProvider } from './src/context/SettingsContext';
 import { FavoritesProvider } from './src/context/FavoritesContext';
 import { AudioProvider } from './src/context/AudioContext';
-import { ToastProvider, ErrorBoundary, ThemedErrorFallback } from './src/components';
+import { AuthProvider } from './src/context/AuthContext';
+import { ToastProvider, ErrorBoundary, ThemedErrorFallback, OfflineIndicator } from './src/components';
 import MiniPlayer from './src/components/MiniPlayer';
 import { RootStackParamList, TabParamList } from './src/types';
 import { getProgress } from './src/utils/storage';
@@ -40,6 +41,12 @@ import BadgesScreen from './src/screens/BadgesScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import QuizScreen from './src/screens/QuizScreen';
+
+// Auth screens
+import { LoginScreen, RegisterScreen, ForgotPasswordScreen } from './src/screens/Auth';
+import UserDashboardScreen from './src/screens/UserDashboardScreen';
+import AdminDashboardScreen from './src/screens/AdminDashboardScreen';
+import { useAuthDeepLink } from './src/hooks/useAuthDeepLink';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
@@ -146,6 +153,9 @@ function AppNavigator() {
   const t = theme;
   const [isLoading, setIsLoading] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
+
+  // Handle auth deep links (password reset, email verification, etc.)
+  useAuthDeepLink();
 
   useEffect(() => {
     async function checkFirstLaunch() {
@@ -288,6 +298,35 @@ function AppNavigator() {
           component={QuizScreen}
           options={{ title: 'Daily Quiz', headerShown: false }}
         />
+        
+        {/* Auth Screens */}
+        <Stack.Screen 
+          name="Login" 
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen 
+          name="Register" 
+          component={RegisterScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen 
+          name="ForgotPassword" 
+          component={ForgotPasswordScreen}
+          options={{ headerShown: false }}
+        />
+        
+        {/* Dashboard Screens */}
+        <Stack.Screen 
+          name="UserDashboard" 
+          component={UserDashboardScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen 
+          name="AdminDashboard" 
+          component={AdminDashboardScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -303,10 +342,13 @@ export default function App() {
           )}>
             <SettingsProvider>
               <FavoritesProvider>
-                <AudioProvider>
-                  <AppNavigator />
-                  <MiniPlayer />
-                </AudioProvider>
+                <AuthProvider>
+                  <AudioProvider>
+                    <AppNavigator />
+                    <MiniPlayer />
+                    <OfflineIndicator />
+                  </AudioProvider>
+                </AuthProvider>
               </FavoritesProvider>
             </SettingsProvider>
           </ErrorBoundary>

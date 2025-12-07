@@ -188,6 +188,7 @@ export const ThemedCard: React.FC<ThemedCardProps> = ({
 };
 
 // ============ Themed Button ============
+// @deprecated Use `Button` from '@/components' instead - it has better loading/disabled states
 
 interface ThemedButtonProps extends TouchableOpacityProps {
   children?: React.ReactNode;

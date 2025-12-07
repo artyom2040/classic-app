@@ -1,3 +1,19 @@
+// Audio Sample types
+export interface AudioSample {
+  id: string;
+  title: string;
+  composer: string;
+  composerId: string;
+  audioUrl: string;
+  duration: number; // in seconds
+  source: string;
+}
+
+export interface AudioSamplesData {
+  samples: Record<string, AudioSample[]>;
+  featured: string[];
+}
+
 // Period types
 export interface Period {
   id: string;
@@ -187,6 +203,12 @@ export interface UserProgress {
 
 // Navigation types
 export type RootStackParamList = {
+  // Auth screens
+  Login: undefined;
+  Register: undefined;
+  ForgotPassword: undefined;
+  
+  // Main app
   MainTabs: undefined;
   Composers: undefined;
   ComposerDetail: { composerId: string };
@@ -205,6 +227,10 @@ export type RootStackParamList = {
   Settings: undefined;
   Search: undefined;
   Quiz: undefined;
+  
+  // Dashboard screens
+  UserDashboard: undefined;
+  AdminDashboard: undefined;
 };
 
 export type TabParamList = {
@@ -214,3 +240,26 @@ export type TabParamList = {
   Forms: undefined;
   Profile: undefined;
 };
+
+// ============================================
+// Auth & User Types
+// ============================================
+
+export type UserRole = 'user' | 'admin';
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  displayName: string | null;
+  avatarUrl: string | null;
+  role: UserRole;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AuthState {
+  user: UserProfile | null;
+  isLoading: boolean;
+  isAuthenticated: boolean;
+  isAdmin: boolean;
+}

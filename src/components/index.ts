@@ -14,12 +14,14 @@ export {
 
 // UI Components
 export { Icon } from './Icon';
+export { Button } from './Button';
 export { NetworkImage } from './NetworkImage';
 export { PlaceholderImage } from './PlaceholderImage';
 export { SearchBar } from './SearchBar';
 export { FavoriteButton, FavoriteButtonWithLabel } from './FavoriteButton';
 export { Toast, ToastProvider, useToast } from './Toast';
 export { ErrorBoundary, ThemedErrorFallback } from './ErrorBoundary';
+export { OfflineIndicator, OfflineDot } from './OfflineIndicator';
 export { 
   Skeleton, 
   SkeletonCard, 

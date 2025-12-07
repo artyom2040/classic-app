@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet, ActivityIndicator, Text } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { Image, ImageContentFit } from 'expo-image';
 import { useTheme } from '../context/ThemeContext';
 import { 
   ComposerPlaceholder, 
@@ -16,7 +17,10 @@ interface NetworkImageProps {
   borderRadius?: number;
   fallbackType?: 'composer' | 'album' | 'era' | 'default';
   fallbackText?: string;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
+  contentFit?: ImageContentFit;
+  priority?: 'low' | 'normal' | 'high';
+  cachePolicy?: 'none' | 'disk' | 'memory' | 'memory-disk';
 }
 
 const FALLBACK_COLORS: Record<string, string> = {
@@ -36,12 +40,14 @@ export function NetworkImage({
   fallbackType = 'default',
   fallbackText,
   style,
+  contentFit = 'cover',
+  priority = 'normal',
+  cachePolicy = 'memory-disk',
 }: NetworkImageProps) {
   const { theme, themeName } = useTheme();
   const t = theme;
   const isBrutal = themeName === 'neobrutalist';
   
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   
   const imageWidth = width || size || 80;
@@ -97,11 +103,6 @@ export function NetworkImage({
       isBrutal && { borderWidth: 2, borderColor: t.colors.border },
       style,
     ]}>
-      {loading && (
-        <View style={styles.loadingOverlay}>
-          <ActivityIndicator size="small" color={t.colors.primary} />
-        </View>
-      )}
       <Image
         source={{ uri }}
         style={[
@@ -112,13 +113,13 @@ export function NetworkImage({
             borderRadius: radius,
           },
         ]}
-        onLoadStart={() => setLoading(true)}
-        onLoadEnd={() => setLoading(false)}
-        onError={() => {
-          setError(true);
-          setLoading(false);
-        }}
-        resizeMode="cover"
+        onError={() => setError(true)}
+        contentFit={contentFit}
+        priority={priority}
+        cachePolicy={cachePolicy}
+        transition={200}
+        placeholder={null}
+        recyclingKey={uri}
       />
     </View>
   );
@@ -133,16 +134,8 @@ const styles = StyleSheet.create({
   image: {
     position: 'absolute',
   },
-  loadingOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   fallback: {
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  fallbackText: {
-    fontWeight: 'bold',
   },
 });

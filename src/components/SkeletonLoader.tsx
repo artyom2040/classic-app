@@ -1,15 +1,15 @@
 import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Animated, Dimensions } from 'react-native';
+import { View, StyleSheet, Animated, Dimensions, StyleProp, ViewStyle, DimensionValue } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 import { spacing, borderRadius } from '../theme';
 
 const { width } = Dimensions.get('window');
 
 interface SkeletonProps {
-  width?: number | string;
+  width?: DimensionValue;
   height?: number;
   borderRadius?: number;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 }
 
 export function Skeleton({ 

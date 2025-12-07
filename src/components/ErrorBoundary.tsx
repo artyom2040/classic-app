@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 import { spacing, borderRadius, fontSize } from '../theme';
+import { Button } from './Button';
 
 type RenderFallback = (error: Error | null, reset: () => void) => React.ReactNode;
 
@@ -60,9 +61,12 @@ export function ThemedErrorFallback({
         <Text style={[styles.message, { color: theme.colors.textSecondary }]}>
           {error?.message || 'Please try again.'}
         </Text>
-        <TouchableOpacity style={[styles.button, { backgroundColor: theme.colors.primary }]} onPress={onReset}>
-          <Text style={styles.buttonText}>Restart view</Text>
-        </TouchableOpacity>
+        <Button
+          title="Restart view"
+          onPress={onReset}
+          variant="primary"
+          fullWidth
+        />
       </View>
     </View>
   );
@@ -89,14 +93,5 @@ const styles = StyleSheet.create({
   message: {
     fontSize: fontSize.md,
     marginBottom: spacing.md,
-  },
-  button: {
-    paddingVertical: spacing.sm,
-    borderRadius: borderRadius.md,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: '600',
   },
 });

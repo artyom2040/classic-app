@@ -15,6 +15,7 @@
 
 import { Composer, Period, MusicalForm, Term, WeeklyAlbum, MonthlySpotlight, Badge, KickstartDay, NewRelease, ConcertHall } from '../types';
 import { isSupabaseConfigured, getSupabaseClient } from './supabaseClient';
+import { getWeekNumber } from '../utils/storage';
 
 // Local data imports (will be replaced with API calls)
 import composersData from '../data/composers.json';
@@ -215,7 +216,7 @@ class DataServiceClass {
 
   async getCurrentWeeklyAlbum(): Promise<WeeklyAlbum | null> {
     const albums = await this.getWeeklyAlbums();
-    const weekNumber = this.getWeekNumber();
+    const weekNumber = getWeekNumber();
     return albums.find(a => a.week === weekNumber) || albums[0] || null;
   }
 
@@ -314,14 +315,6 @@ class DataServiceClass {
     } else {
       this.cache.clear();
     }
-  }
-
-  private getWeekNumber(): number {
-    const now = new Date();
-    const start = new Date(now.getFullYear(), 0, 1);
-    const diff = now.getTime() - start.getTime();
-    const oneWeek = 604800000;
-    return Math.ceil(diff / oneWeek);
   }
 
   // ---------------------------------------------------------------------------

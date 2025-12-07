@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserProgress } from '../types';
+import { STORAGE_KEYS } from '../constants';
 
-const STORAGE_KEY = 'context_composer_progress';
+const STORAGE_KEY = STORAGE_KEYS.PROGRESS;
 
 const defaultProgress: UserProgress = {
   kickstartDay: 0,

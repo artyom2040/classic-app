@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ImageSourcePropType } from 'react-native';
+import { View, Text, StyleSheet, Image, ImageSourcePropType, StyleProp, ViewStyle, ImageStyle } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 import { Icon } from './Icon';
 
@@ -18,7 +18,7 @@ interface PlaceholderImageProps {
   size?: number;
   source?: ImageSourcePropType;
   fallbackText?: string;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
   borderRadius?: number;
 }
 
@@ -118,7 +118,7 @@ export function ComposerAvatar({
   size?: number; 
   color?: string;
   source?: ImageSourcePropType;
-  style?: any;
+  style?: StyleProp<ImageStyle>;
 }) {
   const { theme, themeName } = useTheme();
   const isBrutal = themeName === 'neobrutalist';
@@ -179,7 +179,7 @@ export function AlbumArtwork({
   artist?: string;
   size?: number;
   source?: ImageSourcePropType;
-  style?: any;
+  style?: StyleProp<ImageStyle>;
 }) {
   const { theme, themeName } = useTheme();
   const isBrutal = themeName === 'neobrutalist';
@@ -239,7 +239,7 @@ export function EraBanner({
   color?: string;
   height?: number;
   source?: ImageSourcePropType;
-  style?: any;
+  style?: StyleProp<ImageStyle>;
 }) {
   const { theme, themeName } = useTheme();
   const isBrutal = themeName === 'neobrutalist';
@@ -294,7 +294,7 @@ export function EmptyState({
   title?: string;
   message?: string;
   icon?: string;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 }) {
   const { theme } = useTheme();
   

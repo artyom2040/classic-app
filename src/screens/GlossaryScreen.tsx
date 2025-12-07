@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import {
   View,
   Text,
@@ -32,7 +32,20 @@ const CATEGORIES = [
   'Voice',
   'Period',
   'Style',
-];
+] as const;
+
+// Static category colors - moved outside component to prevent recreation
+const CATEGORY_COLORS: Record<string, string> = {
+  Tempo: '#E74C3C',
+  Form: '#9B59B6',
+  Harmony: '#3498DB',
+  Technique: '#1ABC9C',
+  Dynamics: '#F39C12',
+  Genre: '#E67E22',
+  Theory: '#2ECC71',
+  Period: '#8E44AD',
+  Style: '#C0392B',
+};
 
 
 export default function GlossaryScreen() {
@@ -43,13 +56,13 @@ export default function GlossaryScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
-  const categoryColors: { [key: string]: string } = {
-    Tempo: '#E74C3C', Form: '#9B59B6', Harmony: '#3498DB', Technique: '#1ABC9C',
-    Dynamics: '#F39C12', Genre: '#E67E22', Theory: '#2ECC71', Voice: t.colors.primary,
-    Period: '#8E44AD', Style: '#C0392B', default: t.colors.textMuted,
-  };
+  // Merge static colors with theme-dependent ones
+  const getCategoryColor = useCallback((category: string): string => {
+    if (category === 'Voice') return t.colors.primary;
+    return CATEGORY_COLORS[category] || t.colors.textMuted;
+  }, [t.colors.primary, t.colors.textMuted]);
 
-  const terms: Term[] = glossaryData.terms;
+  const terms = glossaryData.terms as Term[];
 
   const filteredTerms = useMemo(() => {
     return terms.filter(term => {
@@ -60,8 +73,8 @@ export default function GlossaryScreen() {
     });
   }, [searchQuery, selectedCategory, terms]);
 
-  const renderTerm = ({ item }: { item: Term }) => {
-    const categoryColor = categoryColors[item.category] || categoryColors.default;
+  const renderTerm = useCallback(({ item }: { item: Term }) => {
+    const categoryColor = getCategoryColor(item.category);
     const summary = getShortDefinition(item);
     
     return (
@@ -69,6 +82,9 @@ export default function GlossaryScreen() {
         style={[styles.termCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}
         onPress={() => navigation.navigate('TermDetail', { termId: item.id })}
         activeOpacity={0.7}
+        accessibilityRole="button"
+        accessibilityLabel={`${item.term}, ${item.category}`}
+        accessibilityHint="Double tap to view term details"
       >
         <View style={styles.termHeader}>
           <Text style={[styles.termTitle, { color: t.colors.text }]}>{item.term}</Text>
@@ -83,7 +99,7 @@ export default function GlossaryScreen() {
         </Text>
       </TouchableOpacity>
     );
-  };
+  }, [t, isBrutal, getCategoryColor, navigation]);
 
   return (
     <View style={[styles.container, { backgroundColor: t.colors.background }]}>
@@ -121,6 +137,9 @@ export default function GlossaryScreen() {
                 { backgroundColor: selectedCategory === item ? t.colors.primary : t.colors.surface },
               ]}
               onPress={() => setSelectedCategory(item)}
+              accessibilityRole="button"
+              accessibilityState={{ selected: selectedCategory === item }}
+              accessibilityLabel={`Filter by ${item}`}
             >
               <Text
                 style={[
