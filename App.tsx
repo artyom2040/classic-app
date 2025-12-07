@@ -13,7 +13,7 @@ import { SettingsProvider } from './src/context/SettingsContext';
 import { FavoritesProvider } from './src/context/FavoritesContext';
 import { AudioProvider } from './src/context/AudioContext';
 import { AuthProvider } from './src/context/AuthContext';
-import { ToastProvider, ErrorBoundary, ThemedErrorFallback, OfflineIndicator } from './src/components';
+import { ToastProvider, ErrorBoundary, ThemedErrorFallback, OfflineIndicator, HamburgerMenu } from './src/components';
 import MiniPlayer from './src/components/MiniPlayer';
 import { RootStackParamList, TabParamList } from './src/types';
 import { getProgress } from './src/utils/storage';
@@ -60,7 +60,7 @@ function TabNavigator() {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName: keyof typeof Ionicons.glyphMap;
-          
+
           switch (route.name) {
             case 'Home':
               iconName = focused ? 'home' : 'home-outline';
@@ -80,7 +80,7 @@ function TabNavigator() {
             default:
               iconName = 'help-outline';
           }
-          
+
           return <Ionicons name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: t.colors.primary,
@@ -94,10 +94,10 @@ function TabNavigator() {
         },
         tabBarBackground: isGlass ? () => (
           Platform.OS === 'ios' ? (
-            <BlurView 
-              intensity={100} 
-              tint="light" 
-              style={StyleSheet.absoluteFill} 
+            <BlurView
+              intensity={100}
+              tint="light"
+              style={StyleSheet.absoluteFill}
             />
           ) : (
             <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(255, 255, 255, 0.9)' }]} />
@@ -117,12 +117,13 @@ function TabNavigator() {
         headerTitleStyle: {
           fontWeight: '600',
         },
+        headerLeft: () => <HamburgerMenu />,
       })}
     >
-      <Tab.Screen 
-        name="Home" 
+      <Tab.Screen
+        name="Home"
         component={HomeScreen}
-        options={{ headerShown: false }}
+        options={{ title: 'Home' }}
       />
       <Tab.Screen 
         name="Timeline" 

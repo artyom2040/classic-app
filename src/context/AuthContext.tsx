@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { Platform } from 'react-native';
-import { Session, User, AuthError } from '@supabase/supabase-js';
+import { Session, User } from '@supabase/supabase-js';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { supabase, isSupabaseConfigured } from '../services/supabaseClient';
@@ -18,16 +18,16 @@ GoogleSignin.configure({
 
 interface AuthContextType extends AuthState {
   // Email Auth
-  signInWithEmail: (email: string, password: string) => Promise<{ error: AuthError | null }>;
-  signUpWithEmail: (email: string, password: string, displayName?: string) => Promise<{ error: AuthError | null }>;
+  signInWithEmail: (email: string, password: string) => Promise<{ error: Error | null }>;
+  signUpWithEmail: (email: string, password: string, displayName?: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
-  resetPassword: (email: string) => Promise<{ error: AuthError | null }>;
-  updatePassword: (newPassword: string) => Promise<{ error: AuthError | null }>;
-  
+  resetPassword: (email: string) => Promise<{ error: Error | null }>;
+  updatePassword: (newPassword: string) => Promise<{ error: Error | null }>;
+
   // OAuth
-  signInWithApple: () => Promise<{ error: AuthError | null }>;
-  signInWithGoogle: () => Promise<{ error: AuthError | null }>;
-  
+  signInWithApple: () => Promise<{ error: Error | null }>;
+  signInWithGoogle: () => Promise<{ error: Error | null }>;
+
   // Profile
   updateProfile: (updates: Partial<Pick<UserProfile, 'displayName' | 'avatarUrl'>>) => Promise<{ error: Error | null }>;
   refreshProfile: () => Promise<void>;
@@ -40,19 +40,22 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 // ============================================
 
 async function fetchUserProfile(userId: string): Promise<UserProfile | null> {
-  if (!supabase) return null;
-  
+  if (!supabase) {
+    console.error('[Auth] Supabase not configured when fetching profile');
+    return null;
+  }
+
   const { data, error } = await supabase
     .from('profiles')
     .select('*')
     .eq('id', userId)
     .single();
-  
+
   if (error || !data) {
-    console.warn('Failed to fetch user profile:', error?.message);
+    console.error('[Auth] Failed to fetch user profile for ID:', userId, 'Error:', error?.message);
     return null;
   }
-  
+
   return {
     id: data.id,
     email: data.email,
@@ -65,8 +68,11 @@ async function fetchUserProfile(userId: string): Promise<UserProfile | null> {
 }
 
 async function createUserProfile(user: User): Promise<UserProfile | null> {
-  if (!supabase) return null;
-  
+  if (!supabase) {
+    console.error('[Auth] Supabase not configured when creating profile');
+    return null;
+  }
+
   const profile = {
     id: user.id,
     email: user.email || '',
@@ -74,16 +80,16 @@ async function createUserProfile(user: User): Promise<UserProfile | null> {
     avatar_url: user.user_metadata?.avatar_url || null,
     role: 'user' as UserRole,
   };
-  
+
   const { error } = await supabase
     .from('profiles')
     .upsert(profile, { onConflict: 'id' });
-  
+
   if (error) {
-    console.warn('Failed to create user profile:', error.message);
+    console.error('[Auth] Failed to create user profile for ID:', user.id, 'Error:', error.message);
     return null;
   }
-  
+
   return fetchUserProfile(user.id);
 }
 
@@ -102,6 +108,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Initialize auth state
   useEffect(() => {
     if (!isSupabaseConfigured() || !supabase) {
+      console.warn('[Auth] Supabase not configured');
       setIsLoading(false);
       return;
     }
@@ -109,23 +116,31 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // Get initial session
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (session?.user) {
+        console.log('[Auth] Session found for user:', session.user.id);
         const profile = await fetchUserProfile(session.user.id);
         setUser(profile);
+      } else {
+        console.log('[Auth] No active session');
       }
       setIsLoading(false);
     });
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('[Auth] Auth state changed:', event);
       if (event === 'SIGNED_IN' && session?.user) {
+        console.log('[Auth] User signed in:', session.user.id);
         let profile = await fetchUserProfile(session.user.id);
         if (!profile) {
+          console.log('[Auth] Profile not found, creating new profile for:', session.user.id);
           profile = await createUserProfile(session.user);
         }
         setUser(profile);
       } else if (event === 'SIGNED_OUT') {
+        console.log('[Auth] User signed out');
         setUser(null);
       } else if (event === 'USER_UPDATED' && session?.user) {
+        console.log('[Auth] User updated:', session.user.id);
         const profile = await fetchUserProfile(session.user.id);
         setUser(profile);
       }
@@ -138,16 +153,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // Email sign in
   const signInWithEmail = useCallback(async (email: string, password: string) => {
-    if (!supabase) return { error: new Error('Supabase not configured') as unknown as AuthError };
-    
+    if (!supabase) return { error: new Error('Supabase not configured') };
+
     const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error };
+    return { error: error ? new Error(error.message) : null };
   }, []);
 
   // Email sign up
   const signUpWithEmail = useCallback(async (email: string, password: string, displayName?: string) => {
-    if (!supabase) return { error: new Error('Supabase not configured') as unknown as AuthError };
-    
+    if (!supabase) return { error: new Error('Supabase not configured') };
+
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -155,7 +170,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         data: { display_name: displayName },
       },
     });
-    return { error };
+    return { error: error ? new Error(error.message) : null };
   }, []);
 
   // Sign out
@@ -167,31 +182,31 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // Reset password
   const resetPassword = useCallback(async (email: string) => {
-    if (!supabase) return { error: new Error('Supabase not configured') as unknown as AuthError };
-    
+    if (!supabase) return { error: new Error('Supabase not configured') };
+
     const redirectUrl = process.env.EXPO_PUBLIC_AUTH_REDIRECT_URL || 'contextcomposer://reset-password';
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: redirectUrl,
     });
-    return { error };
+    return { error: error ? new Error(error.message) : null };
   }, []);
 
   // Update password
   const updatePassword = useCallback(async (newPassword: string) => {
-    if (!supabase) return { error: new Error('Supabase not configured') as unknown as AuthError };
-    
+    if (!supabase) return { error: new Error('Supabase not configured') };
+
     const { error } = await supabase.auth.updateUser({ password: newPassword });
-    return { error };
+    return { error: error ? new Error(error.message) : null };
   }, []);
 
   // Apple Sign In with native authentication
   const signInWithApple = useCallback(async () => {
-    if (!supabase) return { error: new Error('Supabase not configured') as unknown as AuthError };
-    
+    if (!supabase) return { error: new Error('Supabase not configured') };
+
     if (Platform.OS !== 'ios') {
-      return { error: new Error('Apple Sign In is only available on iOS') as unknown as AuthError };
+      return { error: new Error('Apple Sign In is only available on iOS') };
     }
-    
+
     try {
       const credential = await AppleAuthentication.signInAsync({
         requestedScopes: [
@@ -199,54 +214,54 @@ export function AuthProvider({ children }: AuthProviderProps) {
           AppleAuthentication.AppleAuthenticationScope.EMAIL,
         ],
       });
-      
+
       if (!credential.identityToken) {
-        return { error: new Error('No identity token received') as unknown as AuthError };
+        return { error: new Error('No identity token received') };
       }
-      
+
       const { error } = await supabase.auth.signInWithIdToken({
         provider: 'apple',
         token: credential.identityToken,
       });
-      
-      return { error };
+
+      return { error: error ? new Error(error.message) : null };
     } catch (e: unknown) {
       const error = e as { code?: string; message?: string };
       if (error.code === 'ERR_REQUEST_CANCELED') {
         return { error: null }; // User cancelled
       }
-      return { error: new Error(error.message || 'Apple Sign In failed') as unknown as AuthError };
+      return { error: new Error(error.message || 'Apple Sign In failed') };
     }
   }, []);
 
   // Google Sign In with native authentication
   const signInWithGoogle = useCallback(async () => {
-    if (!supabase) return { error: new Error('Supabase not configured') as unknown as AuthError };
-    
+    if (!supabase) return { error: new Error('Supabase not configured') };
+
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      
+
       if (!userInfo.data?.idToken) {
-        return { error: new Error('No ID token received') as unknown as AuthError };
+        return { error: new Error('No ID token received') };
       }
-      
+
       const { error } = await supabase.auth.signInWithIdToken({
         provider: 'google',
         token: userInfo.data.idToken,
       });
-      
-      return { error };
+
+      return { error: error ? new Error(error.message) : null };
     } catch (e: unknown) {
       const error = e as { code?: string; message?: string };
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         return { error: null }; // User cancelled
       } else if (error.code === statusCodes.IN_PROGRESS) {
-        return { error: new Error('Sign in already in progress') as unknown as AuthError };
+        return { error: new Error('Sign in already in progress') };
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        return { error: new Error('Play Services not available') as unknown as AuthError };
+        return { error: new Error('Play Services not available') };
       }
-      return { error: new Error(error.message || 'Google Sign In failed') as unknown as AuthError };
+      return { error: new Error(error.message || 'Google Sign In failed') };
     }
   }, []);
 

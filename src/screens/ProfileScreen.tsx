@@ -13,6 +13,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 import { RootStackParamList, UserProgress } from '../types';
 import { getProgress, resetProgress, resetKickstart } from '../utils/storage';
 
@@ -26,6 +27,7 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 export default function ProfileScreen() {
   const navigation = useNavigation<NavigationProp>();
   const { theme, themeName } = useTheme();
+  const { isAuthenticated, isLoading: authLoading, user, signOut, isAdmin } = useAuth();
   const t = theme;
   const isBrutal = themeName === 'neobrutalist';
   const [progress, setProgress] = useState<UserProgress | null>(null);
@@ -127,20 +129,85 @@ export default function ProfileScreen() {
     </View>
   );
 
+  // Show loading while auth state is being determined
+  if (authLoading) {
+    return (
+      <View style={[styles.container, { backgroundColor: t.colors.background, justifyContent: 'center', alignItems: 'center' }]}>
+        <Ionicons name="musical-notes" size={40} color={t.colors.primary} />
+        <Text style={[styles.subtitle, { color: t.colors.textSecondary, marginTop: spacing.md }]}>Loading...</Text>
+      </View>
+    );
+  }
+
+  // Show login screen if not authenticated
+  if (!isAuthenticated) {
+    return (
+      <View style={[styles.container, { backgroundColor: t.colors.background, justifyContent: 'center', alignItems: 'center', padding: spacing.lg }]}>
+        <View style={[styles.authPromptCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
+          <Ionicons name="person-outline" size={48} color={t.colors.primary} />
+          <Text style={[styles.authTitle, { color: t.colors.text }]}>Welcome to Your Profile</Text>
+          <Text style={[styles.authSubtitle, { color: t.colors.textSecondary }]}>
+            Sign in to track your progress, earn badges, and sync across devices
+          </Text>
+
+          <TouchableOpacity
+            style={[styles.authButton, { backgroundColor: t.colors.primary }]}
+            onPress={() => navigation.navigate('Login')}
+          >
+            <Text style={[styles.authButtonText, { color: '#fff' }]}>Sign In</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.authButtonSecondary, { borderColor: t.colors.border, borderWidth: 1 }]}
+            onPress={() => navigation.navigate('Register')}
+          >
+            <Text style={[styles.authButtonSecondaryText, { color: t.colors.primary }]}>Create Account</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate('MainTabs')}>
+            <Text style={[styles.skipText, { color: t.colors.textMuted }]}>Continue without signing in</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+
   return (
-    <ScrollView 
+    <ScrollView
       style={[styles.container, { backgroundColor: t.colors.background }]}
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
     >
-      {/* Header */}
+      {/* Header with User Info */}
       <View style={styles.header}>
-        <View style={[styles.avatarContainer, { backgroundColor: t.colors.primary + '30' }]}>
-          <Ionicons name="musical-notes" size={40} color={t.colors.primary} />
+        <View style={styles.headerTop}>
+          <View style={[styles.userAvatar, { backgroundColor: t.colors.primary + '30' }]}>
+            <Text style={[styles.avatarText, { color: t.colors.primary }]}>
+              {(user?.displayName || user?.email || 'U').charAt(0).toUpperCase()}
+            </Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={[styles.userName, { color: t.colors.text }]}>
+              {user?.displayName || 'Profile'}
+            </Text>
+            <Text style={[styles.userEmail, { color: t.colors.textSecondary }]}>
+              {user?.email}
+            </Text>
+            {isAdmin && (
+              <View style={[styles.adminBadge, { backgroundColor: t.colors.warning + '20' }]}>
+                <Ionicons name="shield-checkmark" size={12} color={t.colors.warning} />
+                <Text style={[styles.adminBadgeText, { color: t.colors.warning }]}>Admin</Text>
+              </View>
+            )}
+          </View>
+          <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+            <Ionicons name="settings-outline" size={24} color={t.colors.text} />
+          </TouchableOpacity>
         </View>
+
         <Text style={[styles.greeting, { color: t.colors.text }]}>Your Learning Journey</Text>
         <Text style={[styles.subtitle, { color: t.colors.textSecondary }]}>
-          {progress?.kickstartCompleted 
+          {progress?.kickstartCompleted
             ? 'Kickstart completed! Keep exploring.'
             : `Day ${(progress?.kickstartDay || 0) + 1} of 5-Day Kickstart`
           }
@@ -236,14 +303,16 @@ export default function ProfileScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* App Info */}
-      <View style={styles.appInfo}>
-        <Text style={[styles.appName, { color: t.colors.textSecondary }]}>Context Composer</Text>
-        <Text style={[styles.appVersion, { color: t.colors.textMuted }]}>Version 1.0.0</Text>
-        <Text style={[styles.appTagline, { color: t.colors.textMuted }]}>
-          Simplifying the learning curve of classical music
-        </Text>
-      </View>
+      {/* Sign Out */}
+      <TouchableOpacity
+        style={[styles.signOutButton, { borderColor: t.colors.error }]}
+        onPress={async () => {
+          await signOut();
+        }}
+      >
+        <Ionicons name="log-out-outline" size={20} color={t.colors.error} />
+        <Text style={[styles.signOutText, { color: t.colors.error }]}>Sign Out</Text>
+      </TouchableOpacity>
 
       <View style={{ height: spacing.xxl }} />
     </ScrollView>
@@ -253,16 +322,31 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   content: { padding: spacing.md },
-  header: { alignItems: 'center', marginBottom: spacing.lg },
+  header: { marginBottom: spacing.lg },
+  headerTop: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, marginBottom: spacing.lg },
+  userAvatar: { width: 50, height: 50, borderRadius: 25, alignItems: 'center', justifyContent: 'center' },
+  avatarText: { fontSize: 24, fontWeight: '700' },
+  userName: { fontSize: fontSize.lg, fontWeight: '600' },
+  userEmail: { fontSize: fontSize.sm, marginTop: spacing.xs },
+  adminBadge: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: spacing.xs, paddingVertical: 2, borderRadius: borderRadius.full, marginTop: spacing.xs, width: 'auto' },
+  adminBadgeText: { fontSize: fontSize.xs, fontWeight: '600' },
   avatarContainer: { width: 80, height: 80, borderRadius: 40, alignItems: 'center', justifyContent: 'center', marginBottom: spacing.md },
-  greeting: { fontSize: fontSize.xxl, fontWeight: 'bold' },
+  greeting: { fontSize: fontSize.xxl, fontWeight: 'bold', marginTop: spacing.md },
   subtitle: { fontSize: fontSize.md, marginTop: spacing.xs },
+  authPromptCard: { borderRadius: borderRadius.lg, padding: spacing.xl, alignItems: 'center', width: '100%' },
+  authTitle: { fontSize: fontSize.xxl, fontWeight: '700', marginTop: spacing.md, marginBottom: spacing.xs },
+  authSubtitle: { fontSize: fontSize.md, textAlign: 'center', marginBottom: spacing.lg, marginTop: spacing.sm },
+  authButton: { width: '100%', paddingVertical: spacing.md, borderRadius: borderRadius.lg, alignItems: 'center', marginBottom: spacing.md },
+  authButtonText: { fontSize: fontSize.md, fontWeight: '600' },
+  authButtonSecondary: { width: '100%', paddingVertical: spacing.md, borderRadius: borderRadius.lg, alignItems: 'center', marginBottom: spacing.md },
+  authButtonSecondaryText: { fontSize: fontSize.md, fontWeight: '600' },
+  skipText: { fontSize: fontSize.sm, marginTop: spacing.md },
   kickstartCard: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderRadius: borderRadius.lg, padding: spacing.md, marginBottom: spacing.lg, borderWidth: 1 },
   kickstartContent: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
   kickstartText: {},
   kickstartTitle: { fontSize: fontSize.md, fontWeight: '600' },
   kickstartSubtitle: { fontSize: fontSize.sm },
-  sectionTitle: { fontSize: fontSize.lg, fontWeight: '700', marginBottom: spacing.md },
+  sectionTitle: { fontSize: fontSize.lg, fontWeight: '700', marginBottom: spacing.md, marginTop: spacing.lg },
   statsGrid: { gap: spacing.sm, marginBottom: spacing.lg },
   statCard: { flexDirection: 'row', alignItems: 'center', borderRadius: borderRadius.md, padding: spacing.md },
   statIcon: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', marginRight: spacing.md },
@@ -281,6 +365,11 @@ const styles = StyleSheet.create({
   settingsCard: { borderRadius: borderRadius.lg, overflow: 'hidden', marginBottom: spacing.lg },
   settingItem: { flexDirection: 'row', alignItems: 'center', padding: spacing.md, gap: spacing.md },
   settingText: { fontSize: fontSize.md },
+  accountCard: { borderRadius: borderRadius.lg, overflow: 'hidden', marginBottom: spacing.lg },
+  accountItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: spacing.md, paddingHorizontal: spacing.md, gap: spacing.md },
+  accountLabel: { flex: 1, fontSize: fontSize.md },
+  signOutButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: spacing.md, paddingHorizontal: spacing.md, borderWidth: 1, borderRadius: borderRadius.lg, gap: spacing.sm, marginTop: spacing.lg, marginBottom: spacing.lg },
+  signOutText: { fontSize: fontSize.md, fontWeight: '600' },
   appInfo: { alignItems: 'center', paddingVertical: spacing.lg },
   appName: { fontSize: fontSize.lg, fontWeight: '600' },
   appVersion: { fontSize: fontSize.sm, marginTop: 2 },

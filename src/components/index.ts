@@ -43,6 +43,8 @@ export {
 
 // Navigation
 export { QuickNav } from './QuickNav';
+export { HamburgerMenu } from './HamburgerMenu';
+export { AppHeader } from './AppHeader';
 
 // Glass components
 export { GlassCard, GlassBackground, GlassPill, GlassTabBar } from './GlassCard';
