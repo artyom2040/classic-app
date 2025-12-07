@@ -125,12 +125,21 @@ export default function HomeScreen() {
               <TouchableOpacity
                 style={[styles.headerButton, { backgroundColor: t.colors.surfaceLight }]}
                 onPress={() => navigation.navigate('Search')}
+                accessibilityLabel="Search"
               >
                 <Ionicons name="search-outline" size={22} color={t.colors.text} />
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.headerButton, { backgroundColor: t.colors.surfaceLight }]}
+                onPress={() => navigation.navigate('Discover')}
+                accessibilityLabel="Discover MusicBrainz"
+              >
+                <Ionicons name="planet-outline" size={22} color={t.colors.text} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.headerButton, { backgroundColor: t.colors.surfaceLight }]}
                 onPress={() => navigation.navigate('Settings')}
+                accessibilityLabel="Settings"
               >
                 <Ionicons name="settings-outline" size={22} color={t.colors.text} />
               </TouchableOpacity>

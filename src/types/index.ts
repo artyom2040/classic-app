@@ -226,7 +226,14 @@ export type RootStackParamList = {
   Badges: undefined;
   Settings: undefined;
   Search: undefined;
+  Discover: undefined;
   Quiz: undefined;
+
+  // Labs / Experimental screens
+  MoodPlaylists: undefined;
+  ListeningGuides: undefined;
+  Recommendations: undefined;
+  Labs: undefined;
 
   // Dashboard screens
   UserDashboard: undefined;

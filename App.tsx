@@ -43,6 +43,13 @@ import BadgesScreen from './src/screens/BadgesScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import QuizScreen from './src/screens/QuizScreen';
+import DiscoverScreen from './src/screens/DiscoverScreen';
+
+// Experimental / Labs screens
+import MoodPlaylistsScreen from './src/experimental/moodPlaylists/MoodPlaylistsScreen';
+import ListeningGuidesScreen from './src/experimental/listeningGuides/ListeningGuidesScreen';
+import RecommendationsScreen from './src/experimental/recommendations/RecommendationsScreen';
+import LabsScreen from './src/experimental/LabsScreen';
 
 // Auth screens
 import { LoginScreen, RegisterScreen, ForgotPasswordScreen } from './src/screens/Auth';
@@ -308,6 +315,33 @@ function AppNavigator() {
           name="Quiz"
           component={QuizScreen}
           options={{ title: 'Daily Quiz', headerShown: false }}
+        />
+        <Stack.Screen
+          name="Discover"
+          component={DiscoverScreen}
+          options={{ title: 'Discover', headerShown: false }}
+        />
+
+        {/* Labs / Experimental Screens */}
+        <Stack.Screen
+          name="MoodPlaylists"
+          component={MoodPlaylistsScreen}
+          options={{ title: 'Mood Playlists', headerShown: false }}
+        />
+        <Stack.Screen
+          name="ListeningGuides"
+          component={ListeningGuidesScreen}
+          options={{ title: 'Listening Guides', headerShown: false }}
+        />
+        <Stack.Screen
+          name="Recommendations"
+          component={RecommendationsScreen}
+          options={{ title: 'Recommendations', headerShown: false }}
+        />
+        <Stack.Screen
+          name="Labs"
+          component={LabsScreen}
+          options={{ title: 'Labs', headerShown: false }}
         />
 
         {/* Auth Screens */}

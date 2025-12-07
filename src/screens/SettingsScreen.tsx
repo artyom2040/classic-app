@@ -1,12 +1,18 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet, Switch, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { useTheme } from '../context/ThemeContext';
 import { useSettings, IconPack, MusicService } from '../context/SettingsContext';
 import { themeList, ThemeName } from '../theme/themes';
 import ThemeCard from '../components/ThemeCard';
 import { Icon } from '../components/Icon';
+import { RootStackParamList } from '../types';
+import { hasAnyLabsEnabled } from '../experimental/labs.config';
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 const ICON_PACKS: { id: IconPack; name: string; description: string }[] = [
   { id: 'ionicons', name: 'Ionicons', description: 'Classic iOS/Android style' },
@@ -20,6 +26,7 @@ const MUSIC_SERVICES: { id: MusicService; name: string; icon: string }[] = [
 ];
 
 export default function SettingsScreen() {
+  const navigation = useNavigation<NavigationProp>();
   const { theme, themeName, setTheme } = useTheme();
   const { iconPack, setIconPack, musicService, setMusicService } = useSettings();
   const t = theme;
@@ -60,7 +67,7 @@ export default function SettingsScreen() {
         <Text style={[styles.sectionHint, { color: t.colors.textSecondary }]}>
           Choose an icon pack for the app UI
         </Text>
-        
+
         <View style={styles.optionsRow}>
           {ICON_PACKS.map((pack) => (
             <TouchableOpacity
@@ -97,7 +104,7 @@ export default function SettingsScreen() {
         <Text style={[styles.sectionHint, { color: t.colors.textSecondary }]}>
           Preferred service for listening links
         </Text>
-        
+
         <View style={styles.optionsRow}>
           {MUSIC_SERVICES.map((service) => (
             <TouchableOpacity
@@ -110,13 +117,13 @@ export default function SettingsScreen() {
               ]}
               onPress={() => setMusicService(service.id)}
             >
-              <Ionicons 
-                name={service.icon as any} 
-                size={24} 
-                color={musicService === service.id ? t.colors.primary : t.colors.textMuted} 
+              <Ionicons
+                name={service.icon as any}
+                size={24}
+                color={musicService === service.id ? t.colors.primary : t.colors.textMuted}
               />
               <Text style={[
-                styles.serviceName, 
+                styles.serviceName,
                 { color: musicService === service.id ? t.colors.text : t.colors.textSecondary }
               ]}>
                 {service.name}
@@ -125,6 +132,35 @@ export default function SettingsScreen() {
           ))}
         </View>
       </View>
+
+      {/* Labs Section */}
+      {hasAnyLabsEnabled() && (
+        <View style={[styles.section, { borderTopColor: t.colors.border }]}>
+          <TouchableOpacity
+            style={[
+              styles.labsCard,
+              { backgroundColor: '#8B5CF610' },
+              isBrutal && { borderRadius: 0, borderWidth: 2, borderColor: '#8B5CF6' },
+            ]}
+            onPress={() => navigation.navigate('Labs')}
+            activeOpacity={0.7}
+          >
+            <View style={[styles.labsIcon, { backgroundColor: '#8B5CF620' }]}>
+              <Ionicons name="flask" size={24} color="#8B5CF6" />
+            </View>
+            <View style={styles.labsInfo}>
+              <Text style={[styles.labsTitle, { color: t.colors.text }]}>Labs</Text>
+              <Text style={[styles.labsHint, { color: t.colors.textSecondary }]}>
+                Try experimental features
+              </Text>
+            </View>
+            <View style={[styles.labsBadge, { backgroundColor: '#8B5CF620' }]}>
+              <Text style={styles.labsBadgeText}>NEW</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={t.colors.textMuted} />
+          </TouchableOpacity>
+        </View>
+      )}
 
       {/* About Section */}
       <View style={[styles.section, { borderTopColor: t.colors.border }]}>
@@ -162,4 +198,11 @@ const styles = StyleSheet.create({
   serviceCard: { flex: 1, padding: 12, borderRadius: 12, alignItems: 'center', gap: 6 },
   serviceName: { fontSize: 12, fontWeight: '500' },
   aboutText: { fontSize: 14, lineHeight: 22 },
+  labsCard: { flexDirection: 'row', alignItems: 'center', padding: 16, borderRadius: 12, gap: 12 },
+  labsIcon: { width: 48, height: 48, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  labsInfo: { flex: 1 },
+  labsTitle: { fontSize: 16, fontWeight: '600' },
+  labsHint: { fontSize: 12, marginTop: 2 },
+  labsBadge: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8 },
+  labsBadgeText: { fontSize: 10, fontWeight: '700', color: '#8B5CF6' },
 });
