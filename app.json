@@ -31,8 +31,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1a1a2e"
       },
-      "package": "com.contextcomposer.app",
-      "googleServicesFile": "./google-services.json"
+      "package": "com.contextcomposer.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"

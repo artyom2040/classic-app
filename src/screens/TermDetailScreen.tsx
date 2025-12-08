@@ -5,8 +5,10 @@ import { useRoute, RouteProp } from '@react-navigation/native';
 
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
+import { useResponsive } from '../hooks/useResponsive';
 import { useFavorites } from '../context/FavoritesContext';
 import { RootStackParamList, Term } from '../types';
+import { ScreenContainer, ScreenHeader } from '../components/ui';
 import { markTermViewed } from '../utils/storage';
 import { getLongDefinition, getShortDefinition, getTermMedia } from '../utils/terms';
 
@@ -34,78 +36,93 @@ export default function TermDetailScreen() {
     Dynamics: '#F39C12', Genre: '#E67E22', Theory: '#2ECC71', default: t.colors.primary,
   };
 
+  const { isDesktop, maxContentWidth } = useResponsive();
+
   useEffect(() => {
     if (termId) markTermViewed(termId);
   }, [termId]);
 
   if (!term) {
-    return <View style={[styles.container, { backgroundColor: t.colors.background }]}><Text style={[styles.errorText, { color: t.colors.error }]}>Term not found</Text></View>;
+    return (
+      <ScreenContainer>
+        <ScreenHeader title="Term" />
+        <Text style={[styles.errorText, { color: t.colors.error }]}>Term not found</Text>
+      </ScreenContainer>
+    );
   }
 
   const categoryColor = categoryColors[term.category] || categoryColors.default;
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: t.colors.background }]} contentContainerStyle={styles.content}>
-      <View style={styles.header}>
-        <View style={styles.titleRow}>
-          <Text style={[styles.term, { color: t.colors.text }]}>{term.term}</Text>
-          <TouchableOpacity
-            style={[styles.favoriteButton, { backgroundColor: isLiked ? t.colors.error + '20' : t.colors.surfaceLight }]}
-            onPress={() => toggleFavorite(termId, 'term')}
-          >
-            <Ionicons
-              name={isLiked ? 'heart' : 'heart-outline'}
-              size={22}
-              color={isLiked ? t.colors.error : t.colors.textMuted}
-            />
-          </TouchableOpacity>
+    <ScreenContainer padded={false}>
+      <ScreenHeader title={term.term} />
+      <ScrollView
+        contentContainerStyle={[
+          styles.content,
+          isDesktop && { maxWidth: maxContentWidth, alignSelf: 'center', width: '100%' }
+        ]}
+      >
+        <View style={styles.header}>
+          <View style={styles.titleRow}>
+            <Text style={[styles.term, { color: t.colors.text }]}>{term.term}</Text>
+            <TouchableOpacity
+              style={[styles.favoriteButton, { backgroundColor: isLiked ? t.colors.error + '20' : t.colors.surfaceLight }]}
+              onPress={() => toggleFavorite(termId, 'term')}
+            >
+              <Ionicons
+                name={isLiked ? 'heart' : 'heart-outline'}
+                size={22}
+                color={isLiked ? t.colors.error : t.colors.textMuted}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.categoryBadge, { backgroundColor: categoryColor + '30' }]}>
+            <Text style={[styles.categoryText, { color: categoryColor }]}>{term.category}</Text>
+          </View>
         </View>
-        <View style={[styles.categoryBadge, { backgroundColor: categoryColor + '30' }]}>
-          <Text style={[styles.categoryText, { color: categoryColor }]}>{term.category}</Text>
+
+        <View style={[styles.definitionCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
+          <Ionicons name="book-outline" size={20} color={t.colors.primary} />
+          <Text style={[styles.definition, { color: t.colors.text }]}>{longDefinition}</Text>
         </View>
-      </View>
 
-      <View style={[styles.definitionCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
-        <Ionicons name="book-outline" size={20} color={t.colors.primary} />
-        <Text style={[styles.definition, { color: t.colors.text }]}>{longDefinition}</Text>
-      </View>
+        {shortDefinition && (
+          <View style={[styles.exampleCard, { backgroundColor: t.colors.surfaceLight }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
+            <Text style={[styles.exampleLabel, { color: t.colors.textMuted }]}>Quick definition</Text>
+            <Text style={[styles.exampleText, { color: t.colors.textSecondary }]}>{shortDefinition}</Text>
+          </View>
+        )}
 
-      {shortDefinition && (
-        <View style={[styles.exampleCard, { backgroundColor: t.colors.surfaceLight }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
-          <Text style={[styles.exampleLabel, { color: t.colors.textMuted }]}>Quick definition</Text>
-          <Text style={[styles.exampleText, { color: t.colors.textSecondary }]}>{shortDefinition}</Text>
-        </View>
-      )}
+        {mediaItems.length > 0 && (
+          <View style={[styles.exampleCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
+            <Text style={[styles.exampleLabel, { color: t.colors.textMuted }]}>Listen / Watch</Text>
+            {mediaItems.map((item, idx) => {
+              const iconName =
+                item.type === 'spotify'
+                  ? 'musical-note'
+                  : item.type === 'audio'
+                    ? 'play-circle'
+                    : 'logo-youtube';
+              const iconColor =
+                item.type === 'spotify'
+                  ? t.colors.primary
+                  : item.type === 'audio'
+                    ? t.colors.secondary
+                    : '#FF0000';
 
-      {mediaItems.length > 0 && (
-        <View style={[styles.exampleCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
-          <Text style={[styles.exampleLabel, { color: t.colors.textMuted }]}>Listen / Watch</Text>
-          {mediaItems.map((item, idx) => {
-            const iconName =
-              item.type === 'spotify'
-                ? 'musical-note'
-                : item.type === 'audio'
-                  ? 'play-circle'
-                  : 'logo-youtube';
-            const iconColor =
-              item.type === 'spotify'
-                ? t.colors.primary
-                : item.type === 'audio'
-                  ? t.colors.secondary
-                  : '#FF0000';
+              return (
+                <TouchableOpacity key={`${item.label}-${idx}`} style={styles.listenButton} onPress={() => Linking.openURL(item.url)}>
+                  <Ionicons name={iconName as any} size={18} color={iconColor} />
+                  <Text style={[styles.listenButtonText, { color: t.colors.text }]}>{item.label}</Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        )}
 
-            return (
-              <TouchableOpacity key={`${item.label}-${idx}`} style={styles.listenButton} onPress={() => Linking.openURL(item.url)}>
-                <Ionicons name={iconName as any} size={18} color={iconColor} />
-                <Text style={[styles.listenButtonText, { color: t.colors.text }]}>{item.label}</Text>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-      )}
-
-      <View style={{ height: spacing.xxl }} />
-    </ScrollView>
+        <View style={{ height: spacing.xxl }} />
+      </ScrollView>
+    </ScreenContainer>
   );
 }
 
