@@ -232,6 +232,7 @@ export type RootStackParamList = {
   // Labs / Experimental screens
   MoodPlaylists: undefined;
   ListeningGuides: undefined;
+  ListeningGuidePlayer: { guideId: string };
   Recommendations: undefined;
   Labs: undefined;
 

@@ -8,11 +8,14 @@ import {
     StyleSheet,
     ActivityIndicator,
     ScrollView,
+    Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
+import { useResponsive } from '../hooks/useResponsive';
 import {
     searchArtists,
     getWorksByArtist,
@@ -24,7 +27,9 @@ import {
 type ViewMode = 'search' | 'works';
 
 export default function DiscoverScreen() {
+    const navigation = useNavigation();
     const { theme, themeName } = useTheme();
+    const { isDesktop, isTablet, maxContentWidth, contentPadding, isWeb } = useResponsive();
     const t = theme;
     const isBrutal = themeName === 'neobrutalist';
 
@@ -198,118 +203,135 @@ export default function DiscoverScreen() {
     // Search view
     return (
         <View style={[styles.container, { backgroundColor: t.colors.background }]}>
-            {/* Header */}
-            <View style={styles.header}>
-                <Text style={[styles.title, { color: t.colors.text }]}>Discover</Text>
-                <Text style={[styles.subtitle, { color: t.colors.textSecondary }]}>
-                    Search the MusicBrainz database
-                </Text>
-            </View>
-
-            {/* Search Bar */}
+            {/* Responsive content wrapper */}
             <View style={[
-                styles.searchContainer,
-                { backgroundColor: t.colors.surface },
-                isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm
+                styles.contentWrapper,
+                isDesktop && { maxWidth: maxContentWidth, alignSelf: 'center', width: '100%' }
             ]}>
-                <Ionicons name="search" size={20} color={t.colors.textMuted} />
-                <TextInput
-                    style={[styles.searchInput, { color: t.colors.text }]}
-                    placeholder="Search composers, performers..."
-                    placeholderTextColor={t.colors.textMuted}
-                    value={searchQuery}
-                    onChangeText={setSearchQuery}
-                    onSubmitEditing={handleSearch}
-                    returnKeyType="search"
-                    autoCapitalize="words"
-                />
-                {searchQuery.length > 0 && (
-                    <TouchableOpacity onPress={() => setSearchQuery('')}>
-                        <Ionicons name="close-circle" size={20} color={t.colors.textMuted} />
-                    </TouchableOpacity>
-                )}
-            </View>
+                {/* Header with back button */}
+                <View style={styles.header}>
+                    {(isWeb || navigation.canGoBack()) && (
+                        <TouchableOpacity
+                            style={[styles.backButton, { backgroundColor: t.colors.surfaceLight }]}
+                            onPress={() => navigation.goBack()}
+                            accessibilityLabel="Go back"
+                        >
+                            <Ionicons name="arrow-back" size={20} color={t.colors.text} />
+                        </TouchableOpacity>
+                    )}
+                    <View style={styles.headerTextContainer}>
+                        <Text style={[styles.title, { color: t.colors.text }]}>Discover</Text>
+                        <Text style={[styles.subtitle, { color: t.colors.textSecondary }]}>
+                            Search the MusicBrainz database
+                        </Text>
+                    </View>
+                </View>
 
-            {/* Search Button */}
-            <TouchableOpacity
-                style={[
-                    styles.searchButton,
-                    { backgroundColor: t.colors.primary },
-                    isBrutal && { borderRadius: 0 },
-                ]}
-                onPress={handleSearch}
-                disabled={loading || !searchQuery.trim()}
-                activeOpacity={0.7}
-                accessibilityRole="button"
-                accessibilityLabel="Search MusicBrainz"
-            >
-                {loading ? (
-                    <ActivityIndicator size="small" color="#fff" />
+                {/* Search Bar */}
+                <View style={[
+                    styles.searchContainer,
+                    { backgroundColor: t.colors.surface },
+                    isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm
+                ]}>
+                    <Ionicons name="search" size={20} color={t.colors.textMuted} />
+                    <TextInput
+                        style={[styles.searchInput, { color: t.colors.text }]}
+                        placeholder="Search composers, performers..."
+                        placeholderTextColor={t.colors.textMuted}
+                        value={searchQuery}
+                        onChangeText={setSearchQuery}
+                        onSubmitEditing={handleSearch}
+                        returnKeyType="search"
+                        autoCapitalize="words"
+                    />
+                    {searchQuery.length > 0 && (
+                        <TouchableOpacity onPress={() => setSearchQuery('')}>
+                            <Ionicons name="close-circle" size={20} color={t.colors.textMuted} />
+                        </TouchableOpacity>
+                    )}
+                </View>
+
+                {/* Search Button */}
+                <TouchableOpacity
+                    style={[
+                        styles.searchButton,
+                        { backgroundColor: t.colors.primary },
+                        isBrutal && { borderRadius: 0 },
+                    ]}
+                    onPress={handleSearch}
+                    disabled={loading || !searchQuery.trim()}
+                    activeOpacity={0.7}
+                    accessibilityRole="button"
+                    accessibilityLabel="Search MusicBrainz"
+                >
+                    {loading ? (
+                        <ActivityIndicator size="small" color="#fff" />
+                    ) : (
+                        <>
+                            <Ionicons name="search" size={18} color="#fff" />
+                            <Text style={styles.searchButtonText}>Search MusicBrainz</Text>
+                        </>
+                    )}
+                </TouchableOpacity>
+
+                {/* Quick Search Suggestions */}
+                {artists.length === 0 && !loading && (
+                    <View style={styles.suggestions}>
+                        <Text style={[styles.suggestionsTitle, { color: t.colors.textMuted }]}>
+                            Try searching for:
+                        </Text>
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipContainer}>
+                            {['Bach', 'Mozart', 'Beethoven', 'Chopin', 'Debussy', 'Stravinsky'].map((name) => (
+                                <TouchableOpacity
+                                    key={name}
+                                    style={[styles.chip, { backgroundColor: t.colors.surfaceLight }]}
+                                    onPress={() => {
+                                        setSearchQuery(name);
+                                        setTimeout(() => {
+                                            searchArtists(name, 15).then(setArtists);
+                                        }, 100);
+                                    }}
+                                >
+                                    <Text style={[styles.chipText, { color: t.colors.text }]}>{name}</Text>
+                                </TouchableOpacity>
+                            ))}
+                        </ScrollView>
+                    </View>
+                )}
+
+                {/* Results */}
+                {loading && artists.length === 0 ? (
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator size="large" color={t.colors.primary} />
+                        <Text style={[styles.loadingText, { color: t.colors.textMuted }]}>Searching...</Text>
+                    </View>
                 ) : (
-                    <>
-                        <Ionicons name="search" size={18} color="#fff" />
-                        <Text style={styles.searchButtonText}>Search MusicBrainz</Text>
-                    </>
+                    <FlatList
+                        data={artists}
+                        keyExtractor={(item) => item.id}
+                        renderItem={renderArtistItem}
+                        contentContainerStyle={styles.listContent}
+                        ListEmptyComponent={
+                            searchQuery.length > 0 ? (
+                                <View style={styles.emptyState}>
+                                    <Ionicons name="search-outline" size={48} color={t.colors.textMuted} />
+                                    <Text style={[styles.emptyText, { color: t.colors.text }]}>No artists found</Text>
+                                    <Text style={[styles.emptySubtext, { color: t.colors.textMuted }]}>
+                                        Try a different search term
+                                    </Text>
+                                </View>
+                            ) : null
+                        }
+                    />
                 )}
-            </TouchableOpacity>
 
-            {/* Quick Search Suggestions */}
-            {artists.length === 0 && !loading && (
-                <View style={styles.suggestions}>
-                    <Text style={[styles.suggestionsTitle, { color: t.colors.textMuted }]}>
-                        Try searching for:
+                {/* Attribution Footer */}
+                <View style={[styles.attribution, { backgroundColor: t.colors.surface }]}>
+                    <Ionicons name="globe-outline" size={14} color={t.colors.textMuted} />
+                    <Text style={[styles.attributionText, { color: t.colors.textMuted }]}>
+                        Powered by MusicBrainz
                     </Text>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipContainer}>
-                        {['Bach', 'Mozart', 'Beethoven', 'Chopin', 'Debussy', 'Stravinsky'].map((name) => (
-                            <TouchableOpacity
-                                key={name}
-                                style={[styles.chip, { backgroundColor: t.colors.surfaceLight }]}
-                                onPress={() => {
-                                    setSearchQuery(name);
-                                    setTimeout(() => {
-                                        searchArtists(name, 15).then(setArtists);
-                                    }, 100);
-                                }}
-                            >
-                                <Text style={[styles.chipText, { color: t.colors.text }]}>{name}</Text>
-                            </TouchableOpacity>
-                        ))}
-                    </ScrollView>
                 </View>
-            )}
-
-            {/* Results */}
-            {loading && artists.length === 0 ? (
-                <View style={styles.loadingContainer}>
-                    <ActivityIndicator size="large" color={t.colors.primary} />
-                    <Text style={[styles.loadingText, { color: t.colors.textMuted }]}>Searching...</Text>
-                </View>
-            ) : (
-                <FlatList
-                    data={artists}
-                    keyExtractor={(item) => item.id}
-                    renderItem={renderArtistItem}
-                    contentContainerStyle={styles.listContent}
-                    ListEmptyComponent={
-                        searchQuery.length > 0 ? (
-                            <View style={styles.emptyState}>
-                                <Ionicons name="search-outline" size={48} color={t.colors.textMuted} />
-                                <Text style={[styles.emptyText, { color: t.colors.text }]}>No artists found</Text>
-                                <Text style={[styles.emptySubtext, { color: t.colors.textMuted }]}>
-                                    Try a different search term
-                                </Text>
-                            </View>
-                        ) : null
-                    }
-                />
-            )}
-
-            {/* Attribution Footer */}
-            <View style={[styles.attribution, { backgroundColor: t.colors.surface }]}>
-                <Ionicons name="globe-outline" size={14} color={t.colors.textMuted} />
-                <Text style={[styles.attributionText, { color: t.colors.textMuted }]}>
-                    Powered by MusicBrainz
-                </Text>
             </View>
         </View>
     );
@@ -317,7 +339,9 @@ export default function DiscoverScreen() {
 
 const styles = StyleSheet.create({
     container: { flex: 1 },
-    header: { padding: spacing.md, paddingTop: spacing.lg },
+    contentWrapper: { flex: 1 },
+    header: { flexDirection: 'row', alignItems: 'center', padding: spacing.md, paddingTop: spacing.lg, gap: spacing.md },
+    headerTextContainer: { flex: 1 },
     title: { fontSize: fontSize.xxxl, fontWeight: 'bold' },
     subtitle: { fontSize: fontSize.md, marginTop: spacing.xs },
     searchContainer: {

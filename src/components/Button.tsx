@@ -7,10 +7,12 @@ import {
   ViewStyle,
   TextStyle,
   StyleProp,
+  Platform,
 } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
+import { webStyles } from '../hooks/useWebInteraction';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
+export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'link';
 export type ButtonSize = 'small' | 'medium' | 'large';
 
 interface ButtonProps {
@@ -106,6 +108,18 @@ export function Button({
             color: '#FFFFFF',
           },
         };
+      case 'link':
+        return {
+          container: {
+            backgroundColor: 'transparent',
+            paddingVertical: 0,
+            paddingHorizontal: 0,
+          },
+          text: {
+            color: isDisabled ? t.colors.textMuted : t.colors.primary,
+            textDecorationLine: 'underline',
+          },
+        };
       default:
         return {
           container: {},
@@ -134,6 +148,7 @@ export function Button({
         },
         variantStyles.container,
         fullWidth && styles.fullWidth,
+        webStyles.clickable as ViewStyle,
         style,
       ]}
     >

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+    <!-- SEO Meta Tags -->
+    <title>Classical Music Companion</title>
+    <meta name="description" content="Your guide to classical music - explore composers, eras, and terminology" />
+    <meta name="theme-color" content="#1a1a2e" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/icon.png" />
+    
+    <!-- Global Web Styles -->
+    <link rel="stylesheet" href="/web/global.css" />
+    
+    <style>
+        /* Critical inline styles for faster initial render */
+        html, body, #root {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #1a1a2e;
+        }
+        #root {
+            display: flex;
+            flex-direction: column;
+        }
+        /* Loading spinner */
+        .app-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #ffffff;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div class="app-loading">Loading...</div>
+    </div>
+</body>
+</html>

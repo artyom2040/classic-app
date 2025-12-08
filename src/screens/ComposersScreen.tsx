@@ -7,12 +7,12 @@ import {
   TouchableOpacity,
   RefreshControl,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
+import { ScreenContainer, ScreenHeader, ListCard, ListCardAvatar } from '../components/ui';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList, Composer, Period } from '../types';
 import { hapticSelection } from '../utils/haptics';
 
@@ -62,32 +62,20 @@ export default function ComposersScreen() {
     setTimeout(() => setRefreshing(false), 250);
   };
 
-  const renderComposer = ({ item, section }: { item: Composer; section: ComposerSection }) => {
-    const cardStyle = [
-      styles.card,
-      { backgroundColor: t.colors.surface },
-      isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm,
-    ];
-
-    return (
-      <TouchableOpacity
-        style={cardStyle}
-        activeOpacity={0.8}
-        onPress={() => navigation.navigate('ComposerDetail', { composerId: item.id })}
-      >
-        <View style={[styles.avatar, { backgroundColor: section.color + '25' }]}>
-          <Text style={[styles.avatarText, { color: section.color }]}>{item.name.charAt(0)}</Text>
-        </View>
-        <View style={styles.cardInfo}>
-          <Text style={[styles.cardTitle, { color: t.colors.text }]} numberOfLines={1}>{item.name}</Text>
-          <Text style={[styles.cardMeta, { color: t.colors.textMuted }]} numberOfLines={1}>
-            {item.years} • {item.nationality}
-          </Text>
-        </View>
-        <Ionicons name="chevron-forward" size={18} color={t.colors.textMuted} />
-      </TouchableOpacity>
-    );
-  };
+  const renderComposer = ({ item, section }: { item: Composer; section: ComposerSection }) => (
+    <ListCard
+      title={item.name}
+      subtitle={`${item.years} • ${item.nationality}`}
+      leftContent={
+        <ListCardAvatar
+          letter={item.name.charAt(0)}
+          color={section.color}
+        />
+      }
+      onPress={() => navigation.navigate('ComposerDetail', { composerId: item.id })}
+      accessibilityLabel={`${item.name}, ${item.years}, ${item.nationality}`}
+    />
+  );
 
   const renderSectionHeader = ({ section }: { section: ComposerSection }) => (
     <View style={styles.sectionHeader}>
@@ -97,7 +85,10 @@ export default function ComposersScreen() {
   );
 
   return (
-    <View style={[styles.container, { backgroundColor: t.colors.background }]}>
+    <ScreenContainer padded={false}>
+      <ScreenHeader title="Composers" />
+
+      {/* Period Filters */}
       <View style={styles.filterRow}>
         <TouchableOpacity
           style={[
@@ -148,22 +139,40 @@ export default function ComposersScreen() {
           />
         }
       />
-    </View>
+    </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  filterRow: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs, padding: spacing.md, paddingBottom: 0 },
-  filterChip: { paddingHorizontal: spacing.md, paddingVertical: spacing.xs, borderRadius: borderRadius.lg },
-  filterText: { fontSize: fontSize.sm, fontWeight: '600' },
-  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: spacing.lg, marginBottom: spacing.xs },
-  sectionTitle: { fontSize: fontSize.lg, fontWeight: '700' },
-  sectionCount: { fontSize: fontSize.sm, fontWeight: '600' },
-  card: { flexDirection: 'row', alignItems: 'center', padding: spacing.md, borderRadius: borderRadius.lg },
-  avatar: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', marginRight: spacing.md },
-  avatarText: { fontSize: fontSize.lg, fontWeight: '700' },
-  cardInfo: { flex: 1 },
-  cardTitle: { fontSize: fontSize.md, fontWeight: '700' },
-  cardMeta: { fontSize: fontSize.sm, marginTop: 2 },
+  filterRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.xs,
+    padding: spacing.md,
+    paddingBottom: 0
+  },
+  filterChip: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    borderRadius: borderRadius.lg
+  },
+  filterText: {
+    fontSize: fontSize.sm,
+    fontWeight: '600'
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: spacing.lg,
+    marginBottom: spacing.xs
+  },
+  sectionTitle: {
+    fontSize: fontSize.lg,
+    fontWeight: '700'
+  },
+  sectionCount: {
+    fontSize: fontSize.sm,
+    fontWeight: '600'
+  },
 });

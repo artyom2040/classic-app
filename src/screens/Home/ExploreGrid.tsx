@@ -1,16 +1,18 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { useTheme } from '../../context/ThemeContext';
+import { useResponsive } from '../../hooks/useResponsive';
+import { HoverCard } from '../../components/HoverCard';
 import { RootStackParamList } from '../../types';
+import { spacing, fontSize, borderRadius } from '../../theme';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 type StackScreen = 'Composers' | 'MonthlySpotlight' | 'NewReleases' | 'ConcertHalls' | 'Quiz' | 'Badges';
 type TabScreen = 'Timeline' | 'Glossary';
-const { width } = Dimensions.get('window');
 
 interface ExploreItem {
   icon: keyof typeof Ionicons.glyphMap;
@@ -28,6 +30,8 @@ interface ExploreGridProps {
 export function ExploreGrid({ composersCount, termsCount }: ExploreGridProps) {
   const navigation = useNavigation<NavigationProp>();
   const { theme: t, themeName } = useTheme();
+  const { gridColumns, cardMinWidth } = useResponsive();
+  const { width } = useWindowDimensions();
   const isBrutal = themeName === 'neobrutalist';
 
   const exploreItems: ExploreItem[] = [
@@ -50,29 +54,39 @@ export function ExploreGrid({ composersCount, termsCount }: ExploreGridProps) {
     }
   };
 
+  // Responsive card sizing
+  const gap = spacing.sm;
+  const padding = spacing.md * 2;
+  const availableWidth = width - padding;
+  const columns = gridColumns;
+  const cardWidth = Math.max(
+    cardMinWidth,
+    (availableWidth - (gap * (columns - 1))) / columns
+  );
+
   return (
     <View style={styles.exploreGrid}>
       {exploreItems.map((item) => (
-        <TouchableOpacity
+        <HoverCard
           key={item.label}
-          style={[
-            styles.exploreCard,
-            {
-              backgroundColor: item.color + '15',
-              borderRadius: t.borderRadius.lg,
-              ...(isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : {}),
-            },
-          ]}
+          style={{
+            ...styles.exploreCard,
+            width: cardWidth,
+            backgroundColor: item.color + '15',
+            borderRadius: borderRadius.lg,
+            ...(isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : {}),
+          }}
           onPress={() => handlePress(item.screen)}
-          activeOpacity={0.7}
           accessibilityRole="button"
           accessibilityLabel={`${item.label}. ${item.sub}`}
           accessibilityHint={`Navigate to ${item.label}`}
         >
-          <Ionicons name={item.icon} size={28} color={item.color} />
+          <View style={[styles.iconContainer, { backgroundColor: item.color + '20' }]}>
+            <Ionicons name={item.icon} size={28} color={item.color} />
+          </View>
           <Text style={[styles.exploreLabel, { color: t.colors.text }]}>{item.label}</Text>
           <Text style={[styles.exploreSub, { color: t.colors.textMuted }]}>{item.sub}</Text>
-        </TouchableOpacity>
+        </HoverCard>
       ))}
     </View>
   );
@@ -82,21 +96,32 @@ const styles = StyleSheet.create({
   exploreGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 10,
-    marginBottom: 20,
+    gap: spacing.sm,
+    marginBottom: spacing.lg,
+    justifyContent: 'center',
   },
   exploreCard: {
-    width: (width - 32 - 10) / 2,
-    padding: 16,
+    padding: spacing.md,
     alignItems: 'center',
+    minHeight: 120,
+  },
+  iconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: spacing.sm,
   },
   exploreLabel: {
-    fontSize: 14,
+    fontSize: fontSize.md,
     fontWeight: '600',
-    marginTop: 8,
+    marginTop: spacing.xs,
+    textAlign: 'center',
   },
   exploreSub: {
-    fontSize: 11,
+    fontSize: fontSize.xs,
     marginTop: 2,
+    textAlign: 'center',
   },
 });

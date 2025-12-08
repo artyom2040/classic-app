@@ -48,6 +48,7 @@ import DiscoverScreen from './src/screens/DiscoverScreen';
 // Experimental / Labs screens
 import MoodPlaylistsScreen from './src/experimental/moodPlaylists/MoodPlaylistsScreen';
 import ListeningGuidesScreen from './src/experimental/listeningGuides/ListeningGuidesScreen';
+import ListeningGuidePlayerScreen from './src/experimental/listeningGuides/ListeningGuidePlayerScreen';
 import RecommendationsScreen from './src/experimental/recommendations/RecommendationsScreen';
 import LabsScreen from './src/experimental/LabsScreen';
 
@@ -57,6 +58,10 @@ import UserDashboardScreen from './src/screens/UserDashboardScreen';
 import AdminDashboardScreen from './src/screens/AdminDashboardScreen';
 import { useAuthDeepLink } from './src/hooks/useAuthDeepLink';
 import { useNavigationPersistence } from './src/hooks/useNavigationPersistence';
+import { injectWebCSS } from './src/utils/webCSS';
+
+// Inject web CSS for hover effects (runs once on web only)
+injectWebCSS();
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
@@ -332,6 +337,11 @@ function AppNavigator() {
           name="ListeningGuides"
           component={ListeningGuidesScreen}
           options={{ title: 'Listening Guides', headerShown: false }}
+        />
+        <Stack.Screen
+          name="ListeningGuidePlayer"
+          component={ListeningGuidePlayerScreen}
+          options={{ title: 'Guide Player', headerShown: false }}
         />
         <Stack.Screen
           name="Recommendations"

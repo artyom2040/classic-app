@@ -13,6 +13,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
+import { ScreenContainer, ScreenHeader, ListCard } from '../components/ui';
 import { RootStackParamList } from '../types';
 import { getLongDefinition, getShortDefinition } from '../utils/terms';
 
@@ -81,37 +82,33 @@ export default function GlossaryScreen() {
     const summary = getShortDefinition(item);
 
     return (
-      <TouchableOpacity
-        style={[styles.termCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}
+      <ListCard
+        title={item.term}
+        subtitle={summary}
         onPress={() => navigation.navigate('TermDetail', { termId: String(item.id) })}
-        activeOpacity={0.7}
-        accessibilityRole="button"
         accessibilityLabel={`${item.term}, ${item.category}`}
-        accessibilityHint="Double tap to view term details"
-      >
-        <View style={styles.termHeader}>
-          <Text style={[styles.termTitle, { color: t.colors.text }]}>{item.term}</Text>
+        rightContent={
           <View style={[styles.categoryBadge, { backgroundColor: categoryColor + '30' }]}>
             <Text style={[styles.categoryText, { color: categoryColor }]}>
               {item.category}
             </Text>
           </View>
-        </View>
-        <Text style={[styles.termDefinition, { color: t.colors.textSecondary }]} numberOfLines={2}>
-          {summary}
-        </Text>
-      </TouchableOpacity>
+        }
+        showChevron={false}
+      />
     );
   }, [t, isBrutal, getCategoryColor, navigation]);
 
   return (
-    <View style={[styles.container, { backgroundColor: t.colors.background }]}>
+    <ScreenContainer padded={false}>
+      <ScreenHeader title="Glossary" subtitle={`${filteredTerms.length} musical terms`} />
+
       {/* Search Bar */}
       <View style={[styles.searchContainer, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
         <Ionicons name="search" size={20} color={t.colors.textMuted} />
         <TextInput
           style={[styles.searchInput, { color: t.colors.text }]}
-          placeholder="Search 150 musical terms..."
+          placeholder="Search terms..."
           placeholderTextColor={t.colors.textMuted}
           value={searchQuery}
           onChangeText={setSearchQuery}
@@ -147,7 +144,7 @@ export default function GlossaryScreen() {
               <Text
                 style={[
                   styles.categoryChipText,
-                  { color: selectedCategory === item ? t.colors.text : t.colors.textSecondary },
+                  { color: selectedCategory === item ? '#fff' : t.colors.textSecondary },
                 ]}
               >
                 {item}
@@ -156,12 +153,6 @@ export default function GlossaryScreen() {
           )}
         />
       </View>
-
-      {/* Results count */}
-      <Text style={[styles.resultsCount, { color: t.colors.textMuted }]}>
-        {filteredTerms.length} {filteredTerms.length === 1 ? 'term' : 'terms'}
-        {selectedCategory !== 'All' && ` in ${selectedCategory}`}
-      </Text>
 
       {/* Terms List */}
       <FlatList
@@ -178,27 +169,67 @@ export default function GlossaryScreen() {
           </View>
         }
       />
-    </View>
+    </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  searchContainer: { flexDirection: 'row', alignItems: 'center', borderRadius: borderRadius.lg, margin: spacing.md, paddingHorizontal: spacing.md, height: 48 },
-  searchInput: { flex: 1, fontSize: fontSize.md, marginLeft: spacing.sm },
-  categoryContainer: { marginBottom: spacing.sm },
-  categoryList: { paddingHorizontal: spacing.md, gap: spacing.xs },
-  categoryChip: { paddingHorizontal: spacing.md, paddingVertical: spacing.xs, borderRadius: borderRadius.full, marginRight: spacing.xs },
-  categoryChipText: { fontSize: fontSize.sm, fontWeight: '500' },
-  resultsCount: { fontSize: fontSize.sm, paddingHorizontal: spacing.md, marginBottom: spacing.sm },
-  listContent: { padding: spacing.md, paddingTop: 0 },
-  termCard: { borderRadius: borderRadius.md, padding: spacing.md, marginBottom: spacing.sm },
-  termHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.xs },
-  termTitle: { fontSize: fontSize.lg, fontWeight: '600', flex: 1 },
-  categoryBadge: { paddingHorizontal: spacing.sm, paddingVertical: 2, borderRadius: borderRadius.sm },
-  categoryText: { fontSize: fontSize.xs, fontWeight: '600' },
-  termDefinition: { fontSize: fontSize.sm, lineHeight: 20 },
-  emptyState: { alignItems: 'center', justifyContent: 'center', paddingVertical: spacing.xxl },
-  emptyText: { fontSize: fontSize.lg, fontWeight: '600', marginTop: spacing.md },
-  emptySubtext: { fontSize: fontSize.sm, marginTop: spacing.xs },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: borderRadius.lg,
+    marginHorizontal: spacing.md,
+    paddingHorizontal: spacing.md,
+    height: 48
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: fontSize.md,
+    marginLeft: spacing.sm
+  },
+  categoryContainer: {
+    marginVertical: spacing.sm
+  },
+  categoryList: {
+    paddingHorizontal: spacing.md,
+    gap: spacing.xs
+  },
+  categoryChip: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    borderRadius: borderRadius.full,
+    marginRight: spacing.xs
+  },
+  categoryChipText: {
+    fontSize: fontSize.sm,
+    fontWeight: '500'
+  },
+  listContent: {
+    padding: spacing.md,
+    paddingTop: 0,
+    gap: spacing.xs,
+  },
+  categoryBadge: {
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 2,
+    borderRadius: borderRadius.sm
+  },
+  categoryText: {
+    fontSize: fontSize.xs,
+    fontWeight: '600'
+  },
+  emptyState: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: spacing.xxl
+  },
+  emptyText: {
+    fontSize: fontSize.lg,
+    fontWeight: '600',
+    marginTop: spacing.md
+  },
+  emptySubtext: {
+    fontSize: fontSize.sm,
+    marginTop: spacing.xs
+  },
 });

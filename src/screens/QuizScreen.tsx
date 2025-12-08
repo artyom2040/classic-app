@@ -50,7 +50,7 @@ interface QuizProgress {
 function generateQuestions(dayOfYear: number): Question[] {
   const questions: Question[] = [];
   const seed = dayOfYear;
-  
+
   // Seeded random for consistent daily questions
   const seededRandom = (max: number, offset: number = 0) => {
     const x = Math.sin(seed + offset) * 10000;
@@ -64,7 +64,7 @@ function generateQuestions(dayOfYear: number): Question[] {
     .filter((_, i) => i !== composerIdx)
     .slice(0, 3)
     .map(c => c.name);
-  
+
   const composerOptions = [...wrongComposers, composer.name].sort(() => seededRandom(2, 1) - 0.5);
   questions.push({
     id: 'q1',
@@ -83,7 +83,7 @@ function generateQuestions(dayOfYear: number): Question[] {
     .slice(0, 3)
     .map(t => t.term);
   const termDefinition = getLongDefinition(term as any);
-  
+
   const termOptions = [...wrongTerms, term.term].sort(() => seededRandom(2, 3) - 0.5);
   questions.push({
     id: 'q2',
@@ -101,7 +101,7 @@ function generateQuestions(dayOfYear: number): Question[] {
     .filter((_, i) => i !== periodIdx)
     .slice(0, 3)
     .map(p => p.name);
-  
+
   const periodOptions = [...wrongPeriods, period.name].sort(() => seededRandom(2, 5) - 0.5);
   questions.push({
     id: 'q3',
@@ -117,7 +117,7 @@ function generateQuestions(dayOfYear: number): Question[] {
   const composer2 = composersData.composers[composer2Idx];
   const allPeriods = [...new Set(composersData.composers.map(c => c.period))];
   const wrongPeriods2 = allPeriods.filter(p => p !== composer2.period).slice(0, 3);
-  
+
   const periodOptions2 = [...wrongPeriods2, composer2.period].sort(() => seededRandom(2, 7) - 0.5);
   questions.push({
     id: 'q4',
@@ -133,7 +133,7 @@ function generateQuestions(dayOfYear: number): Question[] {
   const term2 = glossaryData.terms[term2Idx];
   const allCategories = [...new Set(glossaryData.terms.map(t => t.category))];
   const wrongCategories = allCategories.filter(c => c !== term2.category).slice(0, 3);
-  
+
   const categoryOptions = [...wrongCategories, term2.category].sort(() => seededRandom(2, 9) - 0.5);
   questions.push({
     id: 'q5',
@@ -156,7 +156,7 @@ export default function QuizScreen() {
 
   const dayOfYear = getDayOfYear();
   const questions = useMemo(() => generateQuestions(dayOfYear), [dayOfYear]);
-  
+
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
@@ -189,7 +189,7 @@ export default function QuizScreen() {
   const saveProgress = async (correct: number) => {
     const isConsecutive = progress ? progress.lastPlayedDay === dayOfYear - 1 : false;
     const newStreak = isConsecutive ? (progress?.streak || 0) + 1 : 1;
-    
+
     const newProgress: QuizProgress = {
       lastPlayedDay: dayOfYear,
       totalCorrect: (progress?.totalCorrect || 0) + correct,
@@ -197,17 +197,17 @@ export default function QuizScreen() {
       streak: newStreak,
       bestStreak: Math.max(newStreak, progress?.bestStreak || 0),
     };
-    
+
     setProgress(newProgress);
     await AsyncStorage.setItem(QUIZ_PROGRESS_KEY, JSON.stringify(newProgress));
   };
 
   const handleAnswer = (index: number) => {
     if (isAnswered) return;
-    
+
     setSelectedAnswer(index);
     setIsAnswered(true);
-    
+
     const isCorrect = index === questions[currentQuestion].correctIndex;
     if (isCorrect) {
       setScore(s => s + 1);
@@ -223,7 +223,7 @@ export default function QuizScreen() {
         Animated.timing(fadeAnim, { toValue: 0, duration: 150, useNativeDriver: true }),
         Animated.timing(fadeAnim, { toValue: 1, duration: 150, useNativeDriver: true }),
       ]).start();
-      
+
       setCurrentQuestion(c => c + 1);
       setSelectedAnswer(null);
       setIsAnswered(false);
@@ -251,7 +251,7 @@ export default function QuizScreen() {
           <Text style={[styles.alreadyPlayedText, { color: t.colors.textSecondary }]}>
             You've already completed today's quiz. Come back tomorrow for new questions!
           </Text>
-          
+
           {progress && (
             <View style={[styles.statsCard, cardStyle, { marginTop: spacing.lg }]}>
               <View style={styles.statRow}>
@@ -272,8 +272,8 @@ export default function QuizScreen() {
               </View>
             </View>
           )}
-          
-          <TouchableOpacity 
+
+          <TouchableOpacity
             style={[styles.backButton, { backgroundColor: t.colors.primary }]}
             onPress={() => navigation.goBack()}
           >
@@ -288,15 +288,15 @@ export default function QuizScreen() {
   if (quizComplete) {
     const finalScore = score + (selectedAnswer === questions[questions.length - 1].correctIndex ? 1 : 0);
     const percentage = Math.round((finalScore / questions.length) * 100);
-    
+
     return (
       <View style={[styles.container, { backgroundColor: t.colors.background, paddingTop: insets.top }]}>
         <ScrollView contentContainerStyle={styles.completeContent}>
           <View style={styles.completeHeader}>
-            <Ionicons 
-              name={percentage >= 80 ? 'trophy' : percentage >= 50 ? 'thumbs-up' : 'refresh'} 
-              size={64} 
-              color={percentage >= 80 ? t.colors.warning : percentage >= 50 ? t.colors.success : t.colors.primary} 
+            <Ionicons
+              name={percentage >= 80 ? 'trophy' : percentage >= 50 ? 'thumbs-up' : 'refresh'}
+              size={64}
+              color={percentage >= 80 ? t.colors.warning : percentage >= 50 ? t.colors.success : t.colors.primary}
             />
             <Text style={[styles.completeTitle, { color: t.colors.text }]}>
               {percentage >= 80 ? 'Excellent!' : percentage >= 50 ? 'Good Job!' : 'Keep Learning!'}
@@ -327,7 +327,7 @@ export default function QuizScreen() {
             </View>
           )}
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[styles.backButton, { backgroundColor: t.colors.primary }]}
             onPress={() => navigation.goBack()}
           >
@@ -340,17 +340,30 @@ export default function QuizScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: t.colors.background, paddingTop: insets.top }]}>
+      {/* Header with close button */}
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={[styles.closeButton, { backgroundColor: t.colors.surfaceLight }]}
+          onPress={() => navigation.goBack()}
+          accessibilityLabel="Close quiz"
+        >
+          <Ionicons name="close" size={24} color={t.colors.text} />
+        </TouchableOpacity>
+        <Text style={[styles.headerTitle, { color: t.colors.text }]}>Daily Quiz</Text>
+        <View style={{ width: 40 }} />
+      </View>
+
       {/* Progress bar */}
       <View style={styles.progressContainer}>
         <View style={[styles.progressBar, { backgroundColor: t.colors.surfaceLight }]}>
-          <View 
+          <View
             style={[
-              styles.progressFill, 
-              { 
-                backgroundColor: t.colors.primary, 
-                width: `${((currentQuestion + 1) / questions.length) * 100}%` 
+              styles.progressFill,
+              {
+                backgroundColor: t.colors.primary,
+                width: `${((currentQuestion + 1) / questions.length) * 100}%`
               }
-            ]} 
+            ]}
           />
         </View>
         <Text style={[styles.progressText, { color: t.colors.textMuted }]}>
@@ -362,10 +375,10 @@ export default function QuizScreen() {
         {/* Question */}
         <View style={[styles.questionCard, cardStyle]}>
           <View style={[styles.questionType, { backgroundColor: t.colors.primary + '20' }]}>
-            <Ionicons 
-              name={question.type === 'composer' ? 'person' : question.type === 'term' ? 'book' : 'time'} 
-              size={16} 
-              color={t.colors.primary} 
+            <Ionicons
+              name={question.type === 'composer' ? 'person' : question.type === 'term' ? 'book' : 'time'}
+              size={16}
+              color={t.colors.primary}
             />
             <Text style={[styles.questionTypeText, { color: t.colors.primary }]}>
               {question.type.charAt(0).toUpperCase() + question.type.slice(1)}
@@ -380,10 +393,10 @@ export default function QuizScreen() {
             const isSelected = selectedAnswer === index;
             const isCorrect = index === question.correctIndex;
             const showResult = isAnswered;
-            
+
             let optionStyle = { backgroundColor: t.colors.surface };
             let textColor = t.colors.text;
-            
+
             if (showResult) {
               if (isCorrect) {
                 optionStyle = { backgroundColor: t.colors.success + '20' };
@@ -396,13 +409,13 @@ export default function QuizScreen() {
               optionStyle = { backgroundColor: t.colors.primary + '20' };
               textColor = t.colors.primary;
             }
-            
+
             return (
               <TouchableOpacity
                 key={index}
                 style={[
-                  styles.option, 
-                  cardStyle, 
+                  styles.option,
+                  cardStyle,
                   optionStyle,
                   showResult && isCorrect && { borderColor: t.colors.success, borderWidth: 2 },
                   showResult && isSelected && !isCorrect && { borderColor: t.colors.error, borderWidth: 2 },
@@ -434,7 +447,7 @@ export default function QuizScreen() {
 
         {/* Next button */}
         {isAnswered && (
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[styles.nextButton, { backgroundColor: t.colors.primary }]}
             onPress={nextQuestion}
           >
@@ -451,44 +464,59 @@ export default function QuizScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  progressContainer: { padding: spacing.md, flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+  closeButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerTitle: { fontSize: fontSize.lg, fontWeight: '600' },
+  progressContainer: { paddingHorizontal: spacing.md, paddingBottom: spacing.md, flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   progressBar: { flex: 1, height: 8, borderRadius: 4, overflow: 'hidden' },
   progressFill: { height: '100%', borderRadius: 4 },
   progressText: { fontSize: fontSize.sm, fontWeight: '600' },
-  
+
   questionContainer: { flex: 1, padding: spacing.md },
   questionCard: { padding: spacing.lg, marginBottom: spacing.lg },
   questionType: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs, alignSelf: 'flex-start', paddingHorizontal: spacing.sm, paddingVertical: 4, borderRadius: borderRadius.sm, marginBottom: spacing.md },
   questionTypeText: { fontSize: fontSize.sm, fontWeight: '600' },
   questionText: { fontSize: fontSize.lg, fontWeight: '600', lineHeight: 26 },
-  
+
   optionsContainer: { gap: spacing.sm },
   option: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: spacing.md },
   optionText: { fontSize: fontSize.md, flex: 1 },
-  
+
   explanationCard: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.sm, padding: spacing.md, borderRadius: borderRadius.md, marginTop: spacing.md },
   explanationText: { flex: 1, fontSize: fontSize.sm, lineHeight: 20 },
-  
+
   nextButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: spacing.md, borderRadius: borderRadius.lg, marginTop: spacing.lg, gap: spacing.sm },
   nextButtonText: { color: '#fff', fontSize: fontSize.md, fontWeight: '600' },
-  
+
   alreadyPlayed: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: spacing.lg },
   alreadyPlayedTitle: { fontSize: fontSize.xxl, fontWeight: 'bold', marginTop: spacing.md },
   alreadyPlayedText: { fontSize: fontSize.md, textAlign: 'center', marginTop: spacing.sm },
-  
+
   completeContent: { flexGrow: 1, padding: spacing.lg },
   completeHeader: { alignItems: 'center', marginBottom: spacing.xl },
   completeTitle: { fontSize: fontSize.xxl, fontWeight: 'bold', marginTop: spacing.md },
   completeScore: { fontSize: 48, fontWeight: 'bold', marginTop: spacing.sm },
   completePercent: { fontSize: fontSize.lg, marginTop: spacing.xs },
-  
+
   statsCard: { padding: spacing.lg, marginBottom: spacing.lg },
   statsTitle: { fontSize: fontSize.lg, fontWeight: '700', marginBottom: spacing.md, textAlign: 'center' },
   statRow: { flexDirection: 'row', justifyContent: 'space-around' },
   statItem: { alignItems: 'center' },
   statValue: { fontSize: fontSize.xxl, fontWeight: 'bold' },
   statLabel: { fontSize: fontSize.sm, marginTop: 4 },
-  
+
   backButton: { padding: spacing.md, borderRadius: borderRadius.lg, alignItems: 'center', marginTop: spacing.md },
   backButtonText: { color: '#fff', fontSize: fontSize.md, fontWeight: '600' },
 });

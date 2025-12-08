@@ -6,7 +6,9 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { useTheme } from '../../context/ThemeContext';
 import { useCardStyle } from '../../hooks/useCardStyle';
-import { spacing } from '../../theme';
+import { useResponsive } from '../../hooks/useResponsive';
+import { webStyles } from '../../hooks/useWebInteraction';
+import { spacing, fontSize } from '../../theme';
 import { RootStackParamList, UserProgress, WeeklyAlbum, MonthlySpotlight, ListenerLevel } from '../../types';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -28,14 +30,18 @@ export function FeaturedGrid({ progress, weeklyAlbum, monthlySpotlight }: Featur
   const navigation = useNavigation<NavigationProp>();
   const { theme: t } = useTheme();
   const { cardStyle } = useCardStyle();
+  const { isDesktop } = useResponsive();
 
   const kickstartProgress = progress?.kickstartDay || 0;
+
+  // On desktop, we might want the cards to be in a row with more space
+  const cardMaxWidth = isDesktop ? 280 : undefined;
 
   return (
     <View style={styles.featuredGrid}>
       {/* 5-Day Kickstart */}
       <TouchableOpacity
-        style={[styles.featuredCard, cardStyle, { borderTopWidth: 3, borderTopColor: t.colors.primary }]}
+        style={[styles.featuredCard, cardStyle, webStyles.card, { borderTopWidth: 3, borderTopColor: t.colors.primary }]}
         onPress={() => navigation.navigate('Kickstart')}
         activeOpacity={0.8}
         accessibilityRole="button"
@@ -66,8 +72,8 @@ export function FeaturedGrid({ progress, weeklyAlbum, monthlySpotlight }: Featur
                       backgroundColor: day < kickstartProgress
                         ? t.colors.success
                         : day === kickstartProgress
-                        ? t.colors.primary
-                        : t.colors.border,
+                          ? t.colors.primary
+                          : t.colors.border,
                     },
                   ]}
                 />
@@ -79,7 +85,7 @@ export function FeaturedGrid({ progress, weeklyAlbum, monthlySpotlight }: Featur
 
       {/* Weekly Album */}
       <TouchableOpacity
-        style={[styles.featuredCard, cardStyle, { borderTopWidth: 3, borderTopColor: t.colors.secondary }]}
+        style={[styles.featuredCard, cardStyle, webStyles.card, { borderTopWidth: 3, borderTopColor: t.colors.secondary }]}
         onPress={() => navigation.navigate('WeeklyAlbum')}
         activeOpacity={0.8}
         accessibilityRole="button"
@@ -110,7 +116,7 @@ export function FeaturedGrid({ progress, weeklyAlbum, monthlySpotlight }: Featur
 
       {/* Monthly Spotlight */}
       <TouchableOpacity
-        style={[styles.featuredCard, cardStyle, { borderTopWidth: 3, borderTopColor: t.colors.warning }]}
+        style={[styles.featuredCard, cardStyle, webStyles.card, { borderTopWidth: 3, borderTopColor: t.colors.warning }]}
         onPress={() => navigation.navigate('MonthlySpotlight')}
         activeOpacity={0.8}
         accessibilityRole="button"
@@ -135,12 +141,16 @@ export function FeaturedGrid({ progress, weeklyAlbum, monthlySpotlight }: Featur
 const styles = StyleSheet.create({
   featuredGrid: {
     flexDirection: 'row',
-    gap: 10,
-    marginBottom: 20,
+    gap: spacing.sm,
+    marginBottom: spacing.lg,
+    flexWrap: 'wrap',
+    justifyContent: 'center',
   },
   featuredCard: {
     flex: 1,
-    padding: 12,
+    minWidth: 140,
+    maxWidth: 280,
+    padding: spacing.md,
     alignItems: 'center',
   },
   featuredIcon: {

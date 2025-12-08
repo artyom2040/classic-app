@@ -16,6 +16,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../context/ThemeContext';
 import { useSettings } from '../context/SettingsContext';
 import { useCardStyle } from '../hooks/useCardStyle';
+import { useResponsive } from '../hooks/useResponsive';
 import { spacing } from '../theme';
 import { RootStackParamList, UserProgress, NewRelease, ConcertHall, Term, WeeklyAlbum, MonthlySpotlight } from '../types';
 import { getProgress, getWeekNumber, getDayOfYear, getCurrentMonth } from '../utils/storage';
@@ -38,6 +39,7 @@ export default function HomeScreen() {
   const { theme, themeName } = useTheme();
   const t = theme;
   const { musicService } = useSettings();
+  const { isDesktop, maxContentWidth } = useResponsive();
 
   const [progress, setProgress] = useState<UserProgress | null>(null);
   const [progressLoading, setProgressLoading] = useState(true);
@@ -90,7 +92,11 @@ export default function HomeScreen() {
   const renderContent = () => (
     <ScrollView
       style={[styles.container, !isGlass && { backgroundColor: t.colors.background }]}
-      contentContainerStyle={[styles.content, { paddingTop: insets.top + 16 }]}
+      contentContainerStyle={[
+        styles.content,
+        { paddingTop: insets.top + 16 },
+        isDesktop && { maxWidth: maxContentWidth, alignSelf: 'center', width: '100%' }
+      ]}
       showsVerticalScrollIndicator={false}
       refreshControl={
         <RefreshControl

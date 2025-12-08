@@ -17,6 +17,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { RootStackParamList } from '../types';
 import { spacing, fontSize, borderRadius } from '../theme';
+import { hasAnyLabsEnabled } from '../experimental/labs.config';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -25,16 +26,24 @@ interface MenuItem {
   label: string;
   action: string;
   color?: string;
+  badge?: string;
 }
 
-const menuItems: MenuItem[] = [
-  { icon: 'home-outline', label: 'Home', action: 'home', color: undefined },
-  { icon: 'time-outline', label: 'Timeline', action: 'timeline', color: undefined },
-  { icon: 'book-outline', label: 'Glossary', action: 'glossary', color: undefined },
-  { icon: 'musical-notes-outline', label: 'Forms', action: 'forms', color: undefined },
-  { icon: 'settings-outline', label: 'Settings', action: 'settings', color: undefined },
-  { icon: 'ribbon-outline', label: 'Badges', action: 'badges', color: undefined },
-  { icon: 'search-outline', label: 'Search', action: 'search', color: undefined },
+const navigationItems: MenuItem[] = [
+  { icon: 'home-outline', label: 'Home', action: 'home' },
+  { icon: 'time-outline', label: 'Timeline', action: 'timeline' },
+  { icon: 'book-outline', label: 'Glossary', action: 'glossary' },
+  { icon: 'musical-notes-outline', label: 'Forms', action: 'forms' },
+];
+
+const exploreItems: MenuItem[] = [
+  { icon: 'planet-outline', label: 'Discover', action: 'discover' },
+  { icon: 'ribbon-outline', label: 'Badges', action: 'badges' },
+  { icon: 'search-outline', label: 'Search', action: 'search' },
+];
+
+const settingsItems: MenuItem[] = [
+  { icon: 'settings-outline', label: 'Settings', action: 'settings' },
 ];
 
 export function HamburgerMenu() {
@@ -50,16 +59,16 @@ export function HamburgerMenu() {
 
     switch (action) {
       case 'home':
-        navigation.navigate('MainTabs', { screen: 'Home' });
+        navigation.navigate('MainTabs', { screen: 'Home' } as never);
         break;
       case 'timeline':
-        navigation.navigate('MainTabs', { screen: 'Timeline' });
+        navigation.navigate('MainTabs', { screen: 'Timeline' } as never);
         break;
       case 'glossary':
-        navigation.navigate('MainTabs', { screen: 'Glossary' });
+        navigation.navigate('MainTabs', { screen: 'Glossary' } as never);
         break;
       case 'forms':
-        navigation.navigate('MainTabs', { screen: 'Forms' });
+        navigation.navigate('MainTabs', { screen: 'Forms' } as never);
         break;
       case 'settings':
         navigation.navigate('Settings');
@@ -69,6 +78,12 @@ export function HamburgerMenu() {
         break;
       case 'search':
         navigation.navigate('Search');
+        break;
+      case 'discover':
+        navigation.navigate('Discover');
+        break;
+      case 'labs':
+        navigation.navigate('Labs');
         break;
     }
   };
@@ -337,7 +352,7 @@ export function HamburgerMenu() {
                 >
                   NAVIGATION
                 </Text>
-                {menuItems.map((item, index) => (
+                {navigationItems.map((item, index) => (
                   <TouchableOpacity
                     key={index}
                     style={[
@@ -345,7 +360,7 @@ export function HamburgerMenu() {
                       {
                         borderBottomColor: t.colors.border,
                         borderBottomWidth:
-                          index < menuItems.length - 1 ? 1 : 0,
+                          index < navigationItems.length - 1 ? 1 : 0,
                       },
                     ]}
                     onPress={() => handleMenuPress(item.action)}
@@ -354,6 +369,130 @@ export function HamburgerMenu() {
                       name={item.icon}
                       size={20}
                       color={t.colors.primary}
+                    />
+                    <Text
+                      style={[styles.menuItemText, { color: t.colors.text }]}
+                    >
+                      {item.label}
+                    </Text>
+                    <Ionicons
+                      name="chevron-forward"
+                      size={18}
+                      color={t.colors.textMuted}
+                    />
+                  </TouchableOpacity>
+                ))}
+              </View>
+
+              {/* Explore Section */}
+              <View style={styles.navigationSection}>
+                <Text
+                  style={[
+                    styles.sectionTitle,
+                    { color: t.colors.textSecondary },
+                  ]}
+                >
+                  EXPLORE
+                </Text>
+                {exploreItems.map((item, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={[
+                      styles.menuItem,
+                      {
+                        borderBottomColor: t.colors.border,
+                        borderBottomWidth:
+                          index < exploreItems.length - 1 ? 1 : 0,
+                      },
+                    ]}
+                    onPress={() => handleMenuPress(item.action)}
+                  >
+                    <Ionicons
+                      name={item.icon}
+                      size={20}
+                      color={t.colors.secondary || t.colors.primary}
+                    />
+                    <Text
+                      style={[styles.menuItemText, { color: t.colors.text }]}
+                    >
+                      {item.label}
+                    </Text>
+                    <Ionicons
+                      name="chevron-forward"
+                      size={18}
+                      color={t.colors.textMuted}
+                    />
+                  </TouchableOpacity>
+                ))}
+              </View>
+
+              {/* Labs Section */}
+              {hasAnyLabsEnabled() && (
+                <View style={styles.navigationSection}>
+                  <Text
+                    style={[
+                      styles.sectionTitle,
+                      { color: t.colors.textSecondary },
+                    ]}
+                  >
+                    LABS
+                  </Text>
+                  <TouchableOpacity
+                    style={[
+                      styles.menuItem,
+                      styles.labsMenuItem,
+                      { backgroundColor: '#8B5CF610' },
+                    ]}
+                    onPress={() => handleMenuPress('labs')}
+                  >
+                    <Ionicons
+                      name="flask"
+                      size={20}
+                      color="#8B5CF6"
+                    />
+                    <Text
+                      style={[styles.menuItemText, { color: t.colors.text }]}
+                    >
+                      Experimental Features
+                    </Text>
+                    <View style={styles.newBadge}>
+                      <Text style={styles.newBadgeText}>NEW</Text>
+                    </View>
+                    <Ionicons
+                      name="chevron-forward"
+                      size={18}
+                      color={t.colors.textMuted}
+                    />
+                  </TouchableOpacity>
+                </View>
+              )}
+
+              {/* Settings Section */}
+              <View style={styles.navigationSection}>
+                <Text
+                  style={[
+                    styles.sectionTitle,
+                    { color: t.colors.textSecondary },
+                  ]}
+                >
+                  SETTINGS
+                </Text>
+                {settingsItems.map((item, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={[
+                      styles.menuItem,
+                      {
+                        borderBottomColor: t.colors.border,
+                        borderBottomWidth: 0,
+                      },
+                    ]}
+                    onPress={() => handleMenuPress(item.action)}
+                  >
+                    <Ionicons
+                      name={item.icon}
+                      size={20}
+                      color={t.colors.textMuted}
                     />
                     <Text
                       style={[styles.menuItemText, { color: t.colors.text }]}
@@ -576,5 +715,21 @@ const styles = StyleSheet.create({
   version: {
     fontSize: fontSize.xs,
     marginTop: spacing.xs,
+  },
+  labsMenuItem: {
+    marginHorizontal: spacing.md,
+    borderRadius: borderRadius.md,
+    marginBottom: spacing.sm,
+  },
+  newBadge: {
+    backgroundColor: '#8B5CF620',
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 2,
+    borderRadius: borderRadius.full,
+  },
+  newBadgeText: {
+    fontSize: fontSize.xs,
+    fontWeight: '700',
+    color: '#8B5CF6',
   },
 });

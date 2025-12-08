@@ -53,6 +53,7 @@ export default function ListeningGuidesScreen() {
                 ]}
                 activeOpacity={0.7}
                 accessibilityLabel={`${item.workTitle} listening guide`}
+                onPress={() => navigation.navigate('ListeningGuidePlayer', { guideId: item.id })}
             >
                 <View style={styles.cardHeader}>
                     <View style={[styles.difficultyBadge, { backgroundColor: color + '20' }]}>
