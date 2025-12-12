@@ -1,10 +1,11 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from 'react';
 import { Platform } from 'react-native';
 import { Session, User } from '@supabase/supabase-js';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { supabase, isSupabaseConfigured } from '../services/supabaseClient';
 import { UserProfile, UserRole, AuthState } from '../types';
+import { Logger } from '../utils/logger';
 
 // Configure Google Sign In safely
 function initializeGoogleSignIn() {
@@ -114,6 +115,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Guard to prevent race condition between getSession() and onAuthStateChange
+  const initializedRef = useRef(false);
+
   // Initialize auth state
   useEffect(() => {
     if (!isSupabaseConfigured() || !supabase) {
@@ -122,40 +126,59 @@ export function AuthProvider({ children }: AuthProviderProps) {
       return;
     }
 
-    // Get initial session
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
+    // Helper to handle user session
+    const handleSession = async (session: Session | null, source: string) => {
       if (session?.user) {
-        console.log('[Auth] Session found for user:', session.user.id);
-        const profile = await fetchUserProfile(session.user.id);
-        setUser(profile);
-      } else {
-        console.log('[Auth] No active session');
-      }
-      setIsLoading(false);
-    });
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('[Auth] Auth state changed:', event);
-      if (event === 'SIGNED_IN' && session?.user) {
-        console.log('[Auth] User signed in:', session.user.id);
+        Logger.info('Auth', `${source}: Session found`, { userId: session.user.id });
         let profile = await fetchUserProfile(session.user.id);
         if (!profile) {
-          console.log('[Auth] Profile not found, creating new profile for:', session.user.id);
+          Logger.info('Auth', `${source}: Profile not found, creating new profile`, { userId: session.user.id });
           profile = await createUserProfile(session.user);
         }
         setUser(profile);
+      } else {
+        Logger.info('Auth', `${source}: No active session`);
+        setUser(null);
+      }
+    };
+
+    // Listen for auth changes - this handles all state updates including initial load
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      Logger.info('Auth', 'Auth state changed', { event });
+
+      if (event === 'INITIAL_SESSION') {
+        // Initial session event handles the first load
+        initializedRef.current = true;
+        await handleSession(session, 'INITIAL_SESSION');
+        setIsLoading(false);
+      } else if (event === 'SIGNED_IN') {
+        // Only handle if not during initial load (avoid double processing)
+        if (initializedRef.current) {
+          await handleSession(session, 'SIGNED_IN');
+        }
       } else if (event === 'SIGNED_OUT') {
-        console.log('[Auth] User signed out');
+        Logger.info('Auth', 'User signed out');
         setUser(null);
       } else if (event === 'USER_UPDATED' && session?.user) {
-        console.log('[Auth] User updated:', session.user.id);
+        Logger.info('Auth', 'User updated', { userId: session.user.id });
         const profile = await fetchUserProfile(session.user.id);
         setUser(profile);
       }
     });
 
+    // Fallback: If onAuthStateChange doesn't fire INITIAL_SESSION within 3s, use getSession
+    const fallbackTimer = setTimeout(async () => {
+      if (!initializedRef.current && supabase) {
+        Logger.info('Auth', 'Fallback: Using getSession()');
+        initializedRef.current = true;
+        const { data: { session } } = await supabase.auth.getSession();
+        await handleSession(session, 'getSession fallback');
+        setIsLoading(false);
+      }
+    }, 3000);
+
     return () => {
+      clearTimeout(fallbackTimer);
       subscription.unsubscribe();
     };
   }, []);

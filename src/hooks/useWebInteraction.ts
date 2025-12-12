@@ -9,17 +9,14 @@ import { Platform, ViewStyle } from 'react-native';
  * Uses data attributes that are styled in /web/global.css
  */
 export const webClickableProps = Platform.OS === 'web' ? {
-    // @ts-ignore - data-* attributes work on web
     'data-clickable': 'true',
 } : {};
 
 export const webCardProps = Platform.OS === 'web' ? {
-    // @ts-ignore - data-* attributes work on web
     'data-card': 'true',
 } : {};
 
 export const webLinkProps = Platform.OS === 'web' ? {
-    // @ts-ignore - data-* attributes work on web
     'data-link': 'true',
 } : {};
 
@@ -43,15 +40,15 @@ export function useWebInteraction() {
  */
 export const webStyles: { clickable: ViewStyle; card: ViewStyle; link: ViewStyle } = Platform.OS === 'web' ? {
     clickable: {
-        // @ts-ignore - web-only property
+        // @ts-expect-error - cursor is a valid web style but not in RN ViewStyle types
         cursor: 'pointer',
     } as ViewStyle,
     card: {
-        // @ts-ignore - web-only property
+        // @ts-expect-error - cursor is a valid web style but not in RN ViewStyle types
         cursor: 'pointer',
     } as ViewStyle,
     link: {
-        // @ts-ignore - web-only property
+        // @ts-expect-error - cursor is a valid web style but not in RN ViewStyle types
         cursor: 'pointer',
     } as ViewStyle,
 } : {

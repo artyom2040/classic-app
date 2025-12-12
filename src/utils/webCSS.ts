@@ -3,6 +3,7 @@
  * Injects global CSS for hover effects at runtime (works in dev mode)
  */
 import { Platform } from 'react-native';
+import { Logger } from './logger';
 
 const globalCSS = `
 /* Global Web Hover Styles - Injected at Runtime */
@@ -80,7 +81,7 @@ export function injectWebCSS(): void {
         style.id = 'app-global-styles';
         document.head.appendChild(style);
         injected = true;
-        console.log('[Web] Global CSS injected');
+        Logger.info('Web', 'Global CSS injected');
     } catch (error) {
         console.warn('[Web] Failed to inject CSS:', error);
     }

@@ -9,6 +9,7 @@
  * 4. Replace API keys below with your own
  */
 import { Platform } from 'react-native';
+import { Logger } from '../utils/logger';
 
 // Placeholder for RevenueCat SDK - will be imported after installation
 // import Purchases, { PurchasesPackage, CustomerInfo, PurchasesOfferings } from 'react-native-purchases';
@@ -70,7 +71,7 @@ export async function initializePurchases(userId?: string): Promise<void> {
         // await Purchases.configure({ apiKey, appUserID: userId });
         // isInitialized = true;
 
-        console.log('[Purchases] Mock initialization (SDK not installed yet)');
+        Logger.info('Purchases', 'Mock initialization (SDK not installed yet)');
         isInitialized = true;
     } catch (error) {
         console.error('[Purchases] Initialization failed:', error);
@@ -130,7 +131,7 @@ export async function purchasePackage(packageId: string): Promise<PurchaseResult
         // const isPremium = customerInfo.entitlements.active[REVENUECAT_CONFIG.entitlementId] !== undefined;
         // return { success: true, isPremium };
 
-        console.log('[Purchases] Mock purchase:', packageId);
+        Logger.info('Purchases', 'Mock purchase', { packageId });
         return { success: true, isPremium: true };
     } catch (error: any) {
         // Handle user cancellation differently
@@ -152,7 +153,7 @@ export async function restorePurchases(): Promise<PurchaseResult> {
         // const isPremium = customerInfo.entitlements.active[REVENUECAT_CONFIG.entitlementId] !== undefined;
         // return { success: true, isPremium };
 
-        console.log('[Purchases] Mock restore');
+        Logger.info('Purchases', 'Mock restore');
         return { success: true, isPremium: false };
     } catch (error: any) {
         console.error('[Purchases] Restore failed:', error);
@@ -194,7 +195,7 @@ export async function getSubscriptionStatus(): Promise<SubscriptionStatus> {
 export async function identifyUser(userId: string): Promise<void> {
     // TODO: Replace with real identify
     // await Purchases.logIn(userId);
-    console.log('[Purchases] Mock identify:', userId);
+    Logger.info('Purchases', 'Mock identify', { userId });
 }
 
 /**
@@ -203,5 +204,5 @@ export async function identifyUser(userId: string): Promise<void> {
 export async function logOutUser(): Promise<void> {
     // TODO: Replace with real logout
     // await Purchases.logOut();
-    console.log('[Purchases] Mock logout');
+    Logger.info('Purchases', 'Mock logout');
 }

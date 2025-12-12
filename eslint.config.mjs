@@ -3,11 +3,54 @@ import tseslint from 'typescript-eslint';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 
+// Define common globals manually to avoid dependency issues
+const jestGlobals = {
+    jest: 'readonly',
+    describe: 'readonly',
+    test: 'readonly',
+    it: 'readonly',
+    expect: 'readonly',
+    beforeEach: 'readonly',
+    afterEach: 'readonly',
+    beforeAll: 'readonly',
+    afterAll: 'readonly',
+};
+
+const nodeGlobals = {
+    module: 'readonly',
+    require: 'readonly',
+    process: 'readonly',
+    console: 'readonly',
+    __dirname: 'readonly',
+    exports: 'writable',
+};
+
+const reactNativeGlobals = {
+    console: 'readonly',
+    setTimeout: 'readonly',
+    clearTimeout: 'readonly',
+    setInterval: 'readonly',
+    clearInterval: 'readonly',
+    // Add other common RN globals if necessary
+};
+
 export default tseslint.config(
     eslint.configs.recommended,
     ...tseslint.configs.recommended,
     {
-        files: ['**/*.{ts,tsx}'],
+        ignores: [
+            'node_modules/',
+            '.expo/',
+            'dist/',
+            'build/',
+            'web-build/',
+            'coverage/',
+            'supabase/functions/',
+        ],
+    },
+    // Base config for App Source (TS/TSX)
+    {
+        files: ['src/**/*.{ts,tsx}', 'App.tsx'],
         plugins: {
             react: reactPlugin,
             'react-hooks': reactHooksPlugin,
@@ -17,6 +60,9 @@ export default tseslint.config(
                 ecmaFeatures: {
                     jsx: true,
                 },
+            },
+            globals: {
+                ...reactNativeGlobals,
             },
         },
         settings: {
@@ -43,22 +89,49 @@ export default tseslint.config(
 
             // Code quality
             'no-console': ['warn', { allow: ['warn', 'error'] }],
-            'no-case-declarations': 'off', // Allow const in case blocks
+            'no-case-declarations': 'off',
             'prefer-const': 'error',
             'no-var': 'error',
         },
     },
+    // Config for Test files & Mocks
     {
-        ignores: [
-            'node_modules/',
-            '.expo/',
-            'dist/',
-            'build/',
-            '*.config.js',
-            '*.config.mjs',
-            'babel.config.js',
-            'metro.config.js',
-            'scripts/',
-        ],
+        files: ['**/__tests__/**/*.{ts,tsx,js}', '**/__mocks__/**/*.js', 'jest.setup.js', '*.test.{ts,tsx,js}'],
+        languageOptions: {
+            globals: {
+                ...jestGlobals,
+                ...nodeGlobals, // Mocks often use module.exports
+                ...reactNativeGlobals,
+            },
+        },
+        rules: {
+            '@typescript-eslint/no-var-requires': 'off',
+            '@typescript-eslint/no-require-imports': 'off',
+            'no-undef': 'off', // TypeScript/Environment handles this
+            '@typescript-eslint/no-explicit-any': 'off', // Allow any in tests
+            'no-console': 'off',
+        },
+    },
+    // Config for Logger utility (allows console.log as it's the implementation)
+    {
+        files: ['src/utils/logger.ts', 'src/utils/storageUtils.ts'],
+        rules: {
+            'no-console': 'off',
+        },
+    },
+    // Config for Config files & Scripts
+    {
+        files: ['scripts/**/*', '*.config.js', '*.config.mjs', 'metro.config.js', 'babel.config.js'],
+        languageOptions: {
+            globals: {
+                ...nodeGlobals,
+            },
+        },
+        rules: {
+            '@typescript-eslint/no-var-requires': 'off',
+            '@typescript-eslint/no-require-imports': 'off',
+            'no-console': 'off',
+            '@typescript-eslint/no-explicit-any': 'off',
+        },
     }
 );

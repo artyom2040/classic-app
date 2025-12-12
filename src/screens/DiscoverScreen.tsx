@@ -11,7 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
+// Note: LinearGradient was removed - was only used for disabled glass theme
 
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
@@ -332,7 +332,6 @@ export default function DiscoverScreen() {
     const { musicService } = useSettings();
 
     const [refreshing, setRefreshing] = React.useState(false);
-    const isGlass = false;
     const preferredService = (musicService === 'apple' ? 'appleMusic' : musicService) as 'spotify' | 'appleMusic' | 'youtube';
 
     const newReleases = (albumsData.newReleases || []) as NewRelease[];
@@ -343,9 +342,9 @@ export default function DiscoverScreen() {
         setTimeout(() => setRefreshing(false), 1000);
     }, []);
 
-    const renderContent = () => (
+    return (
         <ScrollView
-            style={[styles.container, !isGlass && { backgroundColor: t.colors.background }]}
+            style={[styles.container, { backgroundColor: t.colors.background }]}
             contentContainerStyle={[
                 styles.content,
                 { paddingTop: insets.top + 16 },
@@ -407,23 +406,6 @@ export default function DiscoverScreen() {
             <View style={{ height: 32 }} />
         </ScrollView>
     );
-
-    // Wrap in gradient for glass theme
-    if (isGlass) {
-        return (
-            <View style={styles.container}>
-                <LinearGradient
-                    colors={['#667eea', '#764ba2', '#f093fb', '#f5576c']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={StyleSheet.absoluteFill}
-                />
-                {renderContent()}
-            </View>
-        );
-    }
-
-    return renderContent();
 }
 
 // ============================================================================

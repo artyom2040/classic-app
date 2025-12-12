@@ -109,13 +109,13 @@ describe('Validation Utilities', () => {
 
     describe('validators.matches', () => {
         it('validates matching values', () => {
-            let passwordValue = 'test123';
+            const passwordValue = 'test123';
             const validator = validators.matches(() => passwordValue);
             expect(validator.validate('test123').isValid).toBe(true);
         });
 
         it('rejects non-matching values', () => {
-            let passwordValue = 'test123';
+            const passwordValue = 'test123';
             const validator = validators.matches(() => passwordValue);
             expect(validator.validate('different').isValid).toBe(false);
         });

@@ -24,6 +24,7 @@ export interface UseNetworkStatusResult {
 
 /**
  * Hook for monitoring network connectivity status.
+ * Uses native event listeners for efficient real-time updates (no polling).
  * 
  * @example
  * ```tsx
@@ -70,18 +71,11 @@ export function useNetworkStatus(): UseNetworkStatusResult {
     // Get initial state
     Network.getNetworkStateAsync().then(updateStatus);
 
-    // Poll for network changes (expo-network doesn't have a subscription API)
-    const interval = setInterval(async () => {
-      try {
-        const state = await Network.getNetworkStateAsync();
-        updateStatus(state);
-      } catch (error) {
-        // Silently ignore polling errors
-      }
-    }, 5000); // Check every 5 seconds
+    // Subscribe to network state changes (efficient, battery-friendly)
+    const subscription = Network.addNetworkStateListener(updateStatus);
 
     return () => {
-      clearInterval(interval);
+      subscription.remove();
     };
   }, [updateStatus]);
 

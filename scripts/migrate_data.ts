@@ -48,20 +48,10 @@ function escapeSQL(value: any): string {
     return `'${String(value).replace(/'/g, "''")}'`;
 }
 
-// camelCase to snake_case converter
-function toSnakeCase(str: string): string {
-    return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
-}
-
-// Transform object keys from camelCase to snake_case
-function transformKeys(obj: Record<string, any>, keyMap?: Record<string, string>): Record<string, any> {
-    const result: Record<string, any> = {};
-    for (const [key, value] of Object.entries(obj)) {
-        const newKey = keyMap?.[key] || toSnakeCase(key);
-        result[newKey] = value;
-    }
-    return result;
-}
+// camelCase to snake_case converter (currently unused, kept for future use)
+// function toSnakeCase(str: string): string {
+//     return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+// }
 
 // Generate INSERT statement
 function generateInsert(table: string, rows: Record<string, any>[]): string {

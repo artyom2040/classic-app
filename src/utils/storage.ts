@@ -1,6 +1,13 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+/**
+ * Progress & Badge Storage
+ * 
+ * Domain-specific storage functions for user progress and badges.
+ * Uses storageUtils.ts for all underlying AsyncStorage operations.
+ */
+
 import { UserProgress } from '../types';
 import { STORAGE_KEYS } from '../constants';
+import { getStorageItem, setStorageItem, removeStorageItem } from './storageUtils';
 
 const STORAGE_KEY = STORAGE_KEYS.PROGRESS;
 
@@ -16,26 +23,14 @@ const defaultProgress: UserProgress = {
 };
 
 export async function getProgress(): Promise<UserProgress> {
-  try {
-    const stored = await AsyncStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      return { ...defaultProgress, ...JSON.parse(stored) };
-    }
-    return defaultProgress;
-  } catch (error) {
-    console.error('Error loading progress:', error);
-    return defaultProgress;
-  }
+  const stored = await getStorageItem<Partial<UserProgress>>(STORAGE_KEY, {});
+  return { ...defaultProgress, ...stored };
 }
 
 export async function saveProgress(progress: Partial<UserProgress>): Promise<void> {
-  try {
-    const current = await getProgress();
-    const updated = { ...current, ...progress };
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-  } catch (error) {
-    console.error('Error saving progress:', error);
-  }
+  const current = await getProgress();
+  const updated = { ...current, ...progress };
+  await setStorageItem(STORAGE_KEY, updated);
 }
 
 export async function markComposerViewed(composerId: string): Promise<void> {
@@ -92,7 +87,7 @@ export async function completeKickstartDay(day: number): Promise<void> {
 }
 
 export async function resetProgress(): Promise<void> {
-  await AsyncStorage.removeItem(STORAGE_KEY);
+  await removeStorageItem(STORAGE_KEY);
 }
 
 // Kickstart badge IDs to remove on reset
@@ -114,7 +109,7 @@ export async function resetKickstart(): Promise<void> {
   await saveProgress(progress);
 }
 
-// Utility functions
+// Utility functions (pure functions, no storage)
 export function getWeekNumber(): number {
   const now = new Date();
   const start = new Date(now.getFullYear(), 0, 1);

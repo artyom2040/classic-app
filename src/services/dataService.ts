@@ -82,7 +82,7 @@ const DATA_SOURCE: DataSourceConfig = {
 
 class DataServiceClass {
   private config: DataSourceConfig;
-  private cache: Map<string, { data: any; timestamp: number }> = new Map();
+  private cache: Map<string, { data: unknown; timestamp: number }> = new Map();
   private cacheTTL = 5 * 60 * 1000; // 5 minutes cache
   private supabaseTableMap: Record<string, string> = {
     composers: 'composers',

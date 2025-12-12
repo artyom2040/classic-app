@@ -8,6 +8,13 @@ const FAVORITES_KEY = STORAGE_KEYS.FAVORITES;
 export type FavoriteType = 'composer' | 'term' | 'form' | 'period' | 'album';
 
 interface FavoriteItem {
+  id: string;
+  type: FavoriteType;
+  addedAt: string;
+}
+
+// Legacy format that may exist in storage (before migration)
+interface LegacyFavoriteItem {
   id: string | number;
   type: FavoriteType;
   addedAt: string;
@@ -16,8 +23,8 @@ interface FavoriteItem {
 interface FavoritesContextType {
   favorites: FavoriteItem[];
   isLoaded: boolean;
-  isFavorite: (id: string | number, type: FavoriteType) => boolean;
-  toggleFavorite: (id: string | number, type: FavoriteType) => Promise<boolean>;
+  isFavorite: (id: string, type: FavoriteType) => boolean;
+  toggleFavorite: (id: string, type: FavoriteType) => Promise<boolean>;
   getFavoritesByType: (type: FavoriteType) => FavoriteItem[];
   clearFavorites: () => Promise<void>;
   favoritesCount: number;
@@ -29,26 +36,37 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
   const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load favorites from storage on mount
+  // Load favorites from storage on mount, migrating legacy number IDs
   useEffect(() => {
     loadFavorites();
   }, []);
 
   const loadFavorites = async () => {
-    const data = await getStorageItem<FavoriteItem[]>(FAVORITES_KEY, []);
-    setFavorites(data);
+    const data = await getStorageItem<LegacyFavoriteItem[]>(FAVORITES_KEY, []);
+    // Migrate any legacy number IDs to strings
+    const migrated = data.map(item => ({
+      ...item,
+      id: String(item.id),
+    }));
+    setFavorites(migrated);
     setIsLoaded(true);
+
+    // If any items had number IDs, save the migrated version
+    const needsMigration = data.some(item => typeof item.id === 'number');
+    if (needsMigration) {
+      await setStorageItem(FAVORITES_KEY, migrated);
+    }
   };
 
   const saveFavorites = async (newFavorites: FavoriteItem[]): Promise<boolean> => {
     return setStorageItem(FAVORITES_KEY, newFavorites);
   };
 
-  const isFavorite = (id: string | number, type: FavoriteType): boolean => {
+  const isFavorite = (id: string, type: FavoriteType): boolean => {
     return favorites.some(f => f.id === id && f.type === type);
   };
 
-  const toggleFavorite = async (id: string | number, type: FavoriteType): Promise<boolean> => {
+  const toggleFavorite = async (id: string, type: FavoriteType): Promise<boolean> => {
     const existing = favorites.find(f => f.id === id && f.type === type);
     const previousFavorites = [...favorites];
 
@@ -123,7 +141,7 @@ export function useFavorites() {
 }
 
 // Convenience hook for a specific item with pending state
-export function useFavoriteItem(id: string | number, type: FavoriteType) {
+export function useFavoriteItem(id: string, type: FavoriteType) {
   const { isFavorite, toggleFavorite, isLoaded } = useFavorites();
   const [isPending, setIsPending] = useState(false);
 

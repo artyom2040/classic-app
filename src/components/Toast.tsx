@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  Animated, 
+import React, { useEffect, useRef, useCallback } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Animated,
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
@@ -33,23 +33,41 @@ const ICONS: Record<ToastType, keyof typeof Ionicons.glyphMap> = {
   warning: 'warning',
 };
 
-const { width } = Dimensions.get('window');
+const { width: _width } = Dimensions.get('window');
 
-export function Toast({ 
-  visible, 
-  message, 
-  type = 'info', 
-  duration = 3000, 
+export function Toast({
+  visible,
+  message,
+  type = 'info',
+  duration = 3000,
   onDismiss,
   action,
 }: ToastProps) {
-  const { theme, themeName, isDark } = useTheme();
+  const { theme } = useTheme();
   const t = theme;
   const isBrutal = false;
   const insets = useSafeAreaInsets();
-  
+
   const translateY = useRef(new Animated.Value(-100)).current;
   const opacity = useRef(new Animated.Value(0)).current;
+
+  // Memoize hideToast to prevent unnecessary re-renders and stale closures
+  const hideToast = useCallback(() => {
+    Animated.parallel([
+      Animated.timing(translateY, {
+        toValue: -100,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacity, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      onDismiss();
+    });
+  }, [onDismiss, translateY, opacity]);
 
   useEffect(() => {
     if (visible) {
@@ -74,24 +92,7 @@ export function Toast({
         return () => clearTimeout(timer);
       }
     }
-  }, [visible]);
-
-  const hideToast = () => {
-    Animated.parallel([
-      Animated.timing(translateY, {
-        toValue: -100,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-      Animated.timing(opacity, {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-    ]).start(() => {
-      onDismiss();
-    });
-  };
+  }, [visible, duration, hideToast, translateY, opacity]);
 
   const getColor = () => {
     switch (type) {
@@ -107,10 +108,10 @@ export function Toast({
   const color = getColor();
 
   return (
-    <Animated.View 
+    <Animated.View
       style={[
         styles.container,
-        { 
+        {
           top: insets.top + 8,
           transform: [{ translateY }],
           opacity,
@@ -119,24 +120,24 @@ export function Toast({
     >
       <View style={[
         styles.toast,
-        { 
+        {
           backgroundColor: t.colors.surface,
           borderLeftColor: color,
         },
-        isBrutal 
-          ? { borderRadius: 0, borderWidth: 2, borderColor: t.colors.border } 
+        isBrutal
+          ? { borderRadius: 0, borderWidth: 2, borderColor: t.colors.border }
           : { borderRadius: borderRadius.lg, ...t.shadows.lg },
       ]}>
         <View style={[styles.iconContainer, { backgroundColor: color + '20' }]}>
           <Ionicons name={ICONS[type]} size={24} color={color} />
         </View>
-        
+
         <Text style={[styles.message, { color: t.colors.text }]} numberOfLines={2}>
           {message}
         </Text>
-        
+
         {action && (
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[styles.action, { backgroundColor: color + '15' }]}
             onPress={() => {
               action.onPress();
@@ -146,8 +147,8 @@ export function Toast({
             <Text style={[styles.actionText, { color }]}>{action.label}</Text>
           </TouchableOpacity>
         )}
-        
-        <TouchableOpacity 
+
+        <TouchableOpacity
           style={styles.closeButton}
           onPress={hideToast}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
@@ -177,7 +178,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   });
 
   const showToast = (
-    message: string, 
+    message: string,
     type: ToastType = 'info',
     action?: { label: string; onPress: () => void }
   ) => {
