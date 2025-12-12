@@ -37,12 +37,12 @@ type StitchTab = 'biography' | 'works' | 'influence';
 export default function ComposerDetailScreen() {
   const route = useRoute<ComposerDetailRouteProp>();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const { isFavorite, toggleFavorite } = useFavorites();
   const { playTrack, currentTrack, isPlaying } = useAudio();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
-  const isStitch = themeName === 'stitch';
+  const isBrutal = false;
+  const isStitch = isDark;
   const { composerId } = route.params;
   const isLiked = isFavorite(composerId, 'composer');
   const [loading, setLoading] = React.useState(true);

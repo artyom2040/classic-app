@@ -47,9 +47,9 @@ export function NetworkImage({
   priority = 'normal',
   cachePolicy = 'memory-disk',
 }: NetworkImageProps) {
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
 
   const [error, setError] = useState(false);
 

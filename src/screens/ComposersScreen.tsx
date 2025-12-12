@@ -35,9 +35,9 @@ interface ComposerSection {
 
 export default function ComposersScreen() {
   const navigation = useNavigation<NavigationProp>();
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
   const [selectedPeriod, setSelectedPeriod] = useState<string>('all');
   const [refreshing, setRefreshing] = useState(false);
 

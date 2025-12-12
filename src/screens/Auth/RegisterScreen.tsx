@@ -27,7 +27,7 @@ export default function RegisterScreen() {
   const insets = useSafeAreaInsets();
   const { theme: t, themeName } = useTheme();
   const { signUpWithEmail } = useAuth();
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
 
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');

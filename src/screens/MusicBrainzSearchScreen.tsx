@@ -28,10 +28,10 @@ type ViewMode = 'search' | 'works';
 
 export default function MusicBrainzSearchScreen() {
     const navigation = useNavigation();
-    const { theme, themeName } = useTheme();
+    const { theme, themeName, isDark } = useTheme();
     const { isDesktop, isTablet, maxContentWidth, contentPadding, isWeb } = useResponsive();
     const t = theme;
-    const isBrutal = themeName === 'neobrutalist';
+    const isBrutal = false;
 
     const [searchQuery, setSearchQuery] = useState('');
     const [artists, setArtists] = useState<MBArtist[]>([]);

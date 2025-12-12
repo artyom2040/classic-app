@@ -19,10 +19,10 @@ type TermDetailRouteProp = RouteProp<RootStackParamList, 'TermDetail'>;
 
 export default function TermDetailScreen() {
   const route = useRoute<TermDetailRouteProp>();
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const { isFavorite, toggleFavorite } = useFavorites();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
   const { termId } = route.params;
   // Compare as strings since termId is string but JSON has number IDs
   const term = glossaryData.terms.find(item => String(item.id) === termId);

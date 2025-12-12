@@ -50,9 +50,8 @@ export function HamburgerMenu() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigation = useNavigation<NavigationProp>();
   const insets = useSafeAreaInsets();
-  const { theme: t, themeName } = useTheme();
+  const { theme: t, themeName, setTheme, isDark } = useTheme();
   const { isAuthenticated, isLoading, user, signOut, isAdmin } = useAuth();
-  const isBrutal = themeName === 'neobrutalist';
 
   const handleMenuPress = (action: string) => {
     setMenuOpen(false);
@@ -126,13 +125,7 @@ export function HamburgerMenu() {
         onRequestClose={() => setMenuOpen(false)}
       >
         <View style={[styles.overlay, { backgroundColor: 'rgba(0, 0, 0, 0.5)' }]}>
-          {/* Overlay touch to close */}
-          <TouchableOpacity
-            style={styles.overlayTouchable}
-            onPress={() => setMenuOpen(false)}
-          />
-
-          {/* Menu Drawer */}
+          {/* Menu Drawer (on LEFT side) */}
           <View
             style={[
               styles.drawer,
@@ -508,6 +501,41 @@ export function HamburgerMenu() {
                 ))}
               </View>
 
+              {/* Dark/Light Mode Toggle */}
+              <View style={styles.themeToggleSection}>
+                <View style={styles.themeToggleRow}>
+                  <View style={styles.themeToggleInfo}>
+                    <Ionicons
+                      name={isDark ? 'moon' : 'sunny'}
+                      size={20}
+                      color={t.colors.primary}
+                    />
+                    <Text style={[styles.themeToggleLabel, { color: t.colors.text }]}>
+                      {isDark ? 'Dark Mode' : 'Light Mode'}
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    style={[
+                      styles.themeToggleButton,
+                      { backgroundColor: isDark ? t.colors.primary : t.colors.surfaceLight },
+                    ]}
+                    onPress={() => {
+                      setTheme(isDark ? 'light' : 'dark');
+                    }}
+                  >
+                    <View
+                      style={[
+                        styles.themeToggleThumb,
+                        {
+                          backgroundColor: isDark ? '#FFFFFF' : t.colors.primary,
+                          transform: [{ translateX: isDark ? 20 : 0 }],
+                        },
+                      ]}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+
               {/* Sign Out (only if authenticated) */}
               {isAuthenticated && !isLoading && (
                 <TouchableOpacity
@@ -543,6 +571,12 @@ export function HamburgerMenu() {
               </View>
             </ScrollView>
           </View>
+
+          {/* Overlay touch to close (on RIGHT side of drawer) */}
+          <TouchableOpacity
+            style={styles.overlayTouchable}
+            onPress={() => setMenuOpen(false)}
+          />
         </View>
       </Modal>
     </>
@@ -731,5 +765,38 @@ const styles = StyleSheet.create({
     fontSize: fontSize.xs,
     fontWeight: '700',
     color: '#8B5CF6',
+  },
+  // Theme toggle styles
+  themeToggleSection: {
+    marginHorizontal: spacing.md,
+    marginTop: spacing.md,
+    padding: spacing.md,
+    borderRadius: borderRadius.md,
+    backgroundColor: 'rgba(84, 23, 207, 0.1)',
+  },
+  themeToggleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  themeToggleInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  themeToggleLabel: {
+    fontSize: fontSize.md,
+    fontWeight: '600',
+  },
+  themeToggleButton: {
+    width: 48,
+    height: 28,
+    borderRadius: 14,
+    padding: 4,
+  },
+  themeToggleThumb: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
   },
 });

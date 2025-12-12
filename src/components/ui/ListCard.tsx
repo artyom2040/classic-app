@@ -60,9 +60,9 @@ export function ListCard({
      accentColor,
      disabled = false,
 }: ListCardProps) {
-     const { theme, themeName } = useTheme();
+     const { theme, themeName, isDark } = useTheme();
      const t = theme;
-     const isBrutal = themeName === 'neobrutalist';
+     const isBrutal = false;
 
      const cardStyle: ViewStyle = {
          backgroundColor: t.colors.surface,

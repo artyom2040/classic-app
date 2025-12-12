@@ -14,10 +14,10 @@ type ReleaseDetailRouteProp = RouteProp<RootStackParamList, 'ReleaseDetail'>;
 
 export default function ReleaseDetailScreen() {
   const route = useRoute<ReleaseDetailRouteProp>();
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const { musicService } = useSettings();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
   const preferredService = (musicService === 'apple' ? 'appleMusic' : musicService) as 'spotify' | 'appleMusic' | 'youtube';
 
   const release = (albumsData as any).newReleases.find((r: NewRelease) => r.id === route.params.releaseId) as NewRelease | undefined;

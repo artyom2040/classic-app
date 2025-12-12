@@ -29,10 +29,10 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export default function TimelineScreen() {
   const navigation = useNavigation<NavigationProp>();
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
-  const isStitch = themeName === 'stitch';
+  const isBrutal = false;
+  const isStitch = isDark;
   const { maxContentWidth, isDesktop } = useResponsive();
   const [selectedPeriod, setSelectedPeriod] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);

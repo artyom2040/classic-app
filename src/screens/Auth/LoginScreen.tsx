@@ -27,7 +27,7 @@ export default function LoginScreen() {
   const insets = useSafeAreaInsets();
   const { theme: t, themeName } = useTheme();
   const { signInWithEmail, signInWithApple, signInWithGoogle } = useAuth();
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

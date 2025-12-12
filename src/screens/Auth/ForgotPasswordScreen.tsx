@@ -26,7 +26,7 @@ export default function ForgotPasswordScreen() {
   const insets = useSafeAreaInsets();
   const { theme: t, themeName } = useTheme();
   const { resetPassword } = useAuth();
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
 
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);

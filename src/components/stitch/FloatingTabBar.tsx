@@ -32,9 +32,9 @@ export function FloatingTabBar({
     activeTab,
     onTabPress,
 }: FloatingTabBarProps) {
-    const { theme, themeName } = useTheme();
-    const isStitch = themeName === 'stitch';
-    const isGlass = themeName === 'liquidglass';
+    const { theme, themeName, isDark } = useTheme();
+    const isStitch = isDark;
+    const isGlass = false;
 
     // Use standard tab bar for non-Stitch themes
     if (!isStitch && !isGlass) {

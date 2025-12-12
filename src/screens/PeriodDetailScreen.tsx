@@ -21,10 +21,10 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 export default function PeriodDetailScreen() {
   const route = useRoute<PeriodDetailRouteProp>();
   const navigation = useNavigation<NavigationProp>();
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
-  const isStitch = themeName === 'stitch';
+  const isBrutal = false;
+  const isStitch = isDark;
   const { periodId } = route.params;
 
   const period = periodsData.periods.find(p => p.id === periodId) as Period | undefined;

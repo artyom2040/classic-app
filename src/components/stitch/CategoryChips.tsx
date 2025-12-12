@@ -35,8 +35,8 @@ export function CategoryChips({
     showAll = true,
     allLabel = 'All',
 }: CategoryChipsProps) {
-    const { theme, themeName } = useTheme();
-    const isStitch = themeName === 'stitch';
+    const { theme, themeName, isDark } = useTheme();
+    const isStitch = isDark;
 
     const allItems = showAll
         ? [{ id: 'all', label: allLabel }, ...items]

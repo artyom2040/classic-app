@@ -13,6 +13,7 @@ import { RootStackParamList } from '../types';
 import { hasAnyLabsEnabled } from '../experimental/labs.config';
 import { useResponsive } from '../hooks/useResponsive';
 import { spacing, fontSize, borderRadius } from '../theme';
+import { AccentColorPicker } from '../components/AccentColorPicker';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -33,7 +34,7 @@ export default function SettingsScreen() {
   const { iconPack, setIconPack, musicService, setMusicService } = useSettings();
   const { isDesktop, maxContentWidth, isWeb } = useResponsive();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
 
   return (
     <View style={[styles.container, { backgroundColor: t.colors.background }]}>
@@ -83,6 +84,11 @@ export default function SettingsScreen() {
               />
             ))}
           </View>
+
+          {/* Accent Color Picker - only show for dark themes */}
+          {t.isDark && (
+            <AccentColorPicker style={{ marginTop: spacing.md }} />
+          )}
         </View>
 
         {/* Icon Pack Section */}

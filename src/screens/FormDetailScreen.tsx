@@ -14,9 +14,9 @@ type FormDetailRouteProp = RouteProp<RootStackParamList, 'FormDetail'>;
 
 export default function FormDetailScreen() {
   const route = useRoute<FormDetailRouteProp>();
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
   const { formId } = route.params;
   const form = formsData.forms.find(f => f.id === formId) as MusicalForm | undefined;
 

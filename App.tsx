@@ -60,6 +60,7 @@ import LabsScreen from './src/experimental/LabsScreen';
 import { LoginScreen, RegisterScreen, ForgotPasswordScreen } from './src/screens/Auth';
 import UserDashboardScreen from './src/screens/UserDashboardScreen';
 import AdminDashboardScreen from './src/screens/AdminDashboardScreen';
+import { ContentListScreen, ContentEditScreen, AuditLogScreen } from './src/screens/Admin';
 import { useAuthDeepLink } from './src/hooks/useAuthDeepLink';
 import { useNavigationPersistence } from './src/hooks/useNavigationPersistence';
 import { injectWebCSS } from './src/utils/webCSS';
@@ -73,7 +74,7 @@ const Tab = createBottomTabNavigator<TabParamList>();
 function TabNavigator() {
   const { theme, isDark, isGlass, themeName } = useTheme();
   const t = theme;
-  const isStitch = themeName === 'stitch';
+  const isStitch = isDark;
 
   return (
     <Tab.Navigator
@@ -426,6 +427,21 @@ function AppNavigator() {
         <Stack.Screen
           name="AdminDashboard"
           component={AdminDashboardScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ContentList"
+          component={ContentListScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ContentEdit"
+          component={ContentEditScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AuditLog"
+          component={AuditLogScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

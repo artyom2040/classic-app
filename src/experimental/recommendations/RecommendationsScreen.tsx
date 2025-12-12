@@ -37,9 +37,9 @@ const similarityColors: Record<Recommendation['similarity'], string> = {
 
 export default function RecommendationsScreen() {
     const navigation = useNavigation<NavigationProp>();
-    const { theme, themeName } = useTheme();
+    const { theme, themeName, isDark } = useTheme();
     const t = theme;
-    const isBrutal = themeName === 'neobrutalist';
+    const isBrutal = false;
 
     const allComposers = composersData.composers as Composer[];
 

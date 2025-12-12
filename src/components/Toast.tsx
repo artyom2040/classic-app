@@ -43,9 +43,9 @@ export function Toast({
   onDismiss,
   action,
 }: ToastProps) {
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
   const insets = useSafeAreaInsets();
   
   const translateY = useRef(new Animated.Value(-100)).current;

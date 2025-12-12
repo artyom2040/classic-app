@@ -26,10 +26,10 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export default function ProfileScreen() {
   const navigation = useNavigation<NavigationProp>();
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const { isAuthenticated, isLoading: authLoading, user, signOut, isAdmin } = useAuth();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
   const [progress, setProgress] = useState<UserProgress | null>(null);
 
   const loadProgress = useCallback(async () => {

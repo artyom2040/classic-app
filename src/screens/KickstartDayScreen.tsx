@@ -17,10 +17,10 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 export default function KickstartDayScreen() {
   const route = useRoute<KickstartDayRouteProp>();
   const navigation = useNavigation<NavigationProp>();
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
-  const isStitch = themeName === 'stitch';
+  const isBrutal = false;
+  const isStitch = isDark;
   const { day: dayNumber } = route.params;
 
   const dayData = kickstartData.days.find(d => d.day === dayNumber) as KickstartDay | undefined;

@@ -18,10 +18,10 @@ const LEVEL_FILTERS: Array<{ label: string; value: ListenerLevel | 'all' }> = [
 ];
 
 export default function NewReleasesScreen({ navigation }: any) {
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const { musicService } = useSettings();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
   const [levelFilter, setLevelFilter] = useState<ListenerLevel | 'all'>('all');
 
   const releases = (albumsData.newReleases || []) as NewRelease[];

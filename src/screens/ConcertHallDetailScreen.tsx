@@ -12,9 +12,9 @@ type ConcertHallDetailRouteProp = RouteProp<RootStackParamList, 'ConcertHallDeta
 
 export default function ConcertHallDetailScreen() {
   const route = useRoute<ConcertHallDetailRouteProp>();
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
 
   const hall = (albumsData as any).concertHalls.find((h: ConcertHall) => h.id === route.params.hallId) as ConcertHall | undefined;
   if (!hall) {

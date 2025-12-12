@@ -32,8 +32,8 @@ export function SpotlightCard({
   onPress,
   showPlayIcon = true,
 }: SpotlightCardProps) {
-  const { theme, themeName } = useTheme();
-  const isStitch = themeName === 'stitch';
+  const { theme, themeName, isDark } = useTheme();
+  const isStitch = isDark;
 
   if (!isStitch) return null;
 
@@ -58,7 +58,7 @@ export function SpotlightCard({
             {showPlayIcon && (
               <View style={styles.playButtonWrapper}>
                 <View style={styles.playButton}>
-                  <Ionicons name="play-arrow" size={20} color="#FFFFFF" />
+                  <Ionicons name="play" size={20} color="#FFFFFF" />
                 </View>
               </View>
             )}
@@ -85,7 +85,7 @@ export function SpotlightCard({
           {showPlayIcon && (
             <View style={styles.playButtonWrapper}>
               <View style={styles.playButton}>
-                <Ionicons name="library-music" size={20} color="#FFFFFF" />
+                <Ionicons name="musical-notes" size={20} color="#FFFFFF" />
               </View>
             </View>
           )}
@@ -157,7 +157,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     alignItems: 'center',
     justifyContent: 'center',
-    backdropFilter: 'blur(4px)',
   },
   textContent: {
     gap: 4,

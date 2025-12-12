@@ -96,6 +96,7 @@ export interface KeyMoment {
 }
 
 export interface WeeklyAlbum {
+  id: string;
   week: number;
   title: string;
   artist: string;
@@ -247,6 +248,11 @@ export type RootStackParamList = {
   // Dashboard screens
   UserDashboard: undefined;
   AdminDashboard: undefined;
+
+  // Admin CRUD screens
+  ContentList: { entityType: EntityType };
+  ContentEdit: { entityType: EntityType; entityId: string | null };
+  AuditLog: undefined;
 };
 
 export type TabParamList = {
@@ -279,3 +285,43 @@ export interface AuthState {
   isAuthenticated: boolean;
   isAdmin: boolean;
 }
+
+// ============================================
+// Admin Types
+// ============================================
+
+export type EntityType =
+  | 'composer'
+  | 'term'
+  | 'period'
+  | 'form'
+  | 'concert_hall'
+  | 'weekly_album'
+  | 'monthly_spotlight';
+
+export type AuditAction = 'create' | 'update' | 'delete' | 'restore';
+
+export interface AuditLog {
+  id: string;
+  userId: string | null;
+  userEmail: string | null;
+  action: AuditAction;
+  entityType: EntityType;
+  entityId: string;
+  entityName: string | null;
+  changes: Record<string, { old: unknown; new: unknown }> | null;
+  createdAt: string;
+}
+
+export interface ContentVersion {
+  id: string;
+  entityType: EntityType;
+  entityId: string;
+  versionNumber: number;
+  content: Record<string, unknown>;
+  createdBy: string | null;
+  createdAt: string;
+}
+
+// Content edit form data type
+export type ContentData = Composer | Term | Period | MusicalForm | ConcertHall | WeeklyAlbum | MonthlySpotlight;

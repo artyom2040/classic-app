@@ -147,8 +147,8 @@ export const ThemedCard: React.FC<ThemedCardProps> = ({
   padding = 'md',
   borderLeft,
 }) => {
-  const { theme, themeName } = useTheme();
-  const isBrutal = themeName === 'neobrutalist';
+  const { theme, themeName, isDark } = useTheme();
+  const isBrutal = false;
   
   const paddingValues = {
     none: 0,
@@ -207,8 +207,8 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
   style,
   ...props 
 }) => {
-  const { theme, themeName } = useTheme();
-  const isBrutal = themeName === 'neobrutalist';
+  const { theme, themeName, isDark } = useTheme();
+  const isBrutal = false;
   
   const sizeStyles = {
     sm: { paddingVertical: spacing.xs, paddingHorizontal: spacing.sm },
@@ -278,8 +278,8 @@ export const ThemedInput: React.FC<ThemedInputProps> = ({
   icon,
   ...props 
 }) => {
-  const { theme, themeName } = useTheme();
-  const isBrutal = themeName === 'neobrutalist';
+  const { theme, themeName, isDark } = useTheme();
+  const isBrutal = false;
   
   return (
     <View style={[

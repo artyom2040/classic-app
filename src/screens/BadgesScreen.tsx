@@ -23,9 +23,9 @@ const ALL_BADGES = [
 ];
 
 export default function BadgesScreen() {
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
   const [progress, setProgress] = useState<UserProgress | null>(null);
 
   const loadProgress = useCallback(async () => {

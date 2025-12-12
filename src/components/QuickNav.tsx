@@ -8,10 +8,10 @@ import { useTheme } from '../context/ThemeContext';
 // Floating quick navigation for detail screens
 export function QuickNav() {
   const navigation = useNavigation();
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const t = theme;
   const insets = useSafeAreaInsets();
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
   
   // Get current route name to determine if we're on a detail screen
   const routeName = useNavigationState((state) => {

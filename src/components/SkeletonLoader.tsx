@@ -63,8 +63,8 @@ export function Skeleton({
 
 // Pre-built skeleton layouts
 export function SkeletonCard() {
-  const { theme, themeName } = useTheme();
-  const isBrutal = themeName === 'neobrutalist';
+  const { theme, themeName, isDark } = useTheme();
+  const isBrutal = false;
   
   return (
     <View style={[
@@ -82,8 +82,8 @@ export function SkeletonCard() {
 }
 
 export function SkeletonHeroCard() {
-  const { theme, themeName } = useTheme();
-  const isBrutal = themeName === 'neobrutalist';
+  const { theme, themeName, isDark } = useTheme();
+  const isBrutal = false;
   
   return (
     <View style={[
@@ -100,8 +100,8 @@ export function SkeletonHeroCard() {
 }
 
 export function SkeletonListItem() {
-  const { theme, themeName } = useTheme();
-  const isBrutal = themeName === 'neobrutalist';
+  const { theme, themeName, isDark } = useTheme();
+  const isBrutal = false;
   
   return (
     <View style={[
@@ -120,8 +120,8 @@ export function SkeletonListItem() {
 }
 
 export function SkeletonGrid({ count = 4 }: { count?: number }) {
-  const { theme, themeName } = useTheme();
-  const isBrutal = themeName === 'neobrutalist';
+  const { theme, themeName, isDark } = useTheme();
+  const isBrutal = false;
   const itemWidth = (width - spacing.md * 3) / 2;
   
   return (

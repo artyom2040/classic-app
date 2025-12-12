@@ -39,9 +39,9 @@ export function ExpandableAccordion({
     initialExpanded = false,
     onPress,
 }: AccordionItemProps) {
-    const { theme, themeName } = useTheme();
+    const { theme, themeName, isDark } = useTheme();
     const t = theme;
-    const isStitch = themeName === 'stitch';
+    const isStitch = isDark;
     const [expanded, setExpanded] = useState(initialExpanded);
 
     const toggleExpand = () => {

@@ -151,9 +151,9 @@ function generateQuestions(dayOfYear: number): Question[] {
 export default function QuizScreen() {
   const navigation = useNavigation<NavigationProp>();
   const insets = useSafeAreaInsets();
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
 
   const dayOfYear = getDayOfYear();
   const questions = useMemo(() => generateQuestions(dayOfYear), [dayOfYear]);

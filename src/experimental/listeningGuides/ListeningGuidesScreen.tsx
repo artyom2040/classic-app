@@ -31,9 +31,9 @@ const difficultyLabels = {
 
 export default function ListeningGuidesScreen() {
     const navigation = useNavigation<NavigationProp>();
-    const { theme, themeName } = useTheme();
+    const { theme, themeName, isDark } = useTheme();
     const t = theme;
-    const isBrutal = themeName === 'neobrutalist';
+    const isBrutal = false;
 
     const formatDuration = (seconds: number): string => {
         const mins = Math.floor(seconds / 60);

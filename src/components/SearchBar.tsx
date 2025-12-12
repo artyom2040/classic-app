@@ -40,9 +40,9 @@ interface SearchBarProps {
 }
 
 export function SearchBar({ placeholder = 'Search...', autoFocus = false, onClose }: SearchBarProps) {
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
   const navigation = useNavigation<NavigationProp>();
 
   const [query, setQuery] = useState('');

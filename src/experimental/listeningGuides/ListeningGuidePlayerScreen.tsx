@@ -91,11 +91,11 @@ const webStyles = StyleSheet.create({
 export default function ListeningGuidePlayerScreen() {
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute<RouteProps>();
-    const { theme, themeName } = useTheme();
+    const { theme, themeName, isDark } = useTheme();
     const { isDesktop, maxContentWidth } = useResponsive();
     const { width } = useWindowDimensions();
     const t = theme;
-    const isBrutal = themeName === 'neobrutalist';
+    const isBrutal = false;
     const isWeb = Platform.OS === 'web';
 
     const playerRef = useRef<any>(null);

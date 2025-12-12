@@ -18,37 +18,25 @@ import { haptic } from '../utils/haptics';
 import { StitchMiniPlayer } from './StitchMiniPlayer';
 
 export default function MiniPlayer() {
-   const insets = useSafeAreaInsets();
-   const { theme, themeName, isGlass } = useTheme();
-   const t = theme;
-   const isBrutal = themeName === 'neobrutalist';
-   const isStitch = themeName === 'stitch';
+  const insets = useSafeAreaInsets();
+  const { theme, themeName, isDark, isGlass } = useTheme();
+  const t = theme;
+  const isBrutal = false;
+  const isStitch = isDark;
 
-   const {
-     currentTrack,
-     isPlaying,
-     isLoading,
-     position,
-     duration,
-     pause,
-     resume,
-     stop,
-   } = useAudio();
+  const {
+    currentTrack,
+    isPlaying,
+    isLoading,
+    position,
+    duration,
+    pause,
+    resume,
+    stop,
+  } = useAudio();
 
-   // Don't render if no track
-   if (!currentTrack) return null;
-
-   // Use Stitch player for stitch theme
-   if (isStitch) {
-     return (
-       <StitchMiniPlayer
-         currentTrack={currentTrack}
-         isPlaying={isPlaying}
-         isLoading={isLoading}
-         onPlayPause={handlePlayPause}
-       />
-     );
-   }
+  // Don't render if no track
+  if (!currentTrack) return null;
 
   const progress = duration > 0 ? (position / duration) * 100 : 0;
 
@@ -60,6 +48,18 @@ export default function MiniPlayer() {
       await resume();
     }
   };
+
+  // Use Stitch player for stitch theme
+  if (isStitch) {
+    return (
+      <StitchMiniPlayer
+        currentTrack={currentTrack}
+        isPlaying={isPlaying}
+        isLoading={isLoading}
+        onPlayPause={handlePlayPause}
+      />
+    );
+  }
 
   const handleClose = async () => {
     haptic('light');
@@ -131,7 +131,7 @@ export default function MiniPlayer() {
         </View>
       </View>
     </>
-    );
+  );
 
   // Glass theme with blur
   if (isGlass) {
@@ -232,5 +232,5 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
-    },
-    });
+  },
+});

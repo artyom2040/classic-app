@@ -45,8 +45,8 @@ export function HeroCard({
     style,
     height = 300,
 }: HeroCardProps) {
-    const { theme, themeName } = useTheme();
-    const isStitch = themeName === 'stitch';
+    const { theme, themeName, isDark } = useTheme();
+    const isStitch = isDark;
 
     const backgroundSource = imageSource || (imageUri ? { uri: imageUri } : undefined);
 

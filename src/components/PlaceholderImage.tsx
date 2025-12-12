@@ -41,9 +41,9 @@ export function PlaceholderImage({
   style,
   borderRadius,
 }: PlaceholderImageProps) {
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const config = TYPE_CONFIG[type];
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
   
   // If source is provided and valid, try to render the image
   if (source) {
@@ -120,8 +120,8 @@ export function ComposerAvatar({
   source?: ImageSourcePropType;
   style?: StyleProp<ImageStyle>;
 }) {
-  const { theme, themeName } = useTheme();
-  const isBrutal = themeName === 'neobrutalist';
+  const { theme, themeName, isDark } = useTheme();
+  const isBrutal = false;
   const bgColor = color || theme.colors.primary;
   
   if (source) {
@@ -181,8 +181,8 @@ export function AlbumArtwork({
   source?: ImageSourcePropType;
   style?: StyleProp<ImageStyle>;
 }) {
-  const { theme, themeName } = useTheme();
-  const isBrutal = themeName === 'neobrutalist';
+  const { theme, themeName, isDark } = useTheme();
+  const isBrutal = false;
   
   if (source) {
     return (
@@ -241,8 +241,8 @@ export function EraBanner({
   source?: ImageSourcePropType;
   style?: StyleProp<ImageStyle>;
 }) {
-  const { theme, themeName } = useTheme();
-  const isBrutal = themeName === 'neobrutalist';
+  const { theme, themeName, isDark } = useTheme();
+  const isBrutal = false;
   const bgColor = color || theme.colors.primary;
   
   if (source) {

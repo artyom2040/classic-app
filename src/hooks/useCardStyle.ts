@@ -37,8 +37,8 @@ interface CardStyles {
  */
 export function useCardStyle(options: CardStyleOptions = {}): CardStyles {
   const { theme, themeName } = useTheme();
-  const isBrutal = themeName === 'neobrutalist';
-  const isGlass = themeName === 'liquidglass';
+  const isBrutal = false;
+  const isGlass = false;
 
   const cardStyle = useMemo<ViewStyle>(() => {
     const { accentColor, elevated = true, borderRadius, noBorder } = options;

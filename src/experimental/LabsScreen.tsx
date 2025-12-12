@@ -68,9 +68,9 @@ const labFeatures: LabFeature[] = [
 
 export default function LabsScreen() {
     const navigation = useNavigation<NavigationProp>();
-    const { theme, themeName } = useTheme();
+    const { theme, themeName, isDark } = useTheme();
     const t = theme;
-    const isBrutal = themeName === 'neobrutalist';
+    const isBrutal = false;
 
     const enabledFeatures = labFeatures.filter(f => f.enabled);
 

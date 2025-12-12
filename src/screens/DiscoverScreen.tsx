@@ -77,7 +77,7 @@ function EditorCornerSection() {
     const navigation = useNavigation<NavigationProp>();
     const { theme: t, themeName } = useTheme();
     const { cardStyle } = useCardStyle();
-    const isBrutal = themeName === 'neobrutalist';
+    const isBrutal = false;
 
     return (
         <View style={styles.section}>
@@ -146,7 +146,7 @@ function ConcertHallVideoSection() {
     const navigation = useNavigation<NavigationProp>();
     const { theme: t, themeName } = useTheme();
     const { cardStyle } = useCardStyle();
-    const isBrutal = themeName === 'neobrutalist';
+    const isBrutal = false;
 
     const openYouTube = () => {
         // Could open YouTube link or use an embedded player
@@ -207,7 +207,7 @@ function VenuesSection() {
     const navigation = useNavigation<NavigationProp>();
     const { theme: t, themeName } = useTheme();
     const { cardStyle } = useCardStyle();
-    const isBrutal = themeName === 'neobrutalist';
+    const isBrutal = false;
     const halls = (albumsData.concertHalls || []) as ConcertHall[];
 
     if (halls.length === 0) return null;
@@ -276,7 +276,7 @@ function WeeklyPickSection() {
     const navigation = useNavigation<NavigationProp>();
     const { theme: t, themeName } = useTheme();
     const { cardStyle } = useCardStyle();
-    const isBrutal = themeName === 'neobrutalist';
+    const isBrutal = false;
 
     const weekNumber = getWeekNumber();
     const weeklyAlbum = albumsData.weeklyAlbums[(weekNumber - 1) % albumsData.weeklyAlbums.length] as WeeklyAlbum;
@@ -332,7 +332,7 @@ export default function DiscoverScreen() {
     const { musicService } = useSettings();
 
     const [refreshing, setRefreshing] = React.useState(false);
-    const isGlass = themeName === 'liquidglass';
+    const isGlass = false;
     const preferredService = (musicService === 'apple' ? 'appleMusic' : musicService) as 'spotify' | 'appleMusic' | 'youtube';
 
     const newReleases = (albumsData.newReleases || []) as NewRelease[];

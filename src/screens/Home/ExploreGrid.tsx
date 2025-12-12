@@ -29,10 +29,11 @@ interface ExploreGridProps {
 
 export function ExploreGrid({ composersCount, termsCount }: ExploreGridProps) {
   const navigation = useNavigation<NavigationProp>();
-  const { theme: t, themeName } = useTheme();
+  const { theme: t, themeName, isDark } = useTheme();
   const { gridColumns, cardMinWidth } = useResponsive();
   const { width } = useWindowDimensions();
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
+  const isStitch = isDark;
 
   const exploreItems: ExploreItem[] = [
     { icon: 'people', label: 'Composers', sub: `${composersCount} Profiles`, color: t.colors.primary, screen: 'Composers' },
@@ -70,8 +71,12 @@ export function ExploreGrid({ composersCount, termsCount }: ExploreGridProps) {
           style={{
             ...styles.exploreCard,
             width: cardWidth,
-            backgroundColor: item.color + '15',
+            backgroundColor: isStitch ? '#1e1a2e' : item.color + '15',
             borderRadius: borderRadius.lg,
+            ...(isStitch ? {
+              borderWidth: 1,
+              borderColor: 'rgba(255,255,255,0.05)'
+            } : {}),
             ...(isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : {}),
           }}
           onPress={() => handlePress(item.screen)}

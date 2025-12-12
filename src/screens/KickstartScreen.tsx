@@ -18,10 +18,10 @@ const { width } = Dimensions.get('window');
 export default function KickstartScreen() {
   const navigation = useNavigation<NavigationProp>();
   const insets = useSafeAreaInsets();
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
-  const isStitch = themeName === 'stitch';
+  const isBrutal = false;
+  const isStitch = isDark;
   const [progress, setProgress] = useState<UserProgress | null>(null);
 
   const loadProgress = useCallback(async () => {

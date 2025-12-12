@@ -33,7 +33,7 @@ export default function AdminDashboardScreen() {
   const { theme: t, themeName } = useTheme();
   const { user, isAdmin } = useAuth();
   const { cardStyle } = useCardStyle();
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
 
   const [users, setUsers] = useState<UserListItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -103,7 +103,7 @@ export default function AdminDashboardScreen() {
     }
 
     const newRole: UserRole = targetUser.role === 'admin' ? 'user' : 'admin';
-    
+
     Alert.alert(
       'Change Role',
       `Make ${targetUser.displayName || targetUser.email} ${newRole === 'admin' ? 'an admin' : 'a regular user'}?`,
@@ -230,6 +230,74 @@ export default function AdminDashboardScreen() {
         </View>
       </View>
 
+      {/* Content Management */}
+      <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Content Management</Text>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.contentTiles}
+      >
+        <TouchableOpacity
+          style={[styles.contentTile, cardStyle]}
+          onPress={() => navigation.navigate('ContentList', { entityType: 'composer' })}
+        >
+          <View style={[styles.tileIcon, { backgroundColor: `${t.colors.primary}20` }]}>
+            <Ionicons name="person" size={22} color={t.colors.primary} />
+          </View>
+          <Text style={[styles.tileLabel, { color: t.colors.text }]}>Composers</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.contentTile, cardStyle]}
+          onPress={() => navigation.navigate('ContentList', { entityType: 'term' })}
+        >
+          <View style={[styles.tileIcon, { backgroundColor: `${t.colors.success}20` }]}>
+            <Ionicons name="book" size={22} color={t.colors.success} />
+          </View>
+          <Text style={[styles.tileLabel, { color: t.colors.text }]}>Terms</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.contentTile, cardStyle]}
+          onPress={() => navigation.navigate('ContentList', { entityType: 'period' })}
+        >
+          <View style={[styles.tileIcon, { backgroundColor: `${t.colors.warning}20` }]}>
+            <Ionicons name="time" size={22} color={t.colors.warning} />
+          </View>
+          <Text style={[styles.tileLabel, { color: t.colors.text }]}>Eras</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.contentTile, cardStyle]}
+          onPress={() => navigation.navigate('ContentList', { entityType: 'form' })}
+        >
+          <View style={[styles.tileIcon, { backgroundColor: `#EC489920` }]}>
+            <Ionicons name="musical-notes" size={22} color="#EC4899" />
+          </View>
+          <Text style={[styles.tileLabel, { color: t.colors.text }]}>Forms</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.contentTile, cardStyle]}
+          onPress={() => navigation.navigate('ContentList', { entityType: 'concert_hall' })}
+        >
+          <View style={[styles.tileIcon, { backgroundColor: `#6B8E2320` }]}>
+            <Ionicons name="business" size={22} color="#6B8E23" />
+          </View>
+          <Text style={[styles.tileLabel, { color: t.colors.text }]}>Halls</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.contentTile, cardStyle]}
+          onPress={() => navigation.navigate('AuditLog')}
+        >
+          <View style={[styles.tileIcon, { backgroundColor: `#8B5CF620` }]}>
+            <Ionicons name="document-text" size={22} color="#8B5CF6" />
+          </View>
+          <Text style={[styles.tileLabel, { color: t.colors.text }]}>Audit Log</Text>
+        </TouchableOpacity>
+      </ScrollView>
+
       {/* Users List */}
       <Text style={[styles.sectionTitle, { color: t.colors.text }]}>All Users</Text>
       <FlatList
@@ -286,4 +354,8 @@ const styles = StyleSheet.create({
   actionButton: { width: 28, height: 28, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
   emptyState: { alignItems: 'center', paddingVertical: spacing.xxl },
   emptyText: { fontSize: fontSize.md, marginTop: spacing.md },
+  contentTiles: { paddingHorizontal: spacing.lg, paddingBottom: spacing.lg, gap: spacing.sm },
+  contentTile: { width: 100, padding: spacing.md, alignItems: 'center', borderRadius: borderRadius.lg },
+  tileIcon: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', marginBottom: spacing.sm },
+  tileLabel: { fontSize: fontSize.sm, fontWeight: '600', textAlign: 'center' },
 });

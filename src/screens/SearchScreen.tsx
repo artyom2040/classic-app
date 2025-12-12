@@ -9,6 +9,7 @@ import {
   Keyboard,
   RefreshControl,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -46,9 +47,9 @@ interface SearchResult {
 export default function SearchScreen() {
   const navigation = useNavigation<NavigationProp>();
   const insets = useSafeAreaInsets();
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
 
   const [query, setQuery] = useState('');
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
@@ -220,7 +221,7 @@ export default function SearchScreen() {
     ...(isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm),
   };
 
-  const isStitch = themeName === 'stitch';
+  const isStitch = isDark;
 
   // Stitch-specific category card style
   const stitchCardStyle = {
@@ -323,37 +324,58 @@ export default function SearchScreen() {
               </View>
             )}
 
-            {/* Quick Categories - Stitch Enhanced */}
+            {/* Quick Categories - Enhanced with Gradients */}
             <View style={styles.section}>
               <Text style={[styles.sectionTitle, { color: isStitch ? '#FFFFFF' : t.colors.text }]}>Browse by Category</Text>
               <View style={styles.categoryGrid}>
                 {[
-                  { label: 'Composers', count: composersData.composers.length, icon: 'person', color: '#5417cf', gradientStart: '#5417cf', gradientEnd: '#7c3aed' },
-                  { label: 'Terms', count: glossaryData.terms.length, icon: 'book', color: '#8b5cf6', gradientStart: '#8b5cf6', gradientEnd: '#a78bfa' },
-                  { label: 'Forms', count: formsData.forms.length, icon: 'musical-notes', color: '#f59e0b', gradientStart: '#f59e0b', gradientEnd: '#fbbf24' },
-                  { label: 'Eras', count: periodsData.periods.length, icon: 'time', color: '#22c55e', gradientStart: '#22c55e', gradientEnd: '#4ade80' },
+                  { label: 'Composers', count: composersData.composers.length, icon: 'person', iconFilled: 'person', color: '#5417cf', screen: 'Timeline' },
+                  { label: 'Terms', count: glossaryData.terms.length, icon: 'book', iconFilled: 'book', color: '#8b5cf6', screen: 'Glossary' },
+                  { label: 'Forms', count: formsData.forms.length, icon: 'musical-notes', iconFilled: 'musical-notes', color: '#f59e0b', screen: 'Forms' },
+                  { label: 'Eras', count: periodsData.periods.length, icon: 'time', iconFilled: 'time', color: '#22c55e', screen: 'Timeline' },
                 ].map((cat, idx) => (
                   <TouchableOpacity
                     key={idx}
-                    style={[
-                      styles.categoryCard,
-                      isStitch ? [styles.stitchCategoryCard, { borderColor: cat.color + '40' }] : cardStyle
-                    ]}
-                    onPress={() => navigation.navigate(
-                      idx === 0 ? 'Timeline' as any :
-                        idx === 1 ? 'Glossary' as any :
-                          idx === 2 ? 'Forms' as any :
-                            'Timeline' as any
-                    )}
+                    style={styles.categoryCardWrapper}
+                    onPress={() => navigation.navigate(cat.screen as any)}
+                    activeOpacity={0.8}
                   >
-                    <View style={[
-                      styles.categoryIcon,
-                      { backgroundColor: isStitch ? cat.color + '25' : cat.color + '20' }
-                    ]}>
-                      <Ionicons name={cat.icon as any} size={24} color={cat.color} />
-                    </View>
-                    <Text style={[styles.categoryLabel, { color: isStitch ? '#FFFFFF' : t.colors.text }]}>{cat.label}</Text>
-                    <Text style={[styles.categoryCount, { color: isStitch ? 'rgba(255,255,255,0.5)' : t.colors.textMuted }]}>{cat.count} items</Text>
+                    {isStitch ? (
+                      <LinearGradient
+                        colors={[`${cat.color}20`, '#1e1a2e', '#1e1a2e']}
+                        locations={[0, 0.4, 1]}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 1 }}
+                        style={[styles.categoryCardGradient, { borderColor: `${cat.color}25` }]}
+                      >
+                        {/* Decorative circle */}
+                        <View style={[styles.categoryDecorativeCircle, { borderColor: `${cat.color}15` }]} />
+
+                        {/* Icon with glow */}
+                        <View style={styles.categoryIconWrapper}>
+                          <View style={[styles.categoryIconGlow, { backgroundColor: `${cat.color}25` }]} />
+                          <View style={[styles.categoryIcon, { backgroundColor: `${cat.color}20` }]}>
+                            <Ionicons name={cat.iconFilled as any} size={24} color={cat.color} />
+                          </View>
+                        </View>
+
+                        <Text style={[styles.categoryLabel, { color: '#FFFFFF' }]}>{cat.label}</Text>
+                        <Text style={[styles.categoryCount, { color: 'rgba(255,255,255,0.5)' }]}>{cat.count} items</Text>
+
+                        {/* Arrow */}
+                        <View style={[styles.categoryArrow, { backgroundColor: `${cat.color}15` }]}>
+                          <Ionicons name="chevron-forward" size={14} color={cat.color} />
+                        </View>
+                      </LinearGradient>
+                    ) : (
+                      <View style={[styles.categoryCard, cardStyle]}>
+                        <View style={[styles.categoryIcon, { backgroundColor: cat.color + '20' }]}>
+                          <Ionicons name={cat.icon as any} size={24} color={cat.color} />
+                        </View>
+                        <Text style={[styles.categoryLabel, { color: t.colors.text }]}>{cat.label}</Text>
+                        <Text style={[styles.categoryCount, { color: t.colors.textMuted }]}>{cat.count} items</Text>
+                      </View>
+                    )}
                   </TouchableOpacity>
                 ))}
               </View>
@@ -450,11 +472,50 @@ const styles = StyleSheet.create({
   recentText: { flex: 1, fontSize: fontSize.md },
 
   categoryGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
-  categoryCard: { width: '48%', padding: spacing.md, alignItems: 'center' },
+  categoryCardWrapper: { width: '48%', flexGrow: 1 },
+  categoryCard: { padding: spacing.md, alignItems: 'center', borderRadius: borderRadius.md },
+  categoryCardGradient: {
+    padding: spacing.md,
+    alignItems: 'flex-start' as const,
+    borderRadius: 20,
+    borderWidth: 1,
+    minHeight: 140,
+    position: 'relative' as const,
+    overflow: 'hidden' as const,
+  },
+  categoryDecorativeCircle: {
+    position: 'absolute' as const,
+    top: -20,
+    right: -20,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    borderWidth: 1,
+  },
+  categoryIconWrapper: { position: 'relative' as const, marginBottom: 12 },
+  categoryIconGlow: {
+    position: 'absolute' as const,
+    top: -4,
+    left: -4,
+    width: 56,
+    height: 56,
+    borderRadius: 16,
+    opacity: 0.5,
+  },
   stitchCategoryCard: { borderWidth: 1.5, borderRadius: borderRadius.md, padding: spacing.md },
-  categoryIcon: { width: 48, height: 48, borderRadius: 24, alignItems: 'center', justifyContent: 'center', marginBottom: spacing.sm },
-  categoryLabel: { fontSize: fontSize.md, fontWeight: '600' },
+  categoryIcon: { width: 48, height: 48, borderRadius: 14, alignItems: 'center', justifyContent: 'center', marginBottom: spacing.sm },
+  categoryLabel: { fontSize: fontSize.md, fontWeight: '700' },
   categoryCount: { fontSize: fontSize.sm, marginTop: 2 },
+  categoryArrow: {
+    position: 'absolute' as const,
+    bottom: 14,
+    right: 14,
+    width: 24,
+    height: 24,
+    borderRadius: 8,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+  },
 
   resultCount: { fontSize: fontSize.sm, marginBottom: spacing.sm },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs, marginBottom: spacing.md },

@@ -25,8 +25,8 @@ export function GlassCard({
   borderColor,
   noBorder = false,
 }: GlassCardProps) {
-  const { theme, themeName } = useTheme();
-  const isGlass = themeName === 'liquidglass';
+  const { theme, themeName, isDark } = useTheme();
+  const isGlass = false;
   
   const paddingValues = {
     none: 0,
@@ -116,7 +116,7 @@ interface GlassBackgroundProps {
 
 export function GlassBackground({ children, style, intensity = 60 }: GlassBackgroundProps) {
   const { themeName } = useTheme();
-  const isGlass = themeName === 'liquidglass';
+  const isGlass = false;
 
   if (!isGlass) {
     return <View style={style}>{children}</View>;
@@ -151,8 +151,8 @@ interface GlassPillProps {
 }
 
 export function GlassPill({ children, color, style }: GlassPillProps) {
-  const { theme, themeName } = useTheme();
-  const isGlass = themeName === 'liquidglass';
+  const { theme, themeName, isDark } = useTheme();
+  const isGlass = false;
 
   return (
     <View
@@ -177,7 +177,7 @@ export function GlassPill({ children, color, style }: GlassPillProps) {
 // Glass-styled tab bar background
 export function GlassTabBar({ children, style }: { children: React.ReactNode; style?: ViewStyle }) {
   const { themeName } = useTheme();
-  const isGlass = themeName === 'liquidglass';
+  const isGlass = false;
 
   if (!isGlass) {
     return <View style={style}>{children}</View>;

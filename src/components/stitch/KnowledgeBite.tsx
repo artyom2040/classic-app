@@ -34,9 +34,9 @@ export function KnowledgeBite({
   showArchiveLink = true,
   onArchivePress,
 }: KnowledgeBiteProps) {
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const t = theme;
-  const isStitch = themeName === 'stitch';
+  const isStitch = isDark;
 
   if (!isStitch) return null;
 
@@ -135,7 +135,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 24,
     marginBottom: 16,
   },
   sectionTitle: {
@@ -154,7 +153,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: '#261e35', // Slightly lighter than base surface
     borderWidth: 1,
-    marginHorizontal: 16,
     marginBottom: 24,
   },
   visual: {

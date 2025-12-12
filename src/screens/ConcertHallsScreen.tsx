@@ -9,9 +9,9 @@ import { ConcertHall } from '../types';
 import albumsData from '../data/albums.json';
 
 export default function ConcertHallsScreen({ navigation }: any) {
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
   const halls = useMemo(() => (albumsData.concertHalls || []) as ConcertHall[], []);
 
   const openMap = useCallback((hall: ConcertHall) => {

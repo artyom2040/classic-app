@@ -55,12 +55,13 @@ const CATEGORY_COLORS: Record<string, string> = {
 
 export default function GlossaryScreen() {
   const navigation = useNavigation<NavigationProp>();
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
-  const isStitch = themeName === 'stitch';
+  const isBrutal = false;
+  const isStitch = isDark;
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [featuredDismissed, setFeaturedDismissed] = useState(false);
 
   // Merge static colors with theme-dependent ones
   const getCategoryColor = useCallback((category: string): string => {
@@ -70,14 +71,24 @@ export default function GlossaryScreen() {
 
   const terms = glossaryData.terms;
 
+  // Featured term is always the first one
+  const featuredTerm = terms[0];
+
   const filteredTerms = useMemo(() => {
-    return terms.filter(term => {
+    let filtered = terms.filter(term => {
       const matchesSearch = term.term.toLowerCase().includes(searchQuery.toLowerCase()) ||
         getLongDefinition(term).toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = selectedCategory === 'All' || term.category === selectedCategory;
       return matchesSearch && matchesCategory;
     });
-  }, [searchQuery, selectedCategory, terms]);
+
+    // For stitch theme, exclude featured term from list when not searching
+    if (isStitch && !searchQuery.trim() && selectedCategory === 'All') {
+      filtered = filtered.filter(term => term.id !== featuredTerm.id);
+    }
+
+    return filtered;
+  }, [searchQuery, selectedCategory, terms, isStitch, featuredTerm]);
 
   const renderTerm = useCallback(({ item }: { item: GlossaryTerm }) => {
     const categoryColor = getCategoryColor(item.category);
@@ -148,30 +159,27 @@ export default function GlossaryScreen() {
         )}
       </View>
 
-      {/* Stitch: Piano Keys Visual + Featured Term */}
-      {isStitch && terms.length > 0 && (
+      {/* Stitch: Featured Term */}
+      {isStitch && terms.length > 0 && !featuredDismissed && (
         <View style={styles.stitchGlossaryHero}>
-          {/* Piano Keys Visual */}
-          <View style={styles.pianoKeysContainer}>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((key, index) => {
-              const isBlackKey = [1, 3, 6, 8, 10].includes(index % 12);
-              if (isBlackKey) {
-                return (
-                  <View key={key} style={[styles.pianoBlackKey, { backgroundColor: '#1a1525' }]} />
-                );
-              }
-              return (
-                <View key={key} style={[styles.pianoWhiteKey, { backgroundColor: 'rgba(255,255,255,0.08)' }]} />
-              );
-            })}
-          </View>
-
           {/* Featured Term Card */}
           <TouchableOpacity
             style={[styles.featuredTermHero, { backgroundColor: t.colors.surface }]}
             onPress={() => navigation.navigate('TermDetail', { termId: String(terms[0].id) })}
             activeOpacity={0.8}
           >
+            {/* Dismiss button */}
+            <TouchableOpacity
+              style={styles.dismissButton}
+              onPress={(e) => {
+                e.stopPropagation();
+                setFeaturedDismissed(true);
+              }}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <Ionicons name="close" size={16} color={t.colors.textMuted} />
+            </TouchableOpacity>
+
             <View style={[styles.featuredBadge, { backgroundColor: t.colors.primary + '30' }]}>
               <Text style={[styles.featuredBadgeText, { color: t.colors.primary }]}>TERM OF THE DAY</Text>
             </View>
@@ -367,10 +375,23 @@ const styles = StyleSheet.create({
     fontSize: fontSize.sm,
     fontWeight: '600',
   },
-  // Piano Keys Visual
+  // Featured term hero section
   stitchGlossaryHero: {
     marginHorizontal: spacing.md,
+    marginTop: spacing.md,
     marginBottom: spacing.md,
+  },
+  dismissButton: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1,
   },
   pianoKeysContainer: {
     flexDirection: 'row',

@@ -33,10 +33,10 @@ const categoryIcons: { [key: string]: keyof typeof Ionicons.glyphMap } = {
 
 export default function FormsScreen() {
   const navigation = useNavigation<NavigationProp>();
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
-  const isStitch = themeName === 'stitch';
+  const isBrutal = false;
+  const isStitch = isDark;
   const forms: MusicalForm[] = formsData.forms;
   const [selectedCategory, setSelectedCategory] = useState('All');
 

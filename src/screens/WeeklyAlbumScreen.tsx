@@ -10,9 +10,9 @@ import albumsData from '../data/albums.json';
 import { ListenerLevel } from '../types';
 
 export default function WeeklyAlbumScreen() {
-  const { theme, themeName } = useTheme();
+  const { theme, themeName, isDark } = useTheme();
   const t = theme;
-  const isBrutal = themeName === 'neobrutalist';
+  const isBrutal = false;
   const weekNumber = getWeekNumber();
   const album = albumsData.weeklyAlbums[(weekNumber - 1) % albumsData.weeklyAlbums.length];
   const level = album.listenerLevel as ListenerLevel | undefined;
