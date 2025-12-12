@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Musical Glossary</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#5417cf",
+              "background-light": "#f6f6f8",
+              "background-dark": "#161121",
+              "surface-dark": "#1f1830",
+              "surface-light": "#ffffff",
+              "text-secondary-dark": "#a593c8",
+              "text-secondary-light": "#6b7280",
+            },
+            fontFamily: {
+              "display": ["Lexend", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        /* Custom scrollbar hiding for clean UI */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased overflow-hidden h-screen flex flex-col">
+<!-- Top App Bar -->
+<div class="flex items-center px-4 pt-6 pb-2 justify-between bg-background-light dark:bg-background-dark sticky top-0 z-10">
+<button class="text-gray-800 dark:text-white flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<h2 class="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-10">Musical Glossary</h2>
+</div>
+<!-- Search Bar -->
+<div class="px-4 py-2 bg-background-light dark:bg-background-dark z-10">
+<div class="flex w-full items-stretch rounded-full h-12 shadow-sm dark:shadow-none bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-none">
+<div class="text-gray-400 dark:text-text-secondary-dark flex items-center justify-center pl-4 pr-2">
+<span class="material-symbols-outlined text-[24px]">search</span>
+</div>
+<input class="flex w-full min-w-0 flex-1 bg-transparent border-none text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-text-secondary-dark focus:ring-0 text-base font-normal h-full rounded-r-full" placeholder="Search terms (e.g., Adagio)" type="text"/>
+</div>
+</div>
+<!-- Category Chips -->
+<div class="flex gap-3 px-4 py-3 overflow-x-auto scrollbar-hide shrink-0 bg-background-light dark:bg-background-dark z-10 border-b border-gray-200 dark:border-white/5">
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary px-4 shadow-md shadow-primary/20">
+<p class="text-white text-sm font-medium leading-normal">All</p>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-none px-4 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">
+<p class="text-gray-700 dark:text-white text-sm font-medium leading-normal">Tempo</p>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-none px-4 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">
+<p class="text-gray-700 dark:text-white text-sm font-medium leading-normal">Dynamics</p>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-none px-4 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">
+<p class="text-gray-700 dark:text-white text-sm font-medium leading-normal">Instruments</p>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-none px-4 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">
+<p class="text-gray-700 dark:text-white text-sm font-medium leading-normal">Form</p>
+</button>
+</div>
+<!-- Main Content Area with List and Quick Jump -->
+<div class="relative flex-1 overflow-hidden flex">
+<!-- Glossary List -->
+<div class="flex-1 overflow-y-auto pb-24 px-4 scrollbar-hide">
+<!-- Section A -->
+<div class="pt-2" id="section-A">
+<h3 class="text-primary text-lg font-bold leading-tight tracking-[-0.015em] py-3 sticky top-0 bg-background-light dark:bg-background-dark z-0 backdrop-blur-sm bg-opacity-90 dark:bg-opacity-90">A</h3>
+<div class="flex flex-col gap-3">
+<!-- Item 1: Adagio -->
+<div class="flex gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm dark:shadow-none border border-gray-100 dark:border-white/5 group active:scale-[0.99] transition-transform duration-100">
+<div class="flex flex-1 flex-col justify-center gap-1">
+<div class="flex items-baseline gap-2">
+<p class="text-gray-900 dark:text-white text-base font-semibold leading-normal">Adagio</p>
+<p class="text-gray-400 dark:text-text-secondary-dark text-xs font-light italic tracking-wide">[a-da-jio]</p>
+</div>
+<p class="text-gray-600 dark:text-gray-400 text-sm font-normal leading-relaxed">Slow and stately (literally, "at ease"). Often used as the second movement in a symphony.</p>
+</div>
+<div class="shrink-0 flex items-center">
+<span class="material-symbols-outlined text-gray-400 dark:text-text-secondary-dark group-hover:text-primary transition-colors text-[24px]">chevron_right</span>
+</div>
+</div>
+<!-- Item 2: Allegro -->
+<div class="flex gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm dark:shadow-none border border-gray-100 dark:border-white/5 group active:scale-[0.99] transition-transform duration-100">
+<div class="flex flex-1 flex-col justify-center gap-1">
+<div class="flex items-baseline gap-2">
+<p class="text-gray-900 dark:text-white text-base font-semibold leading-normal">Allegro</p>
+<p class="text-gray-400 dark:text-text-secondary-dark text-xs font-light italic tracking-wide">[al-leh-gro]</p>
+</div>
+<p class="text-gray-600 dark:text-gray-400 text-sm font-normal leading-relaxed">Fast, quick, and bright.</p>
+</div>
+<div class="shrink-0 flex items-center">
+<span class="material-symbols-outlined text-gray-400 dark:text-text-secondary-dark group-hover:text-primary transition-colors text-[24px]">chevron_right</span>
+</div>
+</div>
+<!-- Item 3: Andante -->
+<div class="flex gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm dark:shadow-none border border-gray-100 dark:border-white/5 group active:scale-[0.99] transition-transform duration-100">
+<div class="flex flex-1 flex-col justify-center gap-1">
+<div class="flex items-baseline gap-2">
+<p class="text-gray-900 dark:text-white text-base font-semibold leading-normal">Andante</p>
+<p class="text-gray-400 dark:text-text-secondary-dark text-xs font-light italic tracking-wide">[an-dan-te]</p>
+</div>
+<p class="text-gray-600 dark:text-gray-400 text-sm font-normal leading-relaxed">Moderately slow, at a walking pace.</p>
+</div>
+<div class="shrink-0 flex items-center">
+<span class="material-symbols-outlined text-gray-400 dark:text-text-secondary-dark group-hover:text-primary transition-colors text-[24px]">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section B -->
+<div class="pt-2" id="section-B">
+<h3 class="text-primary text-lg font-bold leading-tight tracking-[-0.015em] py-3 sticky top-0 bg-background-light dark:bg-background-dark z-0 backdrop-blur-sm bg-opacity-90 dark:bg-opacity-90">B</h3>
+<div class="flex flex-col gap-3">
+<!-- Item 4: Barque -->
+<div class="flex gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm dark:shadow-none border border-gray-100 dark:border-white/5 group active:scale-[0.99] transition-transform duration-100">
+<div class="flex flex-1 flex-col justify-center gap-1">
+<div class="flex items-baseline gap-2">
+<p class="text-gray-900 dark:text-white text-base font-semibold leading-normal">Baroque</p>
+<p class="text-gray-400 dark:text-text-secondary-dark text-xs font-light italic tracking-wide">[buh-roke]</p>
+</div>
+<p class="text-gray-600 dark:text-gray-400 text-sm font-normal leading-relaxed">A style of European architecture, music, and art of the 17th and 18th centuries.</p>
+</div>
+<div class="shrink-0 flex items-center">
+<span class="material-symbols-outlined text-gray-400 dark:text-text-secondary-dark group-hover:text-primary transition-colors text-[24px]">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section C -->
+<div class="pt-2" id="section-C">
+<h3 class="text-primary text-lg font-bold leading-tight tracking-[-0.015em] py-3 sticky top-0 bg-background-light dark:bg-background-dark z-0 backdrop-blur-sm bg-opacity-90 dark:bg-opacity-90">C</h3>
+<div class="flex flex-col gap-3">
+<!-- Item 5: Cadence -->
+<div class="flex gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm dark:shadow-none border border-gray-100 dark:border-white/5 group active:scale-[0.99] transition-transform duration-100">
+<div class="flex flex-1 flex-col justify-center gap-1">
+<div class="flex items-baseline gap-2">
+<p class="text-gray-900 dark:text-white text-base font-semibold leading-normal">Cadence</p>
+<p class="text-gray-400 dark:text-text-secondary-dark text-xs font-light italic tracking-wide">[kay-dence]</p>
+</div>
+<p class="text-gray-600 dark:text-gray-400 text-sm font-normal leading-relaxed">A sequence of chords that brings an end to a phrase, either in the middle or the end of a composition.</p>
+</div>
+<div class="shrink-0 flex items-center">
+<span class="material-symbols-outlined text-gray-400 dark:text-text-secondary-dark group-hover:text-primary transition-colors text-[24px]">chevron_right</span>
+</div>
+</div>
+<!-- Item 6: Crescendo -->
+<div class="flex gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm dark:shadow-none border border-gray-100 dark:border-white/5 group active:scale-[0.99] transition-transform duration-100">
+<div class="flex flex-1 flex-col justify-center gap-1">
+<div class="flex items-baseline gap-2">
+<p class="text-gray-900 dark:text-white text-base font-semibold leading-normal">Crescendo</p>
+<p class="text-gray-400 dark:text-text-secondary-dark text-xs font-light italic tracking-wide">[kruh-shen-doh]</p>
+</div>
+<p class="text-gray-600 dark:text-gray-400 text-sm font-normal leading-relaxed">A gradual increase in loudness.</p>
+</div>
+<div class="shrink-0 flex items-center">
+<span class="material-symbols-outlined text-gray-400 dark:text-text-secondary-dark group-hover:text-primary transition-colors text-[24px]">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section P -->
+<div class="pt-2" id="section-P">
+<h3 class="text-primary text-lg font-bold leading-tight tracking-[-0.015em] py-3 sticky top-0 bg-background-light dark:bg-background-dark z-0 backdrop-blur-sm bg-opacity-90 dark:bg-opacity-90">P</h3>
+<div class="flex flex-col gap-3">
+<!-- Item 7: Pizzicato -->
+<div class="flex gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm dark:shadow-none border border-gray-100 dark:border-white/5 group active:scale-[0.99] transition-transform duration-100">
+<div class="flex flex-1 flex-col justify-center gap-1">
+<div class="flex items-baseline gap-2">
+<p class="text-gray-900 dark:text-white text-base font-semibold leading-normal">Pizzicato</p>
+<p class="text-gray-400 dark:text-text-secondary-dark text-xs font-light italic tracking-wide">[pit-si-kah-toh]</p>
+</div>
+<p class="text-gray-600 dark:text-gray-400 text-sm font-normal leading-relaxed">Playing a string instrument by plucking the strings rather than using the bow.</p>
+</div>
+<div class="shrink-0 flex items-center">
+<span class="material-symbols-outlined text-gray-400 dark:text-text-secondary-dark group-hover:text-primary transition-colors text-[24px]">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section S -->
+<div class="pt-2" id="section-S">
+<h3 class="text-primary text-lg font-bold leading-tight tracking-[-0.015em] py-3 sticky top-0 bg-background-light dark:bg-background-dark z-0 backdrop-blur-sm bg-opacity-90 dark:bg-opacity-90">S</h3>
+<div class="flex flex-col gap-3">
+<!-- Item 8: Sonata Form -->
+<div class="flex gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm dark:shadow-none border border-gray-100 dark:border-white/5 group active:scale-[0.99] transition-transform duration-100">
+<div class="flex flex-1 flex-col justify-center gap-1">
+<div class="flex items-baseline gap-2">
+<p class="text-gray-900 dark:text-white text-base font-semibold leading-normal">Sonata Form</p>
+<p class="text-gray-400 dark:text-text-secondary-dark text-xs font-light italic tracking-wide">[so-na-ta form]</p>
+</div>
+<p class="text-gray-600 dark:text-gray-400 text-sm font-normal leading-relaxed">A musical structure consisting of exposition, development, and recapitulation.</p>
+</div>
+<div class="shrink-0 flex items-center">
+<span class="material-symbols-outlined text-gray-400 dark:text-text-secondary-dark group-hover:text-primary transition-colors text-[24px]">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Add a little bottom padding to account for nav bar -->
+<div class="h-10"></div>
+</div>
+<!-- Quick-Jump Alphabet Bar -->
+<div class="w-8 flex flex-col items-center justify-center py-4 bg-transparent shrink-0">
+<div class="flex flex-col items-center gap-1 text-[10px] font-medium text-gray-400 dark:text-gray-500">
+<a class="w-5 h-5 flex items-center justify-center rounded-full text-primary font-bold dark:bg-primary/20 bg-primary/10" href="#section-A">A</a>
+<a class="w-5 h-5 flex items-center justify-center rounded-full hover:text-primary hover:bg-gray-200 dark:hover:bg-white/10 transition-colors" href="#section-B">B</a>
+<a class="w-5 h-5 flex items-center justify-center rounded-full hover:text-primary hover:bg-gray-200 dark:hover:bg-white/10 transition-colors" href="#section-C">C</a>
+<span>•</span>
+<span class="w-5 h-5 flex items-center justify-center">D</span>
+<span class="w-5 h-5 flex items-center justify-center">E</span>
+<span class="w-5 h-5 flex items-center justify-center">F</span>
+<span class="w-5 h-5 flex items-center justify-center">G</span>
+<span>•</span>
+<span class="w-5 h-5 flex items-center justify-center">L</span>
+<span class="w-5 h-5 flex items-center justify-center">M</span>
+<span class="w-5 h-5 flex items-center justify-center">N</span>
+<span class="w-5 h-5 flex items-center justify-center">O</span>
+<a class="w-5 h-5 flex items-center justify-center rounded-full hover:text-primary hover:bg-gray-200 dark:hover:bg-white/10 transition-colors" href="#section-P">P</a>
+<span>•</span>
+<a class="w-5 h-5 flex items-center justify-center rounded-full hover:text-primary hover:bg-gray-200 dark:hover:bg-white/10 transition-colors" href="#section-S">S</a>
+<span class="w-5 h-5 flex items-center justify-center">T</span>
+<span class="w-5 h-5 flex items-center justify-center">U</span>
+<span class="w-5 h-5 flex items-center justify-center">V</span>
+<span>•</span>
+<span class="w-5 h-5 flex items-center justify-center">Z</span>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation -->
+<div class="bg-surface-light dark:bg-background-dark border-t border-gray-200 dark:border-white/5 px-6 py-3 flex justify-between items-center z-20 shrink-0">
+<div class="flex flex-col items-center gap-1 text-gray-400 dark:text-gray-500">
+<span class="material-symbols-outlined text-[24px]">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[24px] fill-1">menu_book</span>
+<span class="text-[10px] font-medium">Glossary</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-gray-400 dark:text-gray-500">
+<span class="material-symbols-outlined text-[24px]">favorite</span>
+<span class="text-[10px] font-medium">Saved</span>
+</div>
+</div>
+</body></html>

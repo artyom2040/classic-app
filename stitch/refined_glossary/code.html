@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Refined Glossary</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0f49bd",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hiding for clean iOS-like UI */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display min-h-screen flex justify-center selection:bg-primary/30">
+<!-- Mobile Container Wrapper -->
+<div class="w-full max-w-md bg-background-light dark:bg-background-dark relative shadow-2xl overflow-hidden flex flex-col h-screen ring-1 ring-white/5">
+<!-- Sticky Header Area -->
+<div class="z-20 flex flex-col bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md sticky top-0 border-b border-black/5 dark:border-white/5 pb-2 transition-colors duration-300">
+<!-- Top Bar -->
+<div class="flex items-center justify-between px-6 pt-12 pb-2">
+<h1 class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Glossary</h1>
+<button class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-gray-900 dark:text-white" data-icon="settings">settings</span>
+</button>
+</div>
+<!-- Floating Search Bar -->
+<div class="px-6 py-2">
+<div class="relative group">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors material-symbols-outlined">search</span>
+<input class="w-full bg-black/5 dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-500 pl-11 pr-4 py-3.5 rounded-xl border-none focus:ring-1 focus:ring-primary/50 outline-none transition-all shadow-inner font-medium" placeholder="Search for terms..." type="text"/>
+<!-- Mic Icon -->
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">mic</span>
+</button>
+</div>
+</div>
+<!-- Filter Chips -->
+<div class="flex gap-2 overflow-x-auto px-6 py-2 no-scrollbar mask-gradient-r">
+<button class="shrink-0 px-4 py-1.5 rounded-full bg-primary text-white text-sm font-medium shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95">All</button>
+<button class="shrink-0 px-4 py-1.5 rounded-full bg-white dark:bg-white/5 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/10 text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/10 transition-colors">Dynamics</button>
+<button class="shrink-0 px-4 py-1.5 rounded-full bg-white dark:bg-white/5 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/10 text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/10 transition-colors">Tempo</button>
+<button class="shrink-0 px-4 py-1.5 rounded-full bg-white dark:bg-white/5 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/10 text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/10 transition-colors">Structure</button>
+<button class="shrink-0 px-4 py-1.5 rounded-full bg-white dark:bg-white/5 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/10 text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/10 transition-colors">Instrumentation</button>
+</div>
+</div>
+<!-- Scrollable Content Area -->
+<div class="flex-1 overflow-y-auto no-scrollbar relative" style="scroll-behavior: smooth;">
+<!-- Alphabet Scrubber (Simulated Floating Rail) -->
+<div class="fixed right-2 top-1/2 -translate-y-1/2 z-30 flex flex-col gap-1 items-center bg-white/60 dark:bg-[#1e293b]/60 backdrop-blur-md py-3 px-1.5 rounded-full shadow-xl border border-white/20 dark:border-white/5 h-auto overflow-hidden">
+<a class="text-[10px] font-bold text-primary py-0.5" href="#">A</a>
+<a class="text-[10px] font-medium text-gray-400 py-0.5 hover:text-white transition-colors" href="#">B</a>
+<a class="text-[10px] font-medium text-gray-400 py-0.5 hover:text-white transition-colors" href="#">C</a>
+<a class="text-[10px] font-medium text-gray-400 py-0.5 hover:text-white transition-colors" href="#">D</a>
+<span class="text-[8px] text-gray-600 py-0.5">•</span>
+<a class="text-[10px] font-medium text-gray-400 py-0.5 hover:text-white transition-colors" href="#">S</a>
+<a class="text-[10px] font-medium text-gray-400 py-0.5 hover:text-white transition-colors" href="#">T</a>
+<span class="text-[8px] text-gray-600 py-0.5">•</span>
+<a class="text-[10px] font-medium text-gray-400 py-0.5 hover:text-white transition-colors" href="#">Z</a>
+</div>
+<div class="px-6 pb-32 pt-6 flex flex-col gap-8 pr-12">
+<!-- Hero Section: Featured Term -->
+<div class="group relative overflow-hidden rounded-2xl bg-[#192233] border border-white/5 shadow-xl cursor-pointer">
+<!-- Subtle Gradient Overlay -->
+<div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-50 group-hover:opacity-70 transition-opacity"></div>
+<div class="absolute top-0 right-0 p-4 z-20">
+<span class="material-symbols-outlined text-white/30 group-hover:text-primary transition-colors">bookmark</span>
+</div>
+<div class="flex flex-col relative z-10">
+<!-- Image Section -->
+<div class="w-full h-36 bg-cover bg-center relative" data-alt="Close up of piano keys in warm dramatic lighting" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBmXY5EdJT468yA8rJuUfNLCGjeNZ9blocc8oOnnur4yg0ck2ohXT3qVrE9EznzGTsL-Wq8bq6zdLPIAk6fKFRDC2SxmrQiWTRvBMn9TsLbJA2yA5u8e-Kzvn4Pmt5Kji29hJfI063VtLVwiTTC8tdRwBvWaSMlO1rMRErprMPrK8WVVs92EFbD7YzFtJ4yk4BV9P9_nxjfllIjoReNfv5D_YfhCsnOYx3nr1fmXpXM7XbOupbxpsuUb-sZjZPt-AwafuTpKfOTcVT3');">
+<div class="absolute inset-0 bg-gradient-to-t from-[#192233] to-transparent"></div>
+</div>
+<!-- Content -->
+<div class="p-5 pt-0">
+<div class="inline-flex items-center gap-1.5 mb-2 px-2.5 py-1 rounded-md bg-primary/20 border border-primary/20 text-primary text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                                Term of the Day
+                            </div>
+<h2 class="text-2xl font-bold text-white mb-2 tracking-tight group-hover:text-primary/90 transition-colors">Scherzo</h2>
+<p class="text-gray-400 text-sm leading-relaxed line-clamp-2">A light, playful composition, typically in triple meter. Often appearing as the third movement in a symphony, replacing the minuet.</p>
+<div class="mt-4 flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wide group-hover:translate-x-1 transition-transform">
+<span>Read Definition</span>
+<span class="material-symbols-outlined text-base">arrow_forward</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Terms List -->
+<div class="flex flex-col gap-4">
+<!-- Section A -->
+<div>
+<h3 class="sticky top-0 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest pl-1 mb-3">A</h3>
+<div class="flex flex-col gap-3">
+<!-- Expanded Item (Allegro) -->
+<details class="group bg-white dark:bg-[#1e293b] rounded-xl overflow-hidden border border-gray-100 dark:border-white/5 shadow-[0_2px_8px_rgba(0,0,0,0.2)] open:ring-1 open:ring-primary/50 transition-all duration-300" open="">
+<summary class="flex items-center justify-between p-4 cursor-pointer list-none bg-transparent hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+<div class="flex flex-col gap-0.5">
+<span class="text-lg font-bold text-gray-900 dark:text-white tracking-tight">Allegro</span>
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400 group-open:hidden line-clamp-1">Fast, quickly, and bright...</span>
+</div>
+<div class="w-8 h-8 rounded-full flex items-center justify-center bg-gray-100 dark:bg-white/5 group-open:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-gray-400 group-open:text-primary transition-transform group-open:rotate-180 text-xl">expand_more</span>
+</div>
+</summary>
+<div class="px-4 pb-5 pt-0 animate-in fade-in slide-in-from-top-2 duration-300">
+<div class="h-px w-full bg-gray-100 dark:bg-white/5 mb-4 mt-1"></div>
+<div class="flex gap-2 mb-4">
+<span class="px-2 py-0.5 rounded text-[10px] uppercase font-bold text-gray-500 dark:text-gray-300 bg-gray-100 dark:bg-white/10">Tempo</span>
+<span class="px-2 py-0.5 rounded text-[10px] uppercase font-bold text-gray-500 dark:text-gray-300 bg-gray-100 dark:bg-white/10">Italian</span>
+</div>
+<p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-5 font-light">
+                                        Meaning "cheerful" or "gay" in Italian. In music, it denotes a fast, quick, and bright tempo. It is one of the most common tempo markings, typically indicating a speed of 120-168 beats per minute (BPM).
+                                    </p>
+<!-- Audio Player Card -->
+<div class="flex items-center gap-3 w-full p-3 rounded-xl bg-background-light dark:bg-background-dark border border-gray-200 dark:border-white/5 transition-all group/player hover:border-primary/30">
+<button class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/30 group-hover/player:scale-105 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-xl ml-0.5">play_arrow</span>
+</button>
+<div class="flex flex-col items-start min-w-0 flex-1">
+<span class="text-xs font-bold text-gray-900 dark:text-white truncate">Symphony No. 40 (Mozart)</span>
+<span class="text-[10px] text-primary uppercase tracking-wider font-semibold">Play Example</span>
+</div>
+<div class="flex items-center gap-1">
+<div class="flex gap-0.5 items-end h-3">
+<div class="w-0.5 bg-primary/40 h-1 rounded-full"></div>
+<div class="w-0.5 bg-primary/70 h-3 rounded-full"></div>
+<div class="w-0.5 bg-primary h-2 rounded-full"></div>
+<div class="w-0.5 bg-primary/50 h-1.5 rounded-full"></div>
+</div>
+<span class="ml-1 text-xs font-mono text-gray-400">0:15</span>
+</div>
+</div>
+</div>
+</details>
+<!-- Collapsed Items -->
+<details class="group bg-white dark:bg-[#1e293b] rounded-xl overflow-hidden border border-gray-100 dark:border-white/5 shadow-sm hover:shadow-md transition-all">
+<summary class="flex items-center justify-between p-4 cursor-pointer list-none bg-transparent hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+<div class="flex flex-col gap-0.5">
+<span class="text-lg font-bold text-gray-900 dark:text-white tracking-tight">Adagio</span>
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400 group-open:hidden">Slow and stately...</span>
+</div>
+<span class="material-symbols-outlined text-gray-400 transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="px-4 pb-4">
+<p class="text-sm text-gray-400">Adagio is a tempo marking indicating that music is to be played slowly.</p>
+</div>
+</details>
+<details class="group bg-white dark:bg-[#1e293b] rounded-xl overflow-hidden border border-gray-100 dark:border-white/5 shadow-sm hover:shadow-md transition-all">
+<summary class="flex items-center justify-between p-4 cursor-pointer list-none bg-transparent hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+<div class="flex flex-col gap-0.5">
+<span class="text-lg font-bold text-gray-900 dark:text-white tracking-tight">Andante</span>
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400 group-open:hidden">At a walking pace...</span>
+</div>
+<span class="material-symbols-outlined text-gray-400 transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="px-4 pb-4">
+<p class="text-sm text-gray-400">Andante is a musical tempo marking meaning moderately slow, at a walking pace.</p>
+</div>
+</details>
+<details class="group bg-white dark:bg-[#1e293b] rounded-xl overflow-hidden border border-gray-100 dark:border-white/5 shadow-sm hover:shadow-md transition-all">
+<summary class="flex items-center justify-between p-4 cursor-pointer list-none bg-transparent hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+<div class="flex flex-col gap-0.5">
+<span class="text-lg font-bold text-gray-900 dark:text-white tracking-tight">Arpeggio</span>
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400 group-open:hidden">Notes of a chord played in sequence...</span>
+</div>
+<span class="material-symbols-outlined text-gray-400 transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="px-4 pb-4">
+<p class="text-sm text-gray-400">An arpeggio is a type of broken chord, in which the notes that compose a chord are played or sung in a rising or descending order.</p>
+</div>
+</details>
+</div>
+</div>
+<!-- Section C -->
+<div>
+<h3 class="sticky top-0 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest pl-1 mb-3">C</h3>
+<div class="flex flex-col gap-3">
+<details class="group bg-white dark:bg-[#1e293b] rounded-xl overflow-hidden border border-gray-100 dark:border-white/5 shadow-sm hover:shadow-md transition-all">
+<summary class="flex items-center justify-between p-4 cursor-pointer list-none bg-transparent hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+<div class="flex flex-col gap-0.5">
+<span class="text-lg font-bold text-gray-900 dark:text-white tracking-tight">Cadenza</span>
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400 group-open:hidden">Ornate solo passage...</span>
+</div>
+<span class="material-symbols-outlined text-gray-400 transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="px-4 pb-4">
+<p class="text-sm text-gray-400">A virtuoso solo passage inserted into a movement in a concerto or other work, typically near the end.</p>
+</div>
+</details>
+<details class="group bg-white dark:bg-[#1e293b] rounded-xl overflow-hidden border border-gray-100 dark:border-white/5 shadow-sm hover:shadow-md transition-all">
+<summary class="flex items-center justify-between p-4 cursor-pointer list-none bg-transparent hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+<div class="flex flex-col gap-0.5">
+<span class="text-lg font-bold text-gray-900 dark:text-white tracking-tight">Crescendo</span>
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400 group-open:hidden">Gradually getting louder...</span>
+</div>
+<span class="material-symbols-outlined text-gray-400 transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="px-4 pb-4">
+<p class="text-sm text-gray-400">A gradual increase in loudness in a piece of music.</p>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Simulated Bottom Navigation -->
+<div class="bg-background-light dark:bg-background-dark border-t border-black/5 dark:border-white/5 flex justify-around items-center pt-3 pb-8 z-20 absolute bottom-0 w-full backdrop-blur-lg bg-opacity-95 dark:bg-opacity-95">
+<button class="flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors group">
+<span class="material-symbols-outlined text-[26px] group-hover:-translate-y-0.5 transition-transform">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors group">
+<span class="material-symbols-outlined text-[26px] group-hover:-translate-y-0.5 transition-transform">search</span>
+<span class="text-[10px] font-medium">Discover</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary group">
+<span class="material-symbols-outlined text-[26px] fill-current group-hover:-translate-y-0.5 transition-transform">menu_book</span>
+<span class="text-[10px] font-medium">Glossary</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors group">
+<span class="material-symbols-outlined text-[26px] group-hover:-translate-y-0.5 transition-transform">library_music</span>
+<span class="text-[10px] font-medium">Library</span>
+</button>
+</div>
+</div>
+</body></html>

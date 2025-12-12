@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Context Composer</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#5417cf",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#161121",
+                        "surface-dark": "#1f1a2e",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "2rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display antialiased">
+<!-- Main Container -->
+<div class="relative flex h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-hidden transition-colors duration-200">
+<!-- Header / Logo Area -->
+<div class="flex items-center justify-center pt-12 pb-4 px-6 z-10">
+<div class="flex items-center gap-2 text-primary/80">
+<span class="material-symbols-outlined text-[32px]">graphic_eq</span>
+<span class="text-xs font-bold tracking-[0.2em] uppercase text-slate-500 dark:text-slate-400">Context Composer</span>
+</div>
+</div>
+<!-- Scrollable Content Area -->
+<div class="flex-1 flex flex-col items-center justify-center px-6 overflow-y-auto z-10">
+<!-- Hero Graphic -->
+<div class="w-full max-w-[340px] aspect-[4/5] relative mb-8 group">
+<!-- Abstract Glow Effect -->
+<div class="absolute inset-0 bg-primary/20 blur-[60px] rounded-full transform scale-90 group-hover:scale-100 transition-transform duration-1000"></div>
+<!-- Main Image -->
+<div class="w-full h-full bg-center bg-no-repeat bg-cover rounded-2xl shadow-2xl relative overflow-hidden border border-white/5" data-alt="Abstract 3D purple soundwave visualization resembling architectural structure" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBd3b9_uhas951CGQ6hPz3bmeccCPoqDkfgPn7h7nBc60p9niZ9s-yQ59rFxlzrieYTulyz775kSA4pjfmuzKczLTRNuhxGbfVq5IEXjPPSPwDjpomrngDH1DQd_ZcgitLjVuyle8dV20ALxY5UDMmlxO2kYkkFhgD_HEdzVq-oZLW-_O8qhvnYuQTVAWS8D4q7W7qZhGN0hdung4gUJkFGeNn9ggtPYNaMdcnlzrG-y1Yr_oYEjP0cSU9iGPZIJMzeFIoCKxRmYGjo");'>
+<!-- Overlay Gradient for text readability integration -->
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark/80 via-transparent to-transparent opacity-60"></div>
+</div>
+</div>
+<!-- Text Content -->
+<div class="flex flex-col gap-4 max-w-sm text-center">
+<h1 class="text-slate-900 dark:text-white tracking-tight text-4xl font-extrabold leading-[1.1]">
+                    Hear the structure<br/>
+<span class="text-primary">behind the symphony</span>
+</h1>
+<p class="text-slate-600 dark:text-slate-400 text-lg font-light leading-relaxed px-2">
+                    Transform passive listening into active understanding. Discover the 'why' behind the music.
+                </p>
+</div>
+</div>
+<!-- Footer / CTA Area -->
+<div class="w-full px-6 pt-6 pb-10 z-10 flex flex-col gap-4 bg-gradient-to-t from-background-light dark:from-background-dark via-background-light/90 dark:via-background-dark/90 to-transparent">
+<!-- Primary Button -->
+<button class="w-full flex items-center justify-center gap-2 overflow-hidden rounded-xl h-14 bg-primary hover:bg-primary/90 active:scale-[0.98] transition-all text-white text-lg font-bold shadow-lg shadow-primary/25 ring-1 ring-white/10">
+<span>Explore the Music</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<!-- Secondary Link -->
+<button class="w-full text-center py-2 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
+                Already have an account? <span class="text-slate-800 dark:text-slate-200">Log in</span>
+</button>
+</div>
+<!-- iOS Safe Area Spacer -->
+<div class="h-[env(safe-area-inset-bottom)] bg-background-light dark:bg-background-dark"></div>
+</div>
+</body></html>

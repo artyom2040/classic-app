@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>5-Day Kickstart Intro</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&amp;family=Noto+Sans:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#5417cf",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#161121",
+                        "surface-dark": "#221a32", // Derived from provided component styles
+                    },
+                    fontFamily: {
+                        "display": ["Noto Serif", "serif"],
+                        "sans": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased selection:bg-primary selection:text-white">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Hero Section with Gradient Overlay -->
+<div class="relative w-full h-[45vh] min-h-[360px]">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Abstract classical sheet music flowing into dark sound waves" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBw6c3_m3HUhQWXAbPk9NeqG7oEvjx3lgI9jTMraGU9fXhl4O4yuylhurhfkTykPGba_lXcmUHgTKK4biZ0sVDh_A8W8eHaWEXINMkyzBiQAF69fK0zZs-hhIzu-SVyU_NMIwvGoK3dnxsYq5637XTwonlNMeJAGj594xvbMvTO8xiZj4x2AGqiOuJeuPBnd5k6U2-a6PvR7iodBT9ocoQAqKjzhU-OG7b07hT9MScyOg8vOdzFcYwyhlaaYb5xSExLKT2ZewLCGD0U");'></div>
+<!-- Gradient Overlay to blend image into the dark background -->
+<div class="absolute inset-0 bg-gradient-to-b from-black/30 via-background-dark/60 to-background-dark"></div>
+<!-- Hero Text Content -->
+<div class="absolute bottom-0 left-0 w-full px-6 pb-6">
+<span class="inline-block py-1 px-3 rounded-full bg-primary/20 border border-primary/30 text-primary-300 text-xs font-bold tracking-wider mb-4 font-sans uppercase backdrop-blur-sm">
+                    Onboarding
+                </span>
+<h1 class="text-4xl md:text-5xl font-bold leading-tight tracking-tight text-white mb-2 drop-shadow-lg">
+                    The 5-Day Kickstart
+                </h1>
+<p class="text-lg text-gray-200/90 font-normal max-w-[90%] leading-relaxed font-sans">
+                    A short journey to transform how you listen forever.
+                </p>
+</div>
+</div>
+<!-- Scrollable Content Area -->
+<div class="flex-1 flex flex-col px-6 pt-4 pb-32">
+<!-- Value Proposition Section -->
+<div class="flex flex-col gap-6">
+<h2 class="text-sm font-bold uppercase tracking-widest text-gray-500 font-sans mb-2">What you'll discover</h2>
+<!-- Day 1 Card -->
+<div class="flex items-start gap-4 p-4 rounded-xl bg-surface-dark/50 border border-white/5 backdrop-blur-sm hover:bg-surface-dark/80 transition-colors">
+<div class="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-full bg-primary/20 text-primary-300">
+<span class="material-symbols-outlined text-[24px]">music_note</span>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="text-white text-lg font-bold leading-tight">The Architecture of Sound</h3>
+<p class="text-gray-400 text-sm font-normal leading-relaxed font-sans">
+<span class="text-primary-300 font-bold">Day 1:</span> Uncover the hidden structures that hold a masterpiece together.
+                        </p>
+</div>
+</div>
+<!-- Day 3 Card -->
+<div class="flex items-start gap-4 p-4 rounded-xl bg-surface-dark/50 border border-white/5 backdrop-blur-sm hover:bg-surface-dark/80 transition-colors">
+<div class="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-full bg-primary/20 text-primary-300">
+<span class="material-symbols-outlined text-[24px]">favorite</span>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="text-white text-lg font-bold leading-tight">The Language of Emotion</h3>
+<p class="text-gray-400 text-sm font-normal leading-relaxed font-sans">
+<span class="text-primary-300 font-bold">Day 3:</span> Decode the composer's intent and feel the music deeper.
+                        </p>
+</div>
+</div>
+<!-- Day 5 Card -->
+<div class="flex items-start gap-4 p-4 rounded-xl bg-surface-dark/50 border border-white/5 backdrop-blur-sm hover:bg-surface-dark/80 transition-colors">
+<div class="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-full bg-primary/20 text-primary-300">
+<span class="material-symbols-outlined text-[24px]">hearing</span>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="text-white text-lg font-bold leading-tight">Listening with New Ears</h3>
+<p class="text-gray-400 text-sm font-normal leading-relaxed font-sans">
+<span class="text-primary-300 font-bold">Day 5:</span> Experience familiar pieces with completely new depth.
+                        </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Fixed Bottom Action Area -->
+<div class="fixed bottom-0 left-0 w-full z-10 bg-gradient-to-t from-background-dark via-background-dark to-transparent pt-12 pb-8 px-6">
+<div class="flex flex-col items-center gap-3 w-full max-w-md mx-auto">
+<!-- Primary CTA -->
+<button class="w-full flex cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 bg-primary hover:bg-primary/90 transition-all text-white shadow-lg shadow-primary/25 active:scale-[0.98]">
+<span class="text-lg font-bold tracking-wide font-sans">Begin Day 1</span>
+<span class="material-symbols-outlined ml-2 text-[20px]">arrow_forward</span>
+</button>
+<!-- Secondary CTA -->
+<button class="w-full flex cursor-pointer items-center justify-center rounded-xl h-10 bg-transparent text-gray-400 hover:text-white transition-colors text-sm font-medium font-sans">
+<span class="truncate">Maybe later</span>
+</button>
+</div>
+<!-- iOS Home Indicator Spacing substitute -->
+<div class="h-1 w-full"></div>
+</div>
+</div>
+</body></html>

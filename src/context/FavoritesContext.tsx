@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { haptic } from '../utils/haptics';
 import { STORAGE_KEYS } from '../constants';
+import { getStorageItem, setStorageItem, removeStorageItem } from '../utils/storageUtils';
 
 const FAVORITES_KEY = STORAGE_KEYS.FAVORITES;
 
@@ -35,26 +35,13 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loadFavorites = async () => {
-    try {
-      const stored = await AsyncStorage.getItem(FAVORITES_KEY);
-      if (stored) {
-        setFavorites(JSON.parse(stored));
-      }
-    } catch (error) {
-      console.error('Error loading favorites:', error);
-    } finally {
-      setIsLoaded(true);
-    }
+    const data = await getStorageItem<FavoriteItem[]>(FAVORITES_KEY, []);
+    setFavorites(data);
+    setIsLoaded(true);
   };
 
   const saveFavorites = async (newFavorites: FavoriteItem[]): Promise<boolean> => {
-    try {
-      await AsyncStorage.setItem(FAVORITES_KEY, JSON.stringify(newFavorites));
-      return true;
-    } catch (error) {
-      console.error('Error saving favorites:', error);
-      return false;
-    }
+    return setStorageItem(FAVORITES_KEY, newFavorites);
   };
 
   const isFavorite = (id: string | number, type: FavoriteType): boolean => {
@@ -107,7 +94,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
   const clearFavorites = async () => {
     setFavorites([]);
-    await AsyncStorage.removeItem(FAVORITES_KEY);
+    await removeStorageItem(FAVORITES_KEY);
   };
 
   return (

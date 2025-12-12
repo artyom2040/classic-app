@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Form Explorer</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#5417cf",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#161121", // Deep charcoal/near-black
+                        "surface-dark": "#221a32", // Slightly lighter for cards
+                        "surface-highlight": "#302447", // For chips/secondary
+                        "text-secondary": "#a593c8",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-white antialiased selection:bg-primary selection:text-white pb-24">
+<!-- Main Container -->
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto bg-background-light dark:bg-background-dark overflow-x-hidden shadow-2xl">
+<!-- Header Section -->
+<header class="sticky top-0 z-20 flex flex-col gap-2 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md p-4 pb-2 border-b border-white/5">
+<div class="flex items-center h-12 justify-between">
+<!-- User Avatar -->
+<div class="flex size-12 shrink-0 items-center">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-surface-highlight" data-alt="User profile avatar showing a smiling person" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBavoxpM8IoINB6L-nNXpJk2sDnthSWlINByjgmCPPazNg220sbEiEpXIdAVTpD0xSHBNDsHsHEL8CZ5LLf_HXOjG0bfjuvTUkmjcWXuiQCYg9P9qNtySp8GRH33x9mDsiiK6fizYfmkMw6oxAUqLVtPGGhZzMeuRUSgDlCSJlCLGPYGno8pRLtGiug0tw-kV-F7gg0c0b30ksVZ3q69AqJ-JChKa9nmRY_SaV54gdREFIhPHFJZE8fNeJrPN_4yx3sh88a1V3MBRz4");'></div>
+</div>
+<!-- Search Button -->
+<div class="flex w-12 items-center justify-end">
+<button class="flex items-center justify-center rounded-full size-10 bg-surface-highlight/50 text-white hover:bg-surface-highlight transition-colors">
+<span class="material-symbols-outlined text-[24px]">search</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col pt-2">
+<p class="text-gray-900 dark:text-white tracking-tight text-[28px] font-bold leading-tight">Explore Forms</p>
+</div>
+</header>
+<!-- Hero Text -->
+<div class="px-4 py-4">
+<h1 class="text-gray-800 dark:text-white tracking-tight text-[22px] font-normal leading-tight opacity-90">
+                Discover the <span class="font-bold text-primary">Architecture</span> of Music
+            </h1>
+</div>
+<!-- Filter Chips -->
+<div class="flex gap-3 px-4 pb-6 overflow-x-auto no-scrollbar snap-x">
+<button class="snap-start shrink-0 flex h-9 items-center justify-center rounded-xl bg-primary px-5 shadow-lg shadow-primary/20 transition-transform active:scale-95">
+<p class="text-white text-sm font-semibold">All</p>
+</button>
+<button class="snap-start shrink-0 flex h-9 items-center justify-center rounded-xl bg-surface-highlight px-5 border border-white/5 hover:bg-surface-highlight/80 transition-colors">
+<p class="text-white text-sm font-medium">Symphonic</p>
+</button>
+<button class="snap-start shrink-0 flex h-9 items-center justify-center rounded-xl bg-surface-highlight px-5 border border-white/5 hover:bg-surface-highlight/80 transition-colors">
+<p class="text-white text-sm font-medium">Chamber</p>
+</button>
+<button class="snap-start shrink-0 flex h-9 items-center justify-center rounded-xl bg-surface-highlight px-5 border border-white/5 hover:bg-surface-highlight/80 transition-colors">
+<p class="text-white text-sm font-medium">Solo</p>
+</button>
+<button class="snap-start shrink-0 flex h-9 items-center justify-center rounded-xl bg-surface-highlight px-5 border border-white/5 hover:bg-surface-highlight/80 transition-colors">
+<p class="text-white text-sm font-medium">Vocal</p>
+</button>
+</div>
+<!-- Cards Feed -->
+<div class="flex flex-col gap-6 px-4 pb-6">
+<!-- Card 1: Sonata Form -->
+<article class="@container group relative overflow-hidden rounded-2xl bg-surface-dark shadow-xl ring-1 ring-white/5 transition-transform hover:scale-[1.02] active:scale-[0.98]">
+<!-- Subtle Gradient Overlay -->
+<div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-50 pointer-events-none"></div>
+<div class="flex flex-col items-stretch">
+<div class="relative w-full aspect-video overflow-hidden">
+<div class="w-full h-full bg-center bg-cover transition-transform duration-700 group-hover:scale-105" data-alt="Abstract smooth wave lines representing musical sonata structure" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDDA66gcBaVhroPo8kCv3o77qaF2hJ7Vnyv18IuVhDYWBB5sAFW755Fmb9humSnOMBovobM2SoVeMdnC5SHCHld_dMjnS10FDrOapYmhvj5bSYi-48stH6gIYdmDNSvthWNMEgva51AGAgQbQ1R8nfS6UNQXFAf0MYwN5Qvvdh3abBDEMnJ-wjTFNhdkPLdrA9hTH3ACScSbYhOp-kzOvB5_xDO3Cf3goJJJevc0jqyQnmY8RHw8AzRI8y1zmj0WKJHizDgzV21H5xQ");'></div>
+<div class="absolute bottom-3 left-3 flex gap-1">
+<div class="size-8 rounded-lg bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center" title="Beethoven's 5th">
+<span class="material-symbols-outlined text-white text-[16px]">music_note</span>
+</div>
+<div class="size-8 rounded-lg bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center" title="Mozart Symphony No. 40">
+<span class="material-symbols-outlined text-white text-[16px]">piano</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col p-5 gap-3">
+<div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight mb-1">Sonata Form</h2>
+<p class="text-text-secondary text-sm font-normal leading-relaxed">The journey of a musical idea: Exposition, Development, Recapitulation.</p>
+</div>
+<div class="flex items-center justify-between mt-1 pt-3 border-t border-white/5">
+<p class="text-xs text-text-secondary font-medium uppercase tracking-wider">Structure • Linear</p>
+<button class="flex items-center justify-center rounded-xl h-9 px-5 bg-primary hover:bg-primary/90 text-white text-sm font-bold shadow-lg shadow-primary/25 transition-all">
+                                Dive In
+                            </button>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 2: The Fugue -->
+<article class="@container group relative overflow-hidden rounded-2xl bg-surface-dark shadow-xl ring-1 ring-white/5 transition-transform hover:scale-[1.02] active:scale-[0.98]">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-50 pointer-events-none"></div>
+<div class="flex flex-col items-stretch">
+<div class="relative w-full aspect-video overflow-hidden">
+<div class="w-full h-full bg-center bg-cover transition-transform duration-700 group-hover:scale-105" data-alt="Abstract complex interwoven geometric lines representing fugue" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAA3hYOy8302w-pyJeZ7pyUu3UgRX7KGy2HC3tnOHsVFEEztJP9fSywvV49M3tAFfwVu1itTNUlxzcv-KVOJY70ZZRQ189lFf8UZPfaFnu3WnSof4x7tAG40YccibbSwB-sNtL6SiDah3Z7cOIR9LgilGiFWYTUAJ_qSb7VyzfbCunycfBSvc7EcDCigPcYvIUILDpIgh8EvQoRDltQ9moaTWy5PSpqZPaqE7DNvMznsmAY7zoHLzX4bsFBMS1CMCJxrVgYmGW1IZyp");'></div>
+<div class="absolute bottom-3 left-3 flex gap-1">
+<div class="size-8 rounded-lg bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[16px]">grid_view</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col p-5 gap-3">
+<div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight mb-1">The Fugue</h2>
+<p class="text-text-secondary text-sm font-normal leading-relaxed">Complex, interwoven musical voices chasing each other through time.</p>
+</div>
+<div class="flex items-center justify-between mt-1 pt-3 border-t border-white/5">
+<p class="text-xs text-text-secondary font-medium uppercase tracking-wider">Structure • Polyphonic</p>
+<button class="flex items-center justify-center rounded-xl h-9 px-5 bg-primary hover:bg-primary/90 text-white text-sm font-bold shadow-lg shadow-primary/25 transition-all">
+                                Dive In
+                            </button>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 3: Theme & Variations -->
+<article class="@container group relative overflow-hidden rounded-2xl bg-surface-dark shadow-xl ring-1 ring-white/5 transition-transform hover:scale-[1.02] active:scale-[0.98]">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-50 pointer-events-none"></div>
+<div class="flex flex-col items-stretch">
+<div class="relative w-full aspect-video overflow-hidden">
+<div class="w-full h-full bg-center bg-cover transition-transform duration-700 group-hover:scale-105" data-alt="Abstract repeating circular patterns with slight changes" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD_iYNhMqkO4_LgPnvGPPhiTRwt6EKXGuZE7EkZbTW-ZyssW-5T9ftbrpfGpeJ4cbITGBWCh9qydJuv_G8We0GBDplvZTLx62HrDPcxnWMUaERQLkrGrQMPkc73OljM_2c8BMMq_wOD27pauMD5TH1dr1o9aai7LSxxVAfUBDpaQMEFbif_PtMLnpf-xyuglZRv4ZInMQifvaUjPI4zKL88SFohO0Nduphlh290-oyZg01KJOmWfxr2wVFBRjDU50PWRxkhxvQ4CLiG");'></div>
+</div>
+<div class="flex flex-col p-5 gap-3">
+<div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight mb-1">Theme &amp; Variations</h2>
+<p class="text-text-secondary text-sm font-normal leading-relaxed">One idea, endless possibilities. See how a melody evolves.</p>
+</div>
+<div class="flex items-center justify-between mt-1 pt-3 border-t border-white/5">
+<p class="text-xs text-text-secondary font-medium uppercase tracking-wider">Structure • Cyclical</p>
+<button class="flex items-center justify-center rounded-xl h-9 px-5 bg-primary hover:bg-primary/90 text-white text-sm font-bold shadow-lg shadow-primary/25 transition-all">
+                                Dive In
+                            </button>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 4: Rondo -->
+<article class="@container group relative overflow-hidden rounded-2xl bg-surface-dark shadow-xl ring-1 ring-white/5 transition-transform hover:scale-[1.02] active:scale-[0.98]">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-50 pointer-events-none"></div>
+<div class="flex flex-col items-stretch">
+<div class="relative w-full aspect-video overflow-hidden">
+<div class="w-full h-full bg-center bg-cover transition-transform duration-700 group-hover:scale-105" data-alt="Abstract spiral geometric pattern representing return" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCTU0muRyoYCAKjitRjjhnKrkNr-HP2lqxRo0RwIwXmQJs-JIYbb-6ljTse4rP8OlINCr7iXB8Zyhd6m8TFfUxlq2kJhunL9A435rxob6-yiSwbV4g8CQzeweS2pak7O45XxOVGfjr-KJo_LMOLEpGSuGxAd2cDl1xPFTQI9mT0wftZ98Z8Yec8hqoVjWtWshS-Gu63xHrvLQXyWfWcPLxB7VbcDfmb7xILH-HfKb-O3F4RN9Rno7FoJP4IaE1H72Sym1fJe2eGMFmj");'></div>
+</div>
+<div class="flex flex-col p-5 gap-3">
+<div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight mb-1">Rondo</h2>
+<p class="text-text-secondary text-sm font-normal leading-relaxed">The joy of return. A main theme that keeps coming back home.</p>
+</div>
+<div class="flex items-center justify-between mt-1 pt-3 border-t border-white/5">
+<p class="text-xs text-text-secondary font-medium uppercase tracking-wider">Structure • ABACA</p>
+<button class="flex items-center justify-center rounded-xl h-9 px-5 bg-primary hover:bg-primary/90 text-white text-sm font-bold shadow-lg shadow-primary/25 transition-all">
+                               Dive In
+                           </button>
+</div>
+</div>
+</div>
+</article>
+</div>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 z-30 w-full max-w-md bg-background-dark/80 backdrop-blur-xl border-t border-white/10 safe-area-bottom">
+<div class="flex justify-around items-center h-16 px-2">
+<a class="flex flex-col items-center justify-center w-full h-full gap-1 group" href="#">
+<span class="material-symbols-outlined text-primary text-[28px] transition-transform group-active:scale-90">home</span>
+<span class="text-[10px] font-medium text-primary">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full gap-1 group" href="#">
+<span class="material-symbols-outlined text-gray-400 text-[28px] transition-colors group-hover:text-white group-active:scale-90">search</span>
+<span class="text-[10px] font-medium text-gray-400 group-hover:text-white">Search</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full gap-1 group" href="#">
+<span class="material-symbols-outlined text-gray-400 text-[28px] transition-colors group-hover:text-white group-active:scale-90">library_music</span>
+<span class="text-[10px] font-medium text-gray-400 group-hover:text-white">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full gap-1 group" href="#">
+<span class="material-symbols-outlined text-gray-400 text-[28px] transition-colors group-hover:text-white group-active:scale-90">school</span>
+<span class="text-[10px] font-medium text-gray-400 group-hover:text-white">Learn</span>
+</a>
+</div>
+<!-- Bottom spacing for swipe indicator -->
+<div class="h-4 w-full"></div>
+</nav>
+</div>
+</body></html>

@@ -14,6 +14,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
 import { ScreenContainer, ScreenHeader, ListCard } from '../components/ui';
+import { CategoryChips, ExpandableAccordion } from '../components/stitch';
 import { RootStackParamList } from '../types';
 import { getLongDefinition, getShortDefinition } from '../utils/terms';
 
@@ -57,6 +58,7 @@ export default function GlossaryScreen() {
   const { theme, themeName } = useTheme();
   const t = theme;
   const isBrutal = themeName === 'neobrutalist';
+  const isStitch = themeName === 'stitch';
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
@@ -80,6 +82,30 @@ export default function GlossaryScreen() {
   const renderTerm = useCallback(({ item }: { item: GlossaryTerm }) => {
     const categoryColor = getCategoryColor(item.category);
     const summary = getShortDefinition(item);
+    const fullDefinition = getLongDefinition(item);
+
+    // Stitch: Expandable accordion cards
+    if (isStitch) {
+      return (
+        <ExpandableAccordion
+          title={item.term}
+          subtitle={summary}
+          badge={item.category}
+          badgeColor={categoryColor}
+          onPress={() => navigation.navigate('TermDetail', { termId: String(item.id) })}
+        >
+          <Text style={[styles.accordionDefinition, { color: t.colors.textSecondary }]}>
+            {fullDefinition}
+          </Text>
+          {item.example && (
+            <View style={[styles.exampleBox, { backgroundColor: t.colors.surfaceLight }]}>
+              <Text style={[styles.exampleLabel, { color: t.colors.textMuted }]}>Example:</Text>
+              <Text style={[styles.exampleText, { color: t.colors.text }]}>{item.example}</Text>
+            </View>
+          )}
+        </ExpandableAccordion>
+      );
+    }
 
     return (
       <ListCard
@@ -97,7 +123,7 @@ export default function GlossaryScreen() {
         showChevron={false}
       />
     );
-  }, [t, isBrutal, getCategoryColor, navigation]);
+  }, [t, isBrutal, isStitch, getCategoryColor, navigation]);
 
   return (
     <ScreenContainer padded={false}>
@@ -122,37 +148,85 @@ export default function GlossaryScreen() {
         )}
       </View>
 
+      {/* Stitch: Piano Keys Visual + Featured Term */}
+      {isStitch && terms.length > 0 && (
+        <View style={styles.stitchGlossaryHero}>
+          {/* Piano Keys Visual */}
+          <View style={styles.pianoKeysContainer}>
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((key, index) => {
+              const isBlackKey = [1, 3, 6, 8, 10].includes(index % 12);
+              if (isBlackKey) {
+                return (
+                  <View key={key} style={[styles.pianoBlackKey, { backgroundColor: '#1a1525' }]} />
+                );
+              }
+              return (
+                <View key={key} style={[styles.pianoWhiteKey, { backgroundColor: 'rgba(255,255,255,0.08)' }]} />
+              );
+            })}
+          </View>
+
+          {/* Featured Term Card */}
+          <TouchableOpacity
+            style={[styles.featuredTermHero, { backgroundColor: t.colors.surface }]}
+            onPress={() => navigation.navigate('TermDetail', { termId: String(terms[0].id) })}
+            activeOpacity={0.8}
+          >
+            <View style={[styles.featuredBadge, { backgroundColor: t.colors.primary + '30' }]}>
+              <Text style={[styles.featuredBadgeText, { color: t.colors.primary }]}>TERM OF THE DAY</Text>
+            </View>
+            <Text style={[styles.featuredTitle, { color: t.colors.text }]}>{terms[0].term}</Text>
+            <Text style={[styles.featuredDescription, { color: t.colors.textSecondary }]} numberOfLines={2}>
+              {getShortDefinition(terms[0])}
+            </Text>
+            <View style={styles.featuredLink}>
+              <Text style={[styles.featuredLinkText, { color: t.colors.primary }]}>Read Definition</Text>
+              <Ionicons name="chevron-forward" size={16} color={t.colors.primary} />
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
+
       {/* Category Filter */}
-      <View style={styles.categoryContainer}>
-        <FlatList
-          horizontal
-          data={CATEGORIES}
-          keyExtractor={(item) => item}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categoryList}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={[
-                styles.categoryChip,
-                { backgroundColor: selectedCategory === item ? t.colors.primary : t.colors.surface },
-              ]}
-              onPress={() => setSelectedCategory(item)}
-              accessibilityRole="button"
-              accessibilityState={{ selected: selectedCategory === item }}
-              accessibilityLabel={`Filter by ${item}`}
-            >
-              <Text
-                style={[
-                  styles.categoryChipText,
-                  { color: selectedCategory === item ? '#fff' : t.colors.textSecondary },
-                ]}
-              >
-                {item}
-              </Text>
-            </TouchableOpacity>
-          )}
+      {isStitch ? (
+        <CategoryChips
+          items={CATEGORIES.filter(c => c !== 'All').map(c => ({ id: c, label: c }))}
+          selectedId={selectedCategory === 'All' ? 'all' : selectedCategory}
+          onSelect={(id) => setSelectedCategory(id === 'all' ? 'All' : id)}
+          style={{ marginVertical: spacing.sm }}
         />
-      </View>
+      ) : (
+        <View style={styles.categoryContainer}>
+          <FlatList
+            horizontal
+            data={CATEGORIES}
+            keyExtractor={(item) => item}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.categoryList}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={[
+                  styles.categoryChip,
+                  { backgroundColor: selectedCategory === item ? t.colors.primary : t.colors.surface },
+                ]}
+                onPress={() => setSelectedCategory(item)}
+                accessibilityRole="button"
+                accessibilityState={{ selected: selectedCategory === item }}
+                accessibilityLabel={`Filter by ${item}`}
+              >
+                <Text
+                  style={[
+                    styles.categoryChipText,
+                    { color: selectedCategory === item ? '#fff' : t.colors.textSecondary },
+                  ]}
+                >
+                  {item}
+                </Text>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+      )}
 
       {/* Terms List */}
       <FlatList
@@ -231,5 +305,96 @@ const styles = StyleSheet.create({
   emptySubtext: {
     fontSize: fontSize.sm,
     marginTop: spacing.xs
+  },
+  // Accordion styles (Stitch)
+  accordionDefinition: {
+    fontSize: fontSize.md,
+    lineHeight: 22,
+    marginBottom: spacing.sm,
+  },
+  exampleBox: {
+    borderRadius: borderRadius.md,
+    padding: spacing.sm,
+    marginTop: spacing.sm,
+  },
+  exampleLabel: {
+    fontSize: fontSize.xs,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  exampleText: {
+    fontSize: fontSize.sm,
+    fontStyle: 'italic',
+  },
+  // Featured Term Hero (Stitch)
+  featuredTermHero: {
+    marginHorizontal: spacing.md,
+    marginBottom: spacing.md,
+    padding: spacing.lg,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
+  },
+  featuredBadge: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderRadius: 20,
+    marginBottom: spacing.sm,
+  },
+  featuredBadgeText: {
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 1.5,
+  },
+  featuredTitle: {
+    fontSize: 26,
+    fontWeight: '700',
+    fontStyle: 'italic',
+    marginBottom: spacing.xs,
+  },
+  featuredDescription: {
+    fontSize: fontSize.md,
+    lineHeight: 22,
+    marginBottom: spacing.sm,
+  },
+  featuredLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  featuredLinkText: {
+    fontSize: fontSize.sm,
+    fontWeight: '600',
+  },
+  // Piano Keys Visual
+  stitchGlossaryHero: {
+    marginHorizontal: spacing.md,
+    marginBottom: spacing.md,
+  },
+  pianoKeysContainer: {
+    flexDirection: 'row',
+    height: 60,
+    marginBottom: -30,
+    justifyContent: 'center',
+    overflow: 'hidden',
+    borderRadius: 12,
+    marginHorizontal: spacing.lg,
+    opacity: 0.6,
+  },
+  pianoWhiteKey: {
+    flex: 1,
+    marginHorizontal: 1,
+    borderRadius: 2,
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
+  },
+  pianoBlackKey: {
+    width: 18,
+    height: 36,
+    marginHorizontal: -9,
+    zIndex: 1,
+    borderBottomLeftRadius: 3,
+    borderBottomRightRadius: 3,
   },
 });

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Musical Evolution</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#1152d4",
+              "background-light": "#f6f6f8",
+              "background-dark": "#101622",
+              "surface-dark": "#1a2332",
+            },
+            fontFamily: {
+              "display": ["Newsreader", "serif"],
+              "sans": ["Noto Sans", "sans-serif"], // Fallback for small text legibility if needed
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "2xl": "2rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen font-display text-slate-900 dark:text-white overflow-x-hidden selection:bg-primary selection:text-white">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-gray-200 dark:border-white/5 transition-all duration-300">
+<div class="flex items-center justify-between px-6 py-4">
+<button class="p-2 -ml-2 rounded-full hover:bg-gray-200 dark:hover:bg-white/10 text-gray-600 dark:text-white transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="text-xl font-bold tracking-tight italic">Musical Evolution</h1>
+<button class="p-2 -mr-2 rounded-full hover:bg-gray-200 dark:hover:bg-white/10 text-gray-600 dark:text-white transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+</div>
+</header>
+<main class="relative w-full max-w-md mx-auto pb-24 pt-6 px-5">
+<!-- The Melody Line (Vertical Scrollbar) -->
+<div class="absolute left-[38px] top-0 bottom-0 w-[2px] bg-gradient-to-b from-primary/10 via-primary/50 to-primary/5 z-0"></div>
+<!-- Intro Text -->
+<div class="mb-8 pl-14 relative z-10">
+<p class="text-sm text-primary uppercase tracking-widest font-semibold mb-1">Timeline</p>
+<p class="text-2xl italic font-light text-gray-600 dark:text-gray-300 leading-tight">Explore the structure of sound through the ages.</p>
+</div>
+<!-- ERA 1: BAROQUE -->
+<div class="group relative flex gap-5 mb-12">
+<!-- Timeline Node -->
+<div class="flex flex-col items-center shrink-0 w-8 pt-2 relative z-10">
+<div class="flex items-center justify-center w-4 h-4 rounded-full bg-background-dark border-2 border-primary shadow-[0_0_12px_rgba(17,82,212,0.8)] ring-4 ring-background-dark">
+<div class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></div>
+</div>
+</div>
+<!-- Content Card -->
+<div class="flex-1 min-w-0">
+<!-- Date Label -->
+<div class="flex items-baseline gap-2 mb-3">
+<span class="text-3xl font-bold text-primary italic">1600</span>
+<span class="text-sm text-gray-400 font-sans tracking-wider">— 1750</span>
+</div>
+<!-- Main Card -->
+<div class="relative overflow-hidden rounded-2xl bg-surface-dark shadow-xl border border-white/5 group-active:scale-[0.98] transition-transform duration-300">
+<!-- Background Image -->
+<div class="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay transition-transform duration-700 group-hover:scale-110" data-alt="Abstract ornate baroque architecture detail in warm dark tones" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAxZ5wveV6KqE9FeTQiKvojBInSIa-guQGsssnAuJBSe9khww6DYpFbeh6S6oIWHDozZn-YKSm21aveuHv2iyKn6zdlNULOqpTyE99yQhD4Y09S12BjqaayGvVQ4-zDlFHA0oLtsZoII217Qwg8WUP9oongqj8HQq108DyHS1Z3_bppuSxzAzlbbCHu69i-xl8IRVmm4liH87GstkJascFxdi9kf8zj80CU4pmlGDWgWBrpIrRM52cQx6eUKnHhJbnxL8PquJ5WVkEn");'>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/60 to-transparent"></div>
+<!-- Card Content -->
+<div class="relative p-5 pt-32 flex flex-col gap-3">
+<div>
+<h2 class="text-3xl font-bold text-white leading-tight mb-1">Baroque</h2>
+<p class="text-lg text-gray-200 font-light italic">The Birth of Complexity</p>
+</div>
+<!-- Chips -->
+<div class="flex flex-wrap gap-2 mt-2">
+<span class="inline-flex items-center px-3 py-1 rounded-lg bg-white/10 backdrop-blur-md border border-white/10 text-xs font-medium text-white tracking-wide">
+                                Polyphony
+                            </span>
+<span class="inline-flex items-center px-3 py-1 rounded-lg bg-white/10 backdrop-blur-md border border-white/10 text-xs font-medium text-white tracking-wide">
+                                Ornamentation
+                            </span>
+</div>
+</div>
+</div>
+<!-- Composer Cameos (Floating below/alongside) -->
+<div class="flex items-center gap-4 mt-4 pl-2">
+<div class="flex -space-x-3 overflow-visible">
+<img alt="Portrait of Johann Sebastian Bach" class="inline-block h-12 w-12 rounded-full ring-2 ring-background-dark object-cover grayscale contrast-125 hover:grayscale-0 hover:scale-110 transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgnEK0VngFUEwbePnZFRDL-P1r7QfgyIT6KiTI0ktWdu45cnX7Ojrrk1zlUr5nQunyuh-hD6o92V5gq2bBoikHBb00JH7tg794Tw56bw7TQ6bUivm-jAl32pt721rXfxu5bKhBUErncKTkhDSXkSHlqJuyQCQY4TewBFZBxaSvIomRK-cN1iLlQ04FqQdWwaouo2qCu1-rYlEd11wUhyuhNfCnLGps05sjs-UrMq79dK1y3TEYxicoiKOvELZEQO1Lps7_RPqEWj3F"/>
+<img alt="Portrait of Antonio Vivaldi" class="inline-block h-12 w-12 rounded-full ring-2 ring-background-dark object-cover grayscale contrast-125 hover:grayscale-0 hover:scale-110 transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCi9Nm_8U6Ris8n4uRUc-CmnQEwaomAZQEgdp0o6NQp31QY7jjxngnARIdtabulQGlz6TelD-oPzqnIQFKD4Nriv3L044j4rdokC9gs2W8A8TMGWfp6gPbku51UVnRK_J0JGDq8Vig7a4IRZcIiU8S8LQNH1DcrEbhxSvCQc68aebVfUR6c9bt2guUH-YCPV5cnc9vBUxQMKvp0OSdTQgrl_xOF0DFO3rTehPNIMxU7q4BgpagW2KbmnrPbkKEiL9dTruIxWLIEZ0Eg"/>
+</div>
+<p class="text-sm text-gray-400 font-sans leading-tight max-w-[140px]">Bach, Vivaldi &amp; <br/><span class="text-primary hover:underline cursor-pointer">3 more</span></p>
+</div>
+</div>
+</div>
+<!-- ERA 2: CLASSICAL -->
+<div class="group relative flex gap-5 mb-12">
+<!-- Timeline Node -->
+<div class="flex flex-col items-center shrink-0 w-8 pt-2 relative z-10">
+<div class="flex items-center justify-center w-3 h-3 rounded-full bg-gray-600 ring-4 ring-background-dark group-hover:bg-primary group-hover:scale-125 transition-all"></div>
+</div>
+<!-- Content Card -->
+<div class="flex-1 min-w-0">
+<!-- Date Label -->
+<div class="flex items-baseline gap-2 mb-3">
+<span class="text-3xl font-bold text-white/80 italic group-hover:text-primary transition-colors">1750</span>
+<span class="text-sm text-gray-400 font-sans tracking-wider">— 1820</span>
+</div>
+<!-- Main Card -->
+<div class="relative overflow-hidden rounded-2xl bg-surface-dark shadow-xl border border-white/5 group-active:scale-[0.98] transition-transform duration-300">
+<div class="absolute inset-0 bg-cover bg-center opacity-50 mix-blend-overlay transition-transform duration-700 group-hover:scale-110" data-alt="Abstract classical greek columns symmetrical pattern" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDL7k6fsjUO6sCoLUaw6HmbSOE50s0q7hXekNOwEhaHD7-KhxCDzFnN0oiR6JAiVxJdedwOqugnZOfJg1gfhaBQjYDzQR36qjS3NZ_IW4qLbbkPzYWgyZxk7fkC_U2F_Lk6fuEyXPsB_MyWUsvRgo6HyEYLzOFqADYQbcYGXBrkBL2sja4yu6fbiImXBe7pjOwuD4cUoHGyShO4k4m7v6D1-i5iUirOPnceHRSupdyr_j9W4uF30fy6NNzr4v7JtMi3GzoK0xYbgo7k");'>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/50 to-transparent"></div>
+<div class="relative p-5 pt-32 flex flex-col gap-3">
+<div>
+<h2 class="text-3xl font-bold text-white leading-tight mb-1">Classical</h2>
+<p class="text-lg text-gray-200 font-light italic">Order and Melody</p>
+</div>
+<div class="flex flex-wrap gap-2 mt-2">
+<span class="inline-flex items-center px-3 py-1 rounded-lg bg-white/10 backdrop-blur-md border border-white/10 text-xs font-medium text-white tracking-wide">
+                                Sonata Form
+                            </span>
+<span class="inline-flex items-center px-3 py-1 rounded-lg bg-white/10 backdrop-blur-md border border-white/10 text-xs font-medium text-white tracking-wide">
+                                Symmetry
+                            </span>
+</div>
+</div>
+</div>
+<!-- Composer Cameos -->
+<div class="flex items-center gap-4 mt-4 pl-2">
+<div class="flex -space-x-3 overflow-visible">
+<img alt="Portrait of Wolfgang Amadeus Mozart" class="inline-block h-12 w-12 rounded-full ring-2 ring-background-dark object-cover grayscale contrast-125 hover:grayscale-0 hover:scale-110 transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBW_WBHUUuCeHBJp15E1wvxB-4ySpxPMc-7STlzBpOuSrbaow8eSE0_Z40AX0v1__GFbGHkrnSGxjbyrttLpvovI4hx3ZPQ_fsURg1vMezmohn9NPAtrXQ38-70T1F4jXvafzUnjJBdTsn4B9GMpUnVX0spdMzDb8YbYgYZ9-SrBnwH_lk5ESQoIhnANaQ2C5nimi9nlOu1mxBz6ViW_snmtzCibKQdoVO0HvRBPHqZU2ENsFoWV-ZKk0TJlL_EiOYKZ1Wtk-r-PfDW"/>
+<img alt="Portrait of Joseph Haydn" class="inline-block h-12 w-12 rounded-full ring-2 ring-background-dark object-cover grayscale contrast-125 hover:grayscale-0 hover:scale-110 transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1a8pr3e0GhRHrxZWP3E5oIv_D9Cp8UhUv_RfWdx1H613zE9OUjnZVd0a2McSbbS0ib3r_uthp8ZQgx-bhJcsIsDnHSok5AIY9qRsTZiOrxENb2WqHtvXC8ecN3q-Nrpbe9TVEui6RMqXQpFsyNLGT16-QHFoQ73JXWhpKnltrX9kFZebZfeEMNN4wbmneBS8_39x_L4WVjq_AtpEugxA4F5R-Q-Vp0AczTypNXqmmiQTmbczjDgHTKhbTPSj2sqJAPUxjGvRxB46Y"/>
+</div>
+<p class="text-sm text-gray-400 font-sans leading-tight max-w-[140px]">Mozart, Haydn &amp; <br/><span class="text-primary hover:underline cursor-pointer">5 more</span></p>
+</div>
+</div>
+</div>
+<!-- ERA 3: ROMANTIC -->
+<div class="group relative flex gap-5 mb-12">
+<!-- Timeline Node -->
+<div class="flex flex-col items-center shrink-0 w-8 pt-2 relative z-10">
+<div class="flex items-center justify-center w-3 h-3 rounded-full bg-gray-600 ring-4 ring-background-dark group-hover:bg-primary group-hover:scale-125 transition-all"></div>
+</div>
+<!-- Content Card -->
+<div class="flex-1 min-w-0">
+<!-- Date Label -->
+<div class="flex items-baseline gap-2 mb-3">
+<span class="text-3xl font-bold text-white/80 italic group-hover:text-primary transition-colors">1800</span>
+<span class="text-sm text-gray-400 font-sans tracking-wider">— 1910</span>
+</div>
+<!-- Main Card -->
+<div class="relative overflow-hidden rounded-2xl bg-surface-dark shadow-xl border border-white/5 group-active:scale-[0.98] transition-transform duration-300">
+<div class="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay transition-transform duration-700 group-hover:scale-110" data-alt="Dark stormy abstract painting representing romantic era emotions" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAI3DY-9ObtQCPvvluUBp3d5uYWDqSkzhjkXY5_YEi6l43lfTGp15m1YImjw9NDJ7cOg2wYqUE8SagCa77YVUubAvtyoKkSTmj3YbHQRF_23DhRDeSM9jo9PRaGnvu8UBbGhv-IGR28zMeMnlYp7xzp_Fw_GTGqYQ2nWEpjp4iwINN3lUYG3P3TxysiFnaM0-el_tY1FJUViTNBeQ6w_ZdyB46lnFl54HdVc2ofTTnn_3peOCFl3ISzLomji_A4rPRfjoHBX6ow9lcg");'>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/50 to-transparent"></div>
+<div class="relative p-5 pt-32 flex flex-col gap-3">
+<div>
+<h2 class="text-3xl font-bold text-white leading-tight mb-1">Romantic</h2>
+<p class="text-lg text-gray-200 font-light italic">Emotion Unleashed</p>
+</div>
+<div class="flex flex-wrap gap-2 mt-2">
+<span class="inline-flex items-center px-3 py-1 rounded-lg bg-white/10 backdrop-blur-md border border-white/10 text-xs font-medium text-white tracking-wide">
+                                Chromaticism
+                            </span>
+<span class="inline-flex items-center px-3 py-1 rounded-lg bg-white/10 backdrop-blur-md border border-white/10 text-xs font-medium text-white tracking-wide">
+                                Program Music
+                            </span>
+</div>
+</div>
+</div>
+<!-- Composer Cameos -->
+<div class="flex items-center gap-4 mt-4 pl-2">
+<div class="flex -space-x-3 overflow-visible">
+<img alt="Portrait of Ludwig van Beethoven" class="inline-block h-12 w-12 rounded-full ring-2 ring-background-dark object-cover grayscale contrast-125 hover:grayscale-0 hover:scale-110 transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuMTR559w7S9jxtGL3_oeHSwa-xbABixU8TBjPZ58t-p6xUHvifJLqy37vewvLc016RNesLNQfH1bU2ZuBcTmtsRsVXmzsh-hP0lH0E0Dc8X7uVr9K-UJTZJjB_Z_r8cYzdVxgUZM63lq9tuOFzgLJczPbsfFSeDEkrVUpqbVeam5OTG5V_of1kAJjb381f816HeBQUGaknfi12hx10eFwV3jsnRri22P5JTKYNDPO4Vfh9s6Yw638lcQy3SmhMY45fBo2cf8DhIQO"/>
+<img alt="Portrait of Pyotr Ilyich Tchaikovsky" class="inline-block h-12 w-12 rounded-full ring-2 ring-background-dark object-cover grayscale contrast-125 hover:grayscale-0 hover:scale-110 transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9CciHnXM-MEbAfGzU8dgZ4uO4C05FINmeKBmbaTMscgACY7Cv1Yc0g-FRnm7dL-TFDxIdAch65pSQ2kM3IV48qjgE4eJ8ov-Ht-qg4BmngCZIsu8O9Bcsq-0NDtKvks0GwMrgIQJDvdCCD_ib9QxZM9FPkcv2Fy3myKkqCpQbie-ONCVNr8Qfg0H6sbfKe4aoLg3sWkYcda9L91L6oE7R4n8FKNM7qU5CP7NZKfGuWeBeEkh56hdPi7SXG4N2VhwzKavupS6hfghA"/>
+</div>
+<p class="text-sm text-gray-400 font-sans leading-tight max-w-[140px]">Beethoven, Tchaikovsky</p>
+</div>
+</div>
+</div>
+<!-- End Spacer / Future Eras -->
+<div class="group relative flex gap-5 opacity-40">
+<div class="flex flex-col items-center shrink-0 w-8 pt-2 relative z-10">
+<div class="flex items-center justify-center w-2 h-2 rounded-full bg-gray-700 ring-4 ring-background-dark"></div>
+</div>
+<div class="flex-1 py-1">
+<p class="text-lg italic text-gray-500">20th Century &amp; Beyond...</p>
+</div>
+</div>
+</main>
+<!-- Audio Preview FAB -->
+<button class="fixed bottom-6 right-6 z-40 flex items-center justify-center w-16 h-16 rounded-full bg-primary text-white shadow-[0_4px_20px_rgba(17,82,212,0.5)] hover:bg-blue-600 hover:scale-105 active:scale-95 transition-all duration-300 group">
+<span class="material-symbols-outlined text-3xl group-hover:animate-pulse">play_arrow</span>
+<!-- Ripple effect visual (pseudo element logic in pure css usually but simplified here) -->
+<span class="absolute inset-0 rounded-full border border-white/20 animate-ping opacity-20"></span>
+</button>
+<!-- Deep Dive Sheet Hint (Interactive Prompt) -->
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background-dark via-background-dark/95 to-transparent pointer-events-none z-30 flex justify-center pb-8">
+<p class="text-xs text-white/40 uppercase tracking-[0.2em] font-medium animate-bounce">Tap card to explore</p>
+</div>
+</body></html>

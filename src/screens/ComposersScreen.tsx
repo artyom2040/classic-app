@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -10,14 +10,19 @@ import {
 
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
-import { ScreenContainer, ScreenHeader, ListCard, ListCardAvatar } from '../components/ui';
+import { ScreenContainer, ScreenHeader, ListCard, ListCardAvatar, ErrorUI, SkeletonGrid } from '../components/ui';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList, Composer, Period } from '../types';
 import { hapticSelection } from '../utils/haptics';
+import { useAsyncData } from '../hooks';
+import { DataService } from '../services/dataService';
+import { createLogger } from '../utils/logger';
 
 import composersData from '../data/composers.json';
 import periodsData from '../data/periods.json';
+
+const log = createLogger('ComposersScreen');
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -36,8 +41,34 @@ export default function ComposersScreen() {
   const [selectedPeriod, setSelectedPeriod] = useState<string>('all');
   const [refreshing, setRefreshing] = useState(false);
 
-  const periods: Period[] = periodsData.periods;
-  const composers: Composer[] = composersData.composers;
+  // Fetch composers and periods with error handling
+  const fetchComposers = useCallback(() => DataService.getComposers(), []);
+  const fetchPeriods = useCallback(() => DataService.getPeriods(), []);
+
+  const {
+    data: composers,
+    error: composersError,
+    isLoading: composersLoading,
+    retry: retryComposers,
+  } = useAsyncData(fetchComposers, composersData.composers as Composer[], {
+    onError: (err) => log.error('Failed to load composers', { error: err.message }),
+  });
+
+  const {
+    data: periods,
+    error: periodsError,
+    isLoading: periodsLoading,
+    retry: retryPeriods,
+  } = useAsyncData(fetchPeriods, periodsData.periods as Period[], {
+    onError: (err) => log.error('Failed to load periods', { error: err.message }),
+  });
+
+  const isLoading = composersLoading || periodsLoading;
+  const error = composersError || periodsError;
+  const handleRetry = () => {
+    if (composersError) retryComposers();
+    if (periodsError) retryPeriods();
+  };
 
   const sections: ComposerSection[] = useMemo(() => {
     const byPeriod = periods.map(period => ({
@@ -83,6 +114,30 @@ export default function ComposersScreen() {
       <Text style={[styles.sectionCount, { color: section.color }]}>{section.data.length} composers</Text>
     </View>
   );
+
+  // Show error UI if fetch failed
+  if (error) {
+    return (
+      <ScreenContainer padded={false}>
+        <ScreenHeader title="Composers" />
+        <ErrorUI
+          title="Failed to load composers"
+          message={error.message}
+          onRetry={handleRetry}
+        />
+      </ScreenContainer>
+    );
+  }
+
+  // Show skeleton while loading
+  if (isLoading) {
+    return (
+      <ScreenContainer padded={false}>
+        <ScreenHeader title="Composers" />
+        <SkeletonGrid count={8} />
+      </ScreenContainer>
+    );
+  }
 
   return (
     <ScreenContainer padded={false}>

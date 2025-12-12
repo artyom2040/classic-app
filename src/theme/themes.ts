@@ -1,6 +1,6 @@
 // Theme definitions for Context Composer
 
-export type ThemeName = 'dark' | 'light' | 'classic' | 'skeuomorphic' | 'neobrutalist' | 'liquidglass';
+export type ThemeName = 'dark' | 'light' | 'classic' | 'skeuomorphic' | 'neobrutalist' | 'liquidglass' | 'stitch';
 
 export interface Theme {
   name: ThemeName;
@@ -329,6 +329,56 @@ export const liquidGlassTheme: Theme = {
   isDark: false,
 };
 
+// ============================================
+// STITCH THEME (Google Design-Inspired, Premium Dark)
+// ============================================
+export const stitchTheme: Theme = {
+  name: 'stitch',
+  displayName: 'Stitch',
+  description: 'Premium dark with deep purple accents',
+  colors: {
+    // Base colors - warm dark with purple tint
+    background: '#161121',           // Deep purple-black
+    surface: '#221a32',              // Purple-tinted surface
+    surfaceLight: '#2d2442',         // Lighter purple surface
+    surfaceElevated: '#352c4a',      // Elevated elements
+    // Primary - vibrant purple
+    primary: '#5417cf',              // Google Stitch purple
+    primaryLight: '#7b3ff0',         // Lighter purple
+    secondary: '#a593c8',            // Muted purple for secondary text
+    accent: '#4ECDC4',               // Teal accent
+    // Text - high contrast on dark
+    text: '#FFFFFF',
+    textSecondary: '#a593c8',        // Purple-tinted secondary
+    textMuted: '#6b5a8a',            // Muted purple
+    textInverse: '#161121',
+    // Borders - subtle
+    border: 'rgba(255, 255, 255, 0.05)',
+    borderLight: 'rgba(255, 255, 255, 0.1)',
+    // Status colors
+    success: '#34C759',
+    warning: '#FF9500',
+    error: '#FF3B30',
+    // Gradients - for hero cards
+    gradientStart: '#221a32',
+    gradientEnd: '#161121',
+  },
+  spacing: { xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48 },
+  borderRadius: { xs: 8, sm: 12, md: 16, lg: 24, xl: 32, full: 9999 },  // More rounded
+  shadows: {
+    // Purple-tinted shadows for depth
+    sm: { shadowColor: '#5417cf', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.15, shadowRadius: 8, elevation: 3 },
+    md: { shadowColor: '#5417cf', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.2, shadowRadius: 16, elevation: 6 },
+    lg: { shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 12 },
+  },
+  typography: {
+    fontFamily: 'System',  // Will use Noto Serif when fonts are loaded
+    sizes: { xs: 10, sm: 12, md: 14, lg: 16, xl: 20, xxl: 30, hero: 40 },
+  },
+  cardStyle: 'elevated',
+  isDark: true,
+};
+
 // Theme map for easy access
 export const themes: Record<ThemeName, Theme> = {
   dark: darkTheme,
@@ -337,6 +387,8 @@ export const themes: Record<ThemeName, Theme> = {
   skeuomorphic: skeuomorphicTheme,
   neobrutalist: neobrutalistTheme,
   liquidglass: liquidGlassTheme,
+  stitch: stitchTheme,
 };
 
 export const themeList = Object.values(themes);
+

@@ -39,6 +39,8 @@ interface ScreenHeaderProps {
     subtitle?: string;
     /** Badge next to title (e.g., "Labs") */
     badge?: { text: string; color: string };
+    /** Transparent background (for overlay headers) */
+    transparent?: boolean;
 }
 
 export function ScreenHeader({
@@ -51,6 +53,7 @@ export function ScreenHeader({
     large = false,
     subtitle,
     badge,
+    transparent = false,
 }: ScreenHeaderProps) {
     const navigation = useNavigation();
     const { theme } = useTheme();
@@ -79,7 +82,10 @@ export function ScreenHeader({
             {/* Left: Back button or spacer */}
             {shouldShowBack ? (
                 <TouchableOpacity
-                    style={[styles.backButton, { backgroundColor: t.colors.surfaceLight }]}
+                    style={[
+                        styles.backButton,
+                        { backgroundColor: transparent ? 'rgba(255,255,255,0.1)' : t.colors.surfaceLight }
+                    ]}
                     onPress={handleBack}
                     accessibilityRole="button"
                     accessibilityLabel="Go back"

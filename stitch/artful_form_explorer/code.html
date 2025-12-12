@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Artful Form Explorer</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#590df2",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#161022",
+                        "surface-dark": "#231b33",
+                    },
+                    fontFamily: {
+                        "display": ["Newsreader", "serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-white overflow-x-hidden antialiased selection:bg-primary selection:text-white">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto bg-background-light dark:bg-background-dark shadow-2xl overflow-hidden">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-20 flex items-center bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md p-4 pb-2 justify-between">
+<button class="text-gray-900 dark:text-white flex size-12 shrink-0 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<h2 class="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] opacity-0 animate-fade-in">Explorer</h2>
+<div class="flex w-12 items-center justify-end">
+<button class="flex size-12 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-transparent text-gray-900 dark:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[24px]">search</span>
+</button>
+</div>
+</div>
+<!-- Hero Section -->
+<div class="relative flex flex-col px-6 pt-4 pb-6">
+<span class="text-primary font-medium tracking-wider text-sm mb-2 uppercase italic">Form &amp; Structure</span>
+<h1 class="text-gray-900 dark:text-white text-[42px] font-medium leading-[1.1] italic">The Architecture of Sound</h1>
+<p class="text-gray-600 dark:text-gray-300 text-lg font-normal leading-relaxed pt-4">
+                Musical form is the blueprint of sound. Explore the hidden structures that give classical music its narrative power.
+            </p>
+</div>
+<!-- Carousel Section: Form Cards -->
+<div class="relative flex flex-col w-full pb-8">
+<div class="flex items-center justify-between px-6 pb-4">
+<h3 class="text-xl font-bold italic">Browse Forms</h3>
+<span class="text-sm text-primary cursor-pointer hover:underline">View All</span>
+</div>
+<div class="flex overflow-x-auto no-scrollbar pl-6 pr-6 pb-4 snap-x snap-mandatory">
+<div class="flex gap-4">
+<!-- Card 1: Sonata Allegro -->
+<div class="snap-center shrink-0 w-72 flex flex-col gap-0 rounded-xl bg-white dark:bg-surface-dark shadow-lg dark:shadow-none overflow-hidden group cursor-pointer transition-transform duration-300 hover:scale-[1.02]">
+<div class="relative w-full aspect-[4/3] bg-gray-100 dark:bg-gray-800 overflow-hidden">
+<div class="absolute inset-0 bg-primary/10 mix-blend-overlay z-10"></div>
+<div class="w-full h-full bg-center bg-cover transition-transform duration-700 group-hover:scale-110 opacity-80" data-alt="Abstract geometric lines forming a triangle shape representing musical structure" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAqkVVLIhEOCCKw0NWzoMAZvnJcFCaguzChrSLcTtdyvnhvpyNpaZ845_62rbEzzGaOQ7alKVLuLT0ZWol2VHGeo5lr0yOZGz9mhC7t8pSTluZxmnFQ8vxw-bDZ6ECD3C1gg8WKFmrLb-DnESnnUgtuzN_8w3InGO-jFNeLvs4DGM9Qv43XjKfz5PkW06ocLL9IVedAUgmYTw79UcLTMMlekpqD-bBlwsjuC3DVbZtzxNIAh7_oKIiHOFbzvmuJDbftRzWkSa8aIsk4");'>
+</div>
+<div class="absolute top-3 right-3 z-20 bg-black/40 backdrop-blur-md rounded-full px-3 py-1">
+<span class="text-xs text-white font-medium">Core</span>
+</div>
+</div>
+<div class="p-5 flex flex-col gap-1">
+<div class="flex justify-between items-start">
+<h4 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">Sonata Allegro</h4>
+<span class="material-symbols-outlined text-primary text-[20px]">arrow_forward</span>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 italic">The dramatic journey of conflict and resolution.</p>
+</div>
+</div>
+<!-- Card 2: Rondo -->
+<div class="snap-center shrink-0 w-72 flex flex-col gap-0 rounded-xl bg-white dark:bg-surface-dark shadow-lg dark:shadow-none overflow-hidden group cursor-pointer transition-transform duration-300 hover:scale-[1.02]">
+<div class="relative w-full aspect-[4/3] bg-gray-100 dark:bg-gray-800 overflow-hidden">
+<div class="absolute inset-0 bg-primary/10 mix-blend-overlay z-10"></div>
+<div class="w-full h-full bg-center bg-cover transition-transform duration-700 group-hover:scale-110 opacity-80" data-alt="Abstract circular repeating patterns in deep violet and black" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBfOVL27RXDj1M16WQWS4PlLgo1YrEXEsjSxWqoEQDu2I6AQOX5VsAfsre13GcCZz9kvoerQ1PFcqS1IHo0N0L708aZMav1uD5lUmCgc0hZXGEEk2oYZIsqQuMuROX6lgodk2JA_wXFHWeAQZJ3LNvtUi5gXqPlc_Nv9_jA6di1d4i-3w38l9nl0FMHSB0tVvq6D9ARhDM1tS7PfS409rkCjOHZoqgItEK4qpKDJsMQUygSiQvYbMlpnSi-UI3gGmBZps62CuAxzwFM");'>
+</div>
+</div>
+<div class="p-5 flex flex-col gap-1">
+<div class="flex justify-between items-start">
+<h4 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">Rondo</h4>
+<span class="material-symbols-outlined text-gray-400 dark:text-gray-600 text-[20px]">arrow_forward</span>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 italic">The cyclical return of a familiar theme.</p>
+</div>
+</div>
+<!-- Card 3: Fugue -->
+<div class="snap-center shrink-0 w-72 flex flex-col gap-0 rounded-xl bg-white dark:bg-surface-dark shadow-lg dark:shadow-none overflow-hidden group cursor-pointer transition-transform duration-300 hover:scale-[1.02]">
+<div class="relative w-full aspect-[4/3] bg-gray-100 dark:bg-gray-800 overflow-hidden">
+<div class="absolute inset-0 bg-primary/10 mix-blend-overlay z-10"></div>
+<div class="w-full h-full bg-center bg-cover transition-transform duration-700 group-hover:scale-110 opacity-80" data-alt="Interwoven complex lines resembling a wireframe mesh structure" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDvlcYiMByZMXT-JafmJ29DP8UdJXD1RVfHqFOXN9p7bHL77ze7ENqqMWOo1LnmnQ1tvzkPnYScOtkA6Ceb6Zbbd5tZR21TJEdGD0le-2i0zH8vx4_rEC1Dtm5IuYd6YPt31CHbNOsoq-eD6KVImQWhZ7GJrnv7wM2o-dNghapF6NHRsLOjCJWJTUde8YIblDXCptQ81DBe11rJQUjo6rxRFBUX8ASxH5WolQcehTvBd9ewBV4ezDTBNya3L5cQnsfXn-VT2DSW6quV");'>
+</div>
+</div>
+<div class="p-5 flex flex-col gap-1">
+<div class="flex justify-between items-start">
+<h4 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">Fugue</h4>
+<span class="material-symbols-outlined text-gray-400 dark:text-gray-600 text-[20px]">arrow_forward</span>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 italic">Complex, interwoven voices chasing one another.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Curated Examples List -->
+<div class="flex flex-col px-6 pb-32">
+<h2 class="text-gray-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] pb-5 italic">Curated Examples</h2>
+<div class="flex flex-col gap-4">
+<!-- Item 1 -->
+<div class="flex items-center gap-4 p-3 rounded-lg hover:bg-white dark:hover:bg-surface-dark/50 transition-colors group cursor-pointer">
+<div class="relative shrink-0 size-14 rounded-lg overflow-hidden">
+<img alt="Album Art" class="size-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Close up of classic oil painting texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6VIwNKmHppsPCOrLH8J5CnXtYDlhftlIvm8eMm0acdfdDUI8BvhAdbGBsfuPk4DlKe1r7zXmH8glBVUzYQOB5V8YCts9Z3tcv82DdcK8onFgGlxLt0gXzhsy5UFK0ZzucC9IUzELdSyGoR_FZoIDo6nWjz9PRoLKV923EqLy3Q7160ZyHmYITZEFKC8gqhsdcVZ2QjLnV87nYoBEhG6g14K6h9U3keTxgRFvYUUZ-3JxkKJzFtuJPH_uFjhTYnP5B9Pty83c0_8FV"/>
+<div class="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition-colors">
+<span class="material-symbols-outlined text-white text-[24px]">play_circle</span>
+</div>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<h4 class="text-base font-bold text-gray-900 dark:text-white truncate">Symphony No. 5</h4>
+<p class="text-sm text-gray-500 dark:text-gray-400 truncate italic">Ludwig van Beethoven • Sonata Form</p>
+</div>
+<button class="shrink-0 text-gray-400 hover:text-primary">
+<span class="material-symbols-outlined text-[24px]">more_vert</span>
+</button>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center gap-4 p-3 rounded-lg bg-white dark:bg-surface-dark/40 border border-primary/20 transition-colors group cursor-pointer shadow-sm">
+<div class="relative shrink-0 size-14 rounded-lg overflow-hidden">
+<div class="absolute inset-0 bg-primary/20 animate-pulse z-0"></div>
+<img alt="Album Art" class="size-full object-cover relative z-10" data-alt="Abstract sheet music notes pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSJzjSaf9pccCcKXMHcPs4KUg2MdoCIUlEZiCYSRQT_lZGs3feOfks7R6ofKaDtgtjc1mT4Z83iUXjpzyqWTTyK3K27rd3iy4hDS3Qj6TZdQpulT5UzaRT8KCJ2-lAyyTCt_Ot-Us6-YxsNvQkFc9xjn4a4UF0ddQCx5IF5v7NZ-AL9hzzfNnBRmyCtWTZ2VHpKjvJ58sz3sCxLqDiesmuYxNc6F7Lq6_KBzZREdGU25LuLSahtm2dMQBuEYlzF_CuX_2FvrSvjH6W"/>
+<div class="absolute inset-0 flex items-center justify-center z-20 bg-black/20">
+<span class="material-symbols-outlined text-primary text-[28px] drop-shadow-md">equalizer</span>
+</div>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<h4 class="text-base font-bold text-primary truncate">Rondo Alla Turca</h4>
+<p class="text-sm text-gray-500 dark:text-gray-300 truncate italic">W.A. Mozart • Rondo</p>
+</div>
+<button class="shrink-0 text-primary">
+<span class="material-symbols-outlined text-[24px] fill-1">favorite</span>
+</button>
+</div>
+<!-- Item 3 -->
+<div class="flex items-center gap-4 p-3 rounded-lg hover:bg-white dark:hover:bg-surface-dark/50 transition-colors group cursor-pointer">
+<div class="relative shrink-0 size-14 rounded-lg overflow-hidden">
+<img alt="Album Art" class="size-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Dark forest landscape oil painting style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJy9m-krQ3p9mRHAKrtqS2tqiCL0VVnmXzVTv0CzQrRvooLpqUNdfu_-DgZOA7uaj345V9dwtNh-jFt4s1844RaOa_6H22wO7P2fQ2ws0K2cTxo6DvQJF1P8kVLOqdUPInGfP3jqaRCMFuIXZBl314upgIwXVsnZ-H_-Uz47XyzwWW-LeVqyfzyLyvJsVOhv8Bs7GOPQGFLq1nXfLmWd44EUDe6q3JOLycrzg2s5OjK1Vd5DmRSwGIQ5DMOV4jSDf85a-UFJuXquqB"/>
+<div class="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition-colors">
+<span class="material-symbols-outlined text-white text-[24px]">play_circle</span>
+</div>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<h4 class="text-base font-bold text-gray-900 dark:text-white truncate">Little Fugue in G Minor</h4>
+<p class="text-sm text-gray-500 dark:text-gray-400 truncate italic">J.S. Bach • Fugue</p>
+</div>
+<button class="shrink-0 text-gray-400 hover:text-primary">
+<span class="material-symbols-outlined text-[24px]">more_vert</span>
+</button>
+</div>
+<!-- Item 4 -->
+<div class="flex items-center gap-4 p-3 rounded-lg hover:bg-white dark:hover:bg-surface-dark/50 transition-colors group cursor-pointer">
+<div class="relative shrink-0 size-14 rounded-lg overflow-hidden">
+<img alt="Album Art" class="size-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Abstract colorful light painting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpEQSLb8MfzLTBeaUGTaoStxaYyp-vVQMfkNp_NaqY1lJRkfqb25sDDyozfTRqFwg8AC2bZ3N6LKp9V7nkqbJbcF56fvX5VukLFFCMnO94j8iRaKTGJiKpvBRmWlMGe78DbGOAz8_LEADO-N2Le5dgTyOThhHwUywU_ZXBwA3ebpr03oPgVtG9Ba4FqzvYAQ-HBdRQSdjpjFyvahFMRtiFskCumwkqGdlfR9RTKfcvj6jnjM3XVJvaMyKt3FGJIWZENOdVsMnU8jGx"/>
+<div class="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition-colors">
+<span class="material-symbols-outlined text-white text-[24px]">play_circle</span>
+</div>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<h4 class="text-base font-bold text-gray-900 dark:text-white truncate">Enigma Variations</h4>
+<p class="text-sm text-gray-500 dark:text-gray-400 truncate italic">Edward Elgar • Theme &amp; Variations</p>
+</div>
+<button class="shrink-0 text-gray-400 hover:text-primary">
+<span class="material-symbols-outlined text-[24px]">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Deconstructed Player (Bottom Floating) -->
+<div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm z-50">
+<div class="bg-white/10 dark:bg-gray-900/60 backdrop-blur-xl border border-white/10 shadow-2xl rounded-full p-2 pr-4 flex items-center gap-3">
+<div class="size-10 rounded-full bg-gray-800 shrink-0 overflow-hidden relative group cursor-pointer">
+<img alt="Now Playing" class="size-full object-cover animate-[spin_8s_linear_infinite]" data-alt="Spinning record album art abstract" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBG6cKvWsWbG23WJkN29e9wIVJoLIoZG8bjhaIOhARZ3WDAXJ-bMSbv6avIoxjnRbWF1Q7Z5VlCth7vF000UGv_sYf22YQnYjLY_Qw7BsWulrnIRwc8csBncsltcpRUb86xY1q0vhLHGfTcG941HPXOsV1hCOW1vLgu7NPmtW6JGrC2X4tg2uHNfHsEsoJbFh4MBkVoDWv9fG9_ZPZBxb9MR_5xG5D1mWRsa8E2qrVGlT0o92WlD4dZYme36bq0WjlBT6saXZrKfGRN"/>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<span class="text-xs font-bold text-white truncate">Rondo Alla Turca</span>
+<span class="text-[10px] text-primary font-medium tracking-wide uppercase">Now Playing</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="text-white hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[28px]">skip_previous</span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-primary/40 hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[24px] fill-1">pause</span>
+</button>
+<button class="text-white hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[28px]">skip_next</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Composer Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#5417cf",
+              "background-light": "#f6f6f8",
+              "background-dark": "#161121",
+            },
+            fontFamily: {
+              "display": ["Newsreader", "serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 24px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<!-- Top App Bar -->
+<div class="flex flex-col gap-2 p-4 pb-2">
+<div class="flex h-12 items-center justify-between">
+<div class="flex size-10 items-center justify-center text-white dark:text-white">
+<span class="material-symbols-outlined">arrow_back_ios_new</span>
+</div>
+<div class="flex size-10 items-center justify-center text-white dark:text-white">
+<span class="material-symbols-outlined">more_horiz</span>
+</div>
+</div>
+</div>
+<!-- Profile Header -->
+<div class="flex px-4 @container">
+<div class="flex w-full flex-col items-center gap-6">
+<div class="flex flex-col items-center gap-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-32 w-32" data-alt="Stylized duotone portrait of a composer" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDiBpI7Z7lY7PGXozzT9o_NknfRV4hZnB0i9jqnj_xWuv5k2Lcddq8DeHnGAAgz3WeHbb0n7FFEeXkftNLR7unAsZI4UQpViwGbU1oZZmiC_l9LTZLF3JL9ri_TqTY0NMWPnsguZGyxg-lN7bRgiJl_uMzFMyP-MGZ-0HdqcdSEcmOzSd7TfMMFZq-QJGyzg-o6BgPBT-USVSJrCoM-ITet1GKDxNO7ZMazvGMTWedV9whnQ7pcWn0_L2ds7ZqY3OsXEeUO-EGbAcpV");'></div>
+<div class="flex flex-col items-center justify-center">
+<p class="text-3xl font-bold leading-tight tracking-tight text-slate-900 dark:text-white text-center font-display italic">Ludwig van Beethoven</p>
+<p class="text-base font-normal leading-normal text-slate-500 dark:text-slate-400 text-center">1770-1827 | Classical / Romantic</p>
+</div>
+</div>
+<button class="flex min-w-[84px] max-w-[480px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-wide">
+<span class="truncate">View on Timeline</span>
+</button>
+</div>
+</div>
+<!-- Segmented Buttons -->
+<div class="flex px-4 py-5">
+<div class="flex h-12 flex-1 items-center justify-center rounded-lg bg-slate-200 dark:bg-slate-800/50 p-1.5">
+<label class="flex h-full grow cursor-pointer items-center justify-center overflow-hidden rounded-md px-2 has-[:checked]:bg-background-light has-[:checked]:dark:bg-slate-700 has-[:checked]:shadow-sm has-[:checked]:text-slate-900 has-[:checked]:dark:text-white text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal transition-all">
+<span class="truncate">Biography</span>
+<input checked="" class="invisible w-0" name="composer-tab" type="radio" value="Biography"/>
+</label>
+<label class="flex h-full grow cursor-pointer items-center justify-center overflow-hidden rounded-md px-2 has-[:checked]:bg-background-light has-[:checked]:dark:bg-slate-700 has-[:checked]:shadow-sm has-[:checked]:text-slate-900 has-[:checked]:dark:text-white text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal transition-all">
+<span class="truncate">Key Works</span>
+<input class="invisible w-0" name="composer-tab" type="radio" value="Key Works"/>
+</label>
+<label class="flex h-full grow cursor-pointer items-center justify-center overflow-hidden rounded-md px-2 has-[:checked]:bg-background-light has-[:checked]:dark:bg-slate-700 has-[:checked]:shadow-sm has-[:checked]:text-slate-900 has-[:checked]:dark:text-white text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal transition-all">
+<span class="truncate">Influence</span>
+<input class="invisible w-0" name="composer-tab" type="radio" value="Influence"/>
+</label>
+</div>
+</div>
+<!-- Biography Content -->
+<div class="px-4 pb-8">
+<p class="text-base font-normal leading-relaxed text-slate-600 dark:text-slate-300">
+            Ludwig van Beethoven was a German composer and pianist. A crucial figure in the transition between the Classical and Romantic eras in classical music, he remains one of the most recognized and influential of all composers.
+        </p>
+<p class="mt-4 text-base font-normal leading-relaxed text-slate-600 dark:text-slate-300">
+            His best-known compositions include 9 symphonies, 5 piano concertos, 1 violin concerto, 32 piano sonatas, and 16 string quartets. He also composed other chamber music, choral works, and songs.
+        </p>
+</div>
+<!-- Recommended Listening Section -->
+<div class="px-4 pb-8">
+<h3 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white text-left pb-4 font-display italic">Recommended Listening</h3>
+<div class="flex flex-col gap-4 rounded-xl bg-slate-200/50 dark:bg-slate-800/50 p-4">
+<div class="flex items-center gap-4">
+<div class="h-20 w-20 shrink-0 rounded-lg bg-cover bg-center" data-alt="Abstract musical art with violin" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCzbr8mipgDdC1Vog3yrPBiiaZe7OYvtZpMDxdq2eaIg4v5VB5cvcpFFxxPKLG9hdDkhkW49S03D7Ge0_pbA0Alx1lZfGh3RpMsUBITJUqc9lIJMJDYbDpBpAaN2YjNlZgKwzVI-xridRLeFaStEAYvKTnxRqpHhcuZgA-zfp64KJVhbdF8R0gGMLtmQGGfT9B7w9yJbEoVf5PA5eBO8f8o8Fbjsy1VJKb04SDsKMr9cimWb2w9hFvU48HmzqtLsPBk7mOLaC8MUJkr');"></div>
+<div class="flex flex-col grow">
+<p class="text-lg font-bold text-slate-900 dark:text-white">Getting Started</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">A curated playlist of essential works to begin your journey.</p>
+</div>
+</div>
+<button class="flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-wide">
+<span class="material-symbols-outlined !text-2xl">play_arrow</span>
+<span class="truncate">Shuffle Play</span>
+</button>
+</div>
+</div>
+<!-- Key Works List Section -->
+<div class="px-4 pb-8">
+<h3 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white text-left pb-4 font-display italic">Key Works</h3>
+<div class="flex flex-col divide-y divide-slate-200/50 dark:divide-slate-800">
+<div class="flex items-center py-4">
+<div class="grow">
+<p class="font-bold text-slate-900 dark:text-white">Symphony No. 5</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">1808</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex size-10 items-center justify-center rounded-full text-primary">
+<span class="material-symbols-outlined !text-3xl">play_circle</span>
+</button>
+<div class="flex size-10 items-center justify-center text-slate-400">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+</div>
+<div class="flex items-center py-4">
+<div class="grow">
+<p class="font-bold text-slate-900 dark:text-white">Moonlight Sonata</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">1801</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex size-10 items-center justify-center rounded-full text-primary">
+<span class="material-symbols-outlined !text-3xl">play_circle</span>
+</button>
+<div class="flex size-10 items-center justify-center text-slate-400">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+</div>
+<div class="flex items-center py-4">
+<div class="grow">
+<p class="font-bold text-slate-900 dark:text-white">Für Elise</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">1810</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex size-10 items-center justify-center rounded-full text-primary">
+<span class="material-symbols-outlined !text-3xl">play_circle</span>
+</button>
+<div class="flex size-10 items-center justify-center text-slate-400">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

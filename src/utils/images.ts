@@ -1,8 +1,8 @@
 // Public domain composer portraits from Wikimedia Commons
-// These are all historical portraits in the public domain
+// All portraits are AI-generated classical oil painting style images
 
 export const COMPOSER_PORTRAITS: Record<string, any> = {
-  // Generated Portraits
+  // === Generated Portraits - Original batch (10) ===
   bach: require('../../assets/generated/composer_bach_1765122792731.png'),
   mozart: require('../../assets/generated/composer_mozart_1765122806578.png'),
   beethoven: require('../../assets/generated/composer_beethoven_1765122823271.png'),
@@ -14,41 +14,89 @@ export const COMPOSER_PORTRAITS: Record<string, any> = {
   debussy: require('../../assets/generated/composer_debussy_1765122939084.png'),
   stravinsky: require('../../assets/generated/composer_stravinsky_1765122956129.png'),
 
-  // Medieval (placeholders / Wikimedia where available)
-  hildegard: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Heiligenlexikon_Hildegard_von_Bingen.jpg/220px-Heiligenlexikon_Hildegard_von_Bingen.jpg',
-  machaut: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Guillaume_de_Machaut.jpg/220px-Guillaume_de_Machaut.jpg',
-  perotin: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Perotin.jpg/220px-Perotin.jpg',
-  leonin: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Perotinus.jpg/220px-Perotinus.jpg',
-  guido_arezzo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Guido_von_Arezzo.jpg/220px-Guido_von_Arezzo.jpg',
-  adam_st_victor: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Adam_of_Saint_Victor_-_Stained_Glass_Window.jpg/220px-Adam_of_Saint_Victor_-_Stained_Glass_Window.jpg',
-  adam_de_la_halle: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Adam_de_la_Halle.png/220px-Adam_de_la_Halle.png',
-  troubadours: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Chansonnier_du_Roy_1.jpg/220px-Chansonnier_du_Roy_1.jpg',
-  le_jeune: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Claude_Le_Jeune_-_1580.jpg/220px-Claude_Le_Jeune_-_1580.jpg',
-  dunstable: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Dunstaple.jpg/220px-Dunstaple.jpg',
+  // === Generated Portraits - Medieval Era (10) ===
+  hildegard: require('../../assets/generated/composer_hildegard_1765373119533.png'),
+  machaut: require('../../assets/generated/composer_machaut_1765373141833.png'),
+  perotin: require('../../assets/generated/composer_perotin_1765373158990.png'),
+  leonin: require('../../assets/generated/composer_leonin_1765373194121.png'),
+  guido_arezzo: require('../../assets/generated/composer_guido_arezzo_1765373210265.png'),
+  adam_st_victor: require('../../assets/generated/composer_adam_st_victor_1765373225560.png'),
+  adam_de_la_halle: require('../../assets/generated/composer_adam_de_la_halle_1765373254003.png'),
+  troubadours: require('../../assets/generated/composer_troubadours_1765373269969.png'),
+  le_jeune: require('../../assets/generated/composer_le_jeune_1765373286222.png'),
+  dunstable: require('../../assets/generated/composer_dunstable_1765373308746.png'),
 
-  // Romantic (Overrides for generated, keeping others as fallback if needed)
-  schubert: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Franz_Schubert_by_Wilhelm_August_Rieder_1875_larger_version.png/220px-Franz_Schubert_by_Wilhelm_August_Rieder_1875_larger_version.png',
-  liszt: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Franz_Liszt_1858.jpg/220px-Franz_Liszt_1858.jpg',
-  dvorak: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Dvorak.jpg/220px-Dvorak.jpg',
-  wagner: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/RichardWagner.jpg/220px-RichardWagner.jpg',
-  verdi: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Giuseppe_Verdi_by_Giovanni_Boldini.jpg/220px-Giuseppe_Verdi_by_Giovanni_Boldini.jpg',
-  mendelssohn: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Felix_Mendelssohn_Bartholdy.jpg/220px-Felix_Mendelssohn_Bartholdy.jpg',
-  schumann: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Robert_Schumann_1839.jpg/220px-Robert_Schumann_1839.jpg',
+  // === Generated Portraits - Renaissance Era (10) ===
+  byrd: require('../../assets/generated/composer_byrd_1765373343568.png'),
+  palestrina: require('../../assets/generated/composer_palestrina_1765373362116.png'),
+  josquin: require('../../assets/generated/composer_josquin_1765373378523.png'),
+  tallis: require('../../assets/generated/composer_tallis_1765373404409.png'),
+  lassus: require('../../assets/generated/composer_lassus_1765373420398.png'),
+  gabrieli: require('../../assets/generated/composer_gabrieli_1765373433869.png'),
+  victoria: require('../../assets/generated/composer_victoria_1765373463741.png'),
+  dowland: require('../../assets/generated/composer_dowland_1765373483071.png'),
+  gesualdo: require('../../assets/generated/composer_gesualdo_1765373497904.png'),
+  monteverdi_early: require('../../assets/generated/composer_monteverdi_1765373511537.png'),
 
-  // Late Romantic / Impressionist
-  ravel: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Maurice_Ravel_1925.jpg/220px-Maurice_Ravel_1925.jpg',
-  mahler: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mahler_1909.jpg/220px-Mahler_1909.jpg',
-  rachmaninoff: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Sergei_Rachmaninoff%2C_1901.jpg/220px-Sergei_Rachmaninoff%2C_1901.jpg',
+  // === Generated Portraits - Baroque Era (7) ===
+  purcell: require('../../assets/generated/composer_purcell_1765373541670.png'),
+  d_scarlatti: require('../../assets/generated/composer_d_scarlatti_1765394375900.png'),
+  telemann: require('../../assets/generated/composer_telemann_1765394582356.png'),
+  rameau: require('../../assets/generated/composer_rameau_1765394546269.png'),
+  lully: require('../../assets/generated/composer_lully_1765394602242.png'),
+  corelli: require('../../assets/generated/composer_corelli_1765394623088.png'),
+  a_scarlatti: require('../../assets/generated/composer_a_scarlatti_1765394659055.png'),
 
-  // 20th Century
-  shostakovich: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Dmitri_Shostakovich_credit_Deutsche_Fotothek_adjusted.jpg/220px-Dmitri_Shostakovich_credit_Deutsche_Fotothek_adjusted.jpg',
-  prokofiev: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Sergei_Prokofiev_circa_1918_over_Chair_Bain.jpg/220px-Sergei_Prokofiev_circa_1918_over_Chair_Bain.jpg',
-  bartok: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Bart%C3%B3k_B%C3%A9la_1927.jpg/220px-Bart%C3%B3k_B%C3%A9la_1927.jpg',
-  copland: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Aaron_Copland_1970.jpg/220px-Aaron_Copland_1970.jpg',
-  bernstein: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Leonard_Bernstein_by_Jack_Mitchell.jpg/220px-Leonard_Bernstein_by_Jack_Mitchell.jpg',
-  glass: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Philip_Glass_in_Florence%2C_Italy_-_1993.jpg/220px-Philip_Glass_in_Florence%2C_Italy_-_1993.jpg',
+  // === Generated Portraits - Classical Era (9) ===
+  haydn: require('../../assets/generated/composer_haydn_1765394677242.png'),
+  gluck: require('../../assets/generated/composer_gluck_1765394698732.png'),
+  cpe_bach: require('../../assets/generated/composer_cpe_bach_1765394732776.png'),
+  jc_bach: require('../../assets/generated/composer_jc_bach_1765394752273.png'),
+  clementi: require('../../assets/generated/composer_clementi_1765394769919.png'),
+  boccherini: require('../../assets/generated/composer_boccherini_1765394808217.png'),
+  salieri: require('../../assets/generated/composer_salieri_1765394827041.png'),
+  hummel: require('../../assets/generated/composer_hummel_1765394846896.png'),
+  paganini: require('../../assets/generated/composer_paganini_1765394880630.png'),
 
-  // Additional composers
+  // === Generated Portraits - Romantic Era (7) ===
+  schubert: require('../../assets/generated/composer_schubert_1765394899216.png'),
+  liszt: require('../../assets/generated/composer_liszt_1765394917198.png'),
+  wagner: require('../../assets/generated/composer_wagner_1765394958758.png'),
+  schumann: require('../../assets/generated/composer_schumann_1765394981578.png'),
+  dvorak: require('../../assets/generated/composer_dvorak_1765395000874.png'),
+  mendelssohn: require('../../assets/generated/composer_mendelssohn_1765442154656.png'),
+  verdi: require('../../assets/generated/composer_verdi_1765442170129.png'),
+
+  // === Generated Portraits - Late Romantic / Impressionist (3) ===
+  ravel: require('../../assets/generated/composer_ravel_1765442186196.png'),
+  mahler: require('../../assets/generated/composer_mahler_1765442217052.png'),
+  rachmaninoff: require('../../assets/generated/composer_rachmaninoff_1765442231951.png'),
+
+  // === Generated Portraits - 20th Century / Modern (9) ===
+  shostakovich: require('../../assets/generated/composer_shostakovich_1765442249154.png'),
+  prokofiev: require('../../assets/generated/composer_prokofiev_1765442278813.png'),
+  bartok: require('../../assets/generated/composer_bartok_1765442297493.png'),
+  copland: require('../../assets/generated/composer_copland_1765442313989.png'),
+  bernstein: require('../../assets/generated/composer_bernstein_1765442339051.png'),
+  holst: require('../../assets/generated/composer_holst_1765442361433.png'),
+  vaughan_williams: require('../../assets/generated/composer_vaughan_williams_1765442376758.png'),
+  ives: require('../../assets/generated/composer_ives_1765442406988.png'),
+
+  // === Generated Portraits - Contemporary (8) ===
+  glass: require('../../assets/generated/composer_glass_1765442424554.png'),
+  steve_reich: require('../../assets/generated/composer_steve_reich_1765442439561.png'),
+  john_adams: require('../../assets/generated/composer_john_adams_1765442472092.png'),
+  arvo_part: require('../../assets/generated/composer_arvo_part_1765442493072.png'),
+  tan_dun: require('../../assets/generated/composer_tan_dun_1765442511271.png'),
+  sofia_gubaidulina: require('../../assets/generated/composer_sofia_gubaidulina_1765442546769.png'),
+  caroline_shaw: require('../../assets/generated/composer_caroline_shaw_1765442565840.png'),
+  jennifer_higdon: require('../../assets/generated/composer_jennifer_higdon_1765442581694.png'),
+
+  // === Generated Portraits - Contemporary (final 2) ===
+  max_richter: require('../../assets/generated/composer_max_richter_1765473233189.png'),
+  kaija_saariaho: require('../../assets/generated/composer_kaija_saariaho_1765473249651.png'),
+
+  // === Additional composers (Wikimedia fallback) ===
   puccini: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/GiacomoPuccini.jpg/220px-GiacomoPuccini.jpg',
   sibelius: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Jean_Sibelius%2C_1913.jpg/220px-Jean_Sibelius%2C_1913.jpg',
   grieg: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Edvard_Grieg_%281888%29_by_Elliot_and_Fry_-_02.jpg/220px-Edvard_Grieg_%281888%29_by_Elliot_and_Fry_-_02.jpg',
@@ -56,15 +104,15 @@ export const COMPOSER_PORTRAITS: Record<string, any> = {
   saintSaens: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Camille_Saint-Sa%C3%ABns_by_Pierre_Petit.jpg/220px-Camille_Saint-Sa%C3%ABns_by_Pierre_Petit.jpg',
 };
 
-// Period/Era placeholder images
+// Period/Era landscape images (16:9 format)
 export const ERA_IMAGES: Record<string, any> = {
-  baroque: require('../../assets/generated/era_baroque_1765122657164.png'),
-  classical: require('../../assets/generated/era_classical_1765122673236.png'),
-  romantic: require('../../assets/generated/era_romantic_1765122776629.png'),
-  medieval: require('../../assets/generated/era_medieval_1765122690844.png'),
-  renaissance: require('../../assets/generated/era_renaissance_1765122706396.png'),
-  modern: require('../../assets/generated/era_modern_1765122728054.png'),
-  contemporary: require('../../assets/generated/era_contemporary_1765122750612.png'),
+  baroque: require('../../assets/generated/era_baroque_landscape_1765473413807.png'),
+  classical: require('../../assets/generated/era_classical_landscape_1765473429524.png'),
+  romantic: require('../../assets/generated/era_romantic_landscape_1765473449724.png'),
+  medieval: require('../../assets/generated/era_medieval_landscape_1765473465714.png'),
+  renaissance: require('../../assets/generated/era_renaissance_landscape_1765473482357.png'),
+  modern: require('../../assets/generated/era_modern_landscape_1765473502157.png'),
+  contemporary: require('../../assets/generated/era_contemporary_landscape_1765473521789.png'),
 };
 
 // Helper to get composer portrait with fallback

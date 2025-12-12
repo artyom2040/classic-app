@@ -21,6 +21,7 @@ export default function KickstartScreen() {
   const { theme, themeName } = useTheme();
   const t = theme;
   const isBrutal = themeName === 'neobrutalist';
+  const isStitch = themeName === 'stitch';
   const [progress, setProgress] = useState<UserProgress | null>(null);
 
   const loadProgress = useCallback(async () => {
@@ -57,13 +58,47 @@ export default function KickstartScreen() {
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: t.colors.background }]}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <Text style={styles.emoji}>🎼</Text>
-          <Text style={[styles.title, { color: t.colors.text }]}>5-Day Kickstart</Text>
-          <Text style={[styles.subtitle, { color: t.colors.textSecondary }]}>
-            Your fast-track to understanding classical music. 10-15 minutes per day.
-          </Text>
-        </View>
+        {/* Stitch: Hero Section with Gradient */}
+        {isStitch ? (
+          <View style={styles.stitchHero}>
+            <View style={styles.stitchGradientBg}>
+              {/* Progress bar at top */}
+              <View style={styles.stitchProgress}>
+                {[1, 2, 3, 4, 5].map((d) => (
+                  <View
+                    key={d}
+                    style={[
+                      styles.progressSegment,
+                      {
+                        backgroundColor: (progress?.kickstartDay || 0) >= d ? t.colors.primary : 'rgba(255,255,255,0.2)',
+                      },
+                    ]}
+                  />
+                ))}
+              </View>
+
+              {/* Badge */}
+              <View style={[styles.stitchBadge, { backgroundColor: t.colors.primary + '30' }]}>
+                <Text style={[styles.stitchBadgeText, { color: t.colors.primary }]}>ONBOARDING</Text>
+              </View>
+
+              {/* Title */}
+              <Text style={styles.stitchTitle}>The 5-Day{'\n'}Kickstart</Text>
+              <Text style={styles.stitchSubtitle}>
+                Your fast-track to understanding classical music. 10-15 minutes per day.
+              </Text>
+            </View>
+          </View>
+        ) : (
+          /* Standard Header */
+          <View style={styles.header}>
+            <Text style={styles.emoji}>🎼</Text>
+            <Text style={[styles.title, { color: t.colors.text }]}>5-Day Kickstart</Text>
+            <Text style={[styles.subtitle, { color: t.colors.textSecondary }]}>
+              Your fast-track to understanding classical music. 10-15 minutes per day.
+            </Text>
+          </View>
+        )}
 
         <View style={styles.daysContainer}>
           {kickstartData.days.map((day, index) => {
@@ -86,9 +121,9 @@ export default function KickstartScreen() {
                 disabled={!isAvailable}
               >
                 <View style={[
-                  styles.dayNumber, 
+                  styles.dayNumber,
                   { backgroundColor: t.colors.surfaceLight },
-                  isCompleted && { backgroundColor: t.colors.success }, 
+                  isCompleted && { backgroundColor: t.colors.success },
                   isCurrent && { backgroundColor: t.colors.primary }
                 ]}>
                   {isCompleted ? (
@@ -163,4 +198,13 @@ const styles = StyleSheet.create({
   skipButtonText: { fontSize: fontSize.md },
   secondaryButton: { alignItems: 'center', borderRadius: borderRadius.lg, padding: spacing.md },
   secondaryButtonText: { fontSize: fontSize.lg, fontWeight: '600' },
+  // Stitch styles
+  stitchHero: { marginBottom: spacing.lg },
+  stitchGradientBg: { padding: spacing.lg, borderRadius: 20, backgroundColor: '#221a32' },
+  stitchProgress: { flexDirection: 'row', gap: 8, marginBottom: spacing.lg },
+  progressSegment: { flex: 1, height: 6, borderRadius: 3 },
+  stitchBadge: { alignSelf: 'flex-start', paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, marginBottom: spacing.md },
+  stitchBadgeText: { fontSize: 11, fontWeight: '700', letterSpacing: 1.5 },
+  stitchTitle: { fontSize: 36, fontWeight: '300', fontStyle: 'italic', color: '#FFFFFF', lineHeight: 44, marginBottom: spacing.sm },
+  stitchSubtitle: { fontSize: 16, color: 'rgba(255,255,255,0.7)', lineHeight: 24 },
 });

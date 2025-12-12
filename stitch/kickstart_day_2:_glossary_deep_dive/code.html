@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kickstart Day 2: Glossary Deep Dive</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#5417cf",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#161121",
+                        "surface-dark": "#1d172b",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+        /* Hide scrollbar for clean mobile look */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-white overflow-x-hidden min-h-screen flex flex-col">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-50 flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between border-b border-gray-200 dark:border-white/5">
+<div class="text-gray-900 dark:text-white flex size-12 shrink-0 items-center justify-start cursor-pointer transition-opacity hover:opacity-70">
+<span class="material-symbols-outlined">arrow_back_ios_new</span>
+</div>
+<h2 class="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">5-Day Kickstart</h2>
+<div class="flex w-12 items-center justify-end cursor-pointer">
+<p class="text-primary/80 dark:text-[#a593c8] text-base font-bold leading-normal tracking-[0.015em] shrink-0">Skip</p>
+</div>
+</div>
+<!-- Page Indicators -->
+<div class="flex w-full flex-row items-center justify-center gap-2 py-4 px-6">
+<div class="h-1.5 w-8 rounded-full bg-primary/30 dark:bg-[#443465]"></div>
+<div class="h-1.5 w-8 rounded-full bg-primary"></div>
+<div class="h-1.5 w-8 rounded-full bg-primary/30 dark:bg-[#443465]"></div>
+<div class="h-1.5 w-8 rounded-full bg-primary/30 dark:bg-[#443465]"></div>
+<div class="h-1.5 w-8 rounded-full bg-primary/30 dark:bg-[#443465]"></div>
+</div>
+<!-- Headline -->
+<h1 class="text-gray-900 dark:text-white tracking-tight text-[28px] md:text-[32px] font-extrabold leading-tight px-6 text-center pt-2 pb-6">
+        Today's Concept: <br/><span class="text-primary">The Motif</span>
+</h1>
+<!-- Main Content Area -->
+<main class="flex-1 px-4 md:px-6 pb-24 flex flex-col gap-6 max-w-lg mx-auto w-full">
+<!-- Hero Card -->
+<div class="relative w-full rounded-xl overflow-hidden shadow-lg group">
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10"></div>
+<!-- Background Image -->
+<div class="bg-cover bg-center h-[320px] w-full transition-transform duration-700 group-hover:scale-105" data-alt="Abstract visualization of musical sound waves in deep purple and blue" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB6gK573J_VT6CJXCquFOlBRpxSA9oHGVaPD0r6aJbEAlPKghS_X4Oyqg4GvY-h6V5YWsC2t2Kb0SAj9ZGe4VxmivOiOKWtlujufLmB9zuf7naH8_z-ngv8WM8hWun2RE2L9i_2MCvev4I7-iD-vILAr8Z69VwzamSMZuHrfna4qJjJSSoYmm8x9U9T9YEIJ3YbiEt3gAonb1112_mDuRggvatr-1lGZrTLCJLccTNdzGenoY4CAzxcc349FSn11iTgirwRhoqqwkIj");'>
+</div>
+<div class="absolute bottom-0 left-0 right-0 z-20 p-6 flex flex-col gap-2">
+<div class="flex items-baseline gap-3">
+<h2 class="text-white text-4xl font-bold tracking-tight">Motif</h2>
+<span class="text-gray-300 text-lg font-mono italic opacity-80">/moʊˈtiːf/</span>
+</div>
+<div class="h-0.5 w-12 bg-primary mb-2"></div>
+<p class="text-gray-200 text-lg leading-snug font-light">
+                    A short musical idea, a salient recurring figure, musical fragment or succession of notes.
+                </p>
+</div>
+</div>
+<!-- Audio Player Section -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-5 shadow-sm border border-gray-100 dark:border-white/5">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-xl">music_note</span>
+<span class="text-sm font-bold uppercase tracking-wider">Hear it in action</span>
+</div>
+<span class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-white/5 px-2 py-1 rounded">0:14</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex-shrink-0 w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/30 hover:bg-primary/90 transition-colors">
+<span class="material-symbols-outlined text-[28px] fill">play_arrow</span>
+</button>
+<div class="flex-1 flex flex-col gap-1">
+<h3 class="font-semibold text-gray-900 dark:text-white text-sm">Beethoven's 5th - Fate Motif</h3>
+<!-- Fake Waveform -->
+<div class="flex items-center justify-between h-8 gap-1 opacity-80">
+<div class="w-1 bg-primary/40 h-3 rounded-full"></div>
+<div class="w-1 bg-primary/60 h-5 rounded-full"></div>
+<div class="w-1 bg-primary h-8 rounded-full animate-pulse"></div>
+<div class="w-1 bg-primary h-6 rounded-full"></div>
+<div class="w-1 bg-primary/80 h-4 rounded-full"></div>
+<div class="w-1 bg-primary/40 h-3 rounded-full"></div>
+<div class="w-1 bg-primary/30 h-2 rounded-full"></div>
+<div class="w-1 bg-primary/50 h-4 rounded-full"></div>
+<div class="w-1 bg-primary/70 h-6 rounded-full"></div>
+<div class="w-1 bg-primary h-5 rounded-full"></div>
+<div class="w-1 bg-primary/60 h-3 rounded-full"></div>
+<div class="w-1 bg-primary/40 h-2 rounded-full"></div>
+<div class="w-1 bg-gray-300 dark:bg-white/10 h-3 rounded-full"></div>
+<div class="w-1 bg-gray-300 dark:bg-white/10 h-2 rounded-full"></div>
+<div class="w-1 bg-gray-300 dark:bg-white/10 h-2 rounded-full"></div>
+<div class="w-1 bg-gray-300 dark:bg-white/10 h-2 rounded-full"></div>
+<div class="w-1 bg-gray-300 dark:bg-white/10 h-2 rounded-full"></div>
+<div class="w-1 bg-gray-300 dark:bg-white/10 h-2 rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Insight / Why it matters -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-5 border border-gray-100 dark:border-white/5">
+<h3 class="text-gray-900 dark:text-white text-lg font-bold mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">psychology</span>
+                Why it matters
+            </h3>
+<p class="text-gray-600 dark:text-gray-300 text-base leading-relaxed">
+                Composers use motifs to create unity and tell a story without words. It's the musical breadcrumb trail that helps your brain connect the beginning of the piece to the end.
+            </p>
+<div class="mt-4 pt-4 border-t border-gray-100 dark:border-white/5">
+<button class="w-full flex items-center justify-between text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">
+<span>Read full glossary entry</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Fixed Bottom Actions -->
+<div class="fixed bottom-0 left-0 right-0 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-t border-gray-200 dark:border-white/5 p-4 md:p-6 pb-8 z-40">
+<div class="max-w-lg mx-auto flex flex-col gap-4">
+<button class="w-full bg-primary text-white font-bold text-lg py-4 rounded-xl shadow-xl shadow-primary/20 hover:bg-primary/90 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+<span>Mark as Learned</span>
+<span class="material-symbols-outlined">check_circle</span>
+</button>
+<button class="w-full bg-transparent text-gray-500 dark:text-gray-400 font-medium text-sm py-2 rounded-lg hover:text-gray-900 dark:hover:text-white transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">bookmark</span>
+                Save to Favorites
+            </button>
+</div>
+</div>
+</body></html>

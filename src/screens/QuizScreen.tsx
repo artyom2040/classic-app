@@ -11,7 +11,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { getStorageItem, setStorageItem } from '../utils/storageUtils';
 
 import { useTheme } from '../context/ThemeContext';
 import { RootStackParamList } from '../types';
@@ -172,17 +173,12 @@ export default function QuizScreen() {
   }, []);
 
   const loadProgress = async () => {
-    try {
-      const stored = await AsyncStorage.getItem(QUIZ_PROGRESS_KEY);
-      if (stored) {
-        const prog = JSON.parse(stored) as QuizProgress;
-        setProgress(prog);
-        if (prog.lastPlayedDay === dayOfYear) {
-          setAlreadyPlayed(true);
-        }
+    const prog = await getStorageItem<QuizProgress | null>(QUIZ_PROGRESS_KEY, null);
+    if (prog) {
+      setProgress(prog);
+      if (prog.lastPlayedDay === dayOfYear) {
+        setAlreadyPlayed(true);
       }
-    } catch (e) {
-      console.error('Error loading quiz progress:', e);
     }
   };
 
@@ -199,7 +195,7 @@ export default function QuizScreen() {
     };
 
     setProgress(newProgress);
-    await AsyncStorage.setItem(QUIZ_PROGRESS_KEY, JSON.stringify(newProgress));
+    await setStorageItem(QUIZ_PROGRESS_KEY, newProgress);
   };
 
   const handleAnswer = (index: number) => {

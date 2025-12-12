@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { STORAGE_KEYS } from '../constants';
+import { getStorageItem, setStorageItem } from '../utils/storageUtils';
 
 export type IconPack = 'ionicons' | 'lucide' | 'phosphor';
 export type MusicService = 'youtube' | 'spotify' | 'apple';
@@ -30,25 +30,18 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loadSettings = async () => {
-    try {
-      const saved = await AsyncStorage.getItem(SETTINGS_STORAGE_KEY);
-      if (saved) {
-        const settings = JSON.parse(saved);
-        if (settings.iconPack) setIconPackState(settings.iconPack);
-        if (settings.musicService) setMusicServiceState(settings.musicService);
-      }
-    } catch (e) {
-      console.error('Failed to load settings', e);
-    }
+    const settings = await getStorageItem<{
+      iconPack?: IconPack;
+      musicService?: MusicService;
+    }>(SETTINGS_STORAGE_KEY, {});
+
+    if (settings.iconPack) setIconPackState(settings.iconPack);
+    if (settings.musicService) setMusicServiceState(settings.musicService);
   };
 
   const saveSettings = async (newSettings: Partial<{ iconPack: IconPack; musicService: MusicService }>) => {
-    try {
-      const current = { iconPack, musicService, ...newSettings };
-      await AsyncStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(current));
-    } catch (e) {
-      console.error('Failed to save settings', e);
-    }
+    const current = { iconPack, musicService, ...newSettings };
+    return setStorageItem(SETTINGS_STORAGE_KEY, current);
   };
 
   const setIconPack = (pack: IconPack) => {

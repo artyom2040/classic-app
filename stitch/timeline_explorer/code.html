@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Timeline Explorer</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#5417cf",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#161121",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white overflow-x-hidden selection:bg-primary selection:text-white">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto shadow-2xl overflow-hidden bg-background-light dark:bg-background-dark">
+<!-- Header Section -->
+<header class="flex flex-col gap-2 pt-8 px-6 pb-2 z-10">
+<div class="flex items-center h-12 justify-between">
+<button class="text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-3xl">menu</span>
+</button>
+<div class="flex gap-4">
+<button class="text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-2xl">search</span>
+</button>
+<button class="relative">
+<div class="w-8 h-8 rounded-full bg-cover bg-center border-2 border-primary" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCh6Den55KTJKlSzuQ-7WTt2Yunb0CB1vhR7mCFrebf-H1kJ2ct8xOrVAsDXakzsp81-c-46IzaMOaqA8XQhNBw-TxwM5gq-d3l1pQQhddrqQOn4MpmDbGRDA8iqrGecsnc8xFU7weeZPceV3bVKz_UMOzj0k9bYgAzrCw6Psd3NPchxRCpcfEBRADnv_wJN3bf1OFXtxNmFriZ4O2452eXgG6rLNVkDOG_gmUmvznejck3NponVSJcQOH5OhaEO66YBSAYkOPwXRGX");'></div>
+</button>
+</div>
+</div>
+<div>
+<h1 class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold leading-tight">Music Through Time</h1>
+<p class="text-slate-500 dark:text-[#a593c8] text-sm font-normal leading-normal pt-1">Swipe to travel through history</p>
+</div>
+</header>
+<!-- Main Timeline Area -->
+<main class="flex-1 relative flex flex-col justify-center py-6">
+<!-- Time Connector Line -->
+<div class="absolute top-1/2 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent -translate-y-1/2 z-0 pointer-events-none"></div>
+<!-- Horizontal Carousel -->
+<div class="flex overflow-x-auto no-scrollbar snap-x snap-mandatory px-6 gap-6 py-4 items-center z-10 h-full">
+<!-- Card 1: Baroque -->
+<div class="flex-shrink-0 snap-center flex flex-col w-[85vw] max-w-[320px] h-[580px] rounded-3xl bg-white dark:bg-[#221a32] shadow-xl overflow-hidden relative group transition-transform duration-300">
+<!-- Background Image with Gradient Overlay -->
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Abstract ornate baroque architectural details or patterns" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDN7orU28-f4CPnKfxcXIAgYQuyAK87lclHQsmnkyQmXoqmsyBR0rmqwHiy8thlxtnRObQd0LIyRbQbPq9R3U04MPY9Ev5Znb1uaMPrEeLj3-epZ_ABtanZhP0JB0afXx3lyoH0k5pKydSXEK4DnL0-4n7GDlsMBdmfIk1exDE9Y7l239WfsO58fpY1dAsnJixqE3n8DYlMnQtQQx4p1omNML0oaFy6bXEq3x78TxptEQlqSUR2Zw_XIfWHc0SKq3PqJ1lQrwZF4VOI");'>
+</div>
+<div class="absolute inset-0 bg-gradient-to-b from-black/30 via-[#221a32]/80 to-[#161121]"></div>
+<!-- Content -->
+<div class="relative flex flex-col h-full p-6 justify-between">
+<!-- Top Tags -->
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 rounded-full bg-primary/30 backdrop-blur-md border border-primary/20 text-white text-xs font-medium">Complexity</span>
+<span class="px-3 py-1 rounded-full bg-primary/30 backdrop-blur-md border border-primary/20 text-white text-xs font-medium">Ornamentation</span>
+</div>
+<!-- Bottom Info -->
+<div class="flex flex-col gap-4">
+<div>
+<h2 class="text-4xl font-bold text-white mb-1">The Baroque Era</h2>
+<p class="text-primary font-medium text-lg tracking-wide">1600–1750</p>
+</div>
+<p class="text-slate-300 text-sm line-clamp-3 leading-relaxed">
+                                Characterized by intricate counterpoint and ornate musical flourishes. The era of Bach and Vivaldi brought structure to complexity.
+                            </p>
+<!-- Composer Avatars -->
+<div class="flex items-center justify-between pt-2">
+<div class="flex -space-x-3">
+<div class="w-10 h-10 rounded-full border-2 border-[#221a32] bg-slate-700 bg-cover bg-center" data-alt="Portrait of Bach" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA8beYn5Oiw3lzqL8QRZLTzell3zvG0SimncJl3zIPbqWr_G3J9QB3s2MRfCRtjkULFGAeVs6Tc3mYJQixBZoDmyfdFcO4bQlpH99yCkfUCfS1i4GP8UxsjMLeX3KLSkS0VtOV_Qr-9DF3uK-ZFmquy0kiffth4XJoxHFkDD3D3kBqekJmNdwuRUdYLFFg9e9UeGfOlwyj2kmd444dP_L7Oc9Ry20NboXSzCdUs3Nb7oiep4NGhFDXN8P5V9iu6KTAbv3Ox4uJKQcS-");'></div>
+<div class="w-10 h-10 rounded-full border-2 border-[#221a32] bg-slate-700 bg-cover bg-center" data-alt="Portrait of Vivaldi" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBQLTJK90HdliozgS1gIqKHch6eMExKDi-kOzVcLiUs37kE5hMxFBFWKyaY0yzcza36N729ZSuigMXIrTvLoh3XByvyJuTH4i_IySHx7hj-91jCT-XKP0pHCYNPwNqCxJXqQdbXUtOzIfAVovzRJ32L8RtzswxEv4CyrkETXl8jlv-a9zF3Ye0OLq4SuyrLJetT6vMLGeG6Kh8YeNY15kVmdiBcznIyLEiJ_GDr1XGdH88lPVVl52QZ9dbIShYt-_YRb2SLXAuphvIm");'></div>
+<div class="w-10 h-10 rounded-full border-2 border-[#221a32] bg-slate-700 flex items-center justify-center text-xs text-white font-bold bg-primary">+4</div>
+</div>
+<button class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/40 hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2: Classical -->
+<div class="flex-shrink-0 snap-center flex flex-col w-[85vw] max-w-[320px] h-[580px] rounded-3xl bg-white dark:bg-[#221a32] shadow-xl overflow-hidden relative group transition-transform duration-300">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Clean lines of classical architecture representing order" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD1oHupuJX9H9U2DlD7gSOf2eCEt_Hz2gmD1GEA4llMFP0xea2u3hTtFV4OnZYjtSJqM88egqBeXJScdLGg0AcblGiDI_0kTrVgdkx8Zbe4JS6YMs_CWHdajvOLvRCKX10Zyr_o63QSRNxoUH4CBVW_6mIuFMIutFSHAZBnbiN1n9Xz9QAjeNN52-W1ZHMgOVtzvlxt3sYaIx6_z4i8mE2MGVWSMFxhHu-cjEDVL1M5HWZjaotT4GcTzAm7DIhon0dQJiT1h0xbZeGI");'>
+</div>
+<div class="absolute inset-0 bg-gradient-to-b from-black/30 via-[#221a32]/80 to-[#161121]"></div>
+<div class="relative flex flex-col h-full p-6 justify-between">
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 rounded-full bg-primary/30 backdrop-blur-md border border-primary/20 text-white text-xs font-medium">Order</span>
+<span class="px-3 py-1 rounded-full bg-primary/30 backdrop-blur-md border border-primary/20 text-white text-xs font-medium">Balance</span>
+</div>
+<div class="flex flex-col gap-4">
+<div>
+<h2 class="text-4xl font-bold text-white mb-1">The Classical Era</h2>
+<p class="text-primary font-medium text-lg tracking-wide">1750–1820</p>
+</div>
+<p class="text-slate-300 text-sm line-clamp-3 leading-relaxed">
+                                A shift towards clarity, restraint, and formal balance. Mozart and Haydn defined the symphony and sonata forms.
+                            </p>
+<div class="flex items-center justify-between pt-2">
+<div class="flex -space-x-3">
+<div class="w-10 h-10 rounded-full border-2 border-[#221a32] bg-slate-700 bg-cover bg-center" data-alt="Portrait of Mozart" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC3_oY6-yBKsQTmJEDS0npRozyRfTIkJOkzC7B61xfTEb0hvaNd_IImUdh4IlFhyK5pPW57UJz41rKg7YZ4_VJ_JpiwWOL8uwqWmYlTovsRK6G2mUfJ-J36MKT_FEwzp90OofEiIV9aBoOP-8D4_FvLxUz_y32kW8-TaB7XzvR2XmHcIhU6OWis4eJhAVIAdZIPSz0_sWnM2IY6uFL-i6hlEy4b65NBuYiUhrq0rsOW0cjHwSe-1Fh_W4wc7eYznDuEnsXnFhQ1oii2");'></div>
+<div class="w-10 h-10 rounded-full border-2 border-[#221a32] bg-slate-700 bg-cover bg-center" data-alt="Portrait of Haydn" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA4khZz9U7y-94n8doBcA_DOQutC6J8Xhm1uk4424bHhpGERZYQDB89JKitGQ2Crpl-j60y612jWBg6Z_MGF-5DxR46LjqtOiCxdTIjXME9NHaiCes2eDcVwGOiGwMu07WuT_zwFOhzR6LVYKKLCLzEcw2h-a4nWQ51q_x6sG-9SB9oXqqMi6dt21wknj6ctU2BKM4P4BIFnJ44mArPsFtrxqAns97oHulI8yocXpV4e-p0HVuNmN4E1_mg7KDqBj5AInYNiGiyPuJ1");'></div>
+<div class="w-10 h-10 rounded-full border-2 border-[#221a32] bg-slate-700 flex items-center justify-center text-xs text-white font-bold bg-primary">+3</div>
+</div>
+<button class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/40 hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 3: Romantic -->
+<div class="flex-shrink-0 snap-center flex flex-col w-[85vw] max-w-[320px] h-[580px] rounded-3xl bg-white dark:bg-[#221a32] shadow-xl overflow-hidden relative group transition-transform duration-300">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Stormy seascape painting representing romantic emotion" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDjNKykFUFgwYuT5ZqV6gsBbKA0dJkTJ4-tl78Z8sSL3owetGRC1mGKQlE-YFYAup1Z2REMyaR-bVEsjmHvryjS6qBXN0n5zwQpQoXg5X6oVaS75F-YNV71GzslOBwbizh-ae71hbXfzGABqCBpGjC0xDOlzJPRcUROuf3jONJno_r0Mrnep8JtsywOhDnZ5JGOY5ZrRtrGNdyCTu4-nulxu-S47xwjAmGExtcAKjdpbk3M2pj40D3VnVuanrWI3Wsi8CtsWu1vX65l");'>
+</div>
+<div class="absolute inset-0 bg-gradient-to-b from-black/30 via-[#221a32]/80 to-[#161121]"></div>
+<div class="relative flex flex-col h-full p-6 justify-between">
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 rounded-full bg-primary/30 backdrop-blur-md border border-primary/20 text-white text-xs font-medium">Emotion</span>
+<span class="px-3 py-1 rounded-full bg-primary/30 backdrop-blur-md border border-primary/20 text-white text-xs font-medium">Drama</span>
+</div>
+<div class="flex flex-col gap-4">
+<div>
+<h2 class="text-4xl font-bold text-white mb-1">The Romantic Era</h2>
+<p class="text-primary font-medium text-lg tracking-wide">1830–1900</p>
+</div>
+<p class="text-slate-300 text-sm line-clamp-3 leading-relaxed">
+                                Music became intensely expressive and emotional. Composers like Chopin and Tchaikovsky pushed boundaries.
+                            </p>
+<div class="flex items-center justify-between pt-2">
+<div class="flex -space-x-3">
+<div class="w-10 h-10 rounded-full border-2 border-[#221a32] bg-slate-700 bg-cover bg-center" data-alt="Portrait of Chopin" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBP0pg7hWyqEMzYOqpn5RUiF52VzW3LMcU8UQPU5g_oi87vsJ7SjMquAIcGMsLzZ0Z6q3Op3YEjunxzZ8iOuncoWEtBA18yhfcXZVSqo48xoM6-VBk56Fyb0M9Mp35VsZyUPiUPkVfdM8aF5eVz05RxiVbqhG1ImW9O_o979OZHpIzkAvYXUzlY3iXwCPY-9y-oHeMQHFcw3_xgerGzBCo-fn41-I1Pnc5ukfoWCPxx-NzsZgqXaWt0FOHE9KykzM45z2j22xa4g6Jf");'></div>
+<div class="w-10 h-10 rounded-full border-2 border-[#221a32] bg-slate-700 bg-cover bg-center" data-alt="Portrait of Tchaikovsky" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDR5q4p9ci8aWtmCTt3-5BZkoorPSHgD2j-4c3_D20TD8Bf6hVJjAXg0xx4AoEejwAVs_i6RVrUK3MGg8y0M3GABhlstXy__oKQYylUEkQemLh4o4xA5AaPBxPh2TYpRxOMo1fTkkH51kvTToIOav-hRqYpEfy2vOFqOOlKRdYrxJf88bxIiP0LPg2SYlaZnEmfGdVEqDr8mqVXyEHyatdE8Ed9rtzqkQXi6_7X-r4b-wsIUmZjPcI0Ag1_35BOzikebdREGUUeTF7Z");'></div>
+<div class="w-10 h-10 rounded-full border-2 border-[#221a32] bg-slate-700 flex items-center justify-center text-xs text-white font-bold bg-primary">+8</div>
+</div>
+<button class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/40 hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 4: 20th Century -->
+<div class="flex-shrink-0 snap-center flex flex-col w-[85vw] max-w-[320px] h-[580px] rounded-3xl bg-white dark:bg-[#221a32] shadow-xl overflow-hidden relative group transition-transform duration-300">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Abstract geometric shapes representing modernism" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDFum4owwrW5qR6byq_gkr-F6cwiyywfZnPbJINBhTPoF1VZP94k9T-BaXXciWJpStz75bnzt1H0La4egS69lLb2oInK7NySe4qpvjeeC6baPHrMGBJwUyED84GlIXU_CUlPujJ-4nQG95oZpZ-0Yq1oFTgOW597pP0Tp0DbFTEXXpld0GRs6m1oFJBFNOEb5MPtjWe8fCm4s-1gWBhatk8F8AkXLQysfBW8m9zXZLugaCY8Cb-A815IE0lxbNsp8Ru6Dz9PFwvN9cU");'>
+</div>
+<div class="absolute inset-0 bg-gradient-to-b from-black/30 via-[#221a32]/80 to-[#161121]"></div>
+<div class="relative flex flex-col h-full p-6 justify-between">
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 rounded-full bg-primary/30 backdrop-blur-md border border-primary/20 text-white text-xs font-medium">Experimentation</span>
+<span class="px-3 py-1 rounded-full bg-primary/30 backdrop-blur-md border border-primary/20 text-white text-xs font-medium">Dissonance</span>
+</div>
+<div class="flex flex-col gap-4">
+<div>
+<h2 class="text-4xl font-bold text-white mb-1">20th Century</h2>
+<p class="text-primary font-medium text-lg tracking-wide">1900–2000</p>
+</div>
+<p class="text-slate-300 text-sm line-clamp-3 leading-relaxed">
+                                A radical break from tradition. From Impressionism to Minimalism, new sounds defined the modern age.
+                            </p>
+<div class="flex items-center justify-between pt-2">
+<div class="flex -space-x-3">
+<div class="w-10 h-10 rounded-full border-2 border-[#221a32] bg-slate-700 bg-cover bg-center" data-alt="Portrait of Stravinsky" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDX6G-CLR1JUTX7NjezCzuyo-8-DsuBf_I0kG-GpuN3y_LWiUpNHFGjOApP2-o_2rI3ioan6bnqv98bcsycJBmDDbABmQi6fON9C2_ST57oo4orbsyC4VHLxcTGep8vVheNNgpwZNfmsWGEDk4Mp7YUx98Di185U8BsrKs6SZBQ3eZYVaQcdFdFuxN4n2JEokBU3_9LxQ-YcqxWAzE67HWhu728o4E_JfyTY8ivYH7tfwYXHs52JWEz4wzgnVG5Jl-qXkLWez1WWt7F");'></div>
+<div class="w-10 h-10 rounded-full border-2 border-[#221a32] bg-slate-700 bg-cover bg-center" data-alt="Portrait of Debussy" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBjZCwG7vGmYH6wd-531tfBMytXke1eFBDonzU1vDRRJZOmi7CFw7yEu9TlQxCr51bVJ1o6ZXGlJpcwSovbIYL4Kgo2fjCW4SVHolgk0TNafNuNa0XUhqafNt0wY8B3XoaHavl5Z4LPSF2pMxl5EZDfwKILp2_DtE2BcV_7s9R9tyhR97RiY0zECG-2BHer5u1_nJz7LGAQAIybhbCkChEjJftu7RoxkeKKBIRwEe0Umq36IWydwQSZeKtIGSmUAYtPoSo3SWfq1Dg9");'></div>
+<div class="w-10 h-10 rounded-full border-2 border-[#221a32] bg-slate-700 flex items-center justify-center text-xs text-white font-bold bg-primary">+5</div>
+</div>
+<button class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/40 hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="bg-[#171122]/90 backdrop-blur-lg border-t border-white/5 py-3 pb-6 px-6 z-20">
+<ul class="flex justify-between items-center">
+<li class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined filled">timeline</span>
+<span class="text-[10px] font-medium tracking-wide">Timeline</span>
+</li>
+<li class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined">search</span>
+<span class="text-[10px] font-medium tracking-wide">Explore</span>
+</li>
+<li class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined">library_music</span>
+<span class="text-[10px] font-medium tracking-wide">Library</span>
+</li>
+<li class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined">lightbulb</span>
+<span class="text-[10px] font-medium tracking-wide">Theory</span>
+</li>
+</ul>
+</nav>
+</div>
+</body></html>

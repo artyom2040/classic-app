@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   RefreshControl,
+  ImageBackground,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -14,18 +15,20 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { useTheme } from '../context/ThemeContext';
-import { useSettings } from '../context/SettingsContext';
 import { useCardStyle } from '../hooks/useCardStyle';
 import { useResponsive } from '../hooks/useResponsive';
 import { spacing } from '../theme';
-import { RootStackParamList, UserProgress, NewRelease, ConcertHall, Term, WeeklyAlbum, MonthlySpotlight } from '../types';
+import { RootStackParamList, UserProgress, Term, WeeklyAlbum, MonthlySpotlight } from '../types';
 import { getProgress, getWeekNumber, getDayOfYear, getCurrentMonth } from '../utils/storage';
 import { hapticSelection } from '../utils/haptics';
 import { getShortDefinition } from '../utils/terms';
+import { ERA_IMAGES } from '../utils/images';
+import { getAlbumForCategory, AlbumCategory } from '../utils/albumCategories';
 import { SkeletonHeroCard, SkeletonGrid } from '../components';
+import { HeroCard, CategoryChips, KnowledgeBite, SpotlightCard, HorizontalCarousel } from '../components/stitch';
 
 // Extracted components
-import { FeaturedGrid, ExploreGrid, NewReleasesCarousel, ConcertHallsCarousel } from './Home';
+import { FeaturedGrid, ExploreGrid } from './Home';
 
 import glossaryData from '../data/glossary.json';
 import albumsData from '../data/albums.json';
@@ -38,12 +41,12 @@ export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { theme, themeName } = useTheme();
   const t = theme;
-  const { musicService } = useSettings();
   const { isDesktop, maxContentWidth } = useResponsive();
 
   const [progress, setProgress] = useState<UserProgress | null>(null);
   const [progressLoading, setProgressLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<AlbumCategory>('all');
 
   const weekNumber = getWeekNumber();
   const dayOfYear = getDayOfYear();
@@ -51,10 +54,13 @@ export default function HomeScreen() {
 
   const weeklyAlbum = albumsData.weeklyAlbums[(weekNumber - 1) % albumsData.weeklyAlbums.length] as WeeklyAlbum;
   const monthlySpotlight = albumsData.monthlySpotlights[(currentMonth - 1) % albumsData.monthlySpotlights.length] as MonthlySpotlight;
-  const newReleases = (albumsData.newReleases || []) as NewRelease[];
-  const concertHalls = (albumsData.concertHalls || []) as ConcertHall[];
   const termOfDay = glossaryData.terms[(dayOfYear - 1) % glossaryData.terms.length];
   const featuredComposer = composersData.composers[dayOfYear % composersData.composers.length];
+
+  // Filtered album based on category selection
+  const filteredAlbum = selectedCategory === 'all'
+    ? weeklyAlbum
+    : getAlbumForCategory(albumsData.weeklyAlbums as WeeklyAlbum[], selectedCategory, dayOfYear);
   const termSummary = getShortDefinition(termOfDay);
 
   const loadProgress = useCallback(async () => {
@@ -85,7 +91,6 @@ export default function HomeScreen() {
   }, [loadProgress]);
 
   const isGlass = themeName === 'liquidglass';
-  const preferredService = (musicService === 'apple' ? 'appleMusic' : musicService) as 'spotify' | 'appleMusic' | 'youtube';
   const { cardStyle } = useCardStyle();
 
   // Main content wrapped in gradient for glass theme
@@ -119,80 +124,184 @@ export default function HomeScreen() {
         <>
           {/* Header */}
           <View style={styles.header}>
-            <View>
-              <Text style={[styles.greeting, { color: t.colors.textSecondary }]}>
-                {getGreeting()}
-              </Text>
-              <Text style={[styles.title, { color: t.colors.text }]}>
-                Context Composer
-              </Text>
-            </View>
-            <View style={styles.headerButtons}>
-              <TouchableOpacity
-                style={[styles.headerButton, { backgroundColor: t.colors.surfaceLight }]}
-                onPress={() => navigation.navigate('Search')}
-                accessibilityLabel="Search"
-              >
-                <Ionicons name="search-outline" size={22} color={t.colors.text} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.headerButton, { backgroundColor: t.colors.surfaceLight }]}
-                onPress={() => navigation.navigate('Discover')}
-                accessibilityLabel="Discover MusicBrainz"
-              >
-                <Ionicons name="planet-outline" size={22} color={t.colors.text} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.headerButton, { backgroundColor: t.colors.surfaceLight }]}
-                onPress={() => navigation.navigate('Settings')}
-                accessibilityLabel="Settings"
-              >
-                <Ionicons name="settings-outline" size={22} color={t.colors.text} />
-              </TouchableOpacity>
-            </View>
+            {themeName === 'stitch' ? (
+              /* Stitch Header: Avatar + Greeting on left, Search on right */
+              <>
+                <View style={styles.stitchHeaderLeft}>
+                  <View style={[styles.avatarCircle, { borderColor: 'rgba(255,255,255,0.1)' }]}>
+                    <Ionicons name="person" size={20} color={t.colors.textSecondary} />
+                  </View>
+                  <Text style={[styles.stitchGreeting, { color: t.colors.textSecondary }]}>
+                    {getGreeting()}, Listener
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={[styles.headerButton, { backgroundColor: 'rgba(255,255,255,0.05)' }]}
+                  onPress={() => navigation.navigate('Search')}
+                  accessibilityLabel="Search"
+                >
+                  <Ionicons name="search" size={22} color={t.colors.text} />
+                </TouchableOpacity>
+              </>
+            ) : (
+              /* Default Header */
+              <>
+                <View>
+                  <Text style={[styles.greeting, { color: t.colors.textSecondary }]}>
+                    {getGreeting()}
+                  </Text>
+                  <Text style={[styles.title, { color: t.colors.text }]}>
+                    Context Composer
+                  </Text>
+                </View>
+                <View style={styles.headerButtons}>
+                  <TouchableOpacity
+                    style={[styles.headerButton, { backgroundColor: t.colors.surfaceLight }]}
+                    onPress={() => navigation.navigate('Search')}
+                    accessibilityLabel="Search"
+                  >
+                    <Ionicons name="search-outline" size={22} color={t.colors.text} />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.headerButton, { backgroundColor: t.colors.surfaceLight }]}
+                    onPress={() => navigation.navigate('Discover')}
+                    accessibilityLabel="Discover"
+                  >
+                    <Ionicons name="planet-outline" size={22} color={t.colors.text} />
+                  </TouchableOpacity>
+                </View>
+              </>
+            )}
           </View>
 
-          {/* Featured Section - 3 Cards */}
+          {/* Stitch: Italic title below header */}
+          {themeName === 'stitch' && (
+            <Text style={[styles.stitchTitle, { color: 'rgba(255,255,255,0.9)' }]}>
+              Curated For You
+            </Text>
+          )}
+
+          {/* Stitch Theme: Category Chips and Hero Card */}
+          {themeName === 'stitch' && (
+            <>
+              <CategoryChips
+                items={[
+                  { id: 'baroque', label: 'Baroque' },
+                  { id: 'symphonies', label: 'Symphonies' },
+                  { id: 'piano', label: 'Piano' },
+                  { id: 'opera', label: 'Opera' },
+                ]}
+                selectedId={selectedCategory}
+                onSelect={(id) => setSelectedCategory(id as AlbumCategory)}
+                style={{ marginHorizontal: -16, marginBottom: 16 }}
+              />
+              <HeroCard
+                badge={selectedCategory === 'all' ? 'Weekly Pick' : selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}
+                title={filteredAlbum.title}
+                subtitle={filteredAlbum.artist}
+                description={filteredAlbum.whyListen}
+                actionLabel="Listen & Learn"
+                actionIcon="play"
+                imageSource={
+                  selectedCategory === 'baroque' ? ERA_IMAGES.baroque :
+                    selectedCategory === 'piano' ? ERA_IMAGES.classical :
+                      selectedCategory === 'symphonies' ? ERA_IMAGES.romantic :
+                        selectedCategory === 'opera' ? ERA_IMAGES.modern :
+                          ERA_IMAGES.romantic
+                }
+                onPress={() => navigation.navigate('WeeklyAlbum')}
+                style={{ marginBottom: 20 }}
+                height={320}
+              />
+            </>
+          )}
+
+          {/* Featured Section - 3 Cards (shown for non-Stitch themes, or all for Stitch) */}
           <FeaturedGrid
             progress={progress}
             weeklyAlbum={weeklyAlbum}
             monthlySpotlight={monthlySpotlight}
           />
 
-          {/* Daily Discovery Section */}
-          <Text style={[styles.sectionTitle, { color: t.colors.text }]}>
-            Today's Discovery
-          </Text>
-
-          {/* Term of the Day - Hero Card */}
-          <TouchableOpacity
-            style={[styles.heroCard, cardStyle]}
-            onPress={() => navigation.navigate('TermDetail', { termId: String(termOfDay.id) })}
-            activeOpacity={0.8}
-          >
-            <View style={[styles.heroAccent, { backgroundColor: t.colors.secondary }]} />
-            <View style={styles.heroContent}>
-              <View style={styles.heroHeader}>
-                <View style={[styles.badge, { backgroundColor: t.colors.secondary + '20' }]}>
-                  <Ionicons name="bulb" size={14} color={t.colors.secondary} />
-                  <Text style={[styles.badgeText, { color: t.colors.secondary }]}>Term of the Day</Text>
-                </View>
-                <Text style={[styles.categoryBadge, { color: t.colors.textMuted, backgroundColor: t.colors.surfaceLight }]}>
-                  {termOfDay.category}
-                </Text>
+          {/* Monthly Spotlight Carousel - Stitch Only */}
+          {themeName === 'stitch' && (
+            <View style={styles.stitchSpotlightSection}>
+              <View style={styles.stitchSectionHeader}>
+                <Text style={[styles.stitchSectionTitle, { color: t.colors.text }]}>Monthly Spotlight</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('MonthlySpotlight')}>
+                  <Text style={[styles.stitchSectionLink, { color: t.colors.primary }]}>See All</Text>
+                </TouchableOpacity>
               </View>
-              <Text style={[styles.heroTitle, { color: t.colors.text }]}>{termOfDay.term}</Text>
-              <Text style={[styles.heroDescription, { color: t.colors.textSecondary }]} numberOfLines={2}>
-                {termSummary}
-              </Text>
-              <View style={styles.heroFooter}>
-                <Text style={[styles.exampleLabel, { color: t.colors.textMuted }]}>Example:</Text>
-                <Text style={[styles.exampleText, { color: t.colors.primary }]} numberOfLines={1}>
-                  {termOfDay.example}
-                </Text>
-              </View>
+              <HorizontalCarousel cardWidth={180} gap={12}>
+                <SpotlightCard
+                  title={monthlySpotlight.theme}
+                  subtitle={monthlySpotlight.composer?.name || 'Various'}
+                  imageSource={ERA_IMAGES.romantic}
+                  onPress={() => navigation.navigate('MonthlySpotlight')}
+                />
+                <SpotlightCard
+                  title="Piano Sonatas"
+                  subtitle="Essential Repertoire"
+                  imageSource={ERA_IMAGES.classical}
+                  onPress={() => navigation.navigate('MonthlySpotlight')}
+                />
+                <SpotlightCard
+                  title="Baroque Masters"
+                  subtitle="J.S. Bach & More"
+                  imageSource={ERA_IMAGES.baroque}
+                  onPress={() => navigation.navigate('MonthlySpotlight')}
+                />
+              </HorizontalCarousel>
             </View>
-          </TouchableOpacity>
+          )}
+
+          {/* Daily Discovery Section */}
+          {themeName === 'stitch' ? (
+            <>
+              <KnowledgeBite
+                label="TERM OF THE DAY"
+                title={termOfDay.term}
+                description={termSummary}
+                imageSource={ERA_IMAGES.baroque}
+                onPress={() => navigation.navigate('TermDetail', { termId: String(termOfDay.id) })}
+              />
+            </>
+          ) : (
+            <>
+              <Text style={[styles.sectionTitle, { color: t.colors.text }]}>
+                Today's Discovery
+              </Text>
+              {/* Term of the Day - Hero Card (for non-Stitch themes) */}
+              <TouchableOpacity
+                style={[styles.heroCard, cardStyle]}
+                onPress={() => navigation.navigate('TermDetail', { termId: String(termOfDay.id) })}
+                activeOpacity={0.8}
+              >
+                <View style={[styles.heroAccent, { backgroundColor: t.colors.secondary }]} />
+                <View style={styles.heroContent}>
+                  <View style={styles.heroHeader}>
+                    <View style={[styles.badge, { backgroundColor: t.colors.secondary + '20' }]}>
+                      <Ionicons name="bulb" size={14} color={t.colors.secondary} />
+                      <Text style={[styles.badgeText, { color: t.colors.secondary }]}>Term of the Day</Text>
+                    </View>
+                    <Text style={[styles.categoryBadge, { color: t.colors.textMuted, backgroundColor: t.colors.surfaceLight }]}>
+                      {termOfDay.category}
+                    </Text>
+                  </View>
+                  <Text style={[styles.heroTitle, { color: t.colors.text }]}>{termOfDay.term}</Text>
+                  <Text style={[styles.heroDescription, { color: t.colors.textSecondary }]} numberOfLines={2}>
+                    {termSummary}
+                  </Text>
+                  <View style={styles.heroFooter}>
+                    <Text style={[styles.exampleLabel, { color: t.colors.textMuted }]}>Example:</Text>
+                    <Text style={[styles.exampleText, { color: t.colors.primary }]} numberOfLines={1}>
+                      {termOfDay.example}
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </>
+          )}
 
           {/* Quick Stats */}
           <View style={[styles.statsRow, cardStyle, { padding: 16 }]}>
@@ -227,12 +336,6 @@ export default function HomeScreen() {
             composersCount={composersData.composers.length}
             termsCount={glossaryData.terms.length}
           />
-
-          {/* New Releases */}
-          <NewReleasesCarousel releases={newReleases} musicService={preferredService} />
-
-          {/* Concert Halls */}
-          <ConcertHallsCarousel halls={concertHalls} />
 
           {/* Featured Composer Teaser */}
           <TouchableOpacity
@@ -295,6 +398,14 @@ const styles = StyleSheet.create({
   headerButtons: { flexDirection: 'row', gap: 8 },
   headerButton: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
 
+  // Stitch-specific header styles
+  stitchHeaderLeft: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  avatarCircle: { width: 40, height: 40, borderRadius: 20, borderWidth: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.05)' },
+  stitchGreeting: { fontSize: 14, fontWeight: '500', letterSpacing: 1 }, // Reference: tracking-wide
+  stitchTitle: { fontSize: 30, fontWeight: '300', fontStyle: 'italic', marginBottom: 8, opacity: 0.9 }, // Reference: text-3xl font-light italic text-white/90
+  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, paddingHorizontal: 8 },
+  sectionLink: { fontSize: 12, fontWeight: '500', textTransform: 'uppercase', letterSpacing: 1 }, // Reference: tracking-wide
+
   // Featured grid styles moved to extracted components
 
   sectionTitle: { fontSize: 20, fontWeight: '700', marginBottom: 12 },
@@ -327,4 +438,87 @@ const styles = StyleSheet.create({
   composerDates: { fontSize: 12, marginBottom: 6 },
   composerBio: { fontSize: 12, lineHeight: 18 },
   composerArrow: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', marginLeft: 12 },
+
+  // Stitch: Knowledge Bite Card (exact reference matching)
+  stitchKnowledgeCard: {
+    flexDirection: 'row',
+    backgroundColor: '#261e35', // Reference: bg-[#261e35]
+    borderRadius: 16, // Reference: rounded-2xl
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.05)',
+    overflow: 'hidden',
+    marginBottom: 24, // Reference: mb-10 section spacing
+    padding: 4, // Reference: p-1
+  },
+  stitchKnowledgeVisual: {
+    width: '33%',
+    backgroundColor: '#000',
+    overflow: 'hidden',
+    borderRadius: 12, // Reference: rounded-xl for inner visual
+  },
+  stitchVisualGradient: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stitchVisualOverlay: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    // Background handled by LinearGradient
+  },
+  stitchKnowledgeContent: {
+    flex: 1,
+    padding: 16,
+    paddingLeft: 20,
+    justifyContent: 'center',
+  },
+  stitchKnowledgeLabel: {
+    fontSize: 10,
+    fontWeight: '500',
+    letterSpacing: 1.5,
+    color: '#a593c8', // text-secondary
+    marginBottom: 4,
+  },
+  stitchKnowledgeTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    marginBottom: 6,
+  },
+  stitchKnowledgeDesc: {
+    fontSize: 13,
+    color: '#9ca3af', // gray-400
+    lineHeight: 18,
+  },
+  stitchKnowledgeLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 10,
+  },
+  stitchKnowledgeLinkText: {
+    fontSize: 12,
+    fontWeight: '700',
+  },
+
+  // Stitch Spotlight Section
+  stitchSpotlightSection: {
+    marginBottom: 24,
+  },
+  stitchSectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  stitchSectionTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    fontStyle: 'italic',
+  },
+  stitchSectionLink: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
 });

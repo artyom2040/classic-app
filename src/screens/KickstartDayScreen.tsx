@@ -20,8 +20,9 @@ export default function KickstartDayScreen() {
   const { theme, themeName } = useTheme();
   const t = theme;
   const isBrutal = themeName === 'neobrutalist';
+  const isStitch = themeName === 'stitch';
   const { day: dayNumber } = route.params;
-  
+
   const dayData = kickstartData.days.find(d => d.day === dayNumber) as KickstartDay | undefined;
 
   if (!dayData) {
@@ -31,7 +32,7 @@ export default function KickstartDayScreen() {
   const handleComplete = async () => {
     await completeKickstartDay(dayNumber);
     if (dayData.badge) await earnBadge(dayData.badge.id);
-    
+
     if (dayNumber < 5) {
       navigation.navigate('KickstartDay', { day: dayNumber + 1 });
     } else {
@@ -49,8 +50,28 @@ export default function KickstartDayScreen() {
 
   return (
     <ScrollView style={[styles.container, { backgroundColor: t.colors.background }]} contentContainerStyle={styles.content}>
+      {/* Stitch: 5-Day Progress Bar */}
+      {isStitch && (
+        <View style={styles.stitchProgress}>
+          {[1, 2, 3, 4, 5].map((d) => (
+            <View
+              key={d}
+              style={[
+                styles.progressSegment,
+                {
+                  backgroundColor: d <= dayNumber ? t.colors.primary : t.colors.surfaceLight,
+                  borderColor: d === dayNumber ? t.colors.primary : 'transparent',
+                },
+              ]}
+            />
+          ))}
+        </View>
+      )}
+
       <View style={styles.header}>
-        <Text style={[styles.dayLabel, { color: t.colors.primary }]}>Day {dayData.day} of 5</Text>
+        <Text style={[styles.dayLabel, { color: t.colors.primary }]}>
+          {isStitch ? `Day ${dayData.day}` : `Day ${dayData.day} of 5`}
+        </Text>
         <Text style={[styles.title, { color: t.colors.text }]}>{dayData.title}</Text>
         <Text style={[styles.subtitle, { color: t.colors.textSecondary }]}>{dayData.subtitle}</Text>
         <Text style={[styles.duration, { color: t.colors.textMuted }]}>⏱️ {dayData.duration}</Text>
@@ -83,7 +104,7 @@ export default function KickstartDayScreen() {
         <Text style={[styles.listenPiece, { color: t.colors.primary }]}>{dayData.content.listenToday.piece}</Text>
         <Text style={[styles.listenDuration, { color: t.colors.textMuted }]}>{dayData.content.listenToday.duration}</Text>
         <Text style={[styles.listenWhy, { color: t.colors.textSecondary }]}>{dayData.content.listenToday.whyThisPiece}</Text>
-        
+
         <Text style={[styles.whatToListenFor, { color: t.colors.text }]}>What to listen for:</Text>
         {dayData.content.listenToday.whatToListenFor.map((item, idx) => (
           <View key={idx} style={styles.listenForItem}>
@@ -91,7 +112,7 @@ export default function KickstartDayScreen() {
             <Text style={[styles.listenForText, { color: t.colors.textSecondary }]}>{item}</Text>
           </View>
         ))}
-        
+
         <View style={styles.listenButtons}>
           <TouchableOpacity style={[styles.listenButton, { backgroundColor: t.colors.surfaceLight }]} onPress={openSpotify}>
             <Ionicons name="play-circle" size={20} color={t.colors.success} />
@@ -174,4 +195,9 @@ const styles = StyleSheet.create({
   badgeDescription: { fontSize: fontSize.sm, marginTop: 2 },
   completeButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: borderRadius.lg, padding: spacing.md, gap: spacing.sm },
   completeButtonText: { fontSize: fontSize.lg, fontWeight: '600', color: '#FFFFFF' },
+  // Stitch styles
+  stitchProgress: { flexDirection: 'row', gap: 8, marginBottom: spacing.lg },
+  progressSegment: { flex: 1, height: 6, borderRadius: 3, borderWidth: 1 },
+  stitchListenCard: { borderRadius: 16, padding: spacing.lg, marginBottom: spacing.lg, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
+  stitchPlayButton: { width: 56, height: 56, borderRadius: 28, alignItems: 'center', justifyContent: 'center', marginRight: spacing.md },
 });

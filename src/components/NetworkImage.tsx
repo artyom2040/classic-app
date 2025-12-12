@@ -65,6 +65,7 @@ export function NetworkImage({
   // If uri is a string, use { uri }.
   // If uri is anything else (e.g. object), it might be wrong, so ignore it or try to use it if it's a valid source.
   let finalSource = source;
+
   if (!finalSource) {
     if (typeof uri === 'number') {
       finalSource = uri;

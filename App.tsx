@@ -10,6 +10,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryClientProvider } from '@tanstack/react-query';
 
 import { ThemeProvider, useTheme } from './src/context/ThemeContext';
+import { FontProvider } from './src/context/FontContext';
 import { SettingsProvider } from './src/context/SettingsContext';
 import { FavoritesProvider } from './src/context/FavoritesContext';
 import { AudioProvider } from './src/context/AudioContext';
@@ -44,6 +45,9 @@ import SettingsScreen from './src/screens/SettingsScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import QuizScreen from './src/screens/QuizScreen';
 import DiscoverScreen from './src/screens/DiscoverScreen';
+import MusicBrainzSearchScreen from './src/screens/MusicBrainzSearchScreen';
+import WelcomeScreen from './src/screens/WelcomeScreen';
+import FormExplorerScreen from './src/screens/FormExplorerScreen';
 
 // Experimental / Labs screens
 import MoodPlaylistsScreen from './src/experimental/moodPlaylists/MoodPlaylistsScreen';
@@ -67,8 +71,9 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
 
 function TabNavigator() {
-  const { theme, isDark, isGlass } = useTheme();
+  const { theme, isDark, isGlass, themeName } = useTheme();
   const t = theme;
+  const isStitch = themeName === 'stitch';
 
   return (
     <Tab.Navigator
@@ -99,23 +104,49 @@ function TabNavigator() {
           return <Ionicons name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: t.colors.primary,
-        tabBarInactiveTintColor: isGlass ? '#3C3C43' : t.colors.textMuted,
+        tabBarInactiveTintColor: isGlass ? '#3C3C43' : isStitch ? t.colors.textMuted : t.colors.textMuted,
         tabBarStyle: {
-          backgroundColor: isGlass ? 'transparent' : t.colors.surface,
-          borderTopColor: isGlass ? 'rgba(60, 60, 67, 0.12)' : t.colors.border,
+          backgroundColor: isGlass ? 'transparent' : isStitch ? t.colors.surface + 'CC' : t.colors.surface,
+          borderTopColor: isGlass ? 'rgba(60, 60, 67, 0.12)' : isStitch ? 'transparent' : t.colors.border,
+          borderTopWidth: isStitch ? 0 : 1,
           paddingTop: 8,
           height: 88,
-          position: isGlass ? 'absolute' : 'relative',
+          position: (isGlass || isStitch) ? 'absolute' : 'relative',
+          // Stitch: floating rounded tab bar
+          ...(isStitch && {
+            bottom: 20,
+            left: 16,
+            right: 16,
+            borderRadius: 20,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 8 },
+            shadowOpacity: 0.3,
+            shadowRadius: 16,
+            elevation: 12,
+          }),
         },
-        tabBarBackground: isGlass ? () => (
+        tabBarBackground: (isGlass || isStitch) ? () => (
           Platform.OS === 'ios' ? (
             <BlurView
-              intensity={100}
-              tint="light"
-              style={StyleSheet.absoluteFill}
+              intensity={isStitch ? 80 : 100}
+              tint={isStitch ? 'dark' : 'light'}
+              style={[
+                StyleSheet.absoluteFill,
+                isStitch && { borderRadius: 24, overflow: 'hidden' }
+              ]}
             />
           ) : (
-            <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(255, 255, 255, 0.9)' }]} />
+            <View style={[
+              StyleSheet.absoluteFill,
+              {
+                backgroundColor: isStitch
+                  ? 'rgba(34, 26, 50, 0.85)'
+                  : 'rgba(255, 255, 255, 0.9)',
+                borderRadius: isStitch ? 24 : 0,
+                borderWidth: isStitch ? 1 : 0,
+                borderColor: 'rgba(255, 255, 255, 0.1)',
+              }
+            ]} />
           )
         ) : undefined,
         tabBarLabelStyle: {
@@ -216,7 +247,7 @@ function AppNavigator() {
     >
       <StatusBar style={isDark ? 'light' : 'dark'} />
       <Stack.Navigator
-        initialRouteName={showOnboarding ? 'Kickstart' : 'MainTabs'}
+        initialRouteName={showOnboarding ? 'Welcome' : 'MainTabs'}
         screenOptions={{
           headerStyle: {
             backgroundColor: t.colors.background,
@@ -231,6 +262,11 @@ function AppNavigator() {
           },
         }}
       >
+        <Stack.Screen
+          name="Welcome"
+          component={WelcomeScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="MainTabs"
           component={TabNavigator}
@@ -255,6 +291,11 @@ function AppNavigator() {
           name="FormDetail"
           component={FormDetailScreen}
           options={{ title: 'Form' }}
+        />
+        <Stack.Screen
+          name="FormExplorer"
+          component={FormExplorerScreen}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="TermDetail"
@@ -326,6 +367,11 @@ function AppNavigator() {
           component={DiscoverScreen}
           options={{ title: 'Discover', headerShown: false }}
         />
+        <Stack.Screen
+          name="MusicBrainzSearch"
+          component={MusicBrainzSearchScreen}
+          options={{ title: 'MusicBrainz Search', headerShown: false }}
+        />
 
         {/* Labs / Experimental Screens */}
         <Stack.Screen
@@ -383,7 +429,7 @@ function AppNavigator() {
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
-    </NavigationContainer>
+    </NavigationContainer >
   );
 }
 
@@ -392,23 +438,25 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
         <ThemeProvider>
-          <ToastProvider>
-            <ErrorBoundary renderFallback={(error, reset) => (
-              <ThemedErrorFallback error={error} onReset={reset} />
-            )}>
-              <SettingsProvider>
-                <FavoritesProvider>
-                  <AuthProvider>
-                    <AudioProvider>
-                      <AppNavigator />
-                      <MiniPlayer />
-                      <OfflineIndicator />
-                    </AudioProvider>
-                  </AuthProvider>
-                </FavoritesProvider>
-              </SettingsProvider>
-            </ErrorBoundary>
-          </ToastProvider>
+          <FontProvider>
+            <ToastProvider>
+              <ErrorBoundary renderFallback={(error, reset) => (
+                <ThemedErrorFallback error={error} onReset={reset} />
+              )}>
+                <SettingsProvider>
+                  <FavoritesProvider>
+                    <AuthProvider>
+                      <AudioProvider>
+                        <AppNavigator />
+                        <MiniPlayer />
+                        <OfflineIndicator />
+                      </AudioProvider>
+                    </AuthProvider>
+                  </FavoritesProvider>
+                </SettingsProvider>
+              </ErrorBoundary>
+            </ToastProvider>
+          </FontProvider>
         </ThemeProvider>
       </SafeAreaProvider>
     </QueryClientProvider>

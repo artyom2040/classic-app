@@ -21,6 +21,7 @@ export { SearchBar } from './SearchBar';
 export { FavoriteButton, FavoriteButtonWithLabel } from './FavoriteButton';
 export { Toast, ToastProvider, useToast } from './Toast';
 export { ErrorBoundary, ThemedErrorFallback } from './ErrorBoundary';
+export { ErrorUI } from './ErrorUI';
 export { OfflineIndicator, OfflineDot } from './OfflineIndicator';
 export { 
   Skeleton, 
@@ -48,3 +49,6 @@ export { AppHeader } from './AppHeader';
 
 // Glass components
 export { GlassCard, GlassBackground, GlassPill, GlassTabBar } from './GlassCard';
+
+// Theme-specific components
+export { StitchMiniPlayer } from './StitchMiniPlayer';

@@ -11,7 +11,7 @@ import { RootStackParamList } from '../../types';
 import { spacing, fontSize, borderRadius } from '../../theme';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
-type StackScreen = 'Composers' | 'MonthlySpotlight' | 'NewReleases' | 'ConcertHalls' | 'Quiz' | 'Badges';
+type StackScreen = 'Composers' | 'MonthlySpotlight' | 'Quiz' | 'Badges';
 type TabScreen = 'Timeline' | 'Glossary';
 
 interface ExploreItem {
@@ -39,8 +39,6 @@ export function ExploreGrid({ composersCount, termsCount }: ExploreGridProps) {
     { icon: 'time', label: 'Timeline', sub: 'Eras & History', color: '#6B8E23', screen: 'Timeline' },
     { icon: 'book', label: 'Glossary', sub: `${termsCount} Terms`, color: t.colors.secondary, screen: 'Glossary' },
     { icon: 'albums', label: 'Spotlight', sub: 'Monthly Feature', color: t.colors.warning, screen: 'MonthlySpotlight' },
-    { icon: 'musical-notes', label: 'New Releases', sub: 'Latest recordings', color: t.colors.secondary, screen: 'NewReleases' },
-    { icon: 'business', label: 'Concert Halls', sub: 'World venues', color: t.colors.warning, screen: 'ConcertHalls' },
     { icon: 'help-circle', label: 'Daily Quiz', sub: '5 Questions', color: t.colors.error, screen: 'Quiz' },
     { icon: 'ribbon', label: 'Badges', sub: 'Achievements', color: t.colors.success, screen: 'Badges' },
   ];

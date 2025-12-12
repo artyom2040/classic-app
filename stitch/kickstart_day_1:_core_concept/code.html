@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kickstart Day 1: Core Concept</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#5417cf",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#161121",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display antialiased">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark text-slate-900 dark:text-white group/design-root overflow-x-hidden pb-24">
+<!-- Top Navigation -->
+<div class="sticky top-0 z-50 flex items-center bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md p-4 pb-2 justify-between">
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pl-12">Kickstart: Day 1</h2>
+<div class="flex w-12 items-center justify-end">
+<button class="flex max-w-[48px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 w-10 bg-transparent text-slate-900 dark:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<!-- Progress Indicators -->
+<div class="flex w-full flex-row items-center justify-center gap-2 py-4 px-4">
+<div class="h-1.5 flex-1 rounded-full bg-primary"></div>
+<div class="h-1.5 flex-1 rounded-full bg-slate-200 dark:bg-white/10"></div>
+<div class="h-1.5 flex-1 rounded-full bg-slate-200 dark:bg-white/10"></div>
+<div class="h-1.5 flex-1 rounded-full bg-slate-200 dark:bg-white/10"></div>
+<div class="h-1.5 flex-1 rounded-full bg-slate-200 dark:bg-white/10"></div>
+</div>
+<!-- Hero Image -->
+<div class="@container px-4 py-2">
+<div class="relative w-full aspect-[4/3] @[480px]:aspect-[21/9] bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden rounded-xl shadow-lg shadow-primary/10 ring-1 ring-white/10" data-alt="Abstract visualization of golden sound waves flowing through a dark space" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC1fdZEMzgAQsLH276DgOQqwJ-RxQ7TIQzjVH7yRTmL7TCT_iJAjzaHrNzJVZ5IAXYXGTpJt8be30mxEWfeRvQIgIwqX7FiUgnyS8xoI95pYic58_1r9lk3UX5TYGdExgRQ_qYZCrXAyoQ-b8hLbrdt3NrVL6z3ej4p6gyeGpZ0UkfwGzOQ5u2tRTBoqbG3ZkgZzpXIfDS7yGo9s5lszF4JMwFQd68taT5a1Dvqz7osD8QwX69zz7k9zJwheuGR-ce8ZuEByM5k6TfQ");'>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/50 to-transparent opacity-90 dark:opacity-100"></div>
+<div class="relative p-6 z-10">
+<span class="inline-block px-3 py-1 mb-2 text-xs font-bold tracking-wider uppercase text-white bg-primary/80 backdrop-blur rounded-full">Baroque Era</span>
+</div>
+</div>
+</div>
+<!-- Typography Block -->
+<div class="flex flex-col px-4 pt-2">
+<h1 class="text-slate-900 dark:text-white text-[32px] font-extrabold leading-tight tracking-tight mb-2">The Heartbeat of the Orchestra</h1>
+<p class="text-primary font-medium text-lg leading-snug">Understanding Rhythm in Baroque Music</p>
+</div>
+<!-- Audio Control Module -->
+<div class="px-4 py-6">
+<div class="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-4 flex items-center gap-4 shadow-sm">
+<button class="flex-shrink-0 h-14 w-14 rounded-full bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/30 hover:scale-105 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[32px] ml-1">play_arrow</span>
+</button>
+<div class="flex-1 flex flex-col justify-center gap-2">
+<div class="flex justify-between items-end">
+<span class="text-sm font-bold text-slate-700 dark:text-slate-200">Vivaldi: The Four Seasons</span>
+<span class="text-xs font-mono text-slate-500 dark:text-slate-400">0:45</span>
+</div>
+<!-- Fake Waveform -->
+<div class="flex items-center gap-0.5 h-6 opacity-80">
+<div class="w-1 bg-primary rounded-full h-3"></div>
+<div class="w-1 bg-primary rounded-full h-5"></div>
+<div class="w-1 bg-primary rounded-full h-4"></div>
+<div class="w-1 bg-primary rounded-full h-6"></div>
+<div class="w-1 bg-primary/40 rounded-full h-3"></div>
+<div class="w-1 bg-primary/40 rounded-full h-2"></div>
+<div class="w-1 bg-primary/40 rounded-full h-4"></div>
+<div class="w-1 bg-primary/40 rounded-full h-3"></div>
+<div class="w-1 bg-primary/40 rounded-full h-5"></div>
+<div class="w-1 bg-primary/40 rounded-full h-2"></div>
+<div class="w-1 bg-primary/40 rounded-full h-3"></div>
+<div class="w-1 bg-primary/40 rounded-full h-4"></div>
+<div class="w-1 bg-primary/40 rounded-full h-2"></div>
+<div class="w-1 bg-primary/40 rounded-full h-3"></div>
+<div class="w-1 bg-primary/40 rounded-full h-2"></div>
+<div class="w-1 bg-primary/40 rounded-full h-2"></div>
+<div class="w-1 bg-primary/40 rounded-full h-2"></div>
+<div class="w-1 bg-primary/40 rounded-full h-2"></div>
+<div class="w-1 bg-primary/40 rounded-full h-2"></div>
+<div class="w-1 bg-primary/40 rounded-full h-2"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Body Text -->
+<div class="px-4 pb-6">
+<p class="text-slate-600 dark:text-slate-300 text-base leading-relaxed">
+                In the Baroque era, music was driven by a concept known as <span class="text-primary font-bold">Motor Rhythm</span>. Unlike later styles that ebb and flow gently, Baroque rhythm is relentless, energetic, and precise—like the ticking of a complex clock.
+            </p>
+<p class="text-slate-600 dark:text-slate-300 text-base leading-relaxed mt-4">
+                This forward momentum is often carried by the Basso Continuo, usually a cello and harpsichord working together to keep the pulse alive.
+            </p>
+</div>
+<!-- Interactive Tip Card -->
+<div class="px-4 mb-8">
+<div class="group cursor-pointer bg-primary/5 hover:bg-primary/10 dark:bg-primary/10 dark:hover:bg-primary/20 border border-primary/20 rounded-xl p-4 transition-colors">
+<div class="flex items-start gap-3">
+<div class="bg-primary/20 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined">lightbulb</span>
+</div>
+<div class="flex-1">
+<h3 class="text-primary font-bold text-sm mb-1">Did you know?</h3>
+<p class="text-slate-700 dark:text-slate-300 text-sm leading-snug">
+                            The harpsichord cannot change volume by how hard you press the keys. Instead, composers created "illusions" of dynamics by adding more notes to chords.
+                        </p>
+<div class="flex items-center gap-1 mt-3 text-primary text-xs font-bold uppercase tracking-wide">
+<span>Tap to hear isolated harpsichord</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Fixed Footer Action -->
+<div class="fixed bottom-0 left-0 w-full p-4 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-lg border-t border-slate-200 dark:border-white/10 z-50">
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold text-lg h-14 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all active:scale-[0.98]">
+<span>Complete Day 1</span>
+<span class="material-symbols-outlined">check_circle</span>
+</button>
+</div>
+</div>
+</body></html>

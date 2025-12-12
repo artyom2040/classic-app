@@ -73,13 +73,16 @@ export interface FormWork {
   why: string;
 }
 
+// Union type to support different structure formats in JSON data
+export type StructureStep = Record<string, string | number>;
+
 export interface MusicalForm {
   id: string;
   name: string;
   category: string;
   period: string;
   description: string;
-  structure: any[];
+  structure: StructureStep[];
   keyWorks: FormWork[];
   listenFor: string[];
 }
@@ -203,6 +206,9 @@ export interface UserProgress {
 
 // Navigation types
 export type RootStackParamList = {
+  // Onboarding
+  Welcome: undefined;
+
   // Auth screens
   Login: undefined;
   Register: undefined;
@@ -214,6 +220,7 @@ export type RootStackParamList = {
   ComposerDetail: { composerId: string };
   PeriodDetail: { periodId: string };
   FormDetail: { formId: string };
+  FormExplorer: undefined;
   TermDetail: { termId: string };
   Kickstart: undefined;
   KickstartDay: { day: number };
@@ -227,6 +234,7 @@ export type RootStackParamList = {
   Settings: undefined;
   Search: undefined;
   Discover: undefined;
+  MusicBrainzSearch: undefined;
   Quiz: undefined;
 
   // Labs / Experimental screens

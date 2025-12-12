@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kickstart Day 3: Exploring Forms</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#5417cf",
+                        "primary-dark": "#3d0f99",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#161121",
+                        "surface-dark": "#302447",
+                        "text-secondary": "#a593c8",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "2rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #161121;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #302447;
+            border-radius: 4px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-black flex justify-center min-h-screen">
+<!-- Mobile Container -->
+<div class="relative flex h-full min-h-screen w-full max-w-md flex-col bg-background-light dark:bg-background-dark overflow-hidden shadow-2xl font-display">
+<!-- Status Bar Area Spacer (iOS safe area simulation) -->
+<div class="w-full h-12 shrink-0"></div>
+<!-- Header / Navigation -->
+<header class="flex items-center justify-between px-6 pb-4 pt-2">
+<button class="text-text-secondary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[28px]">close</span>
+</button>
+<!-- Page Indicators (Day 3 of 5) -->
+<div class="flex flex-row items-center justify-center gap-2">
+<!-- Completed Days -->
+<div class="h-1.5 w-6 rounded-full bg-primary/40"></div>
+<div class="h-1.5 w-6 rounded-full bg-primary/40"></div>
+<!-- Current Day -->
+<div class="h-1.5 w-8 rounded-full bg-primary shadow-[0_0_10px_rgba(84,23,207,0.5)]"></div>
+<!-- Future Days -->
+<div class="h-1.5 w-2 rounded-full bg-surface-dark"></div>
+<div class="h-1.5 w-2 rounded-full bg-surface-dark"></div>
+</div>
+<button class="text-primary font-medium text-sm">Skip</button>
+</header>
+<!-- Main Scrollable Content -->
+<main class="flex-1 overflow-y-auto pb-28"> <!-- Padding bottom for sticky footer -->
+<!-- Headline Section -->
+<div class="px-6 pt-4 pb-2">
+<p class="text-primary font-medium text-sm tracking-widest uppercase mb-2">Day 3: Form Explorer</p>
+<h1 class="text-black dark:text-white tracking-tight text-[32px] font-bold leading-[1.1]">The Blueprint <br/>of Sound</h1>
+</div>
+<!-- Visual Diagram Card -->
+<div class="px-4 py-4">
+<div class="w-full relative aspect-[16/9] overflow-hidden rounded-2xl bg-surface-dark border border-white/5">
+<!-- Abstract Musical Form Diagram -->
+<div class="absolute inset-0 bg-cover bg-center opacity-80" data-alt="Abstract gradient diagram showing three distinct sections: Exposition, Development, Recapitulation connected by flowing lines" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCXuenfSisK66rG0_YCxgFVlxXQVeeXkf8-OwTXr6pzAyDSzvOMIWG3T-vYq6oGxF2v1GQ7JMFuaPt-Eu7rVak1FLWxD_Js-BNmsDuSfJSg4RHOIt9lttu-y_AsVexdNDYvm1PwgImZU2M4tfUy5WReG8LlPMWyIHHXbpc5dMbn6zCaYjBfZNAVSnWD_-lA986jbkvqtuJyZ9kEL6T0EbMUC3IXadOn25nyAt1vxyGWWPRNOGwhRWaVg7bfnLTAeaRePnpXMW9vKxZO');">
+</div>
+<!-- Overlay Text labels for the diagram (simulated interactable elements) -->
+<div class="absolute inset-0 flex items-center justify-around px-4">
+<div class="flex flex-col items-center gap-1">
+<div class="h-16 w-1 rounded-full bg-primary/30"></div>
+<span class="text-[10px] uppercase tracking-wide text-text-secondary">Exposition</span>
+</div>
+<div class="flex flex-col items-center gap-1 mt-8">
+<div class="h-24 w-1 rounded-full bg-primary shadow-[0_0_15px_#5417cf]"></div>
+<span class="text-[10px] uppercase tracking-wide text-white font-bold">Development</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="h-16 w-1 rounded-full bg-primary/30"></div>
+<span class="text-[10px] uppercase tracking-wide text-text-secondary">Recap</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Body Text -->
+<div class="px-6 py-2">
+<h2 class="text-white text-lg font-semibold mb-2">Understanding Sonata Form</h2>
+<p class="text-gray-400 dark:text-gray-300 text-base font-light leading-relaxed">
+                    Think of it as a passionate conversation or a debate. A theme is introduced, argued through conflict, and finally resolved in harmony.
+                </p>
+</div>
+<!-- Composer Highlight Pill (Interactive) -->
+<div class="px-6 py-4">
+<div class="group flex items-center gap-3 rounded-xl bg-surface-dark/50 border border-white/5 p-3 hover:bg-surface-dark transition-colors cursor-pointer">
+<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
+<span class="material-symbols-outlined text-[20px]">lightbulb</span>
+</div>
+<div class="flex-1">
+<p class="text-xs font-medium uppercase text-text-secondary">Did you know?</p>
+<p class="text-sm font-normal text-white">Beethoven pushed this form to its limits.</p>
+</div>
+<span class="material-symbols-outlined text-text-secondary text-[20px] group-hover:translate-x-1 transition-transform">chevron_right</span>
+</div>
+</div>
+<!-- Audio Interaction Card -->
+<div class="px-4 py-2">
+<div class="flex flex-col gap-4 rounded-2xl bg-surface-dark p-5 border border-white/5 shadow-lg relative overflow-hidden">
+<!-- Subtle background glow -->
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/20 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex items-center gap-4 z-10">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-xl size-14 shrink-0 shadow-md" data-alt="Close up of an old sheet music manuscript with dramatic lighting" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCEtxN5CxbQvNfC5BNmcy_VZEEZYaT_d_kg8sBtSjif43B2qTYONd3YhWheEukIvpZp1uiEKOKCcojt9lQ4AuZumd68QTIq_eTALCFh33R8oAR0hBUy932azaHgoDIuEXPBLQRqgu1BfDkZ_gfUG8ihhTdA9nxZJmxvmqQo8w1lnQGoLKsuUDdbKmOwj-1uvvf_9UwYpnkrGrPRh5bftADngW3d6GlqornbleO4DPGQ4Xuwdp8ojAR3pxdsbfhlxhr3wM2IOlNE6N8Z");'></div>
+<div class="flex-1 min-w-0">
+<p class="text-white text-base font-bold leading-tight truncate">Symphony No. 5</p>
+<p class="text-text-secondary text-xs font-normal leading-normal mt-1 truncate uppercase tracking-wide">The Development Section</p>
+</div>
+<button class="flex shrink-0 items-center justify-center rounded-full size-12 bg-primary text-white shadow-lg shadow-primary/40 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[24px] ml-0.5">play_arrow</span>
+</button>
+</div>
+<!-- Waveform Visualizer -->
+<div class="flex items-end justify-between h-8 gap-1 pt-2 opacity-80 px-1">
+<div class="w-1 bg-primary/40 rounded-full h-3"></div>
+<div class="w-1 bg-primary/60 rounded-full h-5"></div>
+<div class="w-1 bg-primary rounded-full h-full animate-pulse"></div>
+<div class="w-1 bg-primary/80 rounded-full h-4"></div>
+<div class="w-1 bg-primary/50 rounded-full h-2"></div>
+<div class="w-1 bg-primary/30 rounded-full h-3"></div>
+<div class="w-1 bg-primary/60 rounded-full h-6"></div>
+<div class="w-1 bg-primary rounded-full h-3"></div>
+<div class="w-1 bg-primary/40 rounded-full h-2"></div>
+<div class="w-1 bg-primary/20 rounded-full h-4"></div>
+<!-- Filler lines for design balance -->
+<div class="w-1 bg-primary/20 rounded-full h-2"></div>
+<div class="w-1 bg-primary/20 rounded-full h-3"></div>
+<div class="w-1 bg-primary/20 rounded-full h-2"></div>
+</div>
+<div class="flex items-center justify-between text-xs font-medium text-text-secondary mt-1">
+<span>0:00</span>
+<span>0:45</span>
+</div>
+</div>
+<p class="text-center text-xs text-text-secondary mt-3 italic">"Listen to how the theme is broken apart..."</p>
+</div>
+<div class="h-6 w-full"></div>
+</main>
+<!-- Sticky Footer Action -->
+<div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#161121] via-[#161121] to-transparent">
+<button class="w-full flex items-center justify-center gap-2 bg-white text-black dark:bg-primary dark:text-white font-semibold text-lg py-4 rounded-xl shadow-lg shadow-primary/25 active:scale-[0.98] transition-all hover:shadow-primary/40">
+<span>Continue to Day 4</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>

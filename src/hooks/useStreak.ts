@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { STORAGE_KEYS } from '../constants';
+import { getStorageItem, setStorageItem, removeStorageItem } from '../utils/storageUtils';
 
 interface StreakData {
   currentStreak: number;
@@ -42,37 +42,25 @@ export function useStreak() {
   }, []);
 
   const loadStreak = async () => {
-    try {
-      const stored = await AsyncStorage.getItem(STORAGE_KEYS.STREAK);
-      if (stored) {
-        const data = JSON.parse(stored) as StreakData;
+    const data = await getStorageItem<StreakData>(STORAGE_KEYS.STREAK, defaultStreakData);
 
-        // Check if streak is still valid
-        const today = getDateString();
-        const yesterday = getDateString(new Date(Date.now() - 86400000));
+    // Check if streak is still valid
+    const today = getDateString();
+    const yesterday = getDateString(new Date(Date.now() - 86400000));
 
-        if (data.lastActiveDate) {
-          if (data.lastActiveDate !== today && data.lastActiveDate !== yesterday) {
-            // Streak broken - reset current streak but keep longest
-            data.currentStreak = 0;
-          }
-        }
-
-        setStreakData(data);
+    if (data.lastActiveDate) {
+      if (data.lastActiveDate !== today && data.lastActiveDate !== yesterday) {
+        // Streak broken - reset current streak but keep longest
+        data.currentStreak = 0;
       }
-    } catch (error) {
-      console.error('Error loading streak:', error);
-    } finally {
-      setIsLoaded(true);
     }
+
+    setStreakData(data);
+    setIsLoaded(true);
   };
 
   const saveStreak = async (data: StreakData) => {
-    try {
-      await AsyncStorage.setItem(STORAGE_KEYS.STREAK, JSON.stringify(data));
-    } catch (error) {
-      console.error('Error saving streak:', error);
-    }
+    return setStorageItem(STORAGE_KEYS.STREAK, data);
   };
 
   const recordActivity = useCallback(async (): Promise<{
@@ -124,7 +112,7 @@ export function useStreak() {
 
   const resetStreak = async () => {
     setStreakData(defaultStreakData);
-    await AsyncStorage.removeItem(STORAGE_KEYS.STREAK);
+    await removeStorageItem(STORAGE_KEYS.STREAK);
   };
 
   const getStreakStatus = (): 'active' | 'at_risk' | 'broken' => {

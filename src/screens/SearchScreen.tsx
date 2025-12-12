@@ -13,7 +13,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { getStorageItem, setStorageItem, removeStorageItem } from '../utils/storageUtils';
 
 import { useTheme } from '../context/ThemeContext';
 import { RootStackParamList } from '../types';
@@ -58,8 +59,8 @@ export default function SearchScreen() {
   // Load recent searches
   const loadRecentSearches = useCallback(async () => {
     setRecentsLoading(true);
-    const data = await AsyncStorage.getItem(RECENT_SEARCHES_KEY);
-    setRecentSearches(data ? JSON.parse(data) : []);
+    const data = await getStorageItem<string[]>(RECENT_SEARCHES_KEY, []);
+    setRecentSearches(data);
     setRecentsLoading(false);
   }, []);
 
@@ -74,13 +75,13 @@ export default function SearchScreen() {
 
     const updated = [term, ...recentSearches.filter(s => s !== term)].slice(0, MAX_RECENT_SEARCHES);
     setRecentSearches(updated);
-    await AsyncStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
+    await setStorageItem(RECENT_SEARCHES_KEY, updated);
   }, [recentSearches]);
 
   // Clear recent searches
   const clearRecentSearches = async () => {
     setRecentSearches([]);
-    await AsyncStorage.removeItem(RECENT_SEARCHES_KEY);
+    await removeStorageItem(RECENT_SEARCHES_KEY);
   };
 
   const onRefresh = useCallback(async () => {
@@ -219,25 +220,44 @@ export default function SearchScreen() {
     ...(isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm),
   };
 
+  const isStitch = themeName === 'stitch';
+
+  // Stitch-specific category card style
+  const stitchCardStyle = {
+    backgroundColor: 'rgba(35, 27, 51, 0.6)',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(84, 23, 207, 0.2)',
+  };
+
   return (
-    <View style={[styles.container, { backgroundColor: t.colors.background, paddingTop: insets.top }]}>
+    <View style={[styles.container, { backgroundColor: isStitch ? '#161022' : t.colors.background, paddingTop: insets.top }]}>
       {/* Search Header */}
       <View style={styles.header}>
         <TouchableOpacity
-          style={[styles.backButton, { backgroundColor: t.colors.surfaceLight }, isBrutal && { borderWidth: 2, borderColor: t.colors.border }]}
+          style={[
+            styles.backButton,
+            { backgroundColor: isStitch ? 'rgba(255,255,255,0.1)' : t.colors.surfaceLight },
+            isBrutal && { borderWidth: 2, borderColor: t.colors.border }
+          ]}
           onPress={() => {
             hapticSelection();
             navigation.goBack();
           }}
         >
-          <Ionicons name="arrow-back" size={20} color={t.colors.text} />
+          <Ionicons name="arrow-back" size={20} color={isStitch ? '#FFFFFF' : t.colors.text} />
         </TouchableOpacity>
-        <View style={[styles.searchBar, { backgroundColor: t.colors.surface }, isBrutal && { borderWidth: 2, borderColor: t.colors.border }]}>
-          <Ionicons name="search" size={20} color={t.colors.textMuted} />
+        <View style={[
+          styles.searchBar,
+          { backgroundColor: isStitch ? 'rgba(255,255,255,0.08)' : t.colors.surface },
+          isStitch && { borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
+          isBrutal && { borderWidth: 2, borderColor: t.colors.border }
+        ]}>
+          <Ionicons name="search" size={20} color={isStitch ? 'rgba(255,255,255,0.5)' : t.colors.textMuted} />
           <TextInput
-            style={[styles.searchInput, { color: t.colors.text }]}
-            placeholder="Search composers, terms, forms..."
-            placeholderTextColor={t.colors.textMuted}
+            style={[styles.searchInput, { color: isStitch ? '#FFFFFF' : t.colors.text }]}
+            placeholder="Search composers, term"
+            placeholderTextColor={isStitch ? 'rgba(255,255,255,0.4)' : t.colors.textMuted}
             value={query}
             onChangeText={setQuery}
             onFocus={() => setIsFocused(true)}
@@ -248,7 +268,7 @@ export default function SearchScreen() {
           />
           {query.length > 0 && (
             <TouchableOpacity onPress={() => setQuery('')}>
-              <Ionicons name="close-circle" size={20} color={t.colors.textMuted} />
+              <Ionicons name="close-circle" size={20} color={isStitch ? 'rgba(255,255,255,0.5)' : t.colors.textMuted} />
             </TouchableOpacity>
           )}
         </View>
@@ -273,7 +293,7 @@ export default function SearchScreen() {
             {recentsLoading && (
               <View style={styles.section}>
                 <View style={styles.sectionHeader}>
-                  <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Recent Searches</Text>
+                  <Text style={[styles.sectionTitle, { color: isStitch ? '#FFFFFF' : t.colors.text }]}>Recent Searches</Text>
                 </View>
                 {[0, 1, 2].map((i) => (
                   <SkeletonListItem key={i} />
@@ -284,7 +304,7 @@ export default function SearchScreen() {
             {!recentsLoading && recentSearches.length > 0 && (
               <View style={styles.section}>
                 <View style={styles.sectionHeader}>
-                  <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Recent Searches</Text>
+                  <Text style={[styles.sectionTitle, { color: isStitch ? '#FFFFFF' : t.colors.text }]}>Recent Searches</Text>
                   <TouchableOpacity onPress={clearRecentSearches}>
                     <Text style={[styles.clearButton, { color: t.colors.error }]}>Clear</Text>
                   </TouchableOpacity>
@@ -292,30 +312,33 @@ export default function SearchScreen() {
                 {recentSearches.map((term, index) => (
                   <TouchableOpacity
                     key={index}
-                    style={[styles.recentItem, cardStyle]}
+                    style={[styles.recentItem, isStitch ? stitchCardStyle : cardStyle]}
                     onPress={() => setQuery(term)}
                   >
-                    <Ionicons name="time-outline" size={18} color={t.colors.textMuted} />
-                    <Text style={[styles.recentText, { color: t.colors.text }]}>{term}</Text>
-                    <Ionicons name="arrow-forward" size={16} color={t.colors.textMuted} />
+                    <Ionicons name="time-outline" size={18} color={isStitch ? 'rgba(255,255,255,0.5)' : t.colors.textMuted} />
+                    <Text style={[styles.recentText, { color: isStitch ? '#FFFFFF' : t.colors.text }]}>{term}</Text>
+                    <Ionicons name="arrow-forward" size={16} color={isStitch ? 'rgba(255,255,255,0.3)' : t.colors.textMuted} />
                   </TouchableOpacity>
                 ))}
               </View>
             )}
 
-            {/* Quick Categories */}
+            {/* Quick Categories - Stitch Enhanced */}
             <View style={styles.section}>
-              <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Browse by Category</Text>
+              <Text style={[styles.sectionTitle, { color: isStitch ? '#FFFFFF' : t.colors.text }]}>Browse by Category</Text>
               <View style={styles.categoryGrid}>
                 {[
-                  { label: 'Composers', count: composersData.composers.length, icon: 'person', color: t.colors.primary, query: 'baroque romantic classical' },
-                  { label: 'Terms', count: glossaryData.terms.length, icon: 'book', color: t.colors.secondary, query: 'sonata symphony' },
-                  { label: 'Forms', count: formsData.forms.length, icon: 'musical-notes', color: t.colors.warning, query: 'concerto fugue' },
-                  { label: 'Eras', count: periodsData.periods.length, icon: 'time', color: t.colors.success, query: 'baroque' },
+                  { label: 'Composers', count: composersData.composers.length, icon: 'person', color: '#5417cf', gradientStart: '#5417cf', gradientEnd: '#7c3aed' },
+                  { label: 'Terms', count: glossaryData.terms.length, icon: 'book', color: '#8b5cf6', gradientStart: '#8b5cf6', gradientEnd: '#a78bfa' },
+                  { label: 'Forms', count: formsData.forms.length, icon: 'musical-notes', color: '#f59e0b', gradientStart: '#f59e0b', gradientEnd: '#fbbf24' },
+                  { label: 'Eras', count: periodsData.periods.length, icon: 'time', color: '#22c55e', gradientStart: '#22c55e', gradientEnd: '#4ade80' },
                 ].map((cat, idx) => (
                   <TouchableOpacity
                     key={idx}
-                    style={[styles.categoryCard, cardStyle]}
+                    style={[
+                      styles.categoryCard,
+                      isStitch ? [styles.stitchCategoryCard, { borderColor: cat.color + '40' }] : cardStyle
+                    ]}
                     onPress={() => navigation.navigate(
                       idx === 0 ? 'Timeline' as any :
                         idx === 1 ? 'Glossary' as any :
@@ -323,11 +346,14 @@ export default function SearchScreen() {
                             'Timeline' as any
                     )}
                   >
-                    <View style={[styles.categoryIcon, { backgroundColor: cat.color + '20' }]}>
+                    <View style={[
+                      styles.categoryIcon,
+                      { backgroundColor: isStitch ? cat.color + '25' : cat.color + '20' }
+                    ]}>
                       <Ionicons name={cat.icon as any} size={24} color={cat.color} />
                     </View>
-                    <Text style={[styles.categoryLabel, { color: t.colors.text }]}>{cat.label}</Text>
-                    <Text style={[styles.categoryCount, { color: t.colors.textMuted }]}>{cat.count} items</Text>
+                    <Text style={[styles.categoryLabel, { color: isStitch ? '#FFFFFF' : t.colors.text }]}>{cat.label}</Text>
+                    <Text style={[styles.categoryCount, { color: isStitch ? 'rgba(255,255,255,0.5)' : t.colors.textMuted }]}>{cat.count} items</Text>
                   </TouchableOpacity>
                 ))}
               </View>
@@ -340,15 +366,15 @@ export default function SearchScreen() {
           <View style={styles.section}>
             {searchResults.length > 0 ? (
               <>
-                <Text style={[styles.resultCount, { color: t.colors.textSecondary }]}>
+                <Text style={[styles.resultCount, { color: isStitch ? 'rgba(255,255,255,0.6)' : t.colors.textSecondary }]}>
                   {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} for "{query}"
                 </Text>
 
                 {/* Result type chips */}
                 <View style={styles.chipRow}>
                   {Object.entries(categoryCounts).map(([type, count]) => count > 0 && (
-                    <View key={type} style={[styles.chip, { backgroundColor: t.colors.surfaceLight }]}>
-                      <Text style={[styles.chipText, { color: t.colors.textSecondary }]}>
+                    <View key={type} style={[styles.chip, { backgroundColor: isStitch ? 'rgba(84, 23, 207, 0.2)' : t.colors.surfaceLight }]}>
+                      <Text style={[styles.chipText, { color: isStitch ? 'rgba(255,255,255,0.7)' : t.colors.textSecondary }]}>
                         {type.charAt(0).toUpperCase() + type.slice(1)}s: {count}
                       </Text>
                     </View>
@@ -358,17 +384,17 @@ export default function SearchScreen() {
                 {searchResults.map((result, index) => (
                   <TouchableOpacity
                     key={`${result.type}-${result.id}`}
-                    style={[styles.resultItem, cardStyle]}
+                    style={[styles.resultItem, isStitch ? stitchCardStyle : cardStyle]}
                     onPress={() => navigateToResult(result)}
                   >
-                    <View style={[styles.resultIcon, { backgroundColor: result.color + '20' }]}>
+                    <View style={[styles.resultIcon, { backgroundColor: result.color + '25' }]}>
                       <Ionicons name={result.icon as any} size={20} color={result.color} />
                     </View>
                     <View style={styles.resultContent}>
-                      <Text style={[styles.resultTitle, { color: t.colors.text }]}>{result.title}</Text>
-                      <Text style={[styles.resultSubtitle, { color: t.colors.textMuted }]}>{result.subtitle}</Text>
+                      <Text style={[styles.resultTitle, { color: isStitch ? '#FFFFFF' : t.colors.text }]}>{result.title}</Text>
+                      <Text style={[styles.resultSubtitle, { color: isStitch ? 'rgba(255,255,255,0.5)' : t.colors.textMuted }]}>{result.subtitle}</Text>
                     </View>
-                    <View style={[styles.resultType, { backgroundColor: result.color + '15' }]}>
+                    <View style={[styles.resultType, { backgroundColor: result.color + '20' }]}>
                       <Text style={[styles.resultTypeText, { color: result.color }]}>
                         {result.type}
                       </Text>
@@ -378,9 +404,9 @@ export default function SearchScreen() {
               </>
             ) : (
               <View style={styles.emptyState}>
-                <Ionicons name="search-outline" size={48} color={t.colors.textMuted} />
-                <Text style={[styles.emptyTitle, { color: t.colors.text }]}>No results found</Text>
-                <Text style={[styles.emptySubtitle, { color: t.colors.textMuted }]}>
+                <Ionicons name="search-outline" size={48} color={isStitch ? 'rgba(255,255,255,0.3)' : t.colors.textMuted} />
+                <Text style={[styles.emptyTitle, { color: isStitch ? '#FFFFFF' : t.colors.text }]}>No results found</Text>
+                <Text style={[styles.emptySubtitle, { color: isStitch ? 'rgba(255,255,255,0.5)' : t.colors.textMuted }]}>
                   Try searching for a composer, musical term, or era
                 </Text>
               </View>
@@ -425,6 +451,7 @@ const styles = StyleSheet.create({
 
   categoryGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
   categoryCard: { width: '48%', padding: spacing.md, alignItems: 'center' },
+  stitchCategoryCard: { borderWidth: 1.5, borderRadius: borderRadius.md, padding: spacing.md },
   categoryIcon: { width: 48, height: 48, borderRadius: 24, alignItems: 'center', justifyContent: 'center', marginBottom: spacing.sm },
   categoryLabel: { fontSize: fontSize.md, fontWeight: '600' },
   categoryCount: { fontSize: fontSize.sm, marginTop: 2 },

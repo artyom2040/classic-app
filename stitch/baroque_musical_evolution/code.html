@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Baroque Musical Evolution</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#5417cf",
+              "background-light": "#f6f6f8",
+              "background-dark": "#161121",
+            },
+            fontFamily: {
+              "display": ["Newsreader", "serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative w-full min-h-screen overflow-x-hidden">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-10 flex items-center justify-between p-4 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+<span class="text-black material-symbols-outlined dark:text-white">arrow_back_ios_new</span>
+<h2 class="flex-1 text-lg font-bold leading-tight tracking-tight text-center text-black dark:text-white">Baroque Period</h2>
+<div class="w-6"></div> <!-- Spacer for centering -->
+</div>
+<!-- Header Image -->
+<div class="@container">
+<div class="@[480px]:px-4 @[480px]:py-3">
+<div class="bg-cover bg-center flex flex-col justify-end overflow-hidden min-h-[218px] @[480px]:rounded-lg" data-alt="Desaturated image of a Baroque painting" style='background-image: linear-gradient(0deg, rgba(22, 17, 33, 0.6) 0%, rgba(22, 17, 33, 0) 40%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAv8YlWHyYICAf0bWu320rk4jd0rc5OzwaQOy8mNyRI4bsbLX-5A1Py6_Q4iNpFg3xH4LBjmyuzPvj60uFk4eB0CqWzlHdIv1KAZchiCVX7s6XgxaYhga2EJw4Y1kDoBS-hWJkWoKYWKtMAt7y-rlH9GlhfzxydFAs64e8DlbYabQ3liK8fT90THAKOGX0XSWheFm1h1FgXLeLX0hejWqT2Hk2SRV7UjqIJ-MmEIvjYSm8Ti5s26ETlbli-i8yQ1dPmgOxJ5aKCULFm"); filter: saturate(0.3);'>
+<div class="p-4 pt-16">
+<p class="text-4xl font-bold leading-tight text-white font-display">Baroque</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Meta Text -->
+<p class="px-4 pt-1 pb-3 text-sm font-normal leading-normal text-center text-gray-600 dark:text-gray-400">c. 1600 – 1750</p>
+<!-- Segmented Buttons -->
+<div class="flex px-4 py-3">
+<div class="flex h-10 flex-1 items-center justify-center rounded-lg bg-black/20 dark:bg-white/5 p-1">
+<label class="flex h-full flex-1 cursor-pointer items-center justify-center overflow-hidden rounded-lg px-2 text-sm font-medium leading-normal text-gray-600 dark:text-gray-400 has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:shadow-lg">
+<span class="truncate">Overview</span>
+<input checked="" class="invisible w-0" name="period-tabs" type="radio" value="Overview"/>
+</label>
+<label class="flex h-full flex-1 cursor-pointer items-center justify-center overflow-hidden rounded-lg px-2 text-sm font-medium leading-normal text-gray-600 dark:text-gray-400 has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:shadow-lg">
+<span class="truncate">Innovations</span>
+<input class="invisible w-0" name="period-tabs" type="radio" value="Innovations"/>
+</label>
+<label class="flex h-full flex-1 cursor-pointer items-center justify-center overflow-hidden rounded-lg px-2 text-sm font-medium leading-normal text-gray-600 dark:text-gray-400 has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:shadow-lg">
+<span class="truncate">Composers</span>
+<input class="invisible w-0" name="period-tabs" type="radio" value="Composers"/>
+</label>
+</div>
+</div>
+<!-- Content Section: Overview -->
+<div class="flex flex-col gap-4 px-4 py-2">
+<!-- Introduction Card -->
+<div class="p-4 bg-white/5 rounded-lg">
+<p class="text-lg font-bold leading-tight tracking-tight text-black dark:text-white">Introduction</p>
+<p class="mt-2 text-base font-normal leading-normal text-gray-600 dark:text-gray-400">A brief summary of the Baroque era's spirit—grandeur, drama, and ornate detail.</p>
+</div>
+<!-- Key Characteristics Card -->
+<div class="p-4 bg-white/5 rounded-lg">
+<p class="text-lg font-bold leading-tight tracking-tight text-black dark:text-white">Key Characteristics</p>
+<ul class="mt-2 space-y-1 list-disc list-inside text-gray-600 dark:text-gray-400">
+<li>Basso Continuo</li>
+<li>Ornamentation</li>
+<li>Counterpoint</li>
+</ul>
+</div>
+<!-- Sub-Eras Card -->
+<div class="p-4 bg-white/5 rounded-lg">
+<p class="text-lg font-bold leading-tight tracking-tight text-black dark:text-white">Sub-Eras</p>
+<div class="mt-2 space-y-2">
+<div>
+<p class="font-semibold text-gray-800 dark:text-gray-200">Early Baroque</p>
+<p class="text-sm text-gray-600 dark:text-gray-400">Marked by the birth of opera and dramatic styles.</p>
+</div>
+<div>
+<p class="font-semibold text-gray-800 dark:text-gray-200">Middle Baroque</p>
+<p class="text-sm text-gray-600 dark:text-gray-400">Development of the cantata, oratorio, and instrumental music.</p>
+</div>
+<div>
+<p class="font-semibold text-gray-800 dark:text-gray-200">Late Baroque</p>
+<p class="text-sm text-gray-600 dark:text-gray-400">Complex polyphony and the peak of concerto and sonata forms.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Placeholder for other sections like Innovations and Composers -->
+<!-- For this example, only the Overview is shown. A real app would dynamically show/hide content based on the selected tab. -->
+<div class="p-4 mt-2">
+<button class="w-full px-4 py-3 text-base font-semibold text-white transition-colors rounded-lg bg-primary hover:bg-primary/90">
+                Explore Key Works
+            </button>
+</div>
+<div class="h-10"></div> <!-- Bottom padding -->
+</div>
+</body></html>
