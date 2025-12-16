@@ -57,7 +57,7 @@ import RecommendationsScreen from './src/experimental/recommendations/Recommenda
 import LabsScreen from './src/experimental/LabsScreen';
 
 // Auth screens
-import { LoginScreen, RegisterScreen, ForgotPasswordScreen } from './src/screens/Auth';
+import { LoginScreen, RegisterScreen, ForgotPasswordScreen, EditProfileScreen } from './src/screens/Auth';
 import UserDashboardScreen from './src/screens/UserDashboardScreen';
 import AdminDashboardScreen from './src/screens/AdminDashboardScreen';
 import { ContentListScreen, ContentEditScreen, AuditLogScreen } from './src/screens/Admin';
@@ -427,6 +427,11 @@ function AppNavigator() {
         <Stack.Screen
           name="AdminDashboard"
           component={AdminDashboardScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfileScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen

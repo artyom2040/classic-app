@@ -258,6 +258,7 @@ export type RootStackParamList = {
   // Dashboard screens
   UserDashboard: undefined;
   AdminDashboard: undefined;
+  EditProfile: undefined;
 
   // Admin CRUD screens
   ContentList: { entityType: EntityType };

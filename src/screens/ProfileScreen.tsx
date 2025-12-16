@@ -200,10 +200,23 @@ export default function ProfileScreen() {
               </View>
             )}
           </View>
-          <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-            <Ionicons name="settings-outline" size={24} color={t.colors.text} />
+          <TouchableOpacity 
+            style={[styles.editButton, { backgroundColor: t.colors.primary + '20' }]}
+            onPress={() => navigation.navigate('EditProfile')}
+          >
+            <Ionicons name="pencil" size={16} color={t.colors.primary} />
           </TouchableOpacity>
         </View>
+
+        {/* Member Since */}
+        {user?.createdAt && (
+          <View style={[styles.memberSince, { backgroundColor: t.colors.surface }]}>
+            <Ionicons name="calendar-outline" size={14} color={t.colors.textMuted} />
+            <Text style={[styles.memberSinceText, { color: t.colors.textMuted }]}>
+              Member since {new Date(user.createdAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+            </Text>
+          </View>
+        )}
 
         <Text style={[styles.greeting, { color: t.colors.text }]}>Your Learning Journey</Text>
         <Text style={[styles.subtitle, { color: t.colors.textSecondary }]}>
@@ -330,6 +343,9 @@ const styles = StyleSheet.create({
   userEmail: { fontSize: fontSize.sm, marginTop: spacing.xs },
   adminBadge: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: spacing.xs, paddingVertical: 2, borderRadius: borderRadius.full, marginTop: spacing.xs, width: 'auto' },
   adminBadgeText: { fontSize: fontSize.xs, fontWeight: '600' },
+  editButton: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
+  memberSince: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs, paddingHorizontal: spacing.sm, paddingVertical: spacing.xs, borderRadius: borderRadius.full, alignSelf: 'flex-start', marginTop: spacing.sm },
+  memberSinceText: { fontSize: fontSize.xs },
   avatarContainer: { width: 80, height: 80, borderRadius: 40, alignItems: 'center', justifyContent: 'center', marginBottom: spacing.md },
   greeting: { fontSize: fontSize.xxl, fontWeight: 'bold', marginTop: spacing.md },
   subtitle: { fontSize: fontSize.md, marginTop: spacing.xs },
