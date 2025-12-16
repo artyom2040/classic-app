@@ -7,12 +7,12 @@ echo "📧 Deploying send-email function to VPS..."
 echo ""
 
 # Check if running on VPS
-if [ ! -d "/supabase-project" ]; then
-    echo "⚠️  Not on VPS. Run this on your VPS at /supabase-project"
+if [ ! -d "/root/supabase-project" ]; then
+    echo "⚠️  Not on VPS. Run this on your VPS at /root/supabase-project"
     exit 1
 fi
 
-cd /supabase-project
+cd /root/supabase-project
 
 # Check if .env exists with RESEND_API_KEY
 if [ ! -f ".env" ]; then
@@ -32,11 +32,17 @@ echo "1️⃣  Copying function to functions volume..."
 # Create functions directory in volume if not exists
 docker compose exec -T supabase-functions sh -c "mkdir -p /home/deno/functions/send-email" || true
 
-# Copy function files from local repo (assuming classic-app is cloned)
+# Copy function files from local repo
 if [ -d "/root/classic-app/supabase/functions/send-email" ]; then
     echo "   Copying from /root/classic-app..."
+    CONTAINER_ID=$(docker compose ps -q supabase-functions)
+    if [ -z "$CONTAINER_ID" ]; then
+        echo "❌ supabase-functions container not running"
+        echo "   Run: docker compose up -d"
+        exit 1
+    fi
     docker cp /root/classic-app/supabase/functions/send-email/index.ts \
-        $(docker compose ps -q supabase-functions):/home/deno/functions/send-email/index.ts
+        "$CONTAINER_ID":/home/deno/functions/send-email/index.ts
 else
     echo "❌ Function source not found at /root/classic-app/supabase/functions/send-email"
     echo "   Run: cd /root && git clone <your-repo-url> classic-app"
