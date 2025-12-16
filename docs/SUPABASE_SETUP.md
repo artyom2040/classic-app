@@ -68,7 +68,24 @@ Option B: write a small node script to upsert via `@supabase/supabase-js` using 
   - `EXPO_PUBLIC_DATA_SOURCE=supabase`
   - `EXPO_PUBLIC_SUPABASE_URL=<your-url>`
   - `EXPO_PUBLIC_SUPABASE_ANON_KEY=<anon-key>`
+  - `RESEND_API_KEY=<resend-api-key>` (for email function)
+  - `FROM_EMAIL=<verified-email>` (optional, defaults to noreply@resend.dev)
 - DataService falls back to local JSON if Supabase errors or env is missing.
+
+### Email Configuration (VPS)
+On VPS at `/supabase-project/`, add to `.env`:
+```bash
+RESEND_API_KEY=re_your_key_here
+FROM_EMAIL=Classical Music <noreply@yourdomain.com>
+```
+
+Deploy email function:
+```bash
+cd /supabase-project
+supabase functions deploy send-email --env-file .env
+# Or restart services:
+docker compose down && docker compose up -d
+```
 
 ## 8) Ops
 - Nightly `pg_dump` backup + WAL (point-in-time).
