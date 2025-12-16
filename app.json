@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Context Composer",
-    "slug": "classic",
+    "slug": "classic-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -55,13 +55,14 @@
         {
           "iosUrlScheme": "com.googleusercontent.apps.YOUR_IOS_CLIENT_ID"
         }
-      ]
+      ],
+      "expo-asset"
     ],
     "extra": {
       "eas": {
-        "projectId": "bf7826e2-07d3-447a-b801-72d68ef236dc"
+        "projectId": "8b47c6ac-1218-47ff-956c-a138c60a9c5f"
       }
     },
-    "owner": "artyom2040"
+    "owner": "artyom2040s-organization"
   }
 }
