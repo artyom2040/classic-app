@@ -58,9 +58,21 @@ echo ""
 echo "3️⃣  Setting environment variables..."
 # Load env vars and pass to container
 if [ -f ".env" ]; then
-    export $(cat .env | grep -v '^#' | xargs)
-    docker exec "$FUNC_CONTAINER" sh -c "echo 'RESEND_API_KEY=$RESEND_API_KEY' >> /etc/environment" 2>/dev/null || true
-    docker exec "$FUNC_CONTAINER" sh -c "echo 'FROM_EMAIL=$FROM_EMAIL' >> /etc/environment" 2>/dev/null || true
+    # Read RESEND_API_KEY
+    RESEND_KEY=$(grep "^RESEND_API_KEY" .env | cut -d'=' -f2- | tr -d '"' | tr -d "'")
+    FROM_ADDR=$(grep "^FROM_EMAIL" .env | cut -d'=' -f2- | tr -d '"' | tr -d "'")
+    
+    if [ -n "$RESEND_KEY" ]; then
+        docker exec "$FUNC_CONTAINER" sh -c "export RESEND_API_KEY='$RESEND_KEY'" 2>/dev/null || true
+        echo "   ✅ RESEND_API_KEY set"
+    fi
+    
+    if [ -n "$FROM_ADDR" ]; then
+        docker exec "$FUNC_CONTAINER" sh -c "export FROM_EMAIL='$FROM_ADDR'" 2>/dev/null || true
+        echo "   ✅ FROM_EMAIL set"
+    fi
+else
+    echo "   ⚠️  No .env file found"
 fi
 
 echo ""
