@@ -48,9 +48,9 @@ export function OfflineIndicator({ forceShow, onRetry }: OfflineIndicatorProps) 
           transform: [{ translateY: slideAnim }],
           paddingTop: insets.top + spacing.xs,
           backgroundColor: theme.colors.error,
+          pointerEvents: shouldShow ? 'auto' : 'none',
         },
       ]}
-      pointerEvents={shouldShow ? 'auto' : 'none'}
     >
       <View style={styles.content}>
         <View style={styles.iconContainer}>

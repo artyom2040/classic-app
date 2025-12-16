@@ -48,25 +48,18 @@ echo ""
 echo "⚙️  Step 4: Creating Caddyfile..."
 cat > /etc/caddy/Caddyfile << 'EOF'
 # Main Supabase API (Kong gateway)
+# NOTE: CORS is handled by Kong - do NOT add CORS headers here
+# to avoid duplicate Access-Control-Allow-Origin headers
 api.artyom2040.com {
     reverse_proxy localhost:8000
 
-    # Security headers
+    # Security headers only - NO CORS (Kong handles it)
     header {
         X-Content-Type-Options "nosniff"
         X-Frame-Options "SAMEORIGIN"
         Referrer-Policy "strict-origin-when-cross-origin"
         -Server
     }
-
-    # CORS for mobile app
-    @options {
-        method OPTIONS
-    }
-    header @options Access-Control-Allow-Origin "*"
-    header @options Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
-    header @options Access-Control-Allow-Headers "Authorization, Content-Type, apikey, x-client-info"
-    respond @options 204
 
     # Logging
     log {
@@ -178,23 +171,31 @@ echo "========================================="
 echo ""
 echo "📋 Next Steps:"
 echo ""
-echo "1. Configure DNS on Porkbun:"
+echo "1. Configure Kong CORS (IMPORTANT):"
+echo "   Edit ~/supabase/volumes/api/kong.yml"
+echo "   Add these headers to CORS plugin config:"
+echo "   - Authorization, Content-Type, apikey"
+echo "   - x-client-info, x-supabase-api-version"
+echo "   - accept-profile, content-profile, prefer"
+echo "   Then: docker compose restart kong"
+echo ""
+echo "2. Configure DNS on Porkbun:"
 echo "   - A record: api → 185.194.140.57"
 echo "   - A record: studio → 185.194.140.57"
 echo "   - A record: @ → 185.194.140.57"
 echo ""
-echo "2. Wait 5-10 minutes for DNS propagation"
+echo "3. Wait 5-10 minutes for DNS propagation"
 echo "   Check with: dig api.artyom2040.com +short"
 echo ""
-echo "3. Once DNS is ready, test HTTPS:"
+echo "4. Once DNS is ready, test HTTPS:"
 echo "   curl https://api.artyom2040.com/rest/v1/"
 echo ""
-echo "4. Access Studio Dashboard:"
+echo "5. Access Studio Dashboard:"
 echo "   https://api.artyom2040.com/project/default"
 echo "   or"
 echo "   https://studio.artyom2040.com/project/default"
 echo ""
-echo "5. Update mobile app .env:"
+echo "6. Update mobile app .env:"
 echo "   EXPO_PUBLIC_SUPABASE_URL=https://api.artyom2040.com"
 echo ""
 echo "📝 View Caddy logs:"

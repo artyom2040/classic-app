@@ -7,8 +7,13 @@ import { supabase, isSupabaseConfigured } from '../services/supabaseClient';
 import { UserProfile, UserRole, AuthState } from '../types';
 import { Logger } from '../utils/logger';
 
-// Configure Google Sign In safely
+// Configure Google Sign In safely (native only)
 function initializeGoogleSignIn() {
+  // Skip on web - not supported without sponsor access
+  if (Platform.OS === 'web') {
+    return;
+  }
+  
   try {
     GoogleSignin.configure({
       webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || '',
@@ -135,7 +140,22 @@ export function AuthProvider({ children }: AuthProviderProps) {
           Logger.info('Auth', `${source}: Profile not found, creating new profile`, { userId: session.user.id });
           profile = await createUserProfile(session.user);
         }
-        setUser(profile);
+        
+        // If profile still null (e.g., CORS/network issues), use session data as fallback
+        if (!profile) {
+          Logger.warn('Auth', `${source}: Using session data as fallback (profile unavailable)`);
+          setUser({
+            id: session.user.id,
+            email: session.user.email || '',
+            displayName: session.user.user_metadata?.display_name || session.user.user_metadata?.name || null,
+            avatarUrl: session.user.user_metadata?.avatar_url || null,
+            role: 'user' as UserRole,
+            createdAt: session.user.created_at,
+            updatedAt: session.user.updated_at || session.user.created_at,
+          });
+        } else {
+          setUser(profile);
+        }
       } else {
         Logger.info('Auth', `${source}: No active session`);
         setUser(null);
@@ -156,6 +176,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         if (initializedRef.current) {
           await handleSession(session, 'SIGNED_IN');
         }
+        setIsLoading(false);
       } else if (event === 'SIGNED_OUT') {
         Logger.info('Auth', 'User signed out');
         setUser(null);

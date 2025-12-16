@@ -60,7 +60,13 @@ export async function getStorageItem<T>(
       if (!stored) {
         return defaultValue;
       }
-      return JSON.parse(stored) as T;
+      // Try JSON parse first, fall back to raw value for legacy plain strings
+      try {
+        return JSON.parse(stored) as T;
+      } catch {
+        // If JSON parse fails and T is string-compatible, return raw value
+        return stored as unknown as T;
+      }
     } catch (error) {
       const isLastAttempt = attempt === config.maxRetries - 1;
 

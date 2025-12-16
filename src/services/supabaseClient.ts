@@ -6,6 +6,14 @@ import { STORAGE_KEYS } from '../constants/storage';
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
 
+// Debug: Log configuration status
+console.log('[Supabase Config]', {
+  hasUrl: !!supabaseUrl,
+  urlPreview: supabaseUrl ? supabaseUrl.substring(0, 30) + '...' : 'MISSING',
+  hasKey: !!supabaseAnonKey,
+  keyPreview: supabaseAnonKey ? supabaseAnonKey.substring(0, 20) + '...' : 'MISSING',
+});
+
 let supabase: SupabaseClient | null = null;
 
 if (supabaseUrl && supabaseAnonKey) {
@@ -17,13 +25,9 @@ if (supabaseUrl && supabaseAnonKey) {
       storageKey: STORAGE_KEYS.AUTH_SESSION,
       detectSessionInUrl: false,
     },
-    // Disable sending x-supabase-api-version header which causes CORS issues
-    // with some self-hosted Supabase instances
-    global: {
-      headers: Platform.OS === 'web' ? {
-        'x-supabase-api-version': undefined as any, // Prevents header from being sent
-      } : {},
-    },
+    // Note: x-supabase-api-version header must be allowed in Caddy CORS config
+    // If still having CORS issues, add to Caddyfile:
+    // header @options Access-Control-Allow-Headers "..., x-supabase-api-version"
   });
 }
 
