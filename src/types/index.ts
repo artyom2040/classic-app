@@ -206,6 +206,16 @@ export interface UserProgress {
 }
 
 // Navigation types
+import { NavigatorScreenParams } from '@react-navigation/native';
+
+export type TabParamList = {
+  Home: undefined;
+  Timeline: undefined;
+  Glossary: undefined;
+  Forms: undefined;
+  Profile: undefined;
+};
+
 export type RootStackParamList = {
   // Onboarding
   Welcome: undefined;
@@ -216,7 +226,7 @@ export type RootStackParamList = {
   ForgotPassword: undefined;
 
   // Main app
-  MainTabs: undefined;
+  MainTabs: NavigatorScreenParams<TabParamList> | undefined;
   Composers: undefined;
   ComposerDetail: { composerId: string };
   PeriodDetail: { periodId: string };
@@ -253,14 +263,6 @@ export type RootStackParamList = {
   ContentList: { entityType: EntityType };
   ContentEdit: { entityType: EntityType; entityId: string | null };
   AuditLog: undefined;
-};
-
-export type TabParamList = {
-  Home: undefined;
-  Timeline: undefined;
-  Glossary: undefined;
-  Forms: undefined;
-  Profile: undefined;
 };
 
 // ============================================

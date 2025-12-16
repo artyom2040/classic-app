@@ -99,7 +99,7 @@ export function HamburgerMenu() {
 
   const handleProfile = () => {
     setMenuOpen(false);
-    navigation.navigate('MainTabs');
+    navigation.navigate('MainTabs', { screen: 'Profile' });
   };
 
   const handleAdminDashboard = () => {
