@@ -7,6 +7,8 @@ import {
   Modal,
   ScrollView,
   Image,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -15,6 +17,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from './Toast';
 import { RootStackParamList } from '../types';
 import { spacing, fontSize, borderRadius } from '../theme';
 import { hasAnyLabsEnabled } from '../experimental/labs.config';
@@ -48,10 +51,12 @@ const settingsItems: MenuItem[] = [
 
 export function HamburgerMenu() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
   const navigation = useNavigation<NavigationProp>();
   const insets = useSafeAreaInsets();
   const { theme: t, themeName, setTheme, isDark } = useTheme();
   const { isAuthenticated, isLoading, user, signOut, isAdmin } = useAuth();
+  const { showToast } = useToast();
 
   const handleMenuPress = (action: string) => {
     setMenuOpen(false);
@@ -93,8 +98,25 @@ export function HamburgerMenu() {
   };
 
   const handleSignOut = async () => {
-    setMenuOpen(false);
-    await signOut();
+    Alert.alert(
+      'Sign Out',
+      'Are you sure you want to sign out?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Sign Out',
+          style: 'destructive',
+          onPress: async () => {
+            setSigningOut(true);
+            await signOut();
+            setSigningOut(false);
+            setMenuOpen(false);
+            showToast('Signed out successfully', 'success');
+            navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] });
+          },
+        },
+      ]
+    );
   };
 
   const handleProfile = () => {

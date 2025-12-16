@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -18,6 +20,7 @@ import { useFavorites } from '../context/FavoritesContext';
 import { useCardStyle } from '../hooks/useCardStyle';
 import { spacing, fontSize, borderRadius } from '../theme';
 import { RootStackParamList } from '../types';
+import { useToast } from '../components';
 import { getProgress } from '../utils/storage';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -31,14 +34,32 @@ export default function UserDashboardScreen() {
   const { cardStyle } = useCardStyle();
   
   const [progress, setProgress] = React.useState<any>(null);
+  const [signingOut, setSigningOut] = React.useState(false);
+  const { showToast } = useToast();
 
   React.useEffect(() => {
     getProgress().then(setProgress);
   }, []);
 
-  const handleSignOut = async () => {
-    await signOut();
-    navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
+  const handleSignOut = () => {
+    Alert.alert(
+      'Sign Out',
+      'Are you sure you want to sign out?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Sign Out',
+          style: 'destructive',
+          onPress: async () => {
+            setSigningOut(true);
+            await signOut();
+            setSigningOut(false);
+            showToast('Signed out successfully', 'success');
+            navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] });
+          },
+        },
+      ]
+    );
   };
 
   const stats = [
@@ -180,9 +201,16 @@ export default function UserDashboardScreen() {
       <TouchableOpacity
         style={[styles.signOutButton, { borderColor: t.colors.error }]}
         onPress={handleSignOut}
+        disabled={signingOut}
       >
-        <Ionicons name="log-out-outline" size={20} color={t.colors.error} />
-        <Text style={[styles.signOutText, { color: t.colors.error }]}>Sign Out</Text>
+        {signingOut ? (
+          <ActivityIndicator size="small" color={t.colors.error} />
+        ) : (
+          <Ionicons name="log-out-outline" size={20} color={t.colors.error} />
+        )}
+        <Text style={[styles.signOutText, { color: t.colors.error }]}>
+          {signingOut ? 'Signing out...' : 'Sign Out'}
+        </Text>
       </TouchableOpacity>
 
       <View style={{ height: spacing.xxl }} />
