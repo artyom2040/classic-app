@@ -55,24 +55,25 @@ docker cp /root/classic-app/supabase/functions/send-email/index.ts \
     "$FUNC_CONTAINER":/home/deno/functions/send-email/index.ts
 
 echo ""
-echo "3️⃣  Setting environment variables..."
-# Load env vars and pass to container
+echo "3️⃣  Checking environment variables in docker-compose.yml..."
 if [ -f ".env" ]; then
-    # Read RESEND_API_KEY
     RESEND_KEY=$(grep "^RESEND_API_KEY" .env | cut -d'=' -f2- | tr -d '"' | tr -d "'")
-    FROM_ADDR=$(grep "^FROM_EMAIL" .env | cut -d'=' -f2- | tr -d '"' | tr -d "'")
     
-    if [ -n "$RESEND_KEY" ]; then
-        docker exec "$FUNC_CONTAINER" sh -c "export RESEND_API_KEY='$RESEND_KEY'" 2>/dev/null || true
-        echo "   ✅ RESEND_API_KEY set"
-    fi
-    
-    if [ -n "$FROM_ADDR" ]; then
-        docker exec "$FUNC_CONTAINER" sh -c "export FROM_EMAIL='$FROM_ADDR'" 2>/dev/null || true
-        echo "   ✅ FROM_EMAIL set"
+    if ! grep -q "RESEND_API_KEY" docker-compose.yml; then
+        echo "   ⚠️  RESEND_API_KEY not in docker-compose.yml"
+        echo ""
+        echo "   Add these lines under the edge-functions service environment section:"
+        echo "      RESEND_API_KEY: $RESEND_KEY"
+        echo "      FROM_EMAIL: Classical Music <noreply@resend.dev>"
+        echo ""
+        echo "   Then run: docker compose down && docker compose up -d"
+        exit 1
+    else
+        echo "   ✅ Environment vars configured"
     fi
 else
-    echo "   ⚠️  No .env file found"
+    echo "   ❌ No .env file found"
+    exit 1
 fi
 
 echo ""
