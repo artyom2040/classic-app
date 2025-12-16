@@ -17,7 +17,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
-import { Button } from '../../components';
+import { Button, useToast } from '../../components';
 import { spacing, fontSize, borderRadius } from '../../theme';
 import { RootStackParamList } from '../../types';
 
@@ -30,6 +30,7 @@ export default function RegisterScreen() {
   const insets = useSafeAreaInsets();
   const { theme: t, themeName } = useTheme();
   const { signUpWithEmail } = useAuth();
+  const { showToast } = useToast();
   const { width } = useWindowDimensions();
   const isDesktop = width > 768;
 
@@ -72,6 +73,7 @@ export default function RegisterScreen() {
     if (authError) {
       setError(authError.message);
     } else {
+      showToast('Account created! Check your email.', 'success');
       setSuccess(true);
     }
   };

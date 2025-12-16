@@ -17,7 +17,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
-import { Button } from '../../components';
+import { Button, useToast } from '../../components';
 import { spacing, fontSize, borderRadius } from '../../theme';
 import { RootStackParamList } from '../../types';
 
@@ -30,6 +30,7 @@ export default function LoginScreen() {
   const insets = useSafeAreaInsets();
   const { theme: t } = useTheme();
   const { signInWithEmail, signInWithApple, signInWithGoogle } = useAuth();
+  const { showToast } = useToast();
   const { width } = useWindowDimensions();
   const isDesktop = width > 768;
 
@@ -54,6 +55,9 @@ export default function LoginScreen() {
 
     if (authError) {
       setError(authError.message);
+    } else {
+      showToast('Welcome back!', 'success');
+      navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] });
     }
   };
 
@@ -62,7 +66,12 @@ export default function LoginScreen() {
     setError(null);
     const { error: authError } = await signInWithApple();
     setLoading(false);
-    if (authError) setError(authError.message);
+    if (authError) {
+      setError(authError.message);
+    } else {
+      showToast('Welcome back!', 'success');
+      navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] });
+    }
   };
 
   const handleGoogleLogin = async () => {
@@ -70,7 +79,12 @@ export default function LoginScreen() {
     setError(null);
     const { error: authError } = await signInWithGoogle();
     setLoading(false);
-    if (authError) setError(authError.message);
+    if (authError) {
+      setError(authError.message);
+    } else {
+      showToast('Welcome back!', 'success');
+      navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] });
+    }
   };
 
   return (
