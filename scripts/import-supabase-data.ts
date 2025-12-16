@@ -22,8 +22,13 @@
 import { createClient } from '@supabase/supabase-js';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 type TablePayload = Record<string, any>;
+
+// ES Module __dirname equivalent
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Env
 const SUPABASE_URL = process.env.SUPABASE_URL;

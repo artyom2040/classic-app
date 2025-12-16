@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  useWindowDimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -22,12 +23,15 @@ import { RootStackParamList } from '../../types';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
+const MAX_FORM_WIDTH = 400;
+
 export default function LoginScreen() {
   const navigation = useNavigation<NavigationProp>();
   const insets = useSafeAreaInsets();
-  const { theme: t, themeName } = useTheme();
+  const { theme: t } = useTheme();
   const { signInWithEmail, signInWithApple, signInWithGoogle } = useAuth();
-  const isBrutal = false;
+  const { width } = useWindowDimensions();
+  const isDesktop = width > 768;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -45,9 +49,9 @@ export default function LoginScreen() {
     setError(null);
 
     const { error: authError } = await signInWithEmail(email.trim(), password);
-    
+
     setLoading(false);
-    
+
     if (authError) {
       setError(authError.message);
     }
@@ -69,140 +73,142 @@ export default function LoginScreen() {
     if (authError) setError(authError.message);
   };
 
-  const cardStyle = isBrutal
-    ? { borderWidth: 2, borderColor: t.colors.border }
-    : { shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 8, elevation: 3 };
-
   return (
     <KeyboardAvoidingView
       style={[styles.container, { backgroundColor: t.colors.background }]}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView
-        contentContainerStyle={[styles.content, { paddingTop: insets.top + spacing.xl }]}
+        contentContainerStyle={[
+          styles.scrollContent,
+          { paddingTop: insets.top + spacing.xl },
+          isDesktop && styles.scrollContentDesktop,
+        ]}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-        {/* Header */}
-        <View style={styles.header}>
-          <Ionicons name="musical-notes" size={48} color={t.colors.primary} />
-          <Text style={[styles.title, { color: t.colors.text }]}>Welcome Back</Text>
-          <Text style={[styles.subtitle, { color: t.colors.textSecondary }]}>
-            Sign in to continue your musical journey
-          </Text>
-        </View>
-
-        {/* Form */}
-        <View style={[styles.form, { backgroundColor: t.colors.surface }, cardStyle]}>
-          {error && (
-            <View style={[styles.errorBox, { backgroundColor: t.colors.error + '20' }]}>
-              <Ionicons name="alert-circle" size={18} color={t.colors.error} />
-              <Text style={[styles.errorText, { color: t.colors.error }]}>{error}</Text>
-            </View>
-          )}
-
-          <View style={styles.inputGroup}>
-            <Text style={[styles.label, { color: t.colors.textSecondary }]}>Email</Text>
-            <View style={[styles.inputContainer, { borderColor: t.colors.border }]}>
-              <Ionicons name="mail-outline" size={20} color={t.colors.textMuted} />
-              <TextInput
-                style={[styles.input, { color: t.colors.text }]}
-                placeholder="your@email.com"
-                placeholderTextColor={t.colors.textMuted}
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-            </View>
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={[styles.label, { color: t.colors.textSecondary }]}>Password</Text>
-            <View style={[styles.inputContainer, { borderColor: t.colors.border }]}>
-              <Ionicons name="lock-closed-outline" size={20} color={t.colors.textMuted} />
-              <TextInput
-                style={[styles.input, { color: t.colors.text }]}
-                placeholder="••••••••"
-                placeholderTextColor={t.colors.textMuted}
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={!showPassword}
-              />
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                <Ionicons
-                  name={showPassword ? 'eye-off-outline' : 'eye-outline'}
-                  size={20}
-                  color={t.colors.textMuted}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate('ForgotPassword')}
-            style={styles.forgotPassword}
-          >
-            <Text style={[styles.forgotPasswordText, { color: t.colors.primary }]}>
-              Forgot password?
+        <View style={[styles.content, isDesktop && { maxWidth: MAX_FORM_WIDTH, width: '100%' }]}>
+          {/* Header */}
+          <View style={styles.header}>
+            <Ionicons name="musical-notes" size={48} color={t.colors.primary} />
+            <Text style={[styles.title, { color: t.colors.text }]}>Welcome Back</Text>
+            <Text style={[styles.subtitle, { color: t.colors.textSecondary }]}>
+              Sign in to continue your musical journey
             </Text>
-          </TouchableOpacity>
+          </View>
 
-          <Button
-            title="Sign In"
-            onPress={handleEmailLogin}
-            loading={loading}
-            fullWidth
-          />
-        </View>
+          {/* Form */}
+          <View style={[styles.form, { backgroundColor: t.colors.surface }]}>
+            {error && (
+              <View style={[styles.errorBox, { backgroundColor: t.colors.error + '20' }]}>
+                <Ionicons name="alert-circle" size={18} color={t.colors.error} />
+                <Text style={[styles.errorText, { color: t.colors.error }]}>{error}</Text>
+              </View>
+            )}
 
-        {/* Divider */}
-        <View style={styles.divider}>
-          <View style={[styles.dividerLine, { backgroundColor: t.colors.border }]} />
-          <Text style={[styles.dividerText, { color: t.colors.textMuted }]}>or continue with</Text>
-          <View style={[styles.dividerLine, { backgroundColor: t.colors.border }]} />
-        </View>
+            <View style={styles.inputGroup}>
+              <Text style={[styles.label, { color: t.colors.textSecondary }]}>Email</Text>
+              <View style={[styles.inputContainer, { borderColor: t.colors.border }]}>
+                <Ionicons name="mail-outline" size={20} color={t.colors.textMuted} />
+                <TextInput
+                  style={[styles.input, { color: t.colors.text }]}
+                  placeholder="your@email.com"
+                  placeholderTextColor={t.colors.textMuted}
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+              </View>
+            </View>
 
-        {/* Social Login */}
-        <View style={styles.socialButtons}>
-          {Platform.OS === 'ios' && (
+            <View style={styles.inputGroup}>
+              <Text style={[styles.label, { color: t.colors.textSecondary }]}>Password</Text>
+              <View style={[styles.inputContainer, { borderColor: t.colors.border }]}>
+                <Ionicons name="lock-closed-outline" size={20} color={t.colors.textMuted} />
+                <TextInput
+                  style={[styles.input, { color: t.colors.text }]}
+                  placeholder="••••••••"
+                  placeholderTextColor={t.colors.textMuted}
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={!showPassword}
+                />
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                  <Ionicons
+                    name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                    size={20}
+                    color={t.colors.textMuted}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+
             <TouchableOpacity
-              style={[styles.socialButton, { backgroundColor: '#000' }]}
-              onPress={handleAppleLogin}
+              onPress={() => navigation.navigate('ForgotPassword')}
+              style={styles.forgotPassword}
+            >
+              <Text style={[styles.forgotPasswordText, { color: t.colors.primary }]}>
+                Forgot password?
+              </Text>
+            </TouchableOpacity>
+
+            <Button
+              title="Sign In"
+              onPress={handleEmailLogin}
+              loading={loading}
+              fullWidth
+            />
+          </View>
+
+          {/* Divider */}
+          <View style={styles.divider}>
+            <View style={[styles.dividerLine, { backgroundColor: t.colors.border }]} />
+            <Text style={[styles.dividerText, { color: t.colors.textMuted }]}>or continue with</Text>
+            <View style={[styles.dividerLine, { backgroundColor: t.colors.border }]} />
+          </View>
+
+          {/* Social Login */}
+          <View style={styles.socialButtons}>
+            {Platform.OS === 'ios' && (
+              <TouchableOpacity
+                style={[styles.socialButton, { backgroundColor: '#000' }]}
+                onPress={handleAppleLogin}
+                disabled={loading}
+              >
+                <Ionicons name="logo-apple" size={24} color="#fff" />
+                <Text style={[styles.socialButtonText, { color: '#fff' }]}>Apple</Text>
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity
+              style={[styles.socialButton, { backgroundColor: t.colors.surface, borderWidth: 1, borderColor: t.colors.border }]}
+              onPress={handleGoogleLogin}
               disabled={loading}
             >
-              <Ionicons name="logo-apple" size={24} color="#fff" />
-              <Text style={[styles.socialButtonText, { color: '#fff' }]}>Apple</Text>
+              <Ionicons name="logo-google" size={24} color={t.colors.text} />
+              <Text style={[styles.socialButtonText, { color: t.colors.text }]}>Google</Text>
             </TouchableOpacity>
-          )}
+          </View>
+
+          {/* Sign Up Link */}
+          <View style={styles.footer}>
+            <Text style={[styles.footerText, { color: t.colors.textSecondary }]}>
+              Don't have an account?{' '}
+            </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+              <Text style={[styles.footerLink, { color: t.colors.primary }]}>Sign Up</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Skip Login */}
           <TouchableOpacity
-            style={[styles.socialButton, { backgroundColor: t.colors.surface, borderWidth: 1, borderColor: t.colors.border }]}
-            onPress={handleGoogleLogin}
-            disabled={loading}
+            style={styles.skipButton}
+            onPress={() => navigation.navigate('MainTabs')}
           >
-            <Ionicons name="logo-google" size={24} color={t.colors.text} />
-            <Text style={[styles.socialButtonText, { color: t.colors.text }]}>Google</Text>
+            <Text style={[styles.skipText, { color: t.colors.textMuted }]}>Skip for now</Text>
           </TouchableOpacity>
         </View>
-
-        {/* Sign Up Link */}
-        <View style={styles.footer}>
-          <Text style={[styles.footerText, { color: t.colors.textSecondary }]}>
-            Don't have an account?{' '}
-          </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Text style={[styles.footerLink, { color: t.colors.primary }]}>Sign Up</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Skip Login */}
-        <TouchableOpacity
-          style={styles.skipButton}
-          onPress={() => navigation.navigate('MainTabs')}
-        >
-          <Text style={[styles.skipText, { color: t.colors.textMuted }]}>Skip for now</Text>
-        </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -210,7 +216,9 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  content: { padding: spacing.lg, paddingBottom: spacing.xxl },
+  scrollContent: { padding: spacing.lg, paddingBottom: spacing.xxl },
+  scrollContentDesktop: { alignItems: 'center' },
+  content: { width: '100%' },
   header: { alignItems: 'center', marginBottom: spacing.xl },
   title: { fontSize: fontSize.xxl, fontWeight: '700', marginTop: spacing.md },
   subtitle: { fontSize: fontSize.md, marginTop: spacing.xs, textAlign: 'center' },
@@ -235,3 +243,4 @@ const styles = StyleSheet.create({
   skipButton: { alignItems: 'center', marginTop: spacing.lg },
   skipText: { fontSize: fontSize.sm },
 });
+

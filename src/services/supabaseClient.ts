@@ -1,5 +1,6 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 import { STORAGE_KEYS } from '../constants/storage';
 
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || '';
@@ -15,6 +16,13 @@ if (supabaseUrl && supabaseAnonKey) {
       storage: AsyncStorage,
       storageKey: STORAGE_KEYS.AUTH_SESSION,
       detectSessionInUrl: false,
+    },
+    // Disable sending x-supabase-api-version header which causes CORS issues
+    // with some self-hosted Supabase instances
+    global: {
+      headers: Platform.OS === 'web' ? {
+        'x-supabase-api-version': undefined as any, // Prevents header from being sent
+      } : {},
     },
   });
 }
