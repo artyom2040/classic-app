@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Context Composer",
-    "slug": "context-composer",
+    "slug": "classic",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -31,7 +31,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1a1a2e"
       },
-      "package": "com.contextcomposer.app"
+      "package": "com.contextcomposer.app",
+      "permissions": [
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -55,8 +59,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "your-project-id"
+        "projectId": "bf7826e2-07d3-447a-b801-72d68ef236dc"
       }
-    }
+    },
+    "owner": "artyom2040"
   }
 }
