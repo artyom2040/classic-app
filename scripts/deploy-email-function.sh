@@ -28,51 +28,54 @@ if ! grep -q "RESEND_API_KEY" .env; then
     exit 1
 fi
 
-echo "1️⃣  Copying function to functions volume..."
-# Create functions directory in volume if not exists
-docker compose exec -T supabase-functions sh -c "mkdir -p /home/deno/functions/send-email" || true
+echo "1️⃣  Starting Supabase services if needed..."
+cd /root/supabase-project
+if ! docker compose ps | grep -q "Up"; then
+    echo "   Starting services..."
+    docker compose up -d
+    sleep 5
+fi
 
-# Copy function files from local repo
-if [ -d "/root/classic-app/supabase/functions/send-email" ]; then
-    echo "   Copying from /root/classic-app..."
-    CONTAINER_ID=$(docker compose ps -q supabase-functions)
-    if [ -z "$CONTAINER_ID" ]; then
-        echo "❌ supabase-functions container not running"
-        echo "   Run: docker compose up -d"
-        exit 1
-    fi
-    docker cp /root/classic-app/supabase/functions/send-email/index.ts \
-        "$CONTAINER_ID":/home/deno/functions/send-email/index.ts
-else
-    echo "❌ Function source not found at /root/classic-app/supabase/functions/send-email"
-    echo "   Run: cd /root && git clone <your-repo-url> classic-app"
+echo ""
+echo "2️⃣  Copying function to functions container..."
+# Find the functions container (it might have a different name)
+FUNC_CONTAINER=$(docker ps --filter "name=functions" --format "{{.Names}}" | head -1)
+if [ -z "$FUNC_CONTAINER" ]; then
+    echo "❌ No functions container found"
+    echo "   Available containers:"
+    docker ps --format "{{.Names}}"
     exit 1
 fi
 
+echo "   Using container: $FUNC_CONTAINER"
+
+# Create directory and copy file
+docker exec "$FUNC_CONTAINER" sh -c "mkdir -p /home/deno/functions/send-email" 2>/dev/null || true
+docker cp /root/classic-app/supabase/functions/send-email/index.ts \
+    "$FUNC_CONTAINER":/home/deno/functions/send-email/index.ts
+
 echo ""
-echo "2️⃣  Adding environment variables to docker-compose.yml..."
-# Check if env vars are in docker-compose.yml
-if ! grep -q "RESEND_API_KEY" docker-compose.yml; then
-    echo "   Adding RESEND_API_KEY to functions service..."
-    # This is a simplified approach - manually add to docker-compose.yml
-    echo "⚠️  Manual step required:"
-    echo "   Edit docker-compose.yml and add under supabase-functions -> environment:"
-    echo "     RESEND_API_KEY: \${RESEND_API_KEY}"
-    echo "     FROM_EMAIL: \${FROM_EMAIL}"
+echo "3️⃣  Setting environment variables..."
+# Load env vars and pass to container
+if [ -f ".env" ]; then
+    export $(cat .env | grep -v '^#' | xargs)
+    docker exec "$FUNC_CONTAINER" sh -c "echo 'RESEND_API_KEY=$RESEND_API_KEY' >> /etc/environment" 2>/dev/null || true
+    docker exec "$FUNC_CONTAINER" sh -c "echo 'FROM_EMAIL=$FROM_EMAIL' >> /etc/environment" 2>/dev/null || true
 fi
 
 echo ""
-echo "3️⃣  Restarting functions service..."
-docker compose restart supabase-functions
+echo "4️⃣  Restarting container..."
+docker restart "$FUNC_CONTAINER"
 
 echo ""
-echo "4️⃣  Waiting for service to start..."
-sleep 3
+echo "5️⃣  Waiting for service to start..."
+sleep 5
 
 echo ""
-echo "5️⃣  Verifying deployment..."
-if docker compose exec -T supabase-functions sh -c "ls /home/deno/functions/send-email/index.ts" &> /dev/null; then
+echo "6️⃣  Verifying deployment..."
+if docker exec "$FUNC_CONTAINER" sh -c "ls /home/deno/functions/send-email/index.ts" &> /dev/null; then
     echo "✅ Function deployed successfully"
+    echo "   Container: $FUNC_CONTAINER"
 else
     echo "❌ Function not found after deployment"
     exit 1
