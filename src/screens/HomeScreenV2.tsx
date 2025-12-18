@@ -17,6 +17,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../context/ThemeContext';
 import { useCardStyle } from '../hooks/useCardStyle';
 import { useResponsive } from '../hooks/useResponsive';
+import { useExpensiveCalculation } from '../utils/performance';
 import { spacing } from '../theme';
 import { RootStackParamList, UserProgress, Term, WeeklyAlbum, MonthlySpotlight } from '../types';
 import { getProgress, getWeekNumber, getDayOfYear, getCurrentMonth } from '../utils/storage';
@@ -62,17 +63,51 @@ export default function HomeScreen() {
   const dayOfYear = getDayOfYear();
   const currentMonth = getCurrentMonth();
 
-  const weeklyAlbum = albumsData.weeklyAlbums[(weekNumber - 1) % albumsData.weeklyAlbums.length] as WeeklyAlbum;
-  const monthlySpotlight = albumsData.monthlySpotlights[(currentMonth - 1) % albumsData.monthlySpotlights.length] as MonthlySpotlight;
-  const termOfDay = glossaryData.terms[(dayOfYear - 1) % glossaryData.terms.length];
-  const featuredComposer = composersData.composers[dayOfYear % composersData.composers.length];
-  const secondComposer = composersData.composers[(dayOfYear + 1) % composersData.composers.length];
+  // Memoized expensive calculations for data selection
+  const weeklyAlbum = useExpensiveCalculation(
+    () => albumsData.weeklyAlbums[(weekNumber - 1) % albumsData.weeklyAlbums.length] as WeeklyAlbum,
+    [weekNumber],
+    'weeklyAlbum selection'
+  );
+
+  const monthlySpotlight = useExpensiveCalculation(
+    () => albumsData.monthlySpotlights[(currentMonth - 1) % albumsData.monthlySpotlights.length] as MonthlySpotlight,
+    [currentMonth],
+    'monthlySpotlight selection'
+  );
+
+  const termOfDay = useExpensiveCalculation(
+    () => glossaryData.terms[(dayOfYear - 1) % glossaryData.terms.length],
+    [dayOfYear],
+    'termOfDay selection'
+  );
+
+  const featuredComposer = useExpensiveCalculation(
+    () => composersData.composers[dayOfYear % composersData.composers.length],
+    [dayOfYear],
+    'featuredComposer selection'
+  );
+
+  const secondComposer = useExpensiveCalculation(
+    () => composersData.composers[(dayOfYear + 1) % composersData.composers.length],
+    [dayOfYear],
+    'secondComposer selection'
+  );
 
   // Filtered album based on category selection
-  const filteredAlbum = selectedCategory === 'all'
-    ? weeklyAlbum
-    : getAlbumForCategory(albumsData.weeklyAlbums as WeeklyAlbum[], selectedCategory, dayOfYear);
-  const termSummary = getShortDefinition(termOfDay);
+  const filteredAlbum = useExpensiveCalculation(
+    () => selectedCategory === 'all'
+      ? weeklyAlbum
+      : getAlbumForCategory(albumsData.weeklyAlbums as WeeklyAlbum[], selectedCategory, dayOfYear),
+    [selectedCategory, weeklyAlbum, dayOfYear],
+    'filteredAlbum selection'
+  );
+
+  const termSummary = useExpensiveCalculation(
+    () => getShortDefinition(termOfDay),
+    [termOfDay],
+    'termSummary calculation'
+  );
 
   const loadProgress = useCallback(async () => {
     setProgressLoading(true);

@@ -40,6 +40,24 @@ export class Logger {
   }
 
   /**
+   * Sanitize sensitive data from context
+   */
+  private static sanitizeContext(context?: LogContext): LogContext | undefined {
+    if (!context) return undefined;
+
+    const sensitiveKeys = ['password', 'token', 'apiKey', 'secret', 'auth', 'credentials'];
+    const sanitized = { ...context };
+
+    for (const key of sensitiveKeys) {
+      if (sanitized[key]) {
+        sanitized[key] = '[REDACTED]';
+      }
+    }
+
+    return sanitized;
+  }
+
+  /**
    * Log an error message
    *
    * @param module Module/component name where error occurred
@@ -54,16 +72,16 @@ export class Logger {
    */
   static error(module: string, message: string, context?: LogContext): void {
     const formattedMessage = this.formatMessage(module, message);
-    const formattedContext = this.formatContext(context);
+    const sanitizedContext = this.sanitizeContext(this.formatContext(context));
 
-    if (formattedContext) {
-      console.error(formattedMessage, formattedContext);
+    if (sanitizedContext) {
+      console.error(formattedMessage, sanitizedContext);
     } else {
       console.error(formattedMessage);
     }
 
     // In production, you could send to error tracking service (Sentry, etc)
-    // e.g., Sentry.captureException(new Error(formattedMessage), { contexts: { ...formattedContext } });
+    // e.g., Sentry.captureException(new Error(formattedMessage), { contexts: { ...sanitizedContext } });
   }
 
   /**
@@ -81,10 +99,10 @@ export class Logger {
    */
   static warn(module: string, message: string, context?: LogContext): void {
     const formattedMessage = this.formatMessage(module, message);
-    const formattedContext = this.formatContext(context);
+    const sanitizedContext = this.sanitizeContext(this.formatContext(context));
 
-    if (formattedContext) {
-      console.warn(formattedMessage, formattedContext);
+    if (sanitizedContext) {
+      console.warn(formattedMessage, sanitizedContext);
     } else {
       console.warn(formattedMessage);
     }
@@ -105,10 +123,10 @@ export class Logger {
    */
   static info(module: string, message: string, context?: LogContext): void {
     const formattedMessage = this.formatMessage(module, message);
-    const formattedContext = this.formatContext(context);
+    const sanitizedContext = this.sanitizeContext(this.formatContext(context));
 
-    if (formattedContext) {
-      console.log(formattedMessage, formattedContext);
+    if (sanitizedContext) {
+      console.log(formattedMessage, sanitizedContext);
     } else {
       console.log(formattedMessage);
     }
@@ -132,10 +150,21 @@ export class Logger {
     context?: LogContext
   ): void {
     const message = `${operation} completed in ${durationMs}ms`;
-    this.info(module, message, {
-      ...context,
-      duration: `${durationMs}ms`,
-    });
+    const level = durationMs > 1000 ? 'warn' : 'info';
+    
+    if (level === 'warn') {
+      this.warn(module, message, {
+        ...context,
+        duration: `${durationMs}ms`,
+        performance: 'slow',
+      });
+    } else {
+      this.info(module, message, {
+        ...context,
+        duration: `${durationMs}ms`,
+        performance: 'ok',
+      });
+    }
   }
 
   /**
@@ -161,11 +190,40 @@ export class Logger {
     const message = `${statusText} ${method} ${url} (${statusCode}) - ${durationMs}ms`;
 
     if (statusCode >= 200 && statusCode < 300) {
-      this.info(module, message);
+      this.info(module, message, {
+        method,
+        url,
+        statusCode,
+        duration: `${durationMs}ms`,
+        success: true,
+      });
     } else if (statusCode >= 400 && statusCode < 500) {
-      this.warn(module, message);
+      this.warn(module, message, {
+        method,
+        url,
+        statusCode,
+        duration: `${durationMs}ms`,
+        success: false,
+        errorType: 'client_error',
+      });
+    } else if (statusCode >= 500) {
+      this.error(module, message, {
+        method,
+        url,
+        statusCode,
+        duration: `${durationMs}ms`,
+        success: false,
+        errorType: 'server_error',
+      });
     } else {
-      this.error(module, message);
+      this.error(module, message, {
+        method,
+        url,
+        statusCode,
+        duration: `${durationMs}ms`,
+        success: false,
+        errorType: 'network_error',
+      });
     }
   }
 
