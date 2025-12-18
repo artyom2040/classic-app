@@ -9,6 +9,7 @@ import {
   Image,
   Alert,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -98,25 +99,34 @@ export function HamburgerMenu() {
   };
 
   const handleSignOut = async () => {
-    Alert.alert(
-      'Sign Out',
-      'Are you sure you want to sign out?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Sign Out',
-          style: 'destructive',
-          onPress: async () => {
-            setSigningOut(true);
-            await signOut();
-            setSigningOut(false);
-            setMenuOpen(false);
-            showToast('Signed out successfully', 'success');
-            navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] });
+    const doSignOut = async () => {
+      setSigningOut(true);
+      await signOut();
+      setSigningOut(false);
+      setMenuOpen(false);
+      showToast('Signed out successfully', 'success');
+      navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] });
+    };
+
+    // Alert.alert doesn't work on web, use window.confirm instead
+    if (Platform.OS === 'web') {
+      if (window.confirm('Are you sure you want to sign out?')) {
+        await doSignOut();
+      }
+    } else {
+      Alert.alert(
+        'Sign Out',
+        'Are you sure you want to sign out?',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          {
+            text: 'Sign Out',
+            style: 'destructive',
+            onPress: doSignOut,
           },
-        },
-      ]
-    );
+        ]
+      );
+    }
   };
 
   const handleProfile = () => {
