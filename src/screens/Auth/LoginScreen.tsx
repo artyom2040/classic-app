@@ -149,7 +149,12 @@ export default function LoginScreen() {
                   onChangeText={setPassword}
                   secureTextEntry={!showPassword}
                 />
-                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                  // @ts-ignore - tabIndex is valid for web
+                  tabIndex={-1}
+                  accessibilityLabel={showPassword ? "Hide password" : "Show password"}
+                >
                   <Ionicons
                     name={showPassword ? 'eye-off-outline' : 'eye-outline'}
                     size={20}
