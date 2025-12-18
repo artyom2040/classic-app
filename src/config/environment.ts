@@ -117,10 +117,19 @@ export const config = createConfig();
 
 /**
  * Validate configuration
+ * Note: Uses config object instead of process.env[key] because Expo web builds
+ * replace static process.env.X references but not dynamic access like process.env[key]
  */
 export function validateConfig(): void {
-  const required = ['EXPO_PUBLIC_SUPABASE_URL', 'EXPO_PUBLIC_SUPABASE_ANON_KEY'];
-  const missing = required.filter(key => !process.env[key]);
+  const missing: string[] = [];
+
+  // Check using the config object which uses static property access
+  if (!config.supabase.url) {
+    missing.push('EXPO_PUBLIC_SUPABASE_URL');
+  }
+  if (!config.supabase.anonKey) {
+    missing.push('EXPO_PUBLIC_SUPABASE_ANON_KEY');
+  }
 
   if (missing.length > 0) {
     Logger.warn('Config', 'Missing required environment variables', { missing });
