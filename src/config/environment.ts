@@ -5,6 +5,8 @@
  * for different deployment environments (development, staging, production)
  */
 
+import { Logger } from '../utils/logger';
+
 export interface SupabaseConfig {
   url: string;
   anonKey: string;
@@ -34,7 +36,7 @@ export const Environment = {
   isDevelopment: () => process.env.NODE_ENV === 'development',
   isProduction: () => process.env.NODE_ENV === 'production',
   isStaging: () => process.env.NODE_ENV === 'staging',
-  
+
   getCurrentEnvironment: (): AppConfig['environment'] => {
     const env = process.env.NODE_ENV as string;
     if (env === 'production') return 'production';
@@ -48,7 +50,7 @@ export const Environment = {
  */
 export function createConfig(): AppConfig {
   const environment = Environment.getCurrentEnvironment();
-  
+
   // Base configurations for different environments
   const configs: Record<AppConfig['environment'], Partial<AppConfig>> = {
     development: {
@@ -92,24 +94,16 @@ export function createConfig(): AppConfig {
     },
   };
 
-  // Supabase configuration - can be overridden by environment variables
-  const supabaseConfig: SupabaseConfig = {
-    url: process.env.EXPO_PUBLIC_SUPABASE_URL || 'https://your-project.supabase.co',
-    anonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || 'your-anon-key',
-    serviceKey: process.env.EXPO_PUBLIC_SUPABASE_SERVICE_KEY,
-  };
-
   // Merge base config with environment-specific overrides
   const baseConfig = configs[environment];
-  
+
   return {
     environment,
     apiUrl: process.env.EXPO_PUBLIC_API_URL || baseConfig.apiUrl!,
     supabase: {
-      ...supabaseConfig,
-      // Allow environment variables to override Supabase config
-      ...(process.env.EXPO_PUBLIC_SUPABASE_URL && { url: process.env.EXPO_PUBLIC_SUPABASE_URL }),
-      ...(process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY && { anonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY }),
+      url: process.env.EXPO_PUBLIC_SUPABASE_URL || '',
+      anonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '',
+      serviceKey: process.env.EXPO_PUBLIC_SUPABASE_SERVICE_KEY,
     },
     features: baseConfig.features!,
     debug: baseConfig.debug!,
@@ -127,9 +121,9 @@ export const config = createConfig();
 export function validateConfig(): void {
   const required = ['EXPO_PUBLIC_SUPABASE_URL', 'EXPO_PUBLIC_SUPABASE_ANON_KEY'];
   const missing = required.filter(key => !process.env[key]);
-  
+
   if (missing.length > 0) {
-    console.warn('[Config] Missing required environment variables:', missing);
+    Logger.warn('Config', 'Missing required environment variables', { missing });
     if (config.environment === 'production') {
       throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
     }
@@ -141,11 +135,11 @@ export function validateConfig(): void {
  */
 export function getSupabaseConfig(): SupabaseConfig {
   const { supabase } = config;
-  
+
   if (!supabase.url || !supabase.anonKey) {
     throw new Error('Supabase configuration is incomplete. Please set EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY.');
   }
-  
+
   return supabase;
 }
 
@@ -187,14 +181,14 @@ export const DeploymentConfigs = {
     supabaseUrl: 'http://localhost:54321',
     supabaseAnonKey: 'local-anon-key',
   },
-  
+
   // VPS deployment (your setup)
   vps: {
     apiUrl: 'https://api.artyom2040.com',
     supabaseUrl: 'https://your-supabase-project.supabase.co',
     supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
   },
-  
+
   // Production (if different from VPS)
   production: {
     apiUrl: 'https://api.artyom2040.com',

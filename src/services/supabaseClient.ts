@@ -9,8 +9,8 @@ import { Logger } from '../utils/logger';
 try {
   validateConfig();
 } catch (error) {
-  Logger.error('SupabaseClient', 'Configuration validation failed', { 
-    error: error instanceof Error ? error.message : String(error) 
+  Logger.error('SupabaseClient', 'Configuration validation failed', {
+    error: error instanceof Error ? error.message : String(error)
   });
 }
 
@@ -22,7 +22,7 @@ let supabase: SupabaseClient | null = null;
 function initializeSupabase(): SupabaseClient | null {
   try {
     const config = getSupabaseConfig();
-    
+
     Logger.info('SupabaseClient', 'Initializing Supabase client', {
       url: config.url.substring(0, 30) + '...',
       hasServiceKey: !!config.serviceKey,
@@ -62,11 +62,11 @@ supabase = initializeSupabase();
  */
 export function isSupabaseConfigured(): boolean {
   const configured = Boolean(supabase);
-  
+
   if (!configured && LoggerConfig.enabled) {
     Logger.warn('SupabaseClient', 'Supabase not configured - check environment variables');
   }
-  
+
   return configured;
 }
 
@@ -90,20 +90,20 @@ export function getSupabaseClient(): SupabaseClient {
 export function getSupabaseServiceClient(): SupabaseClient | null {
   try {
     const config = getSupabaseConfig();
-    
+
     if (!config.serviceKey) {
       Logger.warn('SupabaseClient', 'Service key not configured');
       return null;
     }
-    
+
     return createClient(config.url, config.serviceKey, {
       auth: {
         persistSession: false,
       },
     });
   } catch (error) {
-    Logger.error('SupabaseClient', 'Failed to create service client', { 
-      error: error instanceof Error ? error.message : String(error) 
+    Logger.error('SupabaseClient', 'Failed to create service client', {
+      error: error instanceof Error ? error.message : String(error)
     });
     return null;
   }
@@ -115,22 +115,25 @@ export function getSupabaseServiceClient(): SupabaseClient | null {
 export async function testSupabaseConnection(): Promise<boolean> {
   try {
     if (!supabase) return false;
-    
+
     const { data, error } = await supabase.from('test_table').select('*').limit(1);
-    
+
     if (error) {
-    Logger.error('SupabaseClient', 'Connection test failed', {
-      error: error instanceof Error ? error.message : String(error),
-      code: error instanceof Error ? (error as any).code : undefined,
-    });
+      // PostgrestError has message, code, details, hint properties directly
+      Logger.error('SupabaseClient', 'Connection test failed', {
+        error: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint,
+      });
       return false;
     }
-    
+
     Logger.info('SupabaseClient', 'Connection test successful', { recordCount: data?.length });
     return true;
   } catch (error) {
-    Logger.error('SupabaseClient', 'Connection test threw error', { 
-      error: error instanceof Error ? error.message : String(error) 
+    Logger.error('SupabaseClient', 'Connection test threw error', {
+      error: error instanceof Error ? error.message : String(error)
     });
     return false;
   }

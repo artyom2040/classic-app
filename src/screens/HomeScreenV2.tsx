@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   RefreshControl,
-  ImageBackground,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -19,7 +18,7 @@ import { useCardStyle } from '../hooks/useCardStyle';
 import { useResponsive } from '../hooks/useResponsive';
 import { useExpensiveCalculation } from '../utils/performance';
 import { spacing } from '../theme';
-import { RootStackParamList, UserProgress, Term, WeeklyAlbum, MonthlySpotlight } from '../types';
+import { RootStackParamList, UserProgress, WeeklyAlbum, MonthlySpotlight } from '../types';
 import { getProgress, getWeekNumber, getDayOfYear, getCurrentMonth } from '../utils/storage';
 import { hapticSelection } from '../utils/haptics';
 import { getShortDefinition } from '../utils/terms';
@@ -27,19 +26,11 @@ import { ERA_IMAGES } from '../utils/images';
 import { getAlbumForCategory, AlbumCategory } from '../utils/albumCategories';
 import { SkeletonHeroCard, SkeletonGrid } from '../components';
 import {
-  HeroCard,
-  CategoryChips,
-  KnowledgeBite,
-  SpotlightCard,
-  HorizontalCarousel,
   KickstartHeroCard,
   DailyMixGrid,
   TermOfDayCard,
   MonthlyThemeSection,
 } from '../components/stitch';
-
-// Extracted components
-import { FeaturedGrid, ExploreGrid } from './Home';
 
 import glossaryData from '../data/glossary.json';
 import albumsData from '../data/albums.json';

@@ -2,7 +2,8 @@
  * Performance utilities for memoization and optimization
  */
 
-import { useMemo, useCallback, useEffect } from 'react';
+import { useMemo, useCallback, useEffect, useRef } from 'react';
+import { Logger } from './logger';
 
 /**
  * Memoizes expensive calculations with dependency tracking
@@ -15,24 +16,47 @@ export function useExpensiveCalculation<T>(
     return useMemo(() => {
         const start = performance.now();
         const result = fn();
-        const end = performance.now();
-        
-        if (debugName && end - start > 16) { // Log if takes more than a frame
-            console.log(`[Performance] ${debugName} took ${(end - start).toFixed(2)}ms`);
+        const duration = performance.now() - start;
+
+        if (debugName && duration > 16) { // Log if takes more than a frame
+            Logger.performance('Performance', debugName, duration);
         }
-        
+
         return result;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, deps);
 }
 
 /**
- * Creates a memoized callback with dependency tracking
+ * Creates a truly stable callback that never changes reference
+ * but always calls the latest version of the callback.
+ * 
+ * This is useful for:
+ * - Event handlers passed to memoized children (prevents re-renders)
+ * - Callbacks used in useEffect that shouldn't trigger re-runs
+ * - Avoiding stale closure issues in async operations
+ * 
+ * @example
+ * const handleClick = useStableCallback((id: string) => {
+ *   // Always has access to latest state/props
+ *   console.log(currentState, id);
+ * });
  */
 export function useStableCallback<T extends (...args: any[]) => any>(
-    callback: T,
-    deps: React.DependencyList
+    callback: T
 ): T {
-    return useCallback(callback, deps);
+    const callbackRef = useRef<T>(callback);
+
+    // Update ref on every render to always have latest callback
+    useEffect(() => {
+        callbackRef.current = callback;
+    });
+
+    // Return stable function that delegates to current ref
+    return useCallback(
+        ((...args: Parameters<T>) => callbackRef.current(...args)) as T,
+        []
+    );
 }
 
 /**
@@ -40,13 +64,18 @@ export function useStableCallback<T extends (...args: any[]) => any>(
  */
 export function useDebouncedCallback<T extends (...args: any[]) => void>(
     callback: T,
-    delay: number,
-    deps: React.DependencyList = []
+    delay: number
 ): T {
-    return useCallback(
-        debounce(callback, delay),
-        deps
-    ) as T;
+    const callbackRef = useRef<T>(callback);
+
+    useEffect(() => {
+        callbackRef.current = callback;
+    });
+
+    return useMemo(
+        () => debounce((...args: Parameters<T>) => callbackRef.current(...args), delay) as T,
+        [delay]
+    );
 }
 
 /**
@@ -57,17 +86,17 @@ export function debounce<T extends (...args: any[]) => void>(
     wait: number
 ): (...args: Parameters<T>) => void {
     let timeout: NodeJS.Timeout | null = null;
-    
+
     return function executedFunction(...args: Parameters<T>) {
         const later = () => {
             timeout = null;
             func(...args);
         };
-        
+
         if (timeout) {
             clearTimeout(timeout);
         }
-        
+
         timeout = setTimeout(later, wait);
     };
 }
@@ -80,7 +109,7 @@ export function throttle<T extends (...args: any[]) => void>(
     limit: number
 ): (...args: Parameters<T>) => void {
     let inThrottle: boolean;
-    
+
     return function executedFunction(...args: Parameters<T>) {
         if (!inThrottle) {
             func(...args);
@@ -95,9 +124,9 @@ export function throttle<T extends (...args: any[]) => void>(
  */
 export function usePerformanceMonitor(componentName: string) {
     const start = useMemo(() => performance.now(), []);
-    
+
     useEffect(() => {
-        const end = performance.now();
-        console.log(`[Performance] ${componentName} mounted in ${(end - start).toFixed(2)}ms`);
+        const duration = performance.now() - start;
+        Logger.performance('Performance', `${componentName} mounted`, duration);
     }, [componentName, start]);
 }

@@ -12,6 +12,10 @@
       },
       "ios": {
         "buildConfiguration": "Debug"
+      },
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://YOUR-SUPABASE-URL.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "your-anon-key-here"
       }
     },
     "preview": {
@@ -21,6 +25,10 @@
       },
       "ios": {
         "simulator": true
+      },
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://YOUR-SUPABASE-URL.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "your-anon-key-here"
       }
     },
     "preview-device": {
@@ -30,6 +38,10 @@
       },
       "ios": {
         "distribution": "internal"
+      },
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://YOUR-SUPABASE-URL.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "your-anon-key-here"
       }
     },
     "production": {
@@ -38,6 +50,10 @@
       },
       "ios": {
         "distribution": "store"
+      },
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://YOUR-SUPABASE-URL.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "your-anon-key-here"
       }
     }
   },

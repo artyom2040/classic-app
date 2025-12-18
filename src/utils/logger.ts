@@ -40,18 +40,41 @@ export class Logger {
   }
 
   /**
-   * Sanitize sensitive data from context
+   * Sanitize sensitive data from context (recursively handles nested objects)
    */
   private static sanitizeContext(context?: LogContext): LogContext | undefined {
     if (!context) return undefined;
 
-    const sensitiveKeys = ['password', 'token', 'apiKey', 'secret', 'auth', 'credentials'];
-    const sanitized = { ...context };
+    // All lowercase for case-insensitive comparison
+    const sensitiveKeys = ['password', 'token', 'apikey', 'secret', 'auth', 'credentials', 'authorization', 'cookie', 'session', 'key'];
 
-    for (const key of sensitiveKeys) {
-      if (sanitized[key]) {
-        sanitized[key] = '[REDACTED]';
+    const sanitizeValue = (value: any, key: string): any => {
+      // Check if key is sensitive (case-insensitive)
+      const lowerKey = key.toLowerCase();
+      if (sensitiveKeys.some(sensitive => lowerKey.includes(sensitive))) {
+        return '[REDACTED]';
       }
+
+      // Recursively sanitize objects
+      if (value && typeof value === 'object' && !Array.isArray(value)) {
+        const sanitizedObj: Record<string, any> = {};
+        for (const [k, v] of Object.entries(value)) {
+          sanitizedObj[k] = sanitizeValue(v, k);
+        }
+        return sanitizedObj;
+      }
+
+      // Recursively sanitize arrays
+      if (Array.isArray(value)) {
+        return value.map((item, index) => sanitizeValue(item, String(index)));
+      }
+
+      return value;
+    };
+
+    const sanitized: LogContext = {};
+    for (const [key, value] of Object.entries(context)) {
+      sanitized[key] = sanitizeValue(value, key);
     }
 
     return sanitized;
@@ -151,7 +174,7 @@ export class Logger {
   ): void {
     const message = `${operation} completed in ${durationMs}ms`;
     const level = durationMs > 1000 ? 'warn' : 'info';
-    
+
     if (level === 'warn') {
       this.warn(module, message, {
         ...context,
