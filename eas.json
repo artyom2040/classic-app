@@ -14,8 +14,8 @@
         "buildConfiguration": "Debug"
       },
       "env": {
-        "EXPO_PUBLIC_SUPABASE_URL": "https://YOUR-SUPABASE-URL.supabase.co",
-        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "your-anon-key-here"
+        "EXPO_PUBLIC_SUPABASE_URL": "https://api.artyom2040.com",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE"
       }
     },
     "preview": {
@@ -27,8 +27,8 @@
         "simulator": true
       },
       "env": {
-        "EXPO_PUBLIC_SUPABASE_URL": "https://YOUR-SUPABASE-URL.supabase.co",
-        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "your-anon-key-here"
+        "EXPO_PUBLIC_SUPABASE_URL": "https://api.artyom2040.com",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE"
       }
     },
     "preview-device": {
@@ -40,8 +40,8 @@
         "distribution": "internal"
       },
       "env": {
-        "EXPO_PUBLIC_SUPABASE_URL": "https://YOUR-SUPABASE-URL.supabase.co",
-        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "your-anon-key-here"
+        "EXPO_PUBLIC_SUPABASE_URL": "https://api.artyom2040.com",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE"
       }
     },
     "production": {
@@ -52,8 +52,8 @@
         "distribution": "store"
       },
       "env": {
-        "EXPO_PUBLIC_SUPABASE_URL": "https://YOUR-SUPABASE-URL.supabase.co",
-        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "your-anon-key-here"
+        "EXPO_PUBLIC_SUPABASE_URL": "https://api.artyom2040.com",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE"
       }
     }
   },
