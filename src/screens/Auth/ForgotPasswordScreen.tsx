@@ -43,9 +43,9 @@ export default function ForgotPasswordScreen() {
     setError(null);
 
     const { error: authError } = await resetPassword(email.trim());
-    
+
     setLoading(false);
-    
+
     if (authError) {
       setError(authError.message);
     } else {
@@ -63,13 +63,19 @@ export default function ForgotPasswordScreen() {
         <Ionicons name="mail" size={64} color={t.colors.primary} />
         <Text style={[styles.title, { color: t.colors.text }]}>Check Your Email</Text>
         <Text style={[styles.subtitle, { color: t.colors.textSecondary, textAlign: 'center' }]}>
-          We've sent password reset instructions to {email}
+          We've sent a 6-digit code to {email}
         </Text>
         <Button
-          title="Back to Login"
-          onPress={() => navigation.navigate('Login')}
+          title="Enter Code"
+          onPress={() => navigation.navigate('ResetPassword', { email: email.trim() })}
           style={{ marginTop: spacing.xl }}
         />
+        <TouchableOpacity
+          style={{ marginTop: spacing.md }}
+          onPress={() => navigation.navigate('Login')}
+        >
+          <Text style={{ color: t.colors.textSecondary }}>Back to Login</Text>
+        </TouchableOpacity>
       </View>
     );
   }

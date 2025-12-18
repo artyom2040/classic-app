@@ -224,6 +224,7 @@ export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   ForgotPassword: undefined;
+  ResetPassword: { email: string };
 
   // Main app
   MainTabs: NavigatorScreenParams<TabParamList> | undefined;
