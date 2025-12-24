@@ -1,9 +1,9 @@
 // Themed components
-export { 
-  ThemedCard, 
-  ThemedButton, 
-  ThemedBadge, 
-  ThemedDivider, 
+export {
+  ThemedCard,
+  ThemedButton,
+  ThemedBadge,
+  ThemedDivider,
   ThemedSectionHeader,
   ThemedView,
   ThemedScrollView,
@@ -14,7 +14,7 @@ export {
 
 // UI Components
 export { Icon } from './Icon';
-export { Button } from './Button';
+// Button is deprecated - use EnhancedButton from design-system instead
 export { NetworkImage } from './NetworkImage';
 export { PlaceholderImage } from './PlaceholderImage';
 export { SearchBar } from './SearchBar';
@@ -23,11 +23,11 @@ export { Toast, ToastProvider, useToast } from './Toast';
 export { ErrorBoundary, ThemedErrorFallback } from './ErrorBoundary';
 export { ErrorUI } from './ErrorUI';
 export { OfflineIndicator, OfflineDot } from './OfflineIndicator';
-export { 
-  Skeleton, 
-  SkeletonCard, 
-  SkeletonHeroCard, 
-  SkeletonListItem, 
+export {
+  Skeleton,
+  SkeletonCard,
+  SkeletonHeroCard,
+  SkeletonListItem,
   SkeletonGrid,
   SkeletonComposerDetail,
 } from './SkeletonLoader';

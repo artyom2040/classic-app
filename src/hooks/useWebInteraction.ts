@@ -40,17 +40,14 @@ export function useWebInteraction() {
  */
 export const webStyles: { clickable: ViewStyle; card: ViewStyle; link: ViewStyle } = Platform.OS === 'web' ? {
     clickable: {
-        // @ts-expect-error - cursor is a valid web style but not in RN ViewStyle types
         cursor: 'pointer',
-    } as ViewStyle,
+    } as any as ViewStyle,
     card: {
-        // @ts-expect-error - cursor is a valid web style but not in RN ViewStyle types
         cursor: 'pointer',
-    } as ViewStyle,
+    } as any as ViewStyle,
     link: {
-        // @ts-expect-error - cursor is a valid web style but not in RN ViewStyle types
         cursor: 'pointer',
-    } as ViewStyle,
+    } as any as ViewStyle,
 } : {
     clickable: {},
     card: {},

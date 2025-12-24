@@ -22,8 +22,8 @@ export function FavoriteButton({
   const { theme } = useTheme();
   const { isFavorite, toggleFavorite } = useFavorites();
   const scale = useRef(new Animated.Value(1)).current;
-  
-  const favorite = isFavorite(id, type);
+
+  const favorite = isFavorite(String(id), type);
   const iconColor = color || (favorite ? theme.colors.error : theme.colors.textMuted);
 
   const handlePress = async () => {
@@ -41,7 +41,7 @@ export function FavoriteButton({
       }),
     ]).start();
 
-    const wasAdded = await toggleFavorite(id, type);
+    const wasAdded = await toggleFavorite(String(id), type);
     onToggle?.(wasAdded);
   };
 
@@ -73,7 +73,7 @@ export function FavoriteButtonWithLabel({
 }: FavoriteButtonWithLabelProps) {
   const { theme } = useTheme();
   const { isFavorite } = useFavorites();
-  const favorite = isFavorite(props.id, props.type);
+  const favorite = isFavorite(String(props.id), props.type);
 
   return (
     <Animated.View style={styles.container}>

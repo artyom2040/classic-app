@@ -43,8 +43,9 @@ export function HoverCard({
         shadowOffset: { width: 0, height: 8 },
         shadowOpacity: 0.15,
         shadowRadius: 24,
-        // @ts-expect-error - boxShadow is a valid web style but not in RN types - web only
-        boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+        ...({
+            boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+        } as any),
     } : {};
 
     const pressedStyle: ViewStyle = isPressed ? {
@@ -52,10 +53,10 @@ export function HoverCard({
     } : {};
 
     const webCursor: ViewStyle = Platform.OS === 'web' ? {
-        // @ts-expect-error - boxShadow is a valid web style but not in RN types - web only
-        cursor: 'pointer',
-        // @ts-expect-error - boxShadow is a valid web style but not in RN types - web only  
-        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+        ...({
+            cursor: 'pointer',
+            transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+        } as any),
     } : {};
 
     return (
@@ -89,8 +90,9 @@ export function Clickable({
     const [isPressed, setIsPressed] = useState(false);
 
     const webStyles: ViewStyle = Platform.OS === 'web' ? {
-        // @ts-expect-error - boxShadow is a valid web style but not in RN types
-        cursor: 'pointer',
+        ...({
+            cursor: 'pointer',
+        } as any),
     } : {};
 
     const pressedOpacity = isPressed ? { opacity: 0.7 } : {};

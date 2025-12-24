@@ -18,6 +18,20 @@ import { useCardStyle } from '../hooks/useCardStyle';
 import { useResponsive } from '../hooks/useResponsive';
 import { useExpensiveCalculation } from '../utils/performance';
 import { spacing } from '../theme';
+import {
+  Display2,
+  H3,
+  Body,
+  Caption,
+  TimelineSlider,
+  Era,
+  CategoryPills,
+  CategoryPill,
+  KickstartHeroCard,
+  DailyMixGrid,
+  TermOfDayCard,
+  MonthlyThemeSection,
+} from '../design-system';
 import { RootStackParamList, UserProgress, WeeklyAlbum, MonthlySpotlight } from '../types';
 import { getProgress, getWeekNumber, getDayOfYear, getCurrentMonth } from '../utils/storage';
 import { hapticSelection } from '../utils/haptics';
@@ -25,16 +39,11 @@ import { getShortDefinition } from '../utils/terms';
 import { ERA_IMAGES } from '../utils/images';
 import { getAlbumForCategory, AlbumCategory } from '../utils/albumCategories';
 import { SkeletonHeroCard, SkeletonGrid } from '../components';
-import {
-  KickstartHeroCard,
-  DailyMixGrid,
-  TermOfDayCard,
-  MonthlyThemeSection,
-} from '../components/stitch';
 
 import glossaryData from '../data/glossary.json';
 import albumsData from '../data/albums.json';
 import composersData from '../data/composers.json';
+import periodsData from '../data/periods.json';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -49,6 +58,16 @@ export default function HomeScreen() {
   const [progressLoading, setProgressLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<AlbumCategory>('all');
+  const [selectedFilter, setSelectedFilter] = useState('all');
+
+  // Category pills data for quick navigation
+  const categoryPills: CategoryPill[] = [
+    { id: 'all', label: 'For You', icon: 'sparkles' },
+    { id: 'composers', label: 'Composers', icon: 'people' },
+    { id: 'eras', label: 'Eras', icon: 'time' },
+    { id: 'forms', label: 'Forms', icon: 'musical-notes' },
+    { id: 'terms', label: 'Terms', icon: 'book' },
+  ];
 
   const weekNumber = getWeekNumber();
   const dayOfYear = getDayOfYear();
@@ -98,6 +117,20 @@ export default function HomeScreen() {
     () => getShortDefinition(termOfDay),
     [termOfDay],
     'termSummary calculation'
+  );
+
+  // Transform periods data for TimelineSlider
+  const timelineEras: Era[] = useExpensiveCalculation(
+    () => periodsData.periods.map(period => ({
+      id: period.id,
+      name: period.name,
+      period: period.years,
+      color: period.color,
+      image: ERA_IMAGES[period.id],
+      composerCount: period.composers?.length || 0,
+    })),
+    [],
+    'timelineEras transformation'
   );
 
   const loadProgress = useCallback(async () => {
@@ -157,19 +190,17 @@ export default function HomeScreen() {
         </>
       ) : (
         <>
-          {/* Header - Same for both themes */}
+          {/* Enhanced Header with new typography */}
           <View style={styles.header}>
             <View style={styles.stitchHeaderLeft}>
               <View style={[styles.avatarCircle, { borderColor: isDark ? 'rgba(255,255,255,0.1)' : t.colors.border }]}>
                 <Ionicons name="person" size={20} color={t.colors.textSecondary} />
               </View>
               <View>
-                <Text style={[styles.stitchGreetingSmall, { color: t.colors.textMuted }]}>
+                <Caption color={t.colors.textMuted}>
                   {getGreeting().toUpperCase()}
-                </Text>
-                <Text style={[styles.stitchUserName, { color: t.colors.text }]}>
-                  Maestro
-                </Text>
+                </Caption>
+                <H3 color={t.colors.text}>Maestro</H3>
               </View>
             </View>
             <TouchableOpacity
@@ -180,6 +211,21 @@ export default function HomeScreen() {
               <Ionicons name="search" size={22} color={t.colors.text} />
             </TouchableOpacity>
           </View>
+
+          {/* Category Filter Pills */}
+          <CategoryPills
+            categories={categoryPills}
+            selectedId={selectedFilter}
+            onSelect={(id) => {
+              setSelectedFilter(id);
+              // Navigate to relevant section based on filter
+              if (id === 'composers') navigation.navigate('Composers');
+              else if (id === 'eras') navigation.navigate('MainTabs', { screen: 'Timeline' });
+              else if (id === 'forms') navigation.navigate('MainTabs', { screen: 'Forms' });
+              else if (id === 'terms') navigation.navigate('MainTabs', { screen: 'Glossary' });
+            }}
+            style={{ marginBottom: spacing.md }}
+          />
 
           {/* Hero Kickstart Card with Progress */}
           <KickstartHeroCard
@@ -192,6 +238,12 @@ export default function HomeScreen() {
             imageSource={ERA_IMAGES.baroque}
             onPress={() => navigation.navigate('Kickstart')}
             isCompleted={progress?.kickstartCompleted}
+          />
+
+          {/* Horizontal Timeline Slider */}
+          <TimelineSlider
+            eras={timelineEras}
+            onSelectEra={(era) => navigation.navigate('PeriodDetail', { periodId: era.id })}
           />
 
           {/* Enhanced Term of the Day */}

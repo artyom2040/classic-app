@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import { Session, User } from '@supabase/supabase-js';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import * as Facebook from 'expo-facebook';
 import { supabase, isSupabaseConfigured } from '../services/supabaseClient';
 import { UserProfile, UserRole, AuthState } from '../types';
 import { Logger } from '../utils/logger';
@@ -27,6 +28,22 @@ function initializeGoogleSignIn() {
 // Initialize on module load
 initializeGoogleSignIn();
 
+// Initialize Facebook SDK (native only)
+async function initializeFacebookSDK() {
+  if (Platform.OS === 'web') return;
+  
+  try {
+    const appId = process.env.EXPO_PUBLIC_FACEBOOK_APP_ID;
+    if (appId && appId !== 'your-facebook-app-id') {
+      await Facebook.initializeAsync({ appId });
+    }
+  } catch (error) {
+    console.error('[Auth] Facebook SDK initialization failed:', error);
+  }
+}
+
+initializeFacebookSDK();
+
 // ============================================
 // Context Types
 // ============================================
@@ -42,6 +59,7 @@ interface AuthContextType extends AuthState {
   // OAuth
   signInWithApple: () => Promise<{ error: Error | null }>;
   signInWithGoogle: () => Promise<{ error: Error | null }>;
+  signInWithFacebook: () => Promise<{ error: Error | null }>;
 
   // Profile
   updateProfile: (updates: Partial<Pick<UserProfile, 'displayName' | 'avatarUrl'>>) => Promise<{ error: Error | null }>;
@@ -318,6 +336,39 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, []);
 
+  // Facebook Sign In with native authentication
+  const signInWithFacebook = useCallback(async () => {
+    if (!supabase) return { error: new Error('Supabase not configured') };
+
+    if (Platform.OS === 'web') {
+      return { error: new Error('Facebook Sign In is not available on web') };
+    }
+
+    try {
+      const result = await Facebook.logInWithReadPermissionsAsync({
+        permissions: ['public_profile', 'email'],
+      });
+
+      if (result.type === 'cancel') {
+        return { error: null }; // User cancelled
+      }
+
+      if (result.type !== 'success' || !result.token) {
+        return { error: new Error('Facebook login failed') };
+      }
+
+      const { error } = await supabase.auth.signInWithIdToken({
+        provider: 'facebook',
+        token: result.token,
+      });
+
+      return { error: error ? new Error(error.message) : null };
+    } catch (e: unknown) {
+      const error = e as { message?: string };
+      return { error: new Error(error.message || 'Facebook Sign In failed') };
+    }
+  }, []);
+
   // Update profile
   const updateProfile = useCallback(async (updates: Partial<Pick<UserProfile, 'displayName' | 'avatarUrl'>>) => {
     if (!supabase || !user) return { error: new Error('Not authenticated') };
@@ -357,6 +408,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     updatePassword,
     signInWithApple,
     signInWithGoogle,
+    signInWithFacebook,
     updateProfile,
     refreshProfile,
   };

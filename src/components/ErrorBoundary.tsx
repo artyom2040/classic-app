@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 import { spacing, borderRadius, fontSize } from '../theme';
-import { Button } from './Button';
+import { EnhancedButton } from '../design-system';
 
 type RenderFallback = (error: Error | null, reset: () => void) => React.ReactNode;
 
@@ -61,7 +61,7 @@ export function ThemedErrorFallback({
         <Text style={[styles.message, { color: theme.colors.textSecondary }]}>
           {error?.message || 'Please try again.'}
         </Text>
-        <Button
+        <EnhancedButton
           title="Restart view"
           onPress={onReset}
           variant="primary"

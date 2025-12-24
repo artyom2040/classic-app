@@ -6,7 +6,7 @@ Complete guide to the authentication system in Context Composer.
 
 The app uses **Supabase** for authentication with **React Context** for state management. Features include:
 - Email/password sign up and sign in
-- Social login (Apple Sign-In for iOS, Google Sign-In for iOS & Android)
+- Social login (Apple Sign-In, Google Sign-In, Facebook Login)
 - User profiles with avatars
 - Admin roles
 - Profile management
@@ -77,6 +77,7 @@ updatePassword(newPassword)           // Change password
 // OAuth
 signInWithApple()                     // Apple Sign-In (iOS)
 signInWithGoogle()                    // Google Sign-In
+signInWithFacebook()                  // Facebook Login (native)
 
 // Account
 signOut()                             // Sign out
@@ -209,12 +210,121 @@ const handleLogin = async (email: string, password: string) => {
 Required in `.env.local`:
 
 ```
+# Supabase
 EXPO_PUBLIC_SUPABASE_URL=your_supabase_url
 EXPO_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=your_google_web_client_id
-EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=your_google_ios_client_id
-EXPO_PUBLIC_AUTH_REDIRECT_URL=contextcomposer://reset-password
+
+# Google OAuth
+EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=your_google_web_client_id.apps.googleusercontent.com
+EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=your_google_ios_client_id.apps.googleusercontent.com
+
+# Facebook OAuth (optional)
+EXPO_PUBLIC_FACEBOOK_APP_ID=your_facebook_app_id
+EXPO_PUBLIC_FACEBOOK_CLIENT_TOKEN=your_facebook_client_token
+
+# Redirect URLs
+EXPO_PUBLIC_AUTH_REDIRECT_URL=contextcomposer://auth-callback
 ```
+
+---
+
+## 🔐 OAuth Provider Setup
+
+### Google Sign-In
+
+1. **Google Cloud Console Setup:**
+   - Go to [Google Cloud Console](https://console.cloud.google.com/)
+   - Create or select a project
+   - Enable **Google+ API** and **Google Identity Toolkit API**
+   - Go to **Credentials** → **Create Credentials** → **OAuth 2.0 Client IDs**
+
+2. **Create OAuth Clients:**
+
+   **Web Client (required for all platforms):**
+   - Application type: Web application
+   - Authorized redirect URIs: Add your Supabase project callback URL:
+     `https://your-project.supabase.co/auth/v1/callback`
+   - Copy the Client ID → `EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID`
+
+   **iOS Client:**
+   - Application type: iOS
+   - Bundle ID: `com.contextcomposer.app`
+   - Copy the Client ID → `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID`
+   - Update `app.json` → `iosUrlScheme`: `com.googleusercontent.apps.<IOS_CLIENT_ID>`
+
+   **Android Client:**
+   - Application type: Android
+   - Package name: `com.contextcomposer.app`
+   - SHA-1 fingerprint: Get from EAS build logs or run:
+     ```bash
+     eas credentials --platform android
+     ```
+
+3. **Supabase Configuration:**
+   - Go to Supabase Dashboard → **Authentication** → **Providers** → **Google**
+   - Enable Google provider
+   - Enter Web Client ID and Client Secret
+
+### Apple Sign-In (iOS only)
+
+1. **Apple Developer Setup:**
+   - Go to [Apple Developer Portal](https://developer.apple.com/account)
+   - Select your app under **Identifiers**
+   - Enable **Sign In with Apple** capability
+
+2. **Create Service ID (for Supabase):**
+   - Go to **Identifiers** → **+** → **Services IDs**
+   - Configure with your domain and return URL:
+     `https://your-project.supabase.co/auth/v1/callback`
+
+3. **Create Private Key:**
+   - Go to **Keys** → **+**
+   - Enable **Sign In with Apple**
+   - Download the `.p8` key file
+
+4. **Supabase Configuration:**
+   - Go to Supabase Dashboard → **Authentication** → **Providers** → **Apple**
+   - Enter Service ID, Team ID, Key ID, and the private key content
+
+5. **app.json Configuration:**
+   - `usesAppleSignIn: true` is already set
+   - The `expo-apple-authentication` plugin is included
+
+### Facebook Login
+
+1. **Facebook Developer Setup:**
+   - Go to [Facebook Developers](https://developers.facebook.com/)
+   - Create a new app → **Consumer**
+
+2. **Configure App:**
+   - In your app dashboard, go to **Settings** → **Basic**
+   - Copy **App ID** → `EXPO_PUBLIC_FACEBOOK_APP_ID`
+   - Copy **Client Token** → `EXPO_PUBLIC_FACEBOOK_CLIENT_TOKEN`
+
+3. **Add Facebook Login Product:**
+   - Go to **Products** → **Add Product** → **Facebook Login**
+   - Under **Settings** → **Valid OAuth Redirect URIs**, add:
+     `https://your-project.supabase.co/auth/v1/callback`
+
+4. **Platform Configuration:**
+   
+   **iOS:**
+   - Go to **Settings** → **Basic** → scroll to **iOS**
+   - Add Bundle ID: `com.contextcomposer.app`
+   
+   **Android:**
+   - Add Package Name: `com.contextcomposer.app`
+   - Add Key Hashes (SHA-1 converted to base64):
+     ```bash
+     echo SHA1_HEX | xxd -r -p | base64
+     ```
+
+5. **app.json Configuration:**
+   - Update the `expo-facebook` plugin placeholders with your App ID and Client Token
+
+6. **Supabase Configuration:**
+   - Go to Supabase Dashboard → **Authentication** → **Providers** → **Facebook**
+   - Enable and enter App ID and App Secret
 
 ---
 
@@ -268,6 +378,7 @@ Email/password form with:
 - Forgot password link
 - Apple Sign-In button (iOS)
 - Google Sign-In button
+- Facebook Login button (native)
 - Sign up link
 
 ### Register Screen
@@ -342,7 +453,7 @@ docs/AUTH.md                     # This file
 - [x] Auth context created
 - [x] Login/Register screens
 - [x] Profile management
-- [x] OAuth integration (Apple, Google)
+- [x] OAuth integration (Apple, Google, Facebook)
 - [x] Error handling with logging
 - [x] Type-safe API
 - [x] Profile tab integration
@@ -355,7 +466,7 @@ docs/AUTH.md                     # This file
 1. **Test signup** - Create test account
 2. **Verify email** - Check that email verification works
 3. **Test login** - Sign in with credentials
-4. **Test OAuth** - Try Apple/Google sign-in
+4. **Test OAuth** - Try Apple/Google/Facebook sign-in
 5. **Test profile** - Check profile info displays correctly
 6. **Test admin** - Set user role to admin in Supabase and verify features
 7. **Test sign out** - Verify clean logout

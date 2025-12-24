@@ -14,7 +14,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../context/ThemeContext';
-import { Button } from '../../components';
+import { EnhancedButton } from '../../design-system';
 import { spacing, fontSize, borderRadius } from '../../theme';
 import { RootStackParamList } from '../../types';
 import { supabase, isSupabaseConfigured } from '../../services/supabaseClient';
@@ -115,7 +115,7 @@ export default function ResetPasswordScreen() {
                 <Text style={[styles.subtitle, { color: t.colors.textSecondary, textAlign: 'center' }]}>
                     Your password has been successfully reset. You can now log in with your new password.
                 </Text>
-                <Button
+                <EnhancedButton
                     title="Back to Login"
                     onPress={() => navigation.navigate('Login')}
                     style={{ marginTop: spacing.xl }}
@@ -189,7 +189,7 @@ export default function ResetPasswordScreen() {
                             />
                             <TouchableOpacity
                                 onPress={() => setShowPassword(!showPassword)}
-                                // @ts-ignore - tabIndex is valid for web
+                                // @ts-expect-error - tabIndex is valid for web
                                 tabIndex={-1}
                                 accessibilityLabel={showPassword ? "Hide password" : "Show password"}
                             >
@@ -218,7 +218,7 @@ export default function ResetPasswordScreen() {
                         </View>
                     </View>
 
-                    <Button
+                    <EnhancedButton
                         title="Reset Password"
                         onPress={handleResetPassword}
                         loading={loading}

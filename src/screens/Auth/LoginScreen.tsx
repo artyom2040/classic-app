@@ -17,7 +17,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
-import { Button, useToast } from '../../components';
+import { useToast } from '../../components';
+import { EnhancedButton } from '../../design-system';
 import { spacing, fontSize, borderRadius } from '../../theme';
 import { RootStackParamList } from '../../types';
 
@@ -29,7 +30,7 @@ export default function LoginScreen() {
   const navigation = useNavigation<NavigationProp>();
   const insets = useSafeAreaInsets();
   const { theme: t } = useTheme();
-  const { signInWithEmail, signInWithApple, signInWithGoogle } = useAuth();
+  const { signInWithEmail, signInWithApple, signInWithGoogle, signInWithFacebook } = useAuth();
   const { showToast } = useToast();
   const { width } = useWindowDimensions();
   const isDesktop = width > 768;
@@ -78,6 +79,19 @@ export default function LoginScreen() {
     setLoading(true);
     setError(null);
     const { error: authError } = await signInWithGoogle();
+    setLoading(false);
+    if (authError) {
+      setError(authError.message);
+    } else {
+      showToast('Welcome back!', 'success');
+      navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] });
+    }
+  };
+
+  const handleFacebookLogin = async () => {
+    setLoading(true);
+    setError(null);
+    const { error: authError } = await signInWithFacebook();
     setLoading(false);
     if (authError) {
       setError(authError.message);
@@ -151,7 +165,7 @@ export default function LoginScreen() {
                 />
                 <TouchableOpacity
                   onPress={() => setShowPassword(!showPassword)}
-                  // @ts-ignore - tabIndex is valid for web
+                  // @ts-expect-error - tabIndex is valid for web
                   tabIndex={-1}
                   accessibilityLabel={showPassword ? "Hide password" : "Show password"}
                 >
@@ -173,7 +187,7 @@ export default function LoginScreen() {
               </Text>
             </TouchableOpacity>
 
-            <Button
+            <EnhancedButton
               title="Sign In"
               onPress={handleEmailLogin}
               loading={loading}
@@ -208,6 +222,16 @@ export default function LoginScreen() {
               <Ionicons name="logo-google" size={24} color={t.colors.text} />
               <Text style={[styles.socialButtonText, { color: t.colors.text }]}>Google</Text>
             </TouchableOpacity>
+            {Platform.OS !== 'web' && (
+              <TouchableOpacity
+                style={[styles.socialButton, { backgroundColor: '#1877F2' }]}
+                onPress={handleFacebookLogin}
+                disabled={loading}
+              >
+                <Ionicons name="logo-facebook" size={24} color="#fff" />
+                <Text style={[styles.socialButtonText, { color: '#fff' }]}>Facebook</Text>
+              </TouchableOpacity>
+            )}
           </View>
 
           {/* Sign Up Link */}
@@ -253,8 +277,8 @@ const styles = StyleSheet.create({
   divider: { flexDirection: 'row', alignItems: 'center', marginVertical: spacing.xl },
   dividerLine: { flex: 1, height: 1 },
   dividerText: { marginHorizontal: spacing.md, fontSize: fontSize.sm },
-  socialButtons: { flexDirection: 'row', gap: spacing.md },
-  socialButton: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 48, borderRadius: borderRadius.md, gap: spacing.sm },
+  socialButtons: { flexDirection: 'row', gap: spacing.sm, flexWrap: 'wrap', justifyContent: 'center' },
+  socialButton: { flex: 1, minWidth: 100, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 48, borderRadius: borderRadius.md, gap: spacing.xs },
   socialButtonText: { fontSize: fontSize.md, fontWeight: '500' },
   footer: { flexDirection: 'row', justifyContent: 'center', marginTop: spacing.xl },
   footerText: { fontSize: fontSize.md },

@@ -19,7 +19,10 @@
       "@utils/*": [
         "src/utils/*"
       ]
-    }
+    },
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
   "exclude": [
     "supabase/functions"

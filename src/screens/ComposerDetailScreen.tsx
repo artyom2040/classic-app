@@ -237,7 +237,7 @@ export default function ComposerDetailScreen() {
             {/* View on Timeline Button */}
             <TouchableOpacity
               style={[styles.stitchTimelineButton, { borderColor: t.colors.primary }]}
-              onPress={() => navigation.navigate('Timeline')}
+              onPress={() => navigation.navigate('MainTabs', { screen: 'Timeline' })}
             >
               <Text style={[styles.stitchTimelineText, { color: t.colors.primary }]}>View on Timeline</Text>
             </TouchableOpacity>
@@ -345,39 +345,39 @@ export default function ComposerDetailScreen() {
       >
         {/* Header */}
         <View style={styles.header}>
-            <NetworkImage
-              uri={getComposerPortrait(composer.id)}
-              size={100}
-              borderRadius={isBrutal ? 0 : 50}
-              fallbackType="composer"
-              fallbackText={composer.name}
-              style={isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : {}}
-            />
-            <View style={styles.nameRow}>
-              <Text style={[styles.name, { color: t.colors.text }]}>{composer.name}</Text>
-              <TouchableOpacity
-                style={[styles.favoriteButton, { backgroundColor: isLiked ? t.colors.error + '20' : t.colors.surfaceLight }]}
-                onPress={() => toggleFavorite(composerId, 'composer')}
-              >
-                <Ionicons
-                  name={isLiked ? 'heart' : 'heart-outline'}
-                  size={22}
-                  color={isLiked ? t.colors.error : t.colors.textMuted}
-                />
-              </TouchableOpacity>
+          <NetworkImage
+            uri={getComposerPortrait(composer.id)}
+            size={100}
+            borderRadius={isBrutal ? 0 : 50}
+            fallbackType="composer"
+            fallbackText={composer.name}
+            style={isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : {}}
+          />
+          <View style={styles.nameRow}>
+            <Text style={[styles.name, { color: t.colors.text }]}>{composer.name}</Text>
+            <TouchableOpacity
+              style={[styles.favoriteButton, { backgroundColor: isLiked ? t.colors.error + '20' : t.colors.surfaceLight }]}
+              onPress={() => toggleFavorite(composerId, 'composer')}
+            >
+              <Ionicons
+                name={isLiked ? 'heart' : 'heart-outline'}
+                size={22}
+                color={isLiked ? t.colors.error : t.colors.textMuted}
+              />
+            </TouchableOpacity>
+          </View>
+          <Text style={[styles.years, { color: t.colors.textSecondary }]}>{yearsText}</Text>
+          <View style={styles.tags}>
+            <View style={[styles.tag, { backgroundColor: accentColor + '30' }]}>
+              <Text style={[styles.tagText, { color: accentColor }]}>
+                {period?.name || composer.period}
+              </Text>
             </View>
-            <Text style={[styles.years, { color: t.colors.textSecondary }]}>{yearsText}</Text>
-            <View style={styles.tags}>
-              <View style={[styles.tag, { backgroundColor: accentColor + '30' }]}>
-                <Text style={[styles.tagText, { color: accentColor }]}>
-                  {period?.name || composer.period}
-                </Text>
-              </View>
-              <View style={[styles.tag, { backgroundColor: t.colors.surface }]}>
-                <Text style={[styles.tagText, { color: t.colors.textSecondary }]}>{composer.nationality}</Text>
-              </View>
-              </View>
-              </View>
+            <View style={[styles.tag, { backgroundColor: t.colors.surface }]}>
+              <Text style={[styles.tagText, { color: t.colors.textSecondary }]}>{composer.nationality}</Text>
+            </View>
+          </View>
+        </View>
 
         {/* Audio Samples - In App */}
         {composerSamples.length > 0 && (
@@ -453,24 +453,24 @@ export default function ComposerDetailScreen() {
 
         {/* Key Works */}
         <View style={styles.section}>
-            <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Key Works</Text>
-            {composer.keyWorks.map((work, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[styles.workCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}
-                onPress={() => Linking.openURL(`https://www.youtube.com/results?search_query=${encodeURIComponent(composer.name + ' ' + work.title)}`)}
-              >
-                <View style={styles.workInfo}>
-                  <Text style={[styles.workTitle, { color: t.colors.text }]}>{work.title}</Text>
-                  <View style={styles.workMeta}>
-                    <Text style={[styles.workType, { color: t.colors.primary }]}>{work.type}</Text>
-                    <Text style={[styles.workYear, { color: t.colors.textMuted }]}>{work.year}</Text>
-                  </View>
+          <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Key Works</Text>
+          {composer.keyWorks.map((work, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[styles.workCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}
+              onPress={() => Linking.openURL(`https://www.youtube.com/results?search_query=${encodeURIComponent(composer.name + ' ' + work.title)}`)}
+            >
+              <View style={styles.workInfo}>
+                <Text style={[styles.workTitle, { color: t.colors.text }]}>{work.title}</Text>
+                <View style={styles.workMeta}>
+                  <Text style={[styles.workType, { color: t.colors.primary }]}>{work.type}</Text>
+                  <Text style={[styles.workYear, { color: t.colors.textMuted }]}>{work.year}</Text>
                 </View>
-                <Ionicons name="play-circle-outline" size={24} color={t.colors.primary} />
-              </TouchableOpacity>
-              ))}
               </View>
+              <Ionicons name="play-circle-outline" size={24} color={t.colors.primary} />
+            </TouchableOpacity>
+          ))}
+        </View>
 
         {relatedComposers.length > 0 && (
           <View style={styles.section}>

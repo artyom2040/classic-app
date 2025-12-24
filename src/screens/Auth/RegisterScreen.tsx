@@ -17,7 +17,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
-import { Button, useToast } from '../../components';
+import { useToast } from '../../components';
+import { EnhancedButton } from '../../design-system';
 import { spacing, fontSize, borderRadius } from '../../theme';
 import { RootStackParamList } from '../../types';
 
@@ -86,7 +87,7 @@ export default function RegisterScreen() {
         <Text style={[styles.subtitle, { color: t.colors.textSecondary, textAlign: 'center' }]}>
           We've sent a verification link to {email}. Please check your inbox.
         </Text>
-        <Button
+        <EnhancedButton
           title="Back to Login"
           onPress={() => navigation.navigate('Login')}
           style={{ marginTop: spacing.xl }}
@@ -181,7 +182,7 @@ export default function RegisterScreen() {
                 />
                 <TouchableOpacity
                   onPress={() => setShowPassword(!showPassword)}
-                  // @ts-ignore - tabIndex is valid for web
+                  // @ts-expect-error - tabIndex is valid for web
                   tabIndex={-1}
                   accessibilityLabel={showPassword ? "Hide password" : "Show password"}
                 >
@@ -209,7 +210,7 @@ export default function RegisterScreen() {
               </View>
             </View>
 
-            <Button
+            <EnhancedButton
               title="Create Account"
               onPress={handleRegister}
               loading={loading}

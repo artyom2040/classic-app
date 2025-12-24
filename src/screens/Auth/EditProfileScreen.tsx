@@ -17,7 +17,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
-import { Button, useToast } from '../../components';
+import { useToast } from '../../components';
+import { EnhancedButton } from '../../design-system';
 import { spacing, fontSize, borderRadius } from '../../theme';
 import { RootStackParamList } from '../../types';
 
@@ -142,7 +143,7 @@ export default function EditProfileScreen() {
         {/* Account Info */}
         <View style={[styles.infoCard, { backgroundColor: t.colors.surface }]}>
           <Text style={[styles.infoTitle, { color: t.colors.text }]}>Account Information</Text>
-          
+
           <View style={styles.infoRow}>
             <Ionicons name="calendar-outline" size={18} color={t.colors.textMuted} />
             <Text style={[styles.infoLabel, { color: t.colors.textSecondary }]}>Member since</Text>
@@ -165,7 +166,7 @@ export default function EditProfileScreen() {
         </View>
 
         {/* Save Button */}
-        <Button
+        <EnhancedButton
           title={loading ? 'Saving...' : 'Save Changes'}
           onPress={handleSave}
           disabled={!hasChanges || loading}
@@ -174,8 +175,8 @@ export default function EditProfileScreen() {
           style={{ marginTop: spacing.lg }}
         />
 
-        <TouchableOpacity 
-          style={styles.cancelButton} 
+        <TouchableOpacity
+          style={styles.cancelButton}
           onPress={() => navigation.goBack()}
           disabled={loading}
         >

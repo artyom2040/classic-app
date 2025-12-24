@@ -9,6 +9,7 @@ import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
 import { RootStackParamList, UserProgress } from '../types';
 import { getProgress, saveProgress } from '../utils/storage';
+import { ProgressRing, H3, Body } from '../design-system';
 
 import kickstartData from '../data/kickstart.json';
 
@@ -62,7 +63,24 @@ export default function KickstartScreen() {
         {isStitch ? (
           <View style={styles.stitchHero}>
             <View style={styles.stitchGradientBg}>
-              {/* Progress bar at top */}
+              {/* Progress Ring and Text Row */}
+              <View style={styles.progressRowContainer}>
+                <ProgressRing
+                  progress={((progress?.kickstartDay || 0) / 5) * 100}
+                  size={100}
+                  strokeWidth={10}
+                  showPercentage={false}
+                  color={t.colors.primary}
+                />
+                <View style={styles.progressTextContainer}>
+                  <Text style={styles.stitchProgressText}>
+                    {progress?.kickstartCompleted ? '5' : (progress?.kickstartDay || 0)} of 5 days
+                  </Text>
+                  <Text style={styles.stitchProgressLabel}>completed</Text>
+                </View>
+              </View>
+
+              {/* Day segment progress bar */}
               <View style={styles.stitchProgress}>
                 {[1, 2, 3, 4, 5].map((d) => (
                   <View
@@ -178,7 +196,7 @@ const styles = StyleSheet.create({
   content: { padding: spacing.md, paddingBottom: 150 },
   header: { alignItems: 'center', marginBottom: spacing.xl },
   emoji: { fontSize: 60, marginBottom: spacing.md },
-  title: { fontSize: fontSize.xxxl, fontWeight: 'bold', textAlign: 'center' },
+  title: { fontSize: fontSize.xxl, fontWeight: 'bold', textAlign: 'center' },
   subtitle: { fontSize: fontSize.md, textAlign: 'center', marginTop: spacing.sm, lineHeight: 22 },
   daysContainer: { gap: spacing.sm },
   dayCard: { flexDirection: 'row', alignItems: 'center', borderRadius: borderRadius.lg, padding: spacing.md },
@@ -207,4 +225,8 @@ const styles = StyleSheet.create({
   stitchBadgeText: { fontSize: 11, fontWeight: '700', letterSpacing: 1.5 },
   stitchTitle: { fontSize: 36, fontWeight: '300', fontStyle: 'italic', color: '#FFFFFF', lineHeight: 44, marginBottom: spacing.sm },
   stitchSubtitle: { fontSize: 16, color: 'rgba(255,255,255,0.7)', lineHeight: 24 },
+  progressRowContainer: { flexDirection: 'row', alignItems: 'center', gap: 20, marginBottom: spacing.lg },
+  progressTextContainer: { flex: 1 },
+  stitchProgressText: { fontSize: 28, fontWeight: '700', color: '#FFFFFF' },
+  stitchProgressLabel: { fontSize: 14, color: 'rgba(255,255,255,0.6)', marginTop: 2 },
 });

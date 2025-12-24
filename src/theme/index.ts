@@ -1,35 +1,17 @@
 /**
- * Static design tokens that remain constant across all themes.
- * Theme-specific values (colors, shadows) come from ThemeContext.
+ * Theme System - Central Export
+ * Exports all theme-related utilities, tokens, and types
  */
 
-export const spacing = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
-  xxl: 48,
-};
+// Design tokens
+export * from './tokens';
 
-export const fontSize = {
-  xs: 12,
-  sm: 14,
-  md: 16,
-  lg: 18,
-  xl: 20,
-  xxl: 24,
-  xxxl: 32,
-  display: 40,
-};
+// Typography system
+export * from './typography';
 
-export const borderRadius = {
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 24,
-  full: 9999,
-};
-
-// Re-export themes for convenience
+// Theme definitions
 export * from './themes';
+
+// Legacy exports for backward compatibility
+import { spacing, fontSize, borderRadius } from './tokens';
+export { spacing, fontSize, borderRadius };

@@ -15,7 +15,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
-import { Button } from '../../components';
+import { EnhancedButton } from '../../design-system';
 import { spacing, fontSize, borderRadius } from '../../theme';
 import { RootStackParamList } from '../../types';
 
@@ -65,7 +65,7 @@ export default function ForgotPasswordScreen() {
         <Text style={[styles.subtitle, { color: t.colors.textSecondary, textAlign: 'center' }]}>
           We've sent a 6-digit code to {email}
         </Text>
-        <Button
+        <EnhancedButton
           title="Enter Code"
           onPress={() => navigation.navigate('ResetPassword', { email: email.trim() })}
           style={{ marginTop: spacing.xl }}
@@ -129,7 +129,7 @@ export default function ForgotPasswordScreen() {
             </View>
           </View>
 
-          <Button
+          <EnhancedButton
             title="Send Reset Link"
             onPress={handleResetPassword}
             loading={loading}

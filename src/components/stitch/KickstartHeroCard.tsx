@@ -14,6 +14,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
+import { MiniProgressRing } from '../../design-system';
 
 interface KickstartHeroCardProps {
     currentDay: number; // 0-5, 0 means not started
@@ -113,22 +114,35 @@ export function KickstartHeroCard({
                     <Text style={[styles.subtitle, { color: mutedTextColor }]}>{subtitle}</Text>
                 </View>
 
-                {/* Progress bar */}
+                {/* Progress Section with Ring + Bar */}
                 <View style={styles.progressSection}>
-                    <View style={styles.progressRow}>
-                        <Text style={[styles.progressLabel, { color: dimTextColor }]}>5-Day Kickstart Challenge</Text>
-                        <Text style={[styles.progressPercent, { color: mutedTextColor }]}>{progressPercent}% Complete</Text>
-                    </View>
-                    <View style={[styles.progressBarBg, { backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : t.colors.surfaceLight }]}>
-                        <View
-                            style={[
-                                styles.progressBarFill,
-                                {
-                                    width: `${progressPercent}%`,
-                                    backgroundColor: t.colors.primary,
-                                }
-                            ]}
+                    <View style={styles.progressSectionInner}>
+                        {/* Mini Progress Ring */}
+                        <MiniProgressRing
+                            progress={progressPercent}
+                            size={52}
+                            strokeWidth={5}
+                            color={t.colors.primary}
                         />
+
+                        {/* Progress bar and labels */}
+                        <View style={styles.progressBarSection}>
+                            <View style={styles.progressRow}>
+                                <Text style={[styles.progressLabel, { color: dimTextColor }]}>5-Day Kickstart</Text>
+                                <Text style={[styles.progressPercent, { color: mutedTextColor }]}>{progressPercent}%</Text>
+                            </View>
+                            <View style={[styles.progressBarBg, { backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : t.colors.surfaceLight }]}>
+                                <View
+                                    style={[
+                                        styles.progressBarFill,
+                                        {
+                                            width: `${progressPercent}%`,
+                                            backgroundColor: t.colors.primary,
+                                        }
+                                    ]}
+                                />
+                            </View>
+                        </View>
                     </View>
                 </View>
 
@@ -215,6 +229,14 @@ const styles = StyleSheet.create({
     },
     progressSection: {
         marginTop: 20,
+    },
+    progressSectionInner: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 16,
+    },
+    progressBarSection: {
+        flex: 1,
     },
     progressRow: {
         flexDirection: 'row',

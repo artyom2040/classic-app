@@ -68,6 +68,8 @@ import { injectWebCSS } from './src/utils/webCSS';
 // Inject web CSS for hover effects (runs once on web only)
 injectWebCSS();
 
+import { FloatingTabBar } from './src/design-system';
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
 
@@ -78,94 +80,35 @@ function TabNavigator() {
 
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName: keyof typeof Ionicons.glyphMap;
+      tabBar={props => {
+        const activeTab = props.state.routeNames[props.state.index];
+        const tabs = [
+          { name: 'Home', label: 'Home', icon: 'home-outline', iconFilled: 'home' },
+          { name: 'Timeline', label: 'Timeline', icon: 'time-outline', iconFilled: 'time' },
+          { name: 'Glossary', label: 'Glossary', icon: 'book-outline', iconFilled: 'book' },
+          { name: 'Forms', label: 'Forms', icon: 'musical-notes-outline', iconFilled: 'musical-notes' },
+          { name: 'Profile', label: 'Profile', icon: 'person-outline', iconFilled: 'person' },
+        ] as any[];
 
-          switch (route.name) {
-            case 'Home':
-              iconName = focused ? 'home' : 'home-outline';
-              break;
-            case 'Timeline':
-              iconName = focused ? 'time' : 'time-outline';
-              break;
-            case 'Glossary':
-              iconName = focused ? 'book' : 'book-outline';
-              break;
-            case 'Forms':
-              iconName = focused ? 'musical-notes' : 'musical-notes-outline';
-              break;
-            case 'Profile':
-              iconName = focused ? 'person' : 'person-outline';
-              break;
-            default:
-              iconName = 'help-outline';
-          }
-
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: t.colors.primary,
-        tabBarInactiveTintColor: isGlass ? '#3C3C43' : isStitch ? t.colors.textMuted : t.colors.textMuted,
-        tabBarStyle: {
-          backgroundColor: isGlass ? 'transparent' : isStitch ? t.colors.surface + 'CC' : t.colors.surface,
-          borderTopColor: isGlass ? 'rgba(60, 60, 67, 0.12)' : isStitch ? 'transparent' : t.colors.border,
-          borderTopWidth: isStitch ? 0 : 1,
-          paddingTop: 8,
-          height: 88,
-          position: (isGlass || isStitch) ? 'absolute' : 'relative',
-          // Stitch: floating rounded tab bar
-          ...(isStitch && {
-            bottom: 20,
-            left: 16,
-            right: 16,
-            borderRadius: 20,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 8 },
-            shadowOpacity: 0.3,
-            shadowRadius: 16,
-            elevation: 12,
-          }),
-        },
-        tabBarBackground: (isGlass || isStitch) ? () => (
-          Platform.OS === 'ios' ? (
-            <BlurView
-              intensity={isStitch ? 80 : 100}
-              tint={isStitch ? 'dark' : 'light'}
-              style={[
-                StyleSheet.absoluteFill,
-                isStitch && { borderRadius: 24, overflow: 'hidden' }
-              ]}
-            />
-          ) : (
-            <View style={[
-              StyleSheet.absoluteFill,
-              {
-                backgroundColor: isStitch
-                  ? 'rgba(34, 26, 50, 0.85)'
-                  : 'rgba(255, 255, 255, 0.9)',
-                borderRadius: isStitch ? 24 : 0,
-                borderWidth: isStitch ? 1 : 0,
-                borderColor: 'rgba(255, 255, 255, 0.1)',
-              }
-            ]} />
-          )
-        ) : undefined,
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: '500',
-          marginTop: 4,
-        },
+        return (
+          <FloatingTabBar
+            tabs={tabs}
+            activeTab={activeTab}
+            onTabPress={(tabName: string) => props.navigation.navigate(tabName)}
+          />
+        );
+      }}
+      screenOptions={{
         headerStyle: {
           backgroundColor: isGlass ? 'transparent' : t.colors.background,
         },
         headerTransparent: isGlass,
-        headerBlurEffect: isGlass ? 'light' : undefined,
         headerTintColor: t.colors.text,
         headerTitleStyle: {
           fontWeight: '600',
         },
         headerLeft: () => <HamburgerMenu />,
-      })}
+      }}
     >
       <Tab.Screen
         name="Home"

@@ -29,13 +29,13 @@ interface ThemedViewProps {
   variant?: 'default' | 'surface' | 'surfaceLight';
 }
 
-export const ThemedView: React.FC<ThemedViewProps> = ({ 
-  children, 
-  style, 
-  variant = 'default' 
+export const ThemedView: React.FC<ThemedViewProps> = ({
+  children,
+  style,
+  variant = 'default'
 }) => {
   const { theme } = useTheme();
-  
+
   const bgColors = {
     default: theme.colors.background,
     surface: theme.colors.surface,
@@ -56,16 +56,16 @@ interface ThemedScrollViewProps extends ScrollViewProps {
   contentStyle?: ViewStyle;
 }
 
-export const ThemedScrollView: React.FC<ThemedScrollViewProps> = ({ 
-  children, 
+export const ThemedScrollView: React.FC<ThemedScrollViewProps> = ({
+  children,
   style,
   contentStyle,
-  ...props 
+  ...props
 }) => {
   const { theme } = useTheme();
-  
+
   return (
-    <ScrollView 
+    <ScrollView
       style={[{ flex: 1, backgroundColor: theme.colors.background }, style]}
       contentContainerStyle={[{ padding: spacing.md }, contentStyle]}
       showsVerticalScrollIndicator={false}
@@ -87,16 +87,16 @@ interface ThemedTextProps {
   numberOfLines?: number;
 }
 
-export const ThemedText: React.FC<ThemedTextProps> = ({ 
-  children, 
-  style, 
+export const ThemedText: React.FC<ThemedTextProps> = ({
+  children,
+  style,
   variant = 'default',
   size = 'md',
   weight = 'normal',
   numberOfLines,
 }) => {
   const { theme } = useTheme();
-  
+
   const colors = {
     default: theme.colors.text,
     secondary: theme.colors.textSecondary,
@@ -116,7 +116,7 @@ export const ThemedText: React.FC<ThemedTextProps> = ({
   };
 
   return (
-    <Text 
+    <Text
       style={[
         { color: colors[variant], fontSize: sizes[size], fontWeight: weight },
         style
@@ -139,9 +139,9 @@ interface ThemedCardProps {
   borderLeft?: string; // Optional accent color for left border
 }
 
-export const ThemedCard: React.FC<ThemedCardProps> = ({ 
-  children, 
-  style, 
+export const ThemedCard: React.FC<ThemedCardProps> = ({
+  children,
+  style,
   onPress,
   variant = 'elevated',
   padding = 'md',
@@ -149,7 +149,7 @@ export const ThemedCard: React.FC<ThemedCardProps> = ({
 }) => {
   const { theme, themeName, isDark } = useTheme();
   const isBrutal = false;
-  
+
   const paddingValues = {
     none: 0,
     sm: spacing.sm,
@@ -170,8 +170,8 @@ export const ThemedCard: React.FC<ThemedCardProps> = ({
 
   if (onPress) {
     return (
-      <TouchableOpacity 
-        style={[cardStyle, style]} 
+      <TouchableOpacity
+        style={[cardStyle, style]}
         onPress={onPress}
         activeOpacity={0.7}
       >
@@ -198,18 +198,18 @@ interface ThemedButtonProps extends TouchableOpacityProps {
   icon?: React.ReactNode;
 }
 
-export const ThemedButton: React.FC<ThemedButtonProps> = ({ 
+export const ThemedButton: React.FC<ThemedButtonProps> = ({
   children,
   title,
   variant = 'primary',
   size = 'md',
   icon,
   style,
-  ...props 
+  ...props
 }) => {
   const { theme, themeName, isDark } = useTheme();
   const isBrutal = false;
-  
+
   const sizeStyles = {
     sm: { paddingVertical: spacing.xs, paddingHorizontal: spacing.sm },
     md: { paddingVertical: spacing.sm, paddingHorizontal: spacing.md },
@@ -219,10 +219,10 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
   const variantStyles: Record<string, ViewStyle> = {
     primary: { backgroundColor: theme.colors.primary },
     secondary: { backgroundColor: theme.colors.secondary },
-    outline: { 
-      backgroundColor: 'transparent', 
-      borderWidth: 2, 
-      borderColor: theme.colors.primary 
+    outline: {
+      backgroundColor: 'transparent',
+      borderWidth: 2,
+      borderColor: theme.colors.primary
     },
     ghost: { backgroundColor: 'transparent' },
   };
@@ -235,7 +235,7 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
   };
 
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={[
         {
           flexDirection: 'row',
@@ -243,7 +243,8 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
           justifyContent: 'center',
           borderRadius: isBrutal ? 0 : borderRadius.md,
           gap: spacing.xs,
-          ...(isBrutal && { borderWidth: 3, borderColor: theme.colors.border }),
+          borderWidth: isBrutal ? 3 : 0,
+          borderColor: isBrutal ? theme.colors.border : 'transparent',
         },
         sizeStyles[size],
         variantStyles[variant],
@@ -254,8 +255,8 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
     >
       {icon}
       {title && (
-        <Text style={{ 
-          color: textColors[variant], 
+        <Text style={{
+          color: textColors[variant],
           fontSize: size === 'sm' ? fontSize.sm : fontSize.md,
           fontWeight: '600',
         }}>
@@ -273,14 +274,14 @@ interface ThemedInputProps extends TextInputProps {
   icon?: React.ReactNode;
 }
 
-export const ThemedInput: React.FC<ThemedInputProps> = ({ 
+export const ThemedInput: React.FC<ThemedInputProps> = ({
   style,
   icon,
-  ...props 
+  ...props
 }) => {
   const { theme, themeName, isDark } = useTheme();
   const isBrutal = false;
-  
+
   return (
     <View style={[
       {
@@ -290,7 +291,7 @@ export const ThemedInput: React.FC<ThemedInputProps> = ({
         borderRadius: isBrutal ? 0 : borderRadius.lg,
         paddingHorizontal: spacing.md,
         height: 48,
-        ...(isBrutal 
+        ...(isBrutal
           ? { borderWidth: 3, borderColor: theme.colors.border }
           : theme.shadows.sm
         ),
@@ -321,7 +322,7 @@ interface ThemedBadgeProps {
   variant?: 'filled' | 'outline';
 }
 
-export const ThemedBadge: React.FC<ThemedBadgeProps> = ({ 
+export const ThemedBadge: React.FC<ThemedBadgeProps> = ({
   children,
   label,
   color,
@@ -329,7 +330,7 @@ export const ThemedBadge: React.FC<ThemedBadgeProps> = ({
 }) => {
   const { theme } = useTheme();
   const badgeColor = color || theme.colors.primary;
-  
+
   return (
     <View style={{
       alignSelf: 'flex-start',
@@ -355,7 +356,7 @@ export const ThemedBadge: React.FC<ThemedBadgeProps> = ({
 
 export const ThemedDivider: React.FC<{ style?: ViewStyle }> = ({ style }) => {
   const { theme } = useTheme();
-  
+
   return (
     <View style={[{
       height: 1,
@@ -375,12 +376,12 @@ interface ThemedSectionHeaderProps {
   };
 }
 
-export const ThemedSectionHeader: React.FC<ThemedSectionHeaderProps> = ({ 
+export const ThemedSectionHeader: React.FC<ThemedSectionHeaderProps> = ({
   title,
   action,
 }) => {
   const { theme } = useTheme();
-  
+
   return (
     <View style={{
       flexDirection: 'row',
@@ -418,14 +419,14 @@ interface ThemedIconContainerProps {
   size?: number;
 }
 
-export const ThemedIconContainer: React.FC<ThemedIconContainerProps> = ({ 
+export const ThemedIconContainer: React.FC<ThemedIconContainerProps> = ({
   children,
   color,
   size = 40,
 }) => {
   const { theme } = useTheme();
   const iconColor = color || theme.colors.primary;
-  
+
   return (
     <View style={{
       width: size,

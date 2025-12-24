@@ -5,16 +5,15 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
-  Text,
   Keyboard,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
 import { useTheme } from '../context/ThemeContext';
-import { RootStackParamList } from '../types';
+import { RootStackParamList, Term } from '../types';
 import { spacing, fontSize, borderRadius } from '../theme';
+import { Body, Label, BodySmall, Caption } from '../design-system';
 import { getLongDefinition } from '../utils/terms';
 
 // Import data for searching
@@ -78,10 +77,11 @@ export function SearchBar({ placeholder = 'Search...', autoFocus = false, onClos
     });
 
     // Search terms
-    glossaryData.terms.forEach(term => {
+    glossaryData.terms.forEach(item => {
+      const term = item as unknown as Term;
       if (
         term.term.toLowerCase().includes(lowerQuery) ||
-        getLongDefinition(term as any).toLowerCase().includes(lowerQuery) ||
+        getLongDefinition(term).toLowerCase().includes(lowerQuery) ||
         term.category.toLowerCase().includes(lowerQuery)
       ) {
         searchResults.push({
@@ -224,13 +224,13 @@ export function SearchBar({ placeholder = 'Search...', autoFocus = false, onClos
                   <Ionicons name={item.icon as any} size={18} color={getTypeColor(item.type)} />
                 </View>
                 <View style={styles.resultContent}>
-                  <Text style={[styles.resultTitle, { color: t.colors.text }]}>{item.title}</Text>
-                  <Text style={[styles.resultSubtitle, { color: t.colors.textMuted }]}>{item.subtitle}</Text>
+                  <Label color={t.colors.text} weight="bold">{item.title}</Label>
+                  <BodySmall color={t.colors.textMuted}>{item.subtitle}</BodySmall>
                 </View>
                 <View style={[styles.typeBadge, { backgroundColor: getTypeColor(item.type) + '15' }]}>
-                  <Text style={[styles.typeText, { color: getTypeColor(item.type) }]}>
-                    {item.type}
-                  </Text>
+                  <Caption color={getTypeColor(item.type)} weight="bold" style={styles.typeText}>
+                    {item.type.toUpperCase()}
+                  </Caption>
                 </View>
               </TouchableOpacity>
             )}
@@ -245,9 +245,9 @@ export function SearchBar({ placeholder = 'Search...', autoFocus = false, onClos
           isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm,
         ]}>
           <Ionicons name="search-outline" size={32} color={t.colors.textMuted} />
-          <Text style={[styles.noResultsText, { color: t.colors.textSecondary }]}>
+          <Body color={t.colors.textSecondary} style={styles.noResultsText}>
             No results for "{query}"
-          </Text>
+          </Body>
         </View>
       )}
     </View>

@@ -233,9 +233,11 @@ export async function update<T extends ContentData>(
     // Calculate changes diff
     const changes: Record<string, { old: unknown; new: unknown }> = {};
     if (current) {
+        const currentTyped = current as Record<string, unknown>;
+        const updatesTyped = updates as Record<string, unknown>;
         for (const key of Object.keys(updates)) {
-            if (current[key] !== (updates as any)[key]) {
-                changes[key] = { old: current[key], new: (updates as any)[key] };
+            if (currentTyped[key] !== updatesTyped[key]) {
+                changes[key] = { old: currentTyped[key], new: updatesTyped[key] };
             }
         }
     }
@@ -440,24 +442,24 @@ export async function getAuditLogs(filters: AuditLogFilters = {}): Promise<Audit
 // Helper Functions
 // ============================================
 
-function getEntityName(entityType: EntityType, data: any): string {
+function getEntityName(entityType: EntityType, data: Record<string, any>): string {
     switch (entityType) {
         case 'composer':
-            return data.name;
+            return data.name || '';
         case 'term':
-            return data.term;
+            return data.term || '';
         case 'period':
-            return data.name;
+            return data.name || '';
         case 'form':
-            return data.name;
+            return data.name || '';
         case 'concert_hall':
-            return data.name;
+            return data.name || '';
         case 'weekly_album':
-            return data.title;
+            return data.title || '';
         case 'monthly_spotlight':
-            return data.title;
+            return data.title || '';
         default:
-            return data.name || data.title || data.id;
+            return data.name || data.title || data.id || '';
     }
 }
 

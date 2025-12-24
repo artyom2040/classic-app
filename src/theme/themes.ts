@@ -1,5 +1,7 @@
 // Theme definitions for Context Composer
-// Simplified to just Dark and Light modes with Stitch design aesthetic
+// Enhanced with design tokens and gradients for Stitch UI
+
+import { shadows, purpleShadows, gradients, overlays } from './tokens';
 
 export type ThemeName = 'dark' | 'light';
 
@@ -35,6 +37,7 @@ export interface Theme {
     lg: number;
     xl: number;
     xxl: number;
+    xxxl: number;
   };
   borderRadius: {
     xs: number;
@@ -42,12 +45,34 @@ export interface Theme {
     md: number;
     lg: number;
     xl: number;
+    xxl: number;
     full: number;
   };
   shadows: {
+    none: object;
+    xs: object;
     sm: object;
     md: object;
     lg: object;
+    xl: object;
+    xxl: object;
+  };
+  gradients: {
+    purple: readonly [string, string, ...string[]];
+    purpleDark: readonly [string, string, ...string[]];
+    purpleLight: readonly [string, string, ...string[]];
+    teal: readonly [string, string, ...string[]];
+    sunset: readonly [string, string, ...string[]];
+    midnight: readonly [string, string, ...string[]];
+  };
+  overlays: {
+    dark: string;
+    darkHeavy: string;
+    light: string;
+    lightHeavy: string;
+    shimmer: string;
+    highlight: string;
+    purpleGlow: string;
   };
   typography: {
     fontFamily: string;
@@ -58,6 +83,7 @@ export interface Theme {
       lg: number;
       xl: number;
       xxl: number;
+      xxxl: number;
       hero: number;
     };
   };
@@ -99,17 +125,38 @@ export const darkTheme: Theme = {
     gradientStart: '#221a32',
     gradientEnd: '#161121',
   },
-  spacing: { xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48 },
-  borderRadius: { xs: 8, sm: 12, md: 16, lg: 24, xl: 32, full: 9999 },
-  shadows: {
-    // Purple-tinted shadows for depth
-    sm: { shadowColor: '#5417cf', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.15, shadowRadius: 8, elevation: 3 },
-    md: { shadowColor: '#5417cf', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.2, shadowRadius: 16, elevation: 6 },
-    lg: { shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 12 },
+  spacing: {
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32,
+    xxl: 48,
+    xxxl: 64,
   },
+  borderRadius: {
+    xs: 8,
+    sm: 12,
+    md: 16,
+    lg: 20,
+    xl: 28,
+    xxl: 36,
+    full: 9999,
+  },
+  shadows: {
+    none: shadows.none,
+    xs: shadows.xs,
+    sm: purpleShadows.sm,
+    md: purpleShadows.md,
+    lg: purpleShadows.lg,
+    xl: purpleShadows.xl,
+    xxl: shadows.xxl,
+  },
+  gradients,
+  overlays,
   typography: {
     fontFamily: 'System',
-    sizes: { xs: 10, sm: 12, md: 14, lg: 16, xl: 20, xxl: 30, hero: 40 },
+    sizes: { xs: 10, sm: 12, md: 14, lg: 16, xl: 20, xxl: 30, xxxl: 36, hero: 40 },
   },
   cardStyle: 'elevated',
   isDark: true,
@@ -149,17 +196,20 @@ export const lightTheme: Theme = {
     gradientStart: '#FFFFFF',
     gradientEnd: '#F5F3F8',
   },
-  spacing: { xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48 },
-  borderRadius: { xs: 8, sm: 12, md: 16, lg: 24, xl: 32, full: 9999 },
+  spacing: { xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48, xxxl: 64 },
+  borderRadius: { xs: 8, sm: 12, md: 16, lg: 20, xl: 28, xxl: 36, full: 9999 },
   shadows: {
-    // Soft purple-tinted shadows
+    ...shadows,
+    // Override with purple-tinted for light theme
     sm: { shadowColor: '#5417cf', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 8, elevation: 2 },
     md: { shadowColor: '#5417cf', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.12, shadowRadius: 16, elevation: 4 },
     lg: { shadowColor: '#5417cf', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.16, shadowRadius: 24, elevation: 8 },
   },
+  gradients,
+  overlays,
   typography: {
     fontFamily: 'System',
-    sizes: { xs: 10, sm: 12, md: 14, lg: 16, xl: 20, xxl: 30, hero: 40 },
+    sizes: { xs: 10, sm: 12, md: 14, lg: 16, xl: 20, xxl: 30, xxxl: 36, hero: 40 },
   },
   cardStyle: 'elevated',
   isDark: false,
