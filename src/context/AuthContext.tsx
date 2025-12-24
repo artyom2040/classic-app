@@ -21,7 +21,7 @@ function initializeGoogleSignIn() {
       iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || '',
     });
   } catch (error) {
-    console.error('[Auth] Google Sign-In initialization failed:', error);
+    Logger.error('Auth', 'Google Sign-In initialization failed', { error });
   }
 }
 
@@ -38,7 +38,7 @@ async function initializeFacebookSDK() {
       await Facebook.initializeAsync({ appId });
     }
   } catch (error) {
-    console.error('[Auth] Facebook SDK initialization failed:', error);
+    Logger.error('Auth', 'Facebook SDK initialization failed', { error });
   }
 }
 
@@ -74,7 +74,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 async function fetchUserProfile(userId: string): Promise<UserProfile | null> {
   if (!supabase) {
-    console.error('[Auth] Supabase not configured when fetching profile');
+    Logger.error('Auth', 'Supabase not configured when fetching profile');
     return null;
   }
 
@@ -85,7 +85,7 @@ async function fetchUserProfile(userId: string): Promise<UserProfile | null> {
     .single();
 
   if (error || !data) {
-    console.error('[Auth] Failed to fetch user profile for ID:', userId, 'Error:', error?.message);
+    Logger.error('Auth', 'Failed to fetch user profile', { userId, error: error?.message });
     return null;
   }
 
@@ -102,7 +102,7 @@ async function fetchUserProfile(userId: string): Promise<UserProfile | null> {
 
 async function createUserProfile(user: User): Promise<UserProfile | null> {
   if (!supabase) {
-    console.error('[Auth] Supabase not configured when creating profile');
+    Logger.error('Auth', 'Supabase not configured when creating profile');
     return null;
   }
 
@@ -119,7 +119,7 @@ async function createUserProfile(user: User): Promise<UserProfile | null> {
     .upsert(profile, { onConflict: 'id' });
 
   if (error) {
-    console.error('[Auth] Failed to create user profile for ID:', user.id, 'Error:', error.message);
+    Logger.error('Auth', 'Failed to create user profile', { userId: user.id, error: error.message });
     return null;
   }
 
@@ -144,7 +144,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Initialize auth state
   useEffect(() => {
     if (!isSupabaseConfigured() || !supabase) {
-      console.warn('[Auth] Supabase not configured');
+      Logger.warn('Auth', 'Supabase not configured');
       setIsLoading(false);
       return;
     }

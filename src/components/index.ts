@@ -14,7 +14,6 @@ export {
 
 // UI Components
 export { Icon } from './Icon';
-// Button is deprecated - use EnhancedButton from design-system instead
 export { NetworkImage } from './NetworkImage';
 export { PlaceholderImage } from './PlaceholderImage';
 export { SearchBar } from './SearchBar';

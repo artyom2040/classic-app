@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer, DefaultTheme, DarkTheme, Theme as NavTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
-import { View, ActivityIndicator, Platform, StyleSheet } from 'react-native';
-import { BlurView } from 'expo-blur';
+import { Ionicons as _Ionicons } from '@expo/vector-icons';
+import { View, ActivityIndicator } from 'react-native';
+import { BlurView as _BlurView } from 'expo-blur';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryClientProvider } from '@tanstack/react-query';
 
@@ -74,9 +74,9 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
 
 function TabNavigator() {
-  const { theme, isDark, isGlass, themeName } = useTheme();
+  const { theme, isDark, isGlass, themeName: _themeName } = useTheme();
   const t = theme;
-  const isStitch = isDark;
+  const _isStitch = isDark;
 
   return (
     <Tab.Navigator

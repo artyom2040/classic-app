@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import { createAudioPlayer, AudioPlayer, AudioStatus } from 'expo-audio';
 import { useToast } from '../components';
 import { configureAudioSession, supportsBackgroundAudio } from '../services/audioSession';
+import { Logger } from '../utils/logger';
 
 export interface Track {
   id: string;
@@ -151,7 +152,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         };
 
         audio.onerror = () => {
-          console.error('Audio error - file may not be available');
+          Logger.error('Audio', 'Audio error - file may not be available');
           showToast('Audio unavailable. Try another sample.', 'error');
           setIsLoading(false);
           setCurrentTrack(null); // Clear the track to hide player
@@ -185,7 +186,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       setIsPlaying(true);
       setIsLoading(false);
     } catch (error) {
-      console.error('Error playing track:', error);
+      Logger.error('Audio', 'Error playing track', { error });
       showToast('Unable to play audio. Please try again.', 'error');
       setIsLoading(false);
     }
