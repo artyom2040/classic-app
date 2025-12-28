@@ -298,6 +298,14 @@ export default function QuizScreen() {
           >
             <Text style={styles.backButtonText}>Back to Home</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.leaderboardButton, { backgroundColor: t.colors.warning }]}
+            onPress={() => navigation.navigate('Leaderboard')}
+          >
+            <Ionicons name="trophy" size={18} color="#fff" />
+            <Text style={styles.backButtonText}>View Leaderboard</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );

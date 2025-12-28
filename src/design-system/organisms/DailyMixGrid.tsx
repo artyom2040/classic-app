@@ -70,14 +70,14 @@ export function DailyMixGrid({ badgesCount = 0 }: DailyMixGridProps) {
             screen: 'MonthlySpotlight',
         },
         {
-            id: 'badges',
-            icon: 'ribbon-outline',
-            iconFilled: 'ribbon',
-            label: 'Badges',
-            subtitle: badgesCount > 0 ? `${badgesCount} Earned` : 'Achievements',
-            color: '#EC4899',
-            gradientColors: ['#EC489925', '#EC489905'],
-            screen: 'Badges',
+            id: 'leaderboard',
+            icon: 'trophy-outline',
+            iconFilled: 'trophy',
+            label: 'Leaderboard',
+            subtitle: 'Compete & Climb',
+            color: '#F59E0B',
+            gradientColors: ['#F59E0B25', '#F59E0B05'],
+            screen: 'Leaderboard',
         },
     ];
 
