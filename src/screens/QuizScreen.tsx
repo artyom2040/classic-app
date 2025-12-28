@@ -20,6 +20,8 @@ import { spacing, fontSize, borderRadius } from '../theme';
 import { haptic } from '../utils/haptics';
 import { getDayOfYear } from '../utils/storage';
 import { getLongDefinition } from '../utils/terms';
+import { submitQuizScore } from '../services/leaderboardService';
+import { useAuth } from '../context/AuthContext';
 
 // Import data
 import composersData from '../data/composers.json';
@@ -157,15 +159,26 @@ export default function QuizScreen() {
 
   const dayOfYear = getDayOfYear();
   const questions = useMemo(() => generateQuestions(dayOfYear), [dayOfYear]);
+  const { isAuthenticated } = useAuth();
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
-  const [score, setScore] = useState(0);
+  const [answers, setAnswers] = useState<(number | null)[]>([]); // Track all answers
   const [quizComplete, setQuizComplete] = useState(false);
   const [progress, setProgress] = useState<QuizProgress | null>(null);
   const [alreadyPlayed, setAlreadyPlayed] = useState(false);
   const [fadeAnim] = useState(new Animated.Value(1));
+
+  // Calculate score from answers array
+  const calculateScore = (answerList: (number | null)[]): number => {
+    return answerList.reduce<number>((acc, answer, idx) => {
+      if (answer !== null && answer === questions[idx]?.correctIndex) {
+        return acc + 1;
+      }
+      return acc;
+    }, 0);
+  };
 
   // Load progress
   useEffect(() => {
@@ -196,6 +209,11 @@ export default function QuizScreen() {
 
     setProgress(newProgress);
     await setStorageItem(QUIZ_PROGRESS_KEY, newProgress);
+
+    // Submit score to leaderboard if authenticated
+    if (isAuthenticated) {
+      await submitQuizScore({ score: correct, totalQuestions: questions.length });
+    }
   };
 
   const handleAnswer = (index: number) => {
@@ -206,7 +224,6 @@ export default function QuizScreen() {
 
     const isCorrect = index === questions[currentQuestion].correctIndex;
     if (isCorrect) {
-      setScore(s => s + 1);
       haptic('success');
     } else {
       haptic('error');
@@ -214,6 +231,10 @@ export default function QuizScreen() {
   };
 
   const nextQuestion = () => {
+    // Record the answer for current question
+    const newAnswers = [...answers, selectedAnswer];
+    setAnswers(newAnswers);
+
     if (currentQuestion < questions.length - 1) {
       Animated.sequence([
         Animated.timing(fadeAnim, { toValue: 0, duration: 150, useNativeDriver: true }),
@@ -224,8 +245,10 @@ export default function QuizScreen() {
       setSelectedAnswer(null);
       setIsAnswered(false);
     } else {
+      // Calculate final score from all answers
+      const finalScore = calculateScore(newAnswers);
       setQuizComplete(true);
-      saveProgress(score + (selectedAnswer === questions[currentQuestion].correctIndex ? 1 : 0));
+      saveProgress(finalScore);
     }
   };
 
@@ -282,7 +305,7 @@ export default function QuizScreen() {
 
   // Quiz complete
   if (quizComplete) {
-    const finalScore = score + (selectedAnswer === questions[questions.length - 1].correctIndex ? 1 : 0);
+    const finalScore = calculateScore(answers);
     const percentage = Math.round((finalScore / questions.length) * 100);
 
     return (
@@ -328,6 +351,14 @@ export default function QuizScreen() {
             onPress={() => navigation.goBack()}
           >
             <Text style={styles.backButtonText}>Back to Home</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.leaderboardButton, { backgroundColor: t.colors.secondary }]}
+            onPress={() => navigation.navigate('Leaderboard')}
+          >
+            <Ionicons name="trophy" size={18} color="#fff" />
+            <Text style={styles.backButtonText}>View Leaderboard</Text>
           </TouchableOpacity>
         </ScrollView>
       </View>
@@ -515,4 +546,5 @@ const styles = StyleSheet.create({
 
   backButton: { padding: spacing.md, borderRadius: borderRadius.lg, alignItems: 'center', marginTop: spacing.md },
   backButtonText: { color: '#fff', fontSize: fontSize.md, fontWeight: '600' },
+  leaderboardButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: spacing.md, borderRadius: borderRadius.lg, marginTop: spacing.sm, gap: spacing.sm },
 });

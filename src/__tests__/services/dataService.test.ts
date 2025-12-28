@@ -1,4 +1,5 @@
-import { DataService } from '../../services/dataService';
+import { DataService, DataServiceClass } from '../../services/dataService';
+import { ComposerBuilder } from '../utils/builders';
 
 // Mock the JSON data imports
 jest.mock('../../data/composers.json', () => ({
@@ -159,6 +160,35 @@ describe('DataService', () => {
             // Data should still be accessible after clearing
             const composers = await DataService.getComposers();
             expect(composers).toHaveLength(3);
+        });
+    });
+
+    describe('DataService with Mock Provider (Builder Pattern)', () => {
+        it('uses injected provider returning built data', async () => {
+            const mockComposer = new ComposerBuilder()
+                .withId('mock-1')
+                .withName('Mock Composer')
+                .build();
+            
+            const mockProvider = {
+                getComposers: jest.fn().mockResolvedValue([mockComposer]),
+                getPeriods: jest.fn(),
+                getForms: jest.fn(),
+                getTerms: jest.fn(),
+                getWeeklyAlbums: jest.fn(),
+                getMonthlySpotlights: jest.fn(),
+                getNewReleases: jest.fn(),
+                getConcertHalls: jest.fn(),
+                getKickstartDays: jest.fn(),
+            };
+    
+            // Inject mock provider
+            const service = new DataServiceClass({ type: 'local' }, mockProvider);
+            const composers = await service.getComposers();
+    
+            expect(composers).toHaveLength(1);
+            expect(composers[0]).toEqual(mockComposer);
+            expect(mockProvider.getComposers).toHaveBeenCalled();
         });
     });
 });

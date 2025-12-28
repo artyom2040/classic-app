@@ -134,8 +134,7 @@ export function GradientCard({
         colors={overlayColors as any}
         start={{ x: 0, y: 0 }}
         end={gradientDirection === 'horizontal' ? { x: 1, y: 0 } : { x: 0, y: 1 }}
-        style={[StyleSheet.absoluteFill, { opacity: overlayOpacity }]}
-        pointerEvents="none"
+        style={[StyleSheet.absoluteFill, { opacity: overlayOpacity, pointerEvents: 'none' }]}
       />
     </Card>
   );

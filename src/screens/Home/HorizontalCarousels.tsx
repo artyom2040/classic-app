@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Dimensions, Linking } from 'react-native';
+import { View, Text, TouchableOpacity, Pressable, ScrollView, StyleSheet, Dimensions, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -109,16 +109,21 @@ export function NewReleasesCarousel({ releases, musicService }: NewReleasesCarou
               {release.description}
             </Text>
             <View style={styles.releaseActions}>
-              <TouchableOpacity
-                style={[styles.pill, { backgroundColor: t.colors.primary + '18' }]}
-                onPress={() => openRelease(release)}
-                activeOpacity={0.8}
+              <Pressable
+                style={({ pressed }) => [
+                  styles.pill,
+                  { backgroundColor: t.colors.primary + '18', opacity: pressed ? 0.6 : 1 },
+                ]}
+                onPress={(e) => {
+                  e.stopPropagation();
+                  openRelease(release);
+                }}
                 accessibilityRole="button"
                 accessibilityLabel={`Listen to ${release.title}`}
               >
                 <Ionicons name="play" size={14} color={t.colors.primary} />
                 <Text style={[styles.pillText, { color: t.colors.primary }]}>Listen</Text>
-              </TouchableOpacity>
+              </Pressable>
               <Ionicons name="chevron-forward" size={18} color={t.colors.textMuted} />
             </View>
           </TouchableOpacity>
@@ -197,16 +202,21 @@ export function ConcertHallsCarousel({ halls }: ConcertHallsCarouselProps) {
               </View>
             )}
             <View style={styles.releaseActions}>
-              <TouchableOpacity
-                style={[styles.pill, { backgroundColor: t.colors.primary + '18' }]}
-                onPress={() => openHallMap(hall)}
-                activeOpacity={0.8}
+              <Pressable
+                style={({ pressed }) => [
+                  styles.pill,
+                  { backgroundColor: t.colors.primary + '18', opacity: pressed ? 0.6 : 1 },
+                ]}
+                onPress={(e) => {
+                  e.stopPropagation();
+                  openHallMap(hall);
+                }}
                 accessibilityRole="button"
                 accessibilityLabel={`Open map for ${hall.name}`}
               >
                 <Ionicons name="pin" size={14} color={t.colors.primary} />
                 <Text style={[styles.pillText, { color: t.colors.primary }]}>Open map</Text>
-              </TouchableOpacity>
+              </Pressable>
               <Ionicons name="chevron-forward" size={18} color={t.colors.textMuted} />
             </View>
           </TouchableOpacity>

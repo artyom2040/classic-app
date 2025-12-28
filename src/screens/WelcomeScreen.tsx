@@ -253,7 +253,6 @@ const styles = StyleSheet.create({
     },
     backgroundImageStyle: {
         // Center the image
-        resizeMode: 'cover',
         opacity: 0.95,
     },
     gradient: {

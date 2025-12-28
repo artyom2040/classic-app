@@ -13,27 +13,11 @@
  *   const composer = await DataService.getComposerById('bach');
  */
 
-import { Composer, Period, MusicalForm, Term, WeeklyAlbum, MonthlySpotlight, Badge, KickstartDay, NewRelease, ConcertHall } from '../types';
-import { isSupabaseConfigured, getSupabaseClient } from './supabaseClient';
+import { Composer, Period, MusicalForm, Term, WeeklyAlbum, MonthlySpotlight, KickstartDay, NewRelease, ConcertHall } from '../types';
 import { getWeekNumber } from '../utils/storage';
-
-// Local data imports (will be replaced with API calls)
-import composersData from '../data/composers.json';
-import periodsData from '../data/periods.json';
-import formsData from '../data/forms.json';
-import glossaryData from '../data/glossary.json';
-import albumsData from '../data/albums.json';
-import kickstartData from '../data/kickstart.json';
-
-// Type for the albums data file structure
-interface AlbumsDataFile {
-  weeklyAlbums: WeeklyAlbum[];
-  monthlySpotlights: MonthlySpotlight[];
-  newReleases?: NewRelease[];
-  concertHalls?: ConcertHall[];
-}
-
-const typedAlbumsData = albumsData as AlbumsDataFile;
+import { DataProvider } from './data/providers/DataProvider';
+import { LocalProvider } from './data/providers/LocalProvider';
+import { SupabaseProvider } from './data/providers/SupabaseProvider';
 
 // =============================================================================
 // DATA SOURCE CONFIGURATION
@@ -82,22 +66,30 @@ const DATA_SOURCE: DataSourceConfig = {
 
 class DataServiceClass {
   private config: DataSourceConfig;
+  private provider: DataProvider;
   private cache: Map<string, { data: unknown; timestamp: number }> = new Map();
   private cacheTTL = 5 * 60 * 1000; // 5 minutes cache
-  private supabaseTableMap: Record<string, string> = {
-    composers: 'composers',
-    periods: 'periods',
-    forms: 'forms',
-    terms: 'terms',
-    weeklyAlbums: 'weekly_albums',
-    monthlySpotlights: 'monthly_spotlights',
-    kickstartDays: 'kickstart_days',
-    newReleases: 'releases',
-    concertHalls: 'concert_halls',
-  };
 
-  constructor(config: DataSourceConfig) {
+  constructor(config: DataSourceConfig, provider?: DataProvider) {
     this.config = config;
+    this.provider = provider || this.createProvider(config);
+  }
+
+  private createProvider(config: DataSourceConfig): DataProvider {
+    switch (config.type) {
+      case 'local':
+        return new LocalProvider();
+      case 'supabase':
+        return new SupabaseProvider();
+      case 'firebase':
+        throw new Error('Firebase provider not implemented');
+      case 'api':
+        throw new Error('API provider not implemented');
+      case 'mongodb':
+        throw new Error('MongoDB provider not implemented');
+      default:
+        return new LocalProvider();
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -105,20 +97,7 @@ class DataServiceClass {
   // ---------------------------------------------------------------------------
 
   async getComposers(): Promise<Composer[]> {
-    return this.fetchData('composers', () => {
-      switch (this.config.type) {
-        case 'local':
-          return Promise.resolve(composersData.composers as Composer[]);
-        case 'firebase':
-          return this.fetchFromFirebase('composers');
-        case 'supabase':
-          return this.fetchWithSupabaseFallback('composers', composersData.composers as Composer[]);
-        case 'api':
-          return this.fetchFromAPI('/composers');
-        default:
-          return Promise.resolve(composersData.composers as Composer[]);
-      }
-    });
+    return this.fetchData('composers', () => this.provider.getComposers());
   }
 
   async getComposerById(id: string): Promise<Composer | null> {
@@ -136,20 +115,7 @@ class DataServiceClass {
   // ---------------------------------------------------------------------------
 
   async getPeriods(): Promise<Period[]> {
-    return this.fetchData('periods', () => {
-      switch (this.config.type) {
-        case 'local':
-          return Promise.resolve(periodsData.periods as Period[]);
-        case 'firebase':
-          return this.fetchFromFirebase('periods');
-        case 'supabase':
-          return this.fetchFromSupabase('periods');
-        case 'api':
-          return this.fetchFromAPI('/periods');
-        default:
-          return Promise.resolve(periodsData.periods as Period[]);
-      }
-    });
+    return this.fetchData('periods', () => this.provider.getPeriods());
   }
 
   async getPeriodById(id: string): Promise<Period | null> {
@@ -162,16 +128,7 @@ class DataServiceClass {
   // ---------------------------------------------------------------------------
 
   async getForms(): Promise<MusicalForm[]> {
-    return this.fetchData('forms', () => {
-      switch (this.config.type) {
-        case 'local':
-          return Promise.resolve(formsData.forms as MusicalForm[]);
-        case 'supabase':
-          return this.fetchWithSupabaseFallback('forms', formsData.forms as MusicalForm[]);
-        default:
-          return Promise.resolve(formsData.forms as MusicalForm[]);
-      }
-    });
+    return this.fetchData('forms', () => this.provider.getForms());
   }
 
   async getFormById(id: string): Promise<MusicalForm | null> {
@@ -184,27 +141,7 @@ class DataServiceClass {
   // ---------------------------------------------------------------------------
 
   async getTerms(): Promise<Term[]> {
-    return this.fetchData('terms', () => {
-      switch (this.config.type) {
-        case 'local':
-          // Transform IDs to strings for consistency
-          const transformedTerms = glossaryData.terms.map(t => ({
-            ...t,
-            id: String(t.id),
-          })) as Term[];
-          return Promise.resolve(transformedTerms);
-        case 'supabase':
-          return this.fetchWithSupabaseFallback('terms', glossaryData.terms.map(t => ({
-            ...t,
-            id: String(t.id),
-          })) as Term[]);
-        default:
-          return Promise.resolve(glossaryData.terms.map(t => ({
-            ...t,
-            id: String(t.id),
-          })) as Term[]);
-      }
-    });
+    return this.fetchData('terms', () => this.provider.getTerms());
   }
 
   async getTermById(id: string): Promise<Term | null> {
@@ -222,16 +159,7 @@ class DataServiceClass {
   // ---------------------------------------------------------------------------
 
   async getWeeklyAlbums(): Promise<WeeklyAlbum[]> {
-    return this.fetchData('weeklyAlbums', () => {
-      switch (this.config.type) {
-        case 'local':
-          return Promise.resolve(typedAlbumsData.weeklyAlbums as WeeklyAlbum[]);
-        case 'supabase':
-          return this.fetchWithSupabaseFallback('weeklyAlbums', typedAlbumsData.weeklyAlbums as WeeklyAlbum[]);
-        default:
-          return Promise.resolve(typedAlbumsData.weeklyAlbums as WeeklyAlbum[]);
-      }
-    });
+    return this.fetchData('weeklyAlbums', () => this.provider.getWeeklyAlbums());
   }
 
   async getCurrentWeeklyAlbum(): Promise<WeeklyAlbum | null> {
@@ -245,16 +173,7 @@ class DataServiceClass {
   // ---------------------------------------------------------------------------
 
   async getMonthlySpotlights(): Promise<MonthlySpotlight[]> {
-    return this.fetchData('monthlySpotlights', () => {
-      switch (this.config.type) {
-        case 'local':
-          return Promise.resolve(typedAlbumsData.monthlySpotlights as MonthlySpotlight[]);
-        case 'supabase':
-          return this.fetchWithSupabaseFallback('monthlySpotlights', typedAlbumsData.monthlySpotlights as MonthlySpotlight[]);
-        default:
-          return Promise.resolve(typedAlbumsData.monthlySpotlights as MonthlySpotlight[]);
-      }
-    });
+    return this.fetchData('monthlySpotlights', () => this.provider.getMonthlySpotlights());
   }
 
   // ---------------------------------------------------------------------------
@@ -262,16 +181,7 @@ class DataServiceClass {
   // ---------------------------------------------------------------------------
 
   async getNewReleases(): Promise<NewRelease[]> {
-    return this.fetchData('newReleases', () => {
-      switch (this.config.type) {
-        case 'local':
-          return Promise.resolve((typedAlbumsData.newReleases || []) as NewRelease[]);
-        case 'supabase':
-          return this.fetchWithSupabaseFallback('newReleases', (typedAlbumsData.newReleases || []) as NewRelease[]);
-        default:
-          return Promise.resolve((typedAlbumsData.newReleases || []) as NewRelease[]);
-      }
-    });
+    return this.fetchData('newReleases', () => this.provider.getNewReleases());
   }
 
   // ---------------------------------------------------------------------------
@@ -279,16 +189,7 @@ class DataServiceClass {
   // ---------------------------------------------------------------------------
 
   async getConcertHalls(): Promise<ConcertHall[]> {
-    return this.fetchData('concertHalls', () => {
-      switch (this.config.type) {
-        case 'local':
-          return Promise.resolve((typedAlbumsData.concertHalls || []) as ConcertHall[]);
-        case 'supabase':
-          return this.fetchWithSupabaseFallback('concertHalls', (typedAlbumsData.concertHalls || []) as ConcertHall[]);
-        default:
-          return Promise.resolve((typedAlbumsData.concertHalls || []) as ConcertHall[]);
-      }
-    });
+    return this.fetchData('concertHalls', () => this.provider.getConcertHalls());
   }
 
   async getCurrentMonthlySpotlight(): Promise<MonthlySpotlight | null> {
@@ -302,9 +203,7 @@ class DataServiceClass {
   // ---------------------------------------------------------------------------
 
   async getKickstartDays(): Promise<KickstartDay[]> {
-    return this.fetchData('kickstart', () => {
-      return Promise.resolve(kickstartData.days as KickstartDay[]);
-    });
+    return this.fetchData('kickstart', () => this.provider.getKickstartDays());
   }
 
   async getKickstartDay(dayNumber: number): Promise<KickstartDay | null> {
@@ -324,9 +223,42 @@ class DataServiceClass {
     }
 
     // Fetch fresh data
-    const data = await fetcher();
-    this.cache.set(key, { data, timestamp: Date.now() });
-    return data;
+    try {
+      const data = await fetcher();
+      this.cache.set(key, { data, timestamp: Date.now() });
+      return data;
+    } catch (error) {
+      // If primary provider fails and it's NOT local, try falling back to local
+      // This mimics the original fetchWithSupabaseFallback behavior but more generically
+      if (this.config.type !== 'local') {
+        console.warn(`[DataService] Primary provider failed for ${key}, falling back to local.`, error);
+        const localProvider = new LocalProvider();
+        // We need to map the key to the method name dynamically or switch
+        // For simplicity in this refactor, we'll implement a basic fallback strategy
+        // In a full implementation, we might want the Provider interface to support generic 'getCollection'
+        
+        try {
+           // Basic fallback mapping
+           let fallbackData: any;
+           switch(key) {
+             case 'composers': fallbackData = await localProvider.getComposers(); break;
+             case 'periods': fallbackData = await localProvider.getPeriods(); break;
+             case 'forms': fallbackData = await localProvider.getForms(); break;
+             case 'terms': fallbackData = await localProvider.getTerms(); break;
+             case 'weeklyAlbums': fallbackData = await localProvider.getWeeklyAlbums(); break;
+             case 'monthlySpotlights': fallbackData = await localProvider.getMonthlySpotlights(); break;
+             case 'newReleases': fallbackData = await localProvider.getNewReleases(); break;
+             case 'concertHalls': fallbackData = await localProvider.getConcertHalls(); break;
+             case 'kickstart': fallbackData = await localProvider.getKickstartDays(); break;
+             default: throw error;
+           }
+           return fallbackData;
+        } catch (fallbackError) {
+          throw error; // If fallback also fails, throw original or new error
+        }
+      }
+      throw error;
+    }
   }
 
   clearCache(key?: string) {
@@ -335,62 +267,6 @@ class DataServiceClass {
     } else {
       this.cache.clear();
     }
-  }
-
-  // ---------------------------------------------------------------------------
-  // BACKEND-SPECIFIC FETCH METHODS (stubs for future implementation)
-  // ---------------------------------------------------------------------------
-
-  private async fetchFromFirebase<T>(collection: string): Promise<T[]> {
-    // TODO: Implement Firebase Firestore fetch
-    // import { collection, getDocs } from 'firebase/firestore';
-    // import { db } from '../config/firebase';
-    // const querySnapshot = await getDocs(collection(db, collectionName));
-    // return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    throw new Error('Firebase not configured. Set up firebaseConfig in DATA_SOURCE.');
-  }
-
-  private async fetchFromSupabase<T>(collection: string): Promise<T[]> {
-    if (!isSupabaseConfigured()) {
-      throw new Error('Supabase not configured.');
-    }
-    const supabase = getSupabaseClient();
-    const table = this.supabaseTableMap[collection] || collection;
-    const { data, error } = await supabase.from(table).select('*');
-    if (error) {
-      throw error;
-    }
-    return (data || []) as T[];
-  }
-
-  private async fetchWithSupabaseFallback<T>(collection: string, localData: T[]): Promise<T[]> {
-    try {
-      return await this.fetchFromSupabase<T>(collection);
-    } catch (error) {
-      console.warn(`[DataService] Supabase fetch failed for ${collection}, falling back to local.`, error);
-      return localData;
-    }
-  }
-
-  private async fetchFromAPI<T>(endpoint: string): Promise<T[]> {
-    if (!this.config.apiConfig?.baseUrl) {
-      throw new Error('API not configured. Set up apiConfig in DATA_SOURCE.');
-    }
-
-    const response = await fetch(`${this.config.apiConfig.baseUrl}${endpoint}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...(this.config.apiConfig.apiKey && {
-          'Authorization': `Bearer ${this.config.apiConfig.apiKey}`
-        }),
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
-    }
-
-    return response.json();
   }
 }
 

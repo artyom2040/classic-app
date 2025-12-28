@@ -75,6 +75,7 @@ export function CategoryChips({
                                 shadowOpacity: 0.3,
                                 shadowRadius: 8,
                                 elevation: 4,
+                                boxShadow: '0px 4px 8px rgba(84, 23, 207, 0.3)',
                             },
                         ]}
                     >

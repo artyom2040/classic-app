@@ -69,6 +69,7 @@ export default function ResetPasswordScreen() {
         setError(null);
 
         try {
+            console.log('[ResetPassword] Verifying OTP...');
             // Verify OTP and update password
             const { error: verifyError } = await supabase.auth.verifyOtp({
                 email: emailFromRoute,
@@ -77,26 +78,31 @@ export default function ResetPasswordScreen() {
             });
 
             if (verifyError) {
+                console.log('[ResetPassword] OTP verification failed:', verifyError.message);
                 setError(verifyError.message);
                 setLoading(false);
                 return;
             }
 
+            console.log('[ResetPassword] OTP verified, updating password...');
             // Now update the password
             const { error: updateError } = await supabase.auth.updateUser({
                 password: newPassword,
             });
 
             if (updateError) {
+                console.log('[ResetPassword] Password update failed:', updateError.message);
                 setError(updateError.message);
             } else {
+                console.log('[ResetPassword] Password updated successfully!');
                 setSuccess(true);
             }
         } catch (err) {
+            console.log('[ResetPassword] Exception:', err);
             setError(err instanceof Error ? err.message : 'An error occurred');
+        } finally {
+            setLoading(false);
         }
-
-        setLoading(false);
     };
 
     const cardStyle = {

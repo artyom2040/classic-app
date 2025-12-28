@@ -106,13 +106,13 @@ export const COMPOSER_PORTRAITS: Record<string, any> = {
 
 // Period/Era landscape images (16:9 format)
 export const ERA_IMAGES: Record<string, any> = {
-  baroque: require('../../assets/generated/era_baroque_landscape_1765473413807.jpg'),
-  classical: require('../../assets/generated/era_classical_landscape_1765473429524.jpg'),
-  romantic: require('../../assets/generated/era_romantic_landscape_1765473449724.jpg'),
-  medieval: require('../../assets/generated/era_medieval_landscape_1765473465714.jpg'),
-  renaissance: require('../../assets/generated/era_renaissance_landscape_1765473482357.jpg'),
-  modern: require('../../assets/generated/era_modern_landscape_1765473502157.jpg'),
-  contemporary: require('../../assets/generated/era_contemporary_landscape_1765473521789.jpg'),
+  baroque: require('../../assets/generated/baroque_era_abstract_1766935426694.png'),
+  classical: require('../../assets/generated/classical_era_abstract_1766935500412.png'),
+  romantic: require('../../assets/generated/romantic_era_abstract_1766935548110.png'),
+  medieval: require('../../assets/generated/medieval_era_abstract_1766935309529.png'),
+  renaissance: require('../../assets/generated/renaissance_era_abstract_1766935373841.png'),
+  modern: require('../../assets/generated/modern_era_abstract_1766935628273.png'),
+  contemporary: require('../../assets/generated/contemporary_era_abstract_1766935675275.png'),
 };
 
 // Helper to get composer portrait with fallback

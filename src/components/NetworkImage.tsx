@@ -55,7 +55,8 @@ export function NetworkImage({
 
   const imageWidth = width || size || 80;
   const imageHeight = height || size || 80;
-  const radius = borderRadius ?? (isBrutal ? 0 : Math.min(imageWidth, imageHeight) / 2);
+  // Default to a small border radius (8) instead of circular - circular should be explicitly requested
+  const radius = borderRadius ?? (isBrutal ? 0 : 8);
 
   const fallbackColor = FALLBACK_COLORS[fallbackType] || FALLBACK_COLORS.default;
 

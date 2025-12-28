@@ -8,6 +8,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -183,17 +184,14 @@ export default function TimelineScreen() {
           }}
           onPress={() => setSelectedPeriod(isSelected ? null : period.id)}
         >
-          <NetworkImage
-            uri={eraImage}
-            fallbackType="era"
-            style={{
-              width: '100%',
-              height: 180,
-              marginBottom: spacing.md,
-              borderRadius: borderRadius.md
-            }}
-            contentFit="cover"
-          />
+          <View style={styles.eraImageContainer}>
+            <Image
+              source={typeof eraImage === 'string' ? { uri: eraImage } : eraImage}
+              style={styles.eraImageFull}
+              contentFit="cover"
+              transition={200}
+            />
+          </View>
           <View style={styles.periodHeader}>
             <View>
               <Text style={[styles.periodName, { color: t.colors.text }]}>{period.name}</Text>
@@ -389,6 +387,20 @@ const styles = StyleSheet.create({
   exploreButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: spacing.sm, borderRadius: borderRadius.md, gap: spacing.xs, marginTop: spacing.xs },
   exploreButtonText: { fontSize: fontSize.sm, fontWeight: '600' },
   composersList: { marginTop: spacing.sm, marginLeft: spacing.lg, gap: spacing.xs },
+
+  // Era image styles for light mode
+  eraImageContainer: {
+    width: '100%',
+    height: 200,
+    marginBottom: spacing.md,
+    borderRadius: borderRadius.md,
+    overflow: 'hidden',
+    backgroundColor: '#f3f4f6',
+  },
+  eraImageFull: {
+    width: '100%',
+    height: '100%',
+  },
 
   // Stitch-specific timeline styles
   stitchHeaderContainer: { paddingHorizontal: spacing.md, paddingTop: spacing.sm },

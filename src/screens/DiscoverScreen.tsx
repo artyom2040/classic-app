@@ -30,97 +30,89 @@ import albumsData from '../data/albums.json';
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 // ============================================================================
-// Editor's Corner Section
+// Featured Article Section (replaces Editor's Corner)
 // ============================================================================
 
-interface EditorPick {
+interface FeaturedArticle {
     id: string;
     title: string;
-    subtitle: string;
     description: string;
-    icon: keyof typeof Ionicons.glyphMap;
-    color: string;
+    readTime: string;
+    category: string;
     screen?: keyof RootStackParamList;
 }
 
-const editorPicks: EditorPick[] = [
-    {
-        id: 'bach-intro',
-        title: 'Start with Bach',
-        subtitle: "Editor's Choice",
-        description: 'The Brandenburg Concertos are perfect for classical newcomers.',
-        icon: 'star',
-        color: '#FFD700',
-        screen: 'Composers',
-    },
-    {
-        id: 'night-listen',
-        title: 'Late Night Listening',
-        subtitle: 'Curated Selection',
-        description: "Chopin's Nocturnes for peaceful evening contemplation.",
-        icon: 'moon',
-        color: '#6B8E23',
-        screen: 'WeeklyAlbum',
-    },
-    {
-        id: 'beginner-friendly',
-        title: 'First Symphony?',
-        subtitle: 'Beginner Guide',
-        description: "Try Dvorak's New World Symphony - melodies you might already know.",
-        icon: 'flash',
-        color: '#FF6B6B',
-        screen: 'NewReleases',
-    },
-];
+// Featured article - can be updated dynamically
+const featuredArticle: FeaturedArticle = {
+    id: 'bach-mastery',
+    title: 'Why Bach is the Perfect Starting Point for Classical Newcomers',
+    description: 'Johann Sebastian Bach\'s music offers a unique gateway into classical music. His Brandenburg Concertos blend joyful melodies with intricate counterpoint that reveals new layers with each listen. Whether you\'re commuting or relaxing at home, Bach provides the perfect introduction to the depth and beauty of classical music.',
+    readTime: '5 min read',
+    category: 'Getting Started',
+    screen: 'Composers',
+};
 
-function EditorCornerSection() {
+function FeaturedArticleSection() {
     const navigation = useNavigation<NavigationProp>();
-    const { theme: t, themeName } = useTheme();
+    const { theme: t } = useTheme();
     const { cardStyle } = useCardStyle();
-    const isBrutal = false;
 
     return (
         <View style={styles.section}>
             <View style={styles.sectionHeaderRow}>
-                <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Editor's Corner</Text>
+                <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Featured Article</Text>
                 <View style={[styles.badge, { backgroundColor: t.colors.primary + '20' }]}>
-                    <Ionicons name="pencil" size={12} color={t.colors.primary} />
-                    <Text style={[styles.badgeText, { color: t.colors.primary }]}>Curated</Text>
+                    <Ionicons name="newspaper" size={12} color={t.colors.primary} />
+                    <Text style={[styles.badgeText, { color: t.colors.primary }]}>Editor's Pick</Text>
                 </View>
             </View>
-            <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ gap: 12 - 8, paddingBottom: 4 }}
+            <TouchableOpacity
+                style={[
+                    styles.articleCard,
+                    cardStyle,
+                    { borderLeftWidth: 4, borderLeftColor: t.colors.primary },
+                ]}
+                activeOpacity={0.85}
+                onPress={() => navigation.navigate('Article', { articleId: featuredArticle.id })}
             >
-                {editorPicks.map((pick) => (
-                    <TouchableOpacity
-                        key={pick.id}
-                        style={[
-                            styles.editorCard,
-                            cardStyle,
-                            { borderTopWidth: 3, borderTopColor: pick.color },
-                            isBrutal && { borderRadius: 0 },
-                        ]}
-                        activeOpacity={0.8}
-                        onPress={() => pick.screen && navigation.navigate(pick.screen as any)}
-                    >
-                        <View style={[styles.editorIcon, { backgroundColor: pick.color + '20' }]}>
-                            <Ionicons name={pick.icon} size={24} color={pick.color} />
-                        </View>
-                        <Text style={[styles.editorLabel, { color: pick.color }]}>{pick.subtitle}</Text>
-                        <Text style={[styles.editorTitle, { color: t.colors.text }]} numberOfLines={2}>
-                            {pick.title}
+                {/* Category & Read Time */}
+                <View style={styles.articleMeta}>
+                    <View style={[styles.articleCategory, { backgroundColor: t.colors.primary + '15' }]}>
+                        <Ionicons name="bookmark" size={12} color={t.colors.primary} />
+                        <Text style={[styles.articleCategoryText, { color: t.colors.primary }]}>
+                            {featuredArticle.category}
                         </Text>
-                        <Text style={[styles.editorDescription, { color: t.colors.textMuted }]} numberOfLines={3}>
-                            {pick.description}
+                    </View>
+                    <View style={styles.articleReadTime}>
+                        <Ionicons name="time-outline" size={12} color={t.colors.textMuted} />
+                        <Text style={[styles.articleReadTimeText, { color: t.colors.textMuted }]}>
+                            {featuredArticle.readTime}
                         </Text>
-                    </TouchableOpacity>
-                ))}
-            </ScrollView>
+                    </View>
+                </View>
+
+                {/* Title */}
+                <Text style={[styles.articleTitle, { color: t.colors.text }]}>
+                    {featuredArticle.title}
+                </Text>
+
+                {/* Description */}
+                <Text style={[styles.articleDescription, { color: t.colors.textSecondary }]}>
+                    {featuredArticle.description}
+                </Text>
+
+                {/* Read More Button */}
+                <View style={styles.articleFooter}>
+                    <View style={[styles.readMoreButton, { backgroundColor: t.colors.primary }]}>
+                        <Text style={styles.readMoreText}>Read Article</Text>
+                        <Ionicons name="arrow-forward" size={16} color="#fff" />
+                    </View>
+                </View>
+            </TouchableOpacity>
         </View>
     );
 }
+
 
 // ============================================================================
 // Concert Hall Video Section
@@ -394,14 +386,14 @@ export default function DiscoverScreen() {
                 <NewReleasesCarousel releases={newReleases} musicService={preferredService} />
             </View>
 
-            {/* Editor's Corner */}
-            <EditorCornerSection />
+            {/* Featured Article */}
+            <FeaturedArticleSection />
 
             {/* Concert Hall Video */}
             <ConcertHallVideoSection />
 
-            {/* Venues (Concert Halls) */}
-            <VenuesSection />
+            {/* Venues (Concert Halls) - Disabled for now, keeping for future phases */}
+            {/* <VenuesSection /> */}
 
             <View style={{ height: 32 }} />
         </ScrollView>
@@ -482,22 +474,58 @@ const styles = StyleSheet.create({
     weeklyArtist: { fontSize: fontSize.sm, marginTop: 2 },
     weeklyDescription: { fontSize: fontSize.sm, marginTop: spacing.xs, lineHeight: 20 },
 
-    // Editor's Corner
-    editorCard: {
-        width: 200,
-        padding: spacing.md,
+    // Featured Article
+    articleCard: {
+        padding: spacing.lg,
     },
-    editorIcon: {
-        width: 48,
-        height: 48,
-        borderRadius: 12,
+    articleMeta: {
+        flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
+        gap: spacing.md,
+        marginBottom: spacing.md,
+    },
+    articleCategory: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderRadius: 8,
+    },
+    articleCategoryText: { fontSize: 12, fontWeight: '600' },
+    articleReadTime: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 4,
+    },
+    articleReadTimeText: { fontSize: 12 },
+    articleTitle: {
+        fontSize: 22,
+        fontWeight: '700',
+        lineHeight: 28,
         marginBottom: spacing.sm,
     },
-    editorLabel: { fontSize: 10, fontWeight: '600' },
-    editorTitle: { fontSize: fontSize.md, fontWeight: '700', marginTop: 4 },
-    editorDescription: { fontSize: fontSize.sm, marginTop: spacing.xs, lineHeight: 18 },
+    articleDescription: {
+        fontSize: fontSize.md,
+        lineHeight: 24,
+        marginBottom: spacing.lg,
+    },
+    articleFooter: {
+        flexDirection: 'row',
+    },
+    readMoreButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+        paddingHorizontal: 20,
+        paddingVertical: 12,
+        borderRadius: 12,
+    },
+    readMoreText: {
+        color: '#fff',
+        fontSize: fontSize.md,
+        fontWeight: '600',
+    },
 
     // Video Section
     videoCard: {

@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.15,
         shadowRadius: 24,
         elevation: 12,
+        boxShadow: '0px 8px 24px rgba(0, 0, 0, 0.15)',
     },
     tabsRow: {
         flexDirection: 'row',

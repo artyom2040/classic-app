@@ -58,7 +58,7 @@ export const borderRadius = {
 } as const;
 
 // ============================================
-// SHADOWS (Platform-specific)
+// SHADOWS (Platform-specific with web boxShadow)
 // ============================================
 export const shadows = {
   none: {
@@ -67,6 +67,7 @@ export const shadows = {
     shadowOpacity: 0,
     shadowRadius: 0,
     elevation: 0,
+    boxShadow: 'none',
   },
   xs: {
     shadowColor: '#000',
@@ -74,6 +75,7 @@ export const shadows = {
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 1,
+    boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.05)',
   },
   sm: {
     shadowColor: '#000',
@@ -81,6 +83,7 @@ export const shadows = {
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 3,
+    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
   },
   md: {
     shadowColor: '#000',
@@ -88,6 +91,7 @@ export const shadows = {
     shadowOpacity: 0.15,
     shadowRadius: 16,
     elevation: 6,
+    boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.15)',
   },
   lg: {
     shadowColor: '#000',
@@ -95,6 +99,7 @@ export const shadows = {
     shadowOpacity: 0.2,
     shadowRadius: 24,
     elevation: 12,
+    boxShadow: '0px 8px 24px rgba(0, 0, 0, 0.2)',
   },
   xl: {
     shadowColor: '#000',
@@ -102,6 +107,7 @@ export const shadows = {
     shadowOpacity: 0.25,
     shadowRadius: 32,
     elevation: 18,
+    boxShadow: '0px 12px 32px rgba(0, 0, 0, 0.25)',
   },
   xxl: {
     shadowColor: '#000',
@@ -109,6 +115,7 @@ export const shadows = {
     shadowOpacity: 0.3,
     shadowRadius: 40,
     elevation: 24,
+    boxShadow: '0px 16px 40px rgba(0, 0, 0, 0.3)',
   },
 } as const;
 
@@ -120,6 +127,7 @@ export const purpleShadows = {
     shadowOpacity: 0.15,
     shadowRadius: 8,
     elevation: 3,
+    boxShadow: '0px 2px 8px rgba(84, 23, 207, 0.15)',
   },
   md: {
     shadowColor: '#5417cf',
@@ -127,6 +135,7 @@ export const purpleShadows = {
     shadowOpacity: 0.2,
     shadowRadius: 16,
     elevation: 6,
+    boxShadow: '0px 4px 16px rgba(84, 23, 207, 0.2)',
   },
   lg: {
     shadowColor: '#5417cf',
@@ -134,6 +143,7 @@ export const purpleShadows = {
     shadowOpacity: 0.25,
     shadowRadius: 24,
     elevation: 12,
+    boxShadow: '0px 8px 24px rgba(84, 23, 207, 0.25)',
   },
   xl: {
     shadowColor: '#5417cf',
@@ -141,6 +151,7 @@ export const purpleShadows = {
     shadowOpacity: 0.3,
     shadowRadius: 32,
     elevation: 18,
+    boxShadow: '0px 12px 32px rgba(84, 23, 207, 0.3)',
   },
 } as const;
 

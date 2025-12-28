@@ -44,6 +44,7 @@ import glossaryData from '../data/glossary.json';
 import albumsData from '../data/albums.json';
 import composersData from '../data/composers.json';
 import periodsData from '../data/periods.json';
+import conductorsData from '../data/conductors.json';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -98,10 +99,10 @@ export default function HomeScreen() {
     'featuredComposer selection'
   );
 
-  const secondComposer = useExpensiveCalculation(
-    () => composersData.composers[(dayOfYear + 1) % composersData.composers.length],
+  const featuredConductor = useExpensiveCalculation(
+    () => conductorsData.conductors[dayOfYear % conductorsData.conductors.length],
     [dayOfYear],
-    'secondComposer selection'
+    'featuredConductor selection'
   );
 
   // Filtered album based on category selection
@@ -221,7 +222,7 @@ export default function HomeScreen() {
               // Navigate to relevant section based on filter
               if (id === 'composers') navigation.navigate('Composers');
               else if (id === 'eras') navigation.navigate('MainTabs', { screen: 'Timeline' });
-              else if (id === 'forms') navigation.navigate('MainTabs', { screen: 'Forms' });
+              else if (id === 'forms') navigation.navigate('MainTabs', { screen: 'Discover' });
               else if (id === 'terms') navigation.navigate('MainTabs', { screen: 'Glossary' });
             }}
             style={{ marginBottom: spacing.md }}
@@ -273,9 +274,9 @@ export default function HomeScreen() {
                 onPress: () => navigation.navigate('ComposerDetail', { composerId: featuredComposer.id }),
               },
               {
-                name: secondComposer.name,
-                subtitle: secondComposer.shortBio?.substring(0, 30) + '...',
-                onPress: () => navigation.navigate('ComposerDetail', { composerId: secondComposer.id }),
+                name: featuredConductor.name,
+                subtitle: featuredConductor.shortBio?.substring(0, 30) + '...',
+                onPress: () => navigation.navigate('ConductorDetail', { conductorId: featuredConductor.id }),
               },
             ]}
           />

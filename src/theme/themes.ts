@@ -201,9 +201,9 @@ export const lightTheme: Theme = {
   shadows: {
     ...shadows,
     // Override with purple-tinted for light theme
-    sm: { shadowColor: '#5417cf', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 8, elevation: 2 },
-    md: { shadowColor: '#5417cf', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.12, shadowRadius: 16, elevation: 4 },
-    lg: { shadowColor: '#5417cf', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.16, shadowRadius: 24, elevation: 8 },
+    sm: { shadowColor: '#5417cf', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 8, elevation: 2, boxShadow: '0px 2px 8px rgba(84, 23, 207, 0.08)' },
+    md: { shadowColor: '#5417cf', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.12, shadowRadius: 16, elevation: 4, boxShadow: '0px 4px 16px rgba(84, 23, 207, 0.12)' },
+    lg: { shadowColor: '#5417cf', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.16, shadowRadius: 24, elevation: 8, boxShadow: '0px 8px 24px rgba(84, 23, 207, 0.16)' },
   },
   gradients,
   overlays,

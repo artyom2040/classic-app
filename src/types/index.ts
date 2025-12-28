@@ -205,6 +205,19 @@ export interface UserProgress {
   firstLaunch: boolean;
 }
 
+// Leaderboard types
+export interface LeaderboardEntry {
+  userId: string;
+  displayName: string;
+  avatarUrl: string | null;
+  totalScore: number;
+  quizzesTaken: number;
+  avgPercentage?: number;
+  rank: number;
+}
+
+export type LeaderboardPeriod = 'week' | 'month' | 'allTime';
+
 // Navigation types
 import { NavigatorScreenParams } from '@react-navigation/native';
 
@@ -212,7 +225,7 @@ export type TabParamList = {
   Home: undefined;
   Timeline: undefined;
   Glossary: undefined;
-  Forms: undefined;
+  Discover: undefined;
   Profile: undefined;
 };
 
@@ -230,6 +243,7 @@ export type RootStackParamList = {
   MainTabs: NavigatorScreenParams<TabParamList> | undefined;
   Composers: undefined;
   ComposerDetail: { composerId: string };
+  ConductorDetail: { conductorId: string };
   PeriodDetail: { periodId: string };
   FormDetail: { formId: string };
   FormExplorer: undefined;
@@ -246,8 +260,10 @@ export type RootStackParamList = {
   Settings: undefined;
   Search: undefined;
   Discover: undefined;
+  Article: { articleId: string };
   MusicBrainzSearch: undefined;
   Quiz: undefined;
+  Leaderboard: undefined;
 
   // Labs / Experimental screens
   MoodPlaylists: undefined;

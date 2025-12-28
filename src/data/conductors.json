@@ -1,0 +1,404 @@
+{
+    "conductors": [
+        {
+            "id": "karajan",
+            "name": "Herbert von Karajan",
+            "birthYear": 1908,
+            "deathYear": 1989,
+            "nationality": "Austrian",
+            "shortBio": "Legendary conductor who led the Berlin Philharmonic for 35 years"
+        },
+        {
+            "id": "bernstein",
+            "name": "Leonard Bernstein",
+            "birthYear": 1918,
+            "deathYear": 1990,
+            "nationality": "American",
+            "shortBio": "Iconic maestro known for passionate performances and music education"
+        },
+        {
+            "id": "toscanini",
+            "name": "Arturo Toscanini",
+            "birthYear": 1867,
+            "deathYear": 1957,
+            "nationality": "Italian",
+            "shortBio": "Revolutionary conductor renowned for his intensity and precision"
+        },
+        {
+            "id": "furtwangler",
+            "name": "Wilhelm Furtwängler",
+            "birthYear": 1886,
+            "deathYear": 1954,
+            "nationality": "German",
+            "shortBio": "Master of the German romantic tradition with profound interpretations"
+        },
+        {
+            "id": "solti",
+            "name": "Georg Solti",
+            "birthYear": 1912,
+            "deathYear": 1997,
+            "nationality": "Hungarian-British",
+            "shortBio": "Grammy-winning conductor famous for his Ring Cycle recording"
+        },
+        {
+            "id": "kleiber",
+            "name": "Carlos Kleiber",
+            "birthYear": 1930,
+            "deathYear": 2004,
+            "nationality": "Austrian",
+            "shortBio": "Enigmatic perfectionist celebrated for electrifying performances"
+        },
+        {
+            "id": "abbado",
+            "name": "Claudio Abbado",
+            "birthYear": 1933,
+            "deathYear": 2014,
+            "nationality": "Italian",
+            "shortBio": "Visionary conductor who transformed orchestras worldwide"
+        },
+        {
+            "id": "rattle",
+            "name": "Simon Rattle",
+            "birthYear": 1955,
+            "deathYear": null,
+            "nationality": "British",
+            "shortBio": "Dynamic conductor known for adventurous programming"
+        },
+        {
+            "id": "dudamel",
+            "name": "Gustavo Dudamel",
+            "birthYear": 1981,
+            "deathYear": null,
+            "nationality": "Venezuelan",
+            "shortBio": "Charismatic maestro leading classical music into a new era"
+        },
+        {
+            "id": "haitink",
+            "name": "Bernard Haitink",
+            "birthYear": 1929,
+            "deathYear": 2021,
+            "nationality": "Dutch",
+            "shortBio": "Esteemed interpreter of Mahler and Bruckner symphonies"
+        },
+        {
+            "id": "muti",
+            "name": "Riccardo Muti",
+            "birthYear": 1941,
+            "deathYear": null,
+            "nationality": "Italian",
+            "shortBio": "Authoritative conductor of Italian opera and orchestral works"
+        },
+        {
+            "id": "barenboim",
+            "name": "Daniel Barenboim",
+            "birthYear": 1942,
+            "deathYear": null,
+            "nationality": "Argentine-Israeli",
+            "shortBio": "Virtuoso pianist and conductor bridging cultures through music"
+        },
+        {
+            "id": "ozawa",
+            "name": "Seiji Ozawa",
+            "birthYear": 1935,
+            "deathYear": 2024,
+            "nationality": "Japanese",
+            "shortBio": "Pioneering conductor who led the Boston Symphony for 29 years"
+        },
+        {
+            "id": "szell",
+            "name": "George Szell",
+            "birthYear": 1897,
+            "deathYear": 1970,
+            "nationality": "Hungarian-American",
+            "shortBio": "Disciplined maestro who built the Cleveland Orchestra"
+        },
+        {
+            "id": "giulini",
+            "name": "Carlo Maria Giulini",
+            "birthYear": 1914,
+            "deathYear": 2005,
+            "nationality": "Italian",
+            "shortBio": "Poet of the podium known for refined interpretations"
+        },
+        {
+            "id": "bohm",
+            "name": "Karl Böhm",
+            "birthYear": 1894,
+            "deathYear": 1981,
+            "nationality": "Austrian",
+            "shortBio": "Celebrated interpreter of Mozart and Strauss operas"
+        },
+        {
+            "id": "klemperer",
+            "name": "Otto Klemperer",
+            "birthYear": 1885,
+            "deathYear": 1973,
+            "nationality": "German",
+            "shortBio": "Towering figure in 20th-century conducting with monumental style"
+        },
+        {
+            "id": "monteux",
+            "name": "Pierre Monteux",
+            "birthYear": 1875,
+            "deathYear": 1964,
+            "nationality": "French",
+            "shortBio": "Premiered Stravinsky's Rite of Spring and Petrushka"
+        },
+        {
+            "id": "reiner",
+            "name": "Fritz Reiner",
+            "birthYear": 1888,
+            "deathYear": 1963,
+            "nationality": "Hungarian-American",
+            "shortBio": "Precise conductor who elevated the Chicago Symphony"
+        },
+        {
+            "id": "ormandy",
+            "name": "Eugene Ormandy",
+            "birthYear": 1899,
+            "deathYear": 1985,
+            "nationality": "Hungarian-American",
+            "shortBio": "Shaped the lush Philadelphia Sound for four decades"
+        },
+        {
+            "id": "stokowski",
+            "name": "Leopold Stokowski",
+            "birthYear": 1882,
+            "deathYear": 1977,
+            "nationality": "British-American",
+            "shortBio": "Showman conductor featured in Disney's Fantasia"
+        },
+        {
+            "id": "walter",
+            "name": "Bruno Walter",
+            "birthYear": 1876,
+            "deathYear": 1962,
+            "nationality": "German-American",
+            "shortBio": "Mahler's protégé and champion of Romantic repertoire"
+        },
+        {
+            "id": "jansons",
+            "name": "Mariss Jansons",
+            "birthYear": 1943,
+            "deathYear": 2019,
+            "nationality": "Latvian",
+            "shortBio": "Beloved maestro of the Concertgebouw and Bavarian Radio"
+        },
+        {
+            "id": "thielemann",
+            "name": "Christian Thielemann",
+            "birthYear": 1959,
+            "deathYear": null,
+            "nationality": "German",
+            "shortBio": "Leading interpreter of Wagner and German Romantic music"
+        },
+        {
+            "id": "nelsons",
+            "name": "Andris Nelsons",
+            "birthYear": 1978,
+            "deathYear": null,
+            "nationality": "Latvian",
+            "shortBio": "Dynamic conductor leading Boston and Leipzig orchestras"
+        },
+        {
+            "id": "petrenko",
+            "name": "Kirill Petrenko",
+            "birthYear": 1972,
+            "deathYear": null,
+            "nationality": "Russian-Austrian",
+            "shortBio": "Current chief conductor of the Berlin Philharmonic"
+        },
+        {
+            "id": "currentzis",
+            "name": "Teodor Currentzis",
+            "birthYear": 1972,
+            "deathYear": null,
+            "nationality": "Greek-Russian",
+            "shortBio": "Provocative conductor known for radical interpretations"
+        },
+        {
+            "id": "gergiev",
+            "name": "Valery Gergiev",
+            "birthYear": 1953,
+            "deathYear": null,
+            "nationality": "Russian",
+            "shortBio": "Prolific conductor of Russian opera and symphonic works"
+        },
+        {
+            "id": "boulez",
+            "name": "Pierre Boulez",
+            "birthYear": 1925,
+            "deathYear": 2016,
+            "nationality": "French",
+            "shortBio": "Composer-conductor who championed contemporary music"
+        },
+        {
+            "id": "previn",
+            "name": "André Previn",
+            "birthYear": 1929,
+            "deathYear": 2019,
+            "nationality": "German-American",
+            "shortBio": "Versatile musician spanning classical, jazz, and film"
+        },
+        {
+            "id": "gardiner",
+            "name": "John Eliot Gardiner",
+            "birthYear": 1943,
+            "deathYear": null,
+            "nationality": "British",
+            "shortBio": "Pioneer of historically informed performance practice"
+        },
+        {
+            "id": "norrington",
+            "name": "Roger Norrington",
+            "birthYear": 1934,
+            "deathYear": null,
+            "nationality": "British",
+            "shortBio": "Advocate for period-style performances of classical works"
+        },
+        {
+            "id": "harnoncourt",
+            "name": "Nikolaus Harnoncourt",
+            "birthYear": 1929,
+            "deathYear": 2016,
+            "nationality": "Austrian",
+            "shortBio": "Revolutionary in historical performance movement"
+        },
+        {
+            "id": "marriner",
+            "name": "Neville Marriner",
+            "birthYear": 1924,
+            "deathYear": 2016,
+            "nationality": "British",
+            "shortBio": "Founder of the Academy of St Martin in the Fields"
+        },
+        {
+            "id": "mehta",
+            "name": "Zubin Mehta",
+            "birthYear": 1936,
+            "deathYear": null,
+            "nationality": "Indian",
+            "shortBio": "International conductor with bold dramatic flair"
+        },
+        {
+            "id": "tennstedt",
+            "name": "Klaus Tennstedt",
+            "birthYear": 1926,
+            "deathYear": 1998,
+            "nationality": "German",
+            "shortBio": "Emotionally intense interpreter of Mahler symphonies"
+        },
+        {
+            "id": "celibidache",
+            "name": "Sergiu Celibidache",
+            "birthYear": 1912,
+            "deathYear": 1996,
+            "nationality": "Romanian",
+            "shortBio": "Perfectionist maestro with unique philosophical approach"
+        },
+        {
+            "id": "mravinsky",
+            "name": "Yevgeny Mravinsky",
+            "birthYear": 1903,
+            "deathYear": 1988,
+            "nationality": "Russian",
+            "shortBio": "Legendary conductor who premiered Shostakovich symphonies"
+        },
+        {
+            "id": "kondrashin",
+            "name": "Kirill Kondrashin",
+            "birthYear": 1914,
+            "deathYear": 1981,
+            "nationality": "Russian",
+            "shortBio": "First Soviet conductor to tour with Western orchestras"
+        },
+        {
+            "id": "svetlanov",
+            "name": "Yevgeny Svetlanov",
+            "birthYear": 1928,
+            "deathYear": 2002,
+            "nationality": "Russian",
+            "shortBio": "Champion of the Russian symphonic tradition"
+        },
+        {
+            "id": "chailly",
+            "name": "Riccardo Chailly",
+            "birthYear": 1953,
+            "deathYear": null,
+            "nationality": "Italian",
+            "shortBio": "Elegant conductor of Concertgebouw and La Scala"
+        },
+        {
+            "id": "pappano",
+            "name": "Antonio Pappano",
+            "birthYear": 1959,
+            "deathYear": null,
+            "nationality": "British-Italian",
+            "shortBio": "Acclaimed music director of the Royal Opera House"
+        },
+        {
+            "id": "mtw",
+            "name": "Marin Alsop",
+            "birthYear": 1956,
+            "deathYear": null,
+            "nationality": "American",
+            "shortBio": "Trailblazing conductor breaking barriers worldwide"
+        },
+        {
+            "id": "canellakis",
+            "name": "Karina Canellakis",
+            "birthYear": 1981,
+            "deathYear": null,
+            "nationality": "American",
+            "shortBio": "Rising star conductor leading Netherlands Radio Philharmonic"
+        },
+        {
+            "id": "mallwitz",
+            "name": "Joana Mallwitz",
+            "birthYear": 1986,
+            "deathYear": null,
+            "nationality": "German",
+            "shortBio": "Dynamic young conductor with opera and concert expertise"
+        },
+        {
+            "id": "wilson",
+            "name": "John Wilson",
+            "birthYear": 1972,
+            "deathYear": null,
+            "nationality": "British",
+            "shortBio": "Specialist in British music and orchestral revival"
+        },
+        {
+            "id": "eschenbach",
+            "name": "Christoph Eschenbach",
+            "birthYear": 1940,
+            "deathYear": null,
+            "nationality": "German",
+            "shortBio": "Pianist-conductor with profound orchestral leadership"
+        },
+        {
+            "id": "salonen",
+            "name": "Esa-Pekka Salonen",
+            "birthYear": 1958,
+            "deathYear": null,
+            "nationality": "Finnish",
+            "shortBio": "Composer-conductor pushing contemporary boundaries"
+        },
+        {
+            "id": "makela",
+            "name": "Klaus Mäkelä",
+            "birthYear": 1996,
+            "deathYear": null,
+            "nationality": "Finnish",
+            "shortBio": "Youngest conductor appointed to major orchestras"
+        },
+        {
+            "id": "yannick",
+            "name": "Yannick Nézet-Séguin",
+            "birthYear": 1975,
+            "deathYear": null,
+            "nationality": "Canadian",
+            "shortBio": "Energetic conductor leading Philadelphia and the Met"
+        }
+    ]
+}

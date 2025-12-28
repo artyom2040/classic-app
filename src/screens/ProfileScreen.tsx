@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Alert,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -59,8 +60,8 @@ export default function ProfileScreen() {
       'Are you sure you want to reset all your progress? This cannot be undone.',
       [
         { text: 'Cancel', style: 'cancel' },
-        { 
-          text: 'Reset', 
+        {
+          text: 'Reset',
           style: 'destructive',
           onPress: async () => {
             await resetProgress();
@@ -77,8 +78,8 @@ export default function ProfileScreen() {
       'This will reset your kickstart progress so you can start fresh. Your other progress will be kept.',
       [
         { text: 'Cancel', style: 'cancel' },
-        { 
-          text: 'Restart', 
+        {
+          text: 'Restart',
           onPress: async () => {
             await resetKickstart();
             await loadProgress();
@@ -99,17 +100,17 @@ export default function ProfileScreen() {
   const viewedTerms = progress?.viewedTerms.length || 0;
   const badgesEarned = progress?.badges.length || 0;
 
-  const StatCard = ({ 
-    title, 
-    current, 
-    total, 
-    icon, 
-    color 
-  }: { 
-    title: string; 
-    current: number; 
-    total: number; 
-    icon: keyof typeof Ionicons.glyphMap; 
+  const StatCard = ({
+    title,
+    current,
+    total,
+    icon,
+    color
+  }: {
+    title: string;
+    current: number;
+    total: number;
+    icon: keyof typeof Ionicons.glyphMap;
     color: string;
   }) => (
     <View style={[styles.statCard, { backgroundColor: t.colors.surface, borderLeftColor: color, borderLeftWidth: 3 }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
@@ -122,11 +123,11 @@ export default function ProfileScreen() {
           {current} <Text style={[styles.statTotal, { color: t.colors.textMuted }]}>/ {total}</Text>
         </Text>
         <View style={[styles.progressBar, { backgroundColor: t.colors.surfaceLight }]}>
-          <View 
+          <View
             style={[
-              styles.progressFill, 
+              styles.progressFill,
               { width: `${(current / total) * 100}%`, backgroundColor: color }
-            ]} 
+            ]}
           />
         </View>
       </View>
@@ -204,7 +205,7 @@ export default function ProfileScreen() {
               </View>
             )}
           </View>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[styles.editButton, { backgroundColor: t.colors.primary + '20' }]}
             onPress={() => navigation.navigate('EditProfile')}
           >
@@ -233,7 +234,7 @@ export default function ProfileScreen() {
 
       {/* Kickstart Status */}
       {!progress?.kickstartCompleted && (
-        <TouchableOpacity 
+        <TouchableOpacity
           style={[styles.kickstartCard, { backgroundColor: t.colors.primary + '20', borderColor: t.colors.primary + '40' }]}
           onPress={() => navigation.navigate('Kickstart')}
         >
@@ -253,30 +254,30 @@ export default function ProfileScreen() {
       {/* Stats */}
       <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Your Progress</Text>
       <View style={styles.statsGrid}>
-        <StatCard 
-          title="Composers" 
-          current={viewedComposers} 
+        <StatCard
+          title="Composers"
+          current={viewedComposers}
           total={totalComposers}
           icon="person"
           color="#C0392B"
         />
-        <StatCard 
-          title="Eras" 
-          current={viewedPeriods} 
+        <StatCard
+          title="Eras"
+          current={viewedPeriods}
           total={totalPeriods}
           icon="time"
           color="#8E44AD"
         />
-        <StatCard 
-          title="Forms" 
-          current={viewedForms} 
+        <StatCard
+          title="Forms"
+          current={viewedForms}
           total={totalForms}
           icon="musical-notes"
           color="#2980B9"
         />
-        <StatCard 
-          title="Terms" 
-          current={viewedTerms} 
+        <StatCard
+          title="Terms"
+          current={viewedTerms}
           total={totalTerms}
           icon="book"
           color={t.colors.primary}
@@ -284,7 +285,7 @@ export default function ProfileScreen() {
       </View>
 
       {/* Badges */}
-      <TouchableOpacity 
+      <TouchableOpacity
         style={[styles.badgesCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}
         onPress={() => navigation.navigate('Badges')}
       >
@@ -323,25 +324,34 @@ export default function ProfileScreen() {
       {/* Sign Out */}
       <TouchableOpacity
         style={[styles.signOutButton, { borderColor: t.colors.error }]}
-        onPress={() => {
-          Alert.alert(
-            'Sign Out',
-            'Are you sure you want to sign out?',
-            [
-              { text: 'Cancel', style: 'cancel' },
-              {
-                text: 'Sign Out',
-                style: 'destructive',
-                onPress: async () => {
-                  setSigningOut(true);
-                  await signOut();
-                  setSigningOut(false);
-                  showToast('Signed out successfully', 'success');
-                  navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] });
+        onPress={async () => {
+          const doSignOut = async () => {
+            setSigningOut(true);
+            await signOut();
+            setSigningOut(false);
+            showToast('Signed out successfully', 'success');
+            navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] });
+          };
+
+          // Alert.alert doesn't work on web, use window.confirm instead
+          if (Platform.OS === 'web') {
+            if (window.confirm('Are you sure you want to sign out?')) {
+              await doSignOut();
+            }
+          } else {
+            Alert.alert(
+              'Sign Out',
+              'Are you sure you want to sign out?',
+              [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                  text: 'Sign Out',
+                  style: 'destructive',
+                  onPress: doSignOut,
                 },
-              },
-            ]
-          );
+              ]
+            );
+          }
         }}
         disabled={signingOut}
       >

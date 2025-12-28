@@ -29,6 +29,7 @@ import FormsScreen from './src/screens/FormsScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import ComposersScreen from './src/screens/ComposersScreen';
 import ComposerDetailScreen from './src/screens/ComposerDetailScreen';
+import ConductorDetailScreen from './src/screens/ConductorDetailScreen';
 import PeriodDetailScreen from './src/screens/PeriodDetailScreen';
 import FormDetailScreen from './src/screens/FormDetailScreen';
 import TermDetailScreen from './src/screens/TermDetailScreen';
@@ -44,7 +45,9 @@ import BadgesScreen from './src/screens/BadgesScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import QuizScreen from './src/screens/QuizScreen';
+import LeaderboardScreen from './src/screens/LeaderboardScreen';
 import DiscoverScreen from './src/screens/DiscoverScreen';
+import ArticleScreen from './src/screens/ArticleScreen';
 import MusicBrainzSearchScreen from './src/screens/MusicBrainzSearchScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import FormExplorerScreen from './src/screens/FormExplorerScreen';
@@ -86,7 +89,7 @@ function TabNavigator() {
           { name: 'Home', label: 'Home', icon: 'home-outline', iconFilled: 'home' },
           { name: 'Timeline', label: 'Timeline', icon: 'time-outline', iconFilled: 'time' },
           { name: 'Glossary', label: 'Glossary', icon: 'book-outline', iconFilled: 'book' },
-          { name: 'Forms', label: 'Forms', icon: 'musical-notes-outline', iconFilled: 'musical-notes' },
+          { name: 'Discover', label: 'Discover', icon: 'compass-outline', iconFilled: 'compass' },
           { name: 'Profile', label: 'Profile', icon: 'person-outline', iconFilled: 'person' },
         ] as any[];
 
@@ -126,9 +129,9 @@ function TabNavigator() {
         options={{ title: 'Glossary' }}
       />
       <Tab.Screen
-        name="Forms"
-        component={FormsScreen}
-        options={{ title: 'Forms' }}
+        name="Discover"
+        component={DiscoverScreen}
+        options={{ title: 'Discover' }}
       />
       <Tab.Screen
         name="Profile"
@@ -222,6 +225,11 @@ function AppNavigator() {
           options={{ title: 'Composer' }}
         />
         <Stack.Screen
+          name="ConductorDetail"
+          component={ConductorDetailScreen}
+          options={{ title: 'Conductor' }}
+        />
+        <Stack.Screen
           name="Composers"
           component={ComposersScreen}
           options={{ title: 'Composers' }}
@@ -312,9 +320,19 @@ function AppNavigator() {
           options={{ title: 'Discover', headerShown: false }}
         />
         <Stack.Screen
+          name="Article"
+          component={ArticleScreen}
+          options={{ title: 'Article', headerShown: false }}
+        />
+        <Stack.Screen
           name="MusicBrainzSearch"
           component={MusicBrainzSearchScreen}
           options={{ title: 'MusicBrainz Search', headerShown: false }}
+        />
+        <Stack.Screen
+          name="Leaderboard"
+          component={LeaderboardScreen}
+          options={{ title: 'Leaderboard', headerShown: false }}
         />
 
         {/* Labs / Experimental Screens */}

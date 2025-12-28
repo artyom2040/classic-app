@@ -1,7 +1,7 @@
 /**
  * Timeline Slider Component
- * Horizontal scrolling timeline with era markers
- * Based on stitch/timeline_explorer designs
+ * Premium horizontal scrolling timeline with era markers
+ * Modern design with smooth gradients and better visual hierarchy
  */
 
 import React from 'react';
@@ -12,10 +12,11 @@ import {
   StyleSheet,
   ImageSourcePropType,
   ImageBackground,
+  Platform,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../../context/ThemeContext';
-import { H3, Caption, Label } from '../atoms/Typography';
+import { H3, Caption, Label, LabelSmall } from '../atoms/Typography';
 import { hapticSelection } from '../../utils/haptics';
 
 export interface Era {
@@ -38,7 +39,7 @@ export function TimelineSlider({
   selectedId,
   onSelectEra,
 }: TimelineSliderProps) {
-  const { theme } = useTheme();
+  const { theme, isDark } = useTheme();
 
   const handleSelect = (era: Era) => {
     hapticSelection();
@@ -60,86 +61,88 @@ export function TimelineSlider({
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
-        snapToInterval={200}
+        snapToInterval={214} // card width (200) + gap (14)
         decelerationRate="fast"
       >
         {eras.map((era, index) => {
           const isSelected = era.id === selectedId;
-          
+
           return (
             <TouchableOpacity
               key={era.id}
               onPress={() => handleSelect(era)}
-              activeOpacity={0.9}
+              activeOpacity={0.85}
               style={[
                 styles.eraCard,
+                {
+                  backgroundColor: isDark ? theme.colors.surface : '#fff',
+                  borderColor: isSelected ? era.color : theme.colors.border,
+                  boxShadow: isSelected
+                    ? `0px 8px 24px ${era.color}40`
+                    : isDark
+                      ? '0px 4px 16px rgba(0, 0, 0, 0.3)'
+                      : '0px 4px 16px rgba(0, 0, 0, 0.08)',
+                },
                 isSelected && styles.eraCardSelected,
               ]}
             >
-              {era.image ? (
-                <ImageBackground
-                  source={era.image}
-                  style={styles.eraImage}
-                  imageStyle={styles.eraImageStyle}
-                >
-                  <LinearGradient
-                    colors={[
-                      'transparent',
-                      `${era.color}80`,
-                      era.color,
-                    ]}
-                    style={styles.eraGradient}
+              {/* Image section with smooth gradient overlay */}
+              <View style={styles.imageContainer}>
+                {era.image ? (
+                  <ImageBackground
+                    source={era.image}
+                    style={styles.eraImage}
+                    imageStyle={styles.eraImageStyle}
+                    resizeMode="cover"
                   >
-                    <View style={styles.eraContent}>
-                      <Label color="#FFFFFF">{era.period}</Label>
-                      <H3 color="#FFFFFF" numberOfLines={2}>
-                        {era.name}
-                      </H3>
-                      {era.composerCount !== undefined && (
-                        <Caption color="rgba(255,255,255,0.8)">
-                          {era.composerCount} composers
-                        </Caption>
-                      )}
-                    </View>
-                  </LinearGradient>
-                </ImageBackground>
-              ) : (
-                <LinearGradient
-                  colors={[`${era.color}40`, era.color]}
-                  style={styles.eraGradient}
-                >
-                  <View style={styles.eraContent}>
-                    <Label color="#FFFFFF">{era.period}</Label>
-                    <H3 color="#FFFFFF" numberOfLines={2}>
-                      {era.name}
-                    </H3>
-                    {era.composerCount !== undefined && (
-                      <Caption color="rgba(255,255,255,0.8)">
-                        {era.composerCount} composers
-                      </Caption>
-                    )}
-                  </View>
-                </LinearGradient>
-              )}
+                    {/* Subtle bottom gradient for text legibility */}
+                    <LinearGradient
+                      colors={[
+                        'transparent',
+                        'rgba(0,0,0,0.4)',
+                        'rgba(0,0,0,0.6)',
+                      ]}
+                      locations={[0.3, 0.7, 1]}
+                      style={styles.imageGradient}
+                    />
+                  </ImageBackground>
+                ) : (
+                  <LinearGradient
+                    colors={[`${era.color}60`, `${era.color}90`]}
+                    style={styles.eraImage}
+                  />
+                )}
 
-              {/* Era marker dot */}
+                {/* Period badge overlaid on image */}
+                <View style={[styles.periodBadge, { backgroundColor: era.color }]}>
+                  <LabelSmall color="#FFFFFF" weight="bold">{era.period}</LabelSmall>
+                </View>
+              </View>
+
+              {/* Content section below image */}
+              <View style={styles.eraContent}>
+                <Label
+                  color={theme.colors.text}
+                  weight="bold"
+                  numberOfLines={1}
+                  style={styles.eraName}
+                >
+                  {era.name}
+                </Label>
+                {era.composerCount !== undefined && (
+                  <Caption color={theme.colors.textMuted}>
+                    {era.composerCount} composer{era.composerCount !== 1 ? 's' : ''}
+                  </Caption>
+                )}
+              </View>
+
+              {/* Accent bar at bottom */}
               <View
                 style={[
-                  styles.eraDot,
-                  { backgroundColor: era.color },
-                  isSelected && styles.eraDotSelected,
+                  styles.accentBar,
+                  { backgroundColor: era.color }
                 ]}
               />
-
-              {/* Connection line */}
-              {index < eras.length - 1 && (
-                <View
-                  style={[
-                    styles.connectionLine,
-                    { backgroundColor: theme.colors.border },
-                  ]}
-                />
-              )}
             </TouchableOpacity>
           );
         })}
@@ -158,56 +161,56 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: 4,
-    gap: 16,
+    paddingBottom: 12, // Space for shadow
+    gap: 14,
   },
   eraCard: {
-    width: 180,
-    height: 200,
-    borderRadius: 16,
+    width: 200,
+    borderRadius: 20,
     overflow: 'hidden',
-    position: 'relative',
+    borderWidth: 1,
   },
   eraCardSelected: {
-    transform: [{ scale: 1.05 }],
+    transform: [{ scale: 1.02 }],
+  },
+  imageContainer: {
+    height: 160,
+    position: 'relative',
+    overflow: 'hidden',
   },
   eraImage: {
     flex: 1,
     width: '100%',
+    height: '100%',
   },
   eraImageStyle: {
-    borderRadius: 16,
+    // No border radius - let container handle it
   },
-  eraGradient: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    padding: 16,
+  imageGradient: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  periodBadge: {
+    position: 'absolute',
+    bottom: 10,
+    left: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
   },
   eraContent: {
+    padding: 14,
+    paddingBottom: 18,
     gap: 4,
   },
-  eraDot: {
-    position: 'absolute',
-    bottom: -8,
-    left: '50%',
-    marginLeft: -8,
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    borderWidth: 3,
-    borderColor: '#FFFFFF',
+  eraName: {
+    fontSize: 16,
+    letterSpacing: 0.2,
   },
-  eraDotSelected: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    marginLeft: -10,
-    bottom: -10,
-  },
-  connectionLine: {
+  accentBar: {
     position: 'absolute',
     bottom: 0,
-    left: '100%',
-    width: 16,
-    height: 2,
+    left: 0,
+    right: 0,
+    height: 4,
   },
 });
