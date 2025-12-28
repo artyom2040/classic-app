@@ -14,14 +14,14 @@ function initializeGoogleSignIn() {
   if (Platform.OS === 'web') {
     return;
   }
-  
+
   try {
     GoogleSignin.configure({
       webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || '',
       iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || '',
     });
   } catch (error) {
-    Logger.error('Auth', 'Google Sign-In initialization failed', { error });
+    Logger.error('Auth', 'Google Sign-In initialization failed', { error: error as any });
   }
 }
 
@@ -31,14 +31,14 @@ initializeGoogleSignIn();
 // Initialize Facebook SDK (native only)
 async function initializeFacebookSDK() {
   if (Platform.OS === 'web') return;
-  
+
   try {
     const appId = process.env.EXPO_PUBLIC_FACEBOOK_APP_ID;
     if (appId && appId !== 'your-facebook-app-id') {
       await Facebook.initializeAsync({ appId });
     }
   } catch (error) {
-    Logger.error('Auth', 'Facebook SDK initialization failed', { error });
+    Logger.error('Auth', 'Facebook SDK initialization failed', { error: error as any });
   }
 }
 
@@ -51,7 +51,7 @@ initializeFacebookSDK();
 interface AuthContextType extends AuthState {
   // Email Auth
   signInWithEmail: (email: string, password: string) => Promise<{ error: Error | null }>;
-  signUpWithEmail: (email: string, password: string, displayName?: string) => Promise<{ error: Error | null }>;
+  signUpWithEmail: (email: string, password: string, displayName?: string) => Promise<{ data?: any; error: Error | null }>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<{ error: Error | null }>;
   updatePassword: (newPassword: string) => Promise<{ error: Error | null }>;
@@ -158,7 +158,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           Logger.info('Auth', `${source}: Profile not found, creating new profile`, { userId: session.user.id });
           profile = await createUserProfile(session.user);
         }
-        
+
         // If profile still null (e.g., CORS/network issues), use session data as fallback
         if (!profile) {
           Logger.warn('Auth', `${source}: Using session data as fallback (profile unavailable)`);
@@ -234,14 +234,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signUpWithEmail = useCallback(async (email: string, password: string, displayName?: string) => {
     if (!supabase) return { error: new Error('Supabase not configured') };
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: { display_name: displayName },
       },
     });
-    return { error: error ? new Error(error.message) : null };
+    return { data, error: error ? new Error(error.message) : null };
   }, []);
 
   // Sign out

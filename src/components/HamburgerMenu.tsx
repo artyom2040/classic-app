@@ -73,7 +73,7 @@ export function HamburgerMenu() {
         navigation.navigate('MainTabs', { screen: 'Glossary' } as never);
         break;
       case 'forms':
-        navigation.navigate('MainTabs', { screen: 'Forms' } as never);
+        navigation.navigate('FormExplorer');
         break;
       case 'settings':
         navigation.navigate('Settings');

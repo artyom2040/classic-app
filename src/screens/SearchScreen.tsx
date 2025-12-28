@@ -331,7 +331,7 @@ export default function SearchScreen() {
                 {[
                   { label: 'Composers', count: composersData.composers.length, icon: 'person', iconFilled: 'person', color: '#5417cf', screen: 'Timeline' },
                   { label: 'Terms', count: glossaryData.terms.length, icon: 'book', iconFilled: 'book', color: '#8b5cf6', screen: 'Glossary' },
-                  { label: 'Forms', count: formsData.forms.length, icon: 'musical-notes', iconFilled: 'musical-notes', color: '#f59e0b', screen: 'Forms' },
+                  { label: 'Forms', count: formsData.forms.length, icon: 'musical-notes', iconFilled: 'musical-notes', color: '#f59e0b', screen: 'FormExplorer' },
                   { label: 'Eras', count: periodsData.periods.length, icon: 'time', iconFilled: 'time', color: '#22c55e', screen: 'Timeline' },
                 ].map((cat, idx) => (
                   <TouchableOpacity

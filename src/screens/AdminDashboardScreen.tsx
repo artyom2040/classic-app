@@ -135,7 +135,7 @@ export default function AdminDashboardScreen() {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
   // Access control

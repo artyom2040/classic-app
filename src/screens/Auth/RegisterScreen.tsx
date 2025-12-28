@@ -63,7 +63,7 @@ export default function RegisterScreen() {
     setLoading(true);
     setError(null);
 
-    const { error: authError } = await signUpWithEmail(
+    const { data, error: authError } = await signUpWithEmail(
       email.trim(),
       password,
       displayName.trim() || undefined
@@ -73,7 +73,12 @@ export default function RegisterScreen() {
 
     if (authError) {
       setError(authError.message);
+    } else if (data?.session) {
+      // Auto-login successful (Auto Confirm enabled on server)
+      showToast('Welcome!', 'success');
+      navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] });
     } else {
+      // Email confirmation required
       showToast('Account created! Check your email.', 'success');
       setSuccess(true);
     }

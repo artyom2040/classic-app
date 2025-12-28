@@ -122,9 +122,27 @@ export default function WelcomeScreen() {
         flatListRef.current?.scrollToIndex({ index, animated: true });
     };
 
-    // Only render the scrollable content (image, title, subtitle)
+    const isDesktop = screenWidth > 768;
+    const containerWidth = isDesktop ? Math.min(screenWidth, 500) : screenWidth;
+    // On desktop, we want to center the whole app experience
+    const containerStyle = isDesktop ? {
+        flex: 1,
+        alignItems: 'center' as const,
+        justifyContent: 'center' as const,
+        backgroundColor: '#050510', // Dark background for the letterbox
+    } : { flex: 1 };
+
+    // The actual app content view
+    const contentStyle: any = {
+        width: containerWidth,
+        height: '100%',
+        backgroundColor: '#161022',
+        overflow: 'hidden',
+        alignSelf: 'center',
+    };
+
     const renderSlide = ({ item }: { item: Slide }) => (
-        <View style={[styles.slideContainer, { width: screenWidth }]}>
+        <View style={[styles.slideContainer, { width: containerWidth }]}>
             {/* Background Image Layer - centered */}
             <ImageBackground
                 source={item.image}
@@ -148,7 +166,7 @@ export default function WelcomeScreen() {
             />
 
             {/* Header / Logo Area */}
-            <View style={[styles.logoContainer, { paddingTop: insets.top + 40 }]}>
+            <View style={[styles.logoContainer, { paddingTop: insets.top + (isDesktop ? 24 : 40) }]}>
                 <View style={styles.logoCircle}>
                     <Ionicons name="musical-notes" size={28} color="rgba(255,255,255,0.9)" />
                 </View>
@@ -175,60 +193,62 @@ export default function WelcomeScreen() {
     );
 
     return (
-        <View style={[styles.container, { backgroundColor: '#161022' }]}>
-            {/* Scrollable Carousel - only content scrolls */}
-            <FlatList
-                ref={flatListRef}
-                data={slides}
-                renderItem={renderSlide}
-                keyExtractor={(item) => item.id}
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                onViewableItemsChanged={onViewableItemsChanged}
-                viewabilityConfig={viewabilityConfig}
-                bounces={false}
-                onScrollBeginDrag={handleScrollBeginDrag}
-                onScrollEndDrag={handleScrollEndDrag}
-                getItemLayout={(_, index) => ({
-                    length: screenWidth,
-                    offset: screenWidth * index,
-                    index,
-                })}
-            />
+        <View style={containerStyle}>
+            <View style={contentStyle}>
+                {/* Scrollable Carousel - only content scrolls */}
+                <FlatList
+                    ref={flatListRef}
+                    data={slides}
+                    renderItem={renderSlide}
+                    keyExtractor={(item) => item.id}
+                    horizontal
+                    pagingEnabled
+                    showsHorizontalScrollIndicator={false}
+                    onViewableItemsChanged={onViewableItemsChanged}
+                    viewabilityConfig={viewabilityConfig}
+                    bounces={false}
+                    onScrollBeginDrag={handleScrollBeginDrag}
+                    onScrollEndDrag={handleScrollEndDrag}
+                    getItemLayout={(_, index) => ({
+                        length: containerWidth,
+                        offset: containerWidth * index,
+                        index,
+                    })}
+                />
 
-            {/* Stationary Bottom Section - CTA Button and Pagination */}
-            <View style={[styles.stationaryBottom, { paddingBottom: insets.bottom + 32 }]}>
-                {/* Primary CTA Button - using design system */}
-                <View style={styles.ctaContainer}>
-                    <EnhancedButton
-                        title="Start Listening"
-                        variant="gradient"
-                        size="large"
-                        icon="arrow-forward"
-                        iconPosition="right"
-                        fullWidth
-                        onPress={handleStart}
-                        style={styles.ctaButton}
-                    />
-                </View>
+                {/* Stationary Bottom Section - CTA Button and Pagination */}
+                <View style={[styles.stationaryBottom, { paddingBottom: insets.bottom + 32, width: containerWidth }]}>
+                    {/* Primary CTA Button - using design system */}
+                    <View style={styles.ctaContainer}>
+                        <EnhancedButton
+                            title="Start Listening"
+                            variant="gradient"
+                            size="large"
+                            icon="arrow-forward"
+                            iconPosition="right"
+                            fullWidth
+                            onPress={handleStart}
+                            style={styles.ctaButton}
+                        />
+                    </View>
 
-                {/* Pagination/Progress Indicators */}
-                <View style={styles.pagination}>
-                    {slides.map((_, index) => (
-                        <TouchableOpacity
-                            key={index}
-                            onPress={() => scrollToIndex(index)}
-                            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                        >
-                            <View
-                                style={[
-                                    styles.dot,
-                                    activeIndex === index && styles.dotActive,
-                                ]}
-                            />
-                        </TouchableOpacity>
-                    ))}
+                    {/* Pagination/Progress Indicators */}
+                    <View style={styles.pagination}>
+                        {slides.map((_, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                onPress={() => scrollToIndex(index)}
+                                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                            >
+                                <View
+                                    style={[
+                                        styles.dot,
+                                        activeIndex === index && styles.dotActive,
+                                    ]}
+                                />
+                            </TouchableOpacity>
+                        ))}
+                    </View>
                 </View>
             </View>
         </View>

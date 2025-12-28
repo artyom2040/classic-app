@@ -410,7 +410,7 @@ const styles = StyleSheet.create({
   authButtonText: { fontSize: fontSize.md, fontWeight: '600' },
   authButtonSecondary: { width: '100%', paddingVertical: spacing.md, borderRadius: borderRadius.lg, alignItems: 'center', marginBottom: spacing.md },
   authButtonSecondaryText: { fontSize: fontSize.md, fontWeight: '600' },
-  skipText: { fontSize: fontSize.sm, marginTop: spacing.md },
+  skipText: { fontSize: fontSize.md, marginTop: spacing.lg, fontWeight: '600', textDecorationLine: 'underline' },
   kickstartCard: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderRadius: borderRadius.lg, padding: spacing.md, marginBottom: spacing.lg, borderWidth: 1 },
   kickstartContent: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
   kickstartText: {},

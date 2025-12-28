@@ -128,7 +128,7 @@ export default function HomeScreen() {
       period: period.years,
       color: period.color,
       image: ERA_IMAGES[period.id],
-      composerCount: period.composers?.length || 0,
+      composerCount: composersData.composers.filter(c => c.period === period.id).length,
     })),
     [],
     'timelineEras transformation'
@@ -261,7 +261,7 @@ export default function HomeScreen() {
 
           {/* Monthly Theme Section with Composer Spotlights */}
           <MonthlyThemeSection
-            monthLabel={`${new Date().toLocaleString('default', { month: 'long' }).toUpperCase()} FOCUS`}
+            monthLabel={`${new Date().toLocaleString('en-US', { month: 'long' }).toUpperCase()} FOCUS`}
             title={monthlySpotlight.title}
             subtitle={monthlySpotlight.subtitle}
             description={monthlySpotlight.description}

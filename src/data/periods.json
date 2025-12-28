@@ -11,7 +11,18 @@
         "Modal scales",
         "Organum (early polyphony)"
       ],
-      "composers": ["hildegard", "machaut", "perotin"],
+      "composers": [
+        "hildegard",
+        "machaut",
+        "perotin",
+        "leonin",
+        "guido_arezzo",
+        "adam_st_victor",
+        "adam_de_la_halle",
+        "troubadours",
+        "le_jeune",
+        "dunstable"
+      ],
       "color": "#8B4513"
     },
     {
@@ -25,7 +36,18 @@
         "Rise of instrumental music",
         "Word painting"
       ],
-      "composers": ["palestrina", "josquin", "byrd", "monteverdi_early"],
+      "composers": [
+        "palestrina",
+        "josquin",
+        "byrd",
+        "tallis",
+        "lassus",
+        "gabrieli",
+        "victoria",
+        "dowland",
+        "gesualdo",
+        "monteverdi_early"
+      ],
       "color": "#654321"
     },
     {
@@ -40,7 +62,18 @@
         "Fugue and counterpoint",
         "Birth of opera"
       ],
-      "composers": ["bach", "handel", "vivaldi", "monteverdi", "purcell", "scarlatti"],
+      "composers": [
+        "bach",
+        "handel",
+        "vivaldi",
+        "purcell",
+        "d_scarlatti",
+        "telemann",
+        "rameau",
+        "lully",
+        "corelli",
+        "a_scarlatti"
+      ],
       "color": "#B8860B"
     },
     {
@@ -55,7 +88,18 @@
         "Symphony and concerto development",
         "Alberti bass"
       ],
-      "composers": ["mozart", "haydn", "beethoven_early", "gluck"],
+      "composers": [
+        "mozart",
+        "haydn",
+        "gluck",
+        "cpe_bach",
+        "jc_bach",
+        "clementi",
+        "boccherini",
+        "salieri",
+        "hummel",
+        "paganini"
+      ],
       "color": "#DAA520"
     },
     {
@@ -71,7 +115,18 @@
         "Chromatic harmony",
         "Virtuosity"
       ],
-      "composers": ["beethoven", "chopin", "brahms", "liszt", "wagner", "tchaikovsky", "schumann", "mendelssohn", "dvorak", "verdi"],
+      "composers": [
+        "beethoven",
+        "chopin",
+        "brahms",
+        "liszt",
+        "wagner",
+        "tchaikovsky",
+        "schumann",
+        "mendelssohn",
+        "dvorak",
+        "verdi"
+      ],
       "color": "#DC143C"
     },
     {
@@ -86,7 +141,18 @@
         "Extended techniques",
         "Electronic elements"
       ],
-      "composers": ["stravinsky", "schoenberg", "debussy", "ravel", "bartok", "prokofiev", "shostakovich", "copland"],
+      "composers": [
+        "stravinsky",
+        "debussy",
+        "ravel",
+        "bartok",
+        "prokofiev",
+        "shostakovich",
+        "copland",
+        "holst",
+        "vaughan_williams",
+        "ives"
+      ],
       "color": "#4169E1"
     },
     {
@@ -101,7 +167,22 @@
         "Digital composition",
         "Eclecticism"
       ],
-      "composers": ["glass", "reich", "part", "adams", "williams"],
+      "composers": [
+        "glass",
+        "reich",
+        "part",
+        "adams",
+        "williams",
+        "arvo_part",
+        "john_adams",
+        "steve_reich",
+        "tan_dun",
+        "sofia_gubaidulina",
+        "caroline_shaw",
+        "jennifer_higdon",
+        "max_richter",
+        "kaija_saariaho"
+      ],
       "color": "#9932CC"
     }
   ]

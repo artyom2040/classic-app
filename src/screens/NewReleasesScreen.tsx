@@ -43,7 +43,7 @@ export default function NewReleasesScreen({ navigation }: any) {
     const parsed = new Date(date);
     return isNaN(parsed.getTime())
       ? date
-      : parsed.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+      : parsed.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
   return (
