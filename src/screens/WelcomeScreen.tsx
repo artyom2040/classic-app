@@ -1,11 +1,11 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect, useMemo } from 'react';
 import {
     View,
     Text,
     StyleSheet,
     TouchableOpacity,
     ImageBackground,
-    Dimensions,
+    useWindowDimensions,
     FlatList,
     ViewToken,
 } from 'react-native';
@@ -19,8 +19,6 @@ import { useTheme } from '../context/ThemeContext';
 import { RootStackParamList } from '../types';
 import { ERA_IMAGES } from '../utils/images';
 import { Display1, Quote, BodyLarge, EnhancedButton } from '../design-system';
-
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -60,6 +58,7 @@ export default function WelcomeScreen() {
     const { theme: t } = useTheme();
     const insets = useSafeAreaInsets();
     const navigation = useNavigation<NavigationProp>();
+    const { width: screenWidth, height: screenHeight } = useWindowDimensions();
     const [activeIndex, setActiveIndex] = useState(0);
     const flatListRef = useRef<FlatList>(null);
     const autoplayRef = useRef<NodeJS.Timeout | null>(null);
@@ -125,7 +124,7 @@ export default function WelcomeScreen() {
 
     // Only render the scrollable content (image, title, subtitle)
     const renderSlide = ({ item }: { item: Slide }) => (
-        <View style={styles.slideContainer}>
+        <View style={[styles.slideContainer, { width: screenWidth }]}>
             {/* Background Image Layer - centered */}
             <ImageBackground
                 source={item.image}
@@ -145,7 +144,7 @@ export default function WelcomeScreen() {
             <LinearGradient
                 colors={['transparent', 'rgba(22, 16, 34, 0.7)', '#161022']}
                 locations={[0, 0.4, 1]}
-                style={styles.bottomGradient}
+                style={[styles.bottomGradient, { height: screenHeight * 0.5 }]}
             />
 
             {/* Header / Logo Area */}
@@ -192,8 +191,8 @@ export default function WelcomeScreen() {
                 onScrollBeginDrag={handleScrollBeginDrag}
                 onScrollEndDrag={handleScrollEndDrag}
                 getItemLayout={(_, index) => ({
-                    length: SCREEN_WIDTH,
-                    offset: SCREEN_WIDTH * index,
+                    length: screenWidth,
+                    offset: screenWidth * index,
                     index,
                 })}
             />
@@ -241,7 +240,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     slideContainer: {
-        width: SCREEN_WIDTH,
         flex: 1,
     },
     backgroundImage: {
@@ -263,7 +261,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        height: SCREEN_HEIGHT * 0.5,
     },
     logoContainer: {
         alignItems: 'center',

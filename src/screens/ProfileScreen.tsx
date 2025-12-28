@@ -300,6 +300,22 @@ export default function ProfileScreen() {
         <Ionicons name="chevron-forward" size={20} color={t.colors.textMuted} />
       </TouchableOpacity>
 
+      {/* Leaderboard */}
+      <TouchableOpacity
+        style={[styles.badgesCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}
+        onPress={() => navigation.navigate('Leaderboard')}
+      >
+        <View style={styles.badgesHeader}>
+          <Ionicons name="trophy" size={24} color={t.colors.warning} />
+          <Text style={[styles.badgesTitle, { color: t.colors.text }]}>Leaderboard</Text>
+        </View>
+        <View style={styles.badgesContent}>
+          <Ionicons name="podium-outline" size={20} color={t.colors.warning} />
+          <Text style={[styles.badgesLabel, { color: t.colors.textMuted }]}>rankings</Text>
+        </View>
+        <Ionicons name="chevron-forward" size={20} color={t.colors.textMuted} />
+      </TouchableOpacity>
+
       {/* Settings */}
       <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Settings</Text>
       <View style={[styles.settingsCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
