@@ -18,6 +18,7 @@ import { EnhancedButton } from '../../design-system';
 import { spacing, fontSize, borderRadius } from '../../theme';
 import { RootStackParamList } from '../../types';
 import { supabase, isSupabaseConfigured } from '../../services/supabaseClient';
+import { Logger } from '../../utils/logger';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 type ResetPasswordRouteProp = RouteProp<RootStackParamList, 'ResetPassword'>;
@@ -69,7 +70,7 @@ export default function ResetPasswordScreen() {
         setError(null);
 
         try {
-            console.log('[ResetPassword] Verifying OTP...');
+            Logger.debug('ResetPassword', 'Verifying OTP');
             // Verify OTP and update password
             const { error: verifyError } = await supabase.auth.verifyOtp({
                 email: emailFromRoute,
@@ -78,27 +79,27 @@ export default function ResetPasswordScreen() {
             });
 
             if (verifyError) {
-                console.log('[ResetPassword] OTP verification failed:', verifyError.message);
+                Logger.warn('ResetPassword', 'OTP verification failed', { error: verifyError.message });
                 setError(verifyError.message);
                 setLoading(false);
                 return;
             }
 
-            console.log('[ResetPassword] OTP verified, updating password...');
+            Logger.debug('ResetPassword', 'OTP verified, updating password');
             // Now update the password
             const { error: updateError } = await supabase.auth.updateUser({
                 password: newPassword,
             });
 
             if (updateError) {
-                console.log('[ResetPassword] Password update failed:', updateError.message);
+                Logger.warn('ResetPassword', 'Password update failed', { error: updateError.message });
                 setError(updateError.message);
             } else {
-                console.log('[ResetPassword] Password updated successfully!');
+                Logger.info('ResetPassword', 'Password updated successfully');
                 setSuccess(true);
             }
         } catch (err) {
-            console.log('[ResetPassword] Exception:', err);
+            Logger.error('ResetPassword', 'Exception during password reset', { error: err instanceof Error ? err.message : String(err) });
             setError(err instanceof Error ? err.message : 'An error occurred');
         } finally {
             setLoading(false);

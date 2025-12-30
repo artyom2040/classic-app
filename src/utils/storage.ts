@@ -33,36 +33,40 @@ export async function saveProgress(progress: Partial<UserProgress>): Promise<voi
   await setStorageItem(STORAGE_KEY, updated);
 }
 
-export async function markComposerViewed(composerId: string): Promise<void> {
+/**
+ * Item types that can be marked as viewed
+ */
+export type ViewedItemType = 'composer' | 'period' | 'form' | 'term';
+
+/**
+ * Generic function to mark any item type as viewed
+ * Consolidates markComposerViewed, markPeriodViewed, etc.
+ */
+export async function markItemViewed(type: ViewedItemType, id: string): Promise<void> {
   const progress = await getProgress();
-  if (!progress.viewedComposers.includes(composerId)) {
-    progress.viewedComposers.push(composerId);
+  const key = `viewed${type.charAt(0).toUpperCase() + type.slice(1)}s` as keyof UserProgress;
+  const viewedArray = progress[key] as string[];
+
+  if (!viewedArray.includes(id)) {
+    viewedArray.push(id);
     await saveProgress(progress);
   }
+}
+
+export async function markComposerViewed(composerId: string): Promise<void> {
+  await markItemViewed('composer', composerId);
 }
 
 export async function markPeriodViewed(periodId: string): Promise<void> {
-  const progress = await getProgress();
-  if (!progress.viewedPeriods.includes(periodId)) {
-    progress.viewedPeriods.push(periodId);
-    await saveProgress(progress);
-  }
+  await markItemViewed('period', periodId);
 }
 
 export async function markFormViewed(formId: string): Promise<void> {
-  const progress = await getProgress();
-  if (!progress.viewedForms.includes(formId)) {
-    progress.viewedForms.push(formId);
-    await saveProgress(progress);
-  }
+  await markItemViewed('form', formId);
 }
 
 export async function markTermViewed(termId: string): Promise<void> {
-  const progress = await getProgress();
-  if (!progress.viewedTerms.includes(termId)) {
-    progress.viewedTerms.push(termId);
-    await saveProgress(progress);
-  }
+  await markItemViewed('term', termId);
 }
 
 export async function earnBadge(badgeId: string): Promise<boolean> {

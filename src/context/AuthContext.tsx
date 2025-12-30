@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef, useMemo, ReactNode } from 'react';
 import { Platform } from 'react-native';
 import { Session, User } from '@supabase/supabase-js';
 import * as AppleAuthentication from 'expo-apple-authentication';
@@ -396,7 +396,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     if (profile) setUser(profile);
   }, [user]);
 
-  const value: AuthContextType = {
+  // Memoize provider value to prevent unnecessary re-renders
+  const value = useMemo<AuthContextType>(() => ({
     user,
     isLoading,
     isAuthenticated: !!user,
@@ -411,7 +412,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
     signInWithFacebook,
     updateProfile,
     refreshProfile,
-  };
+  }), [
+    user,
+    isLoading,
+    signInWithEmail,
+    signUpWithEmail,
+    signOut,
+    resetPassword,
+    updatePassword,
+    signInWithApple,
+    signInWithGoogle,
+    signInWithFacebook,
+    updateProfile,
+    refreshProfile,
+  ]);
 
   return (
     <AuthContext.Provider value={value}>

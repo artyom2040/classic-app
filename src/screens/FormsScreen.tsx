@@ -1,11 +1,11 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useTransition } from 'react';
 import {
   View,
   Text,
-  FlatList,
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -18,6 +18,11 @@ import { RootStackParamList, MusicalForm } from '../types';
 import formsData from '../data/forms.json';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
+// Type for FlatList items - discriminated union for headers and cards
+type FormListItem =
+  | { id: string; type: 'category-header'; category: string; categoryForms: MusicalForm[] }
+  | { id: string; type: 'form-card'; form: MusicalForm; category: string };
 
 const categoryIcons: { [key: string]: keyof typeof Ionicons.glyphMap } = {
   Orchestral: 'people',
@@ -39,6 +44,11 @@ export default function FormsScreen() {
   const isStitch = isDark;
   const forms: MusicalForm[] = formsData.forms;
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [isPending, startTransition] = useTransition();
+
+  const handleCategoryChange = useCallback((category: string) => {
+    startTransition(() => setSelectedCategory(category));
+  }, []);
 
   const categoryColors: { [key: string]: string } = {
     Orchestral: '#C0392B', Chamber: '#27AE60', Contrapuntal: '#8E44AD',
@@ -70,8 +80,8 @@ export default function FormsScreen() {
   );
 
   // Flatten groups into items for FlatList
-  const flatListData = useMemo(() => {
-    const items: any[] = [];
+  const flatListData = useMemo((): FormListItem[] => {
+    const items: FormListItem[] = [];
     displayedGroups.forEach(([category, categoryForms]) => {
       items.push({ id: `header-${category}`, type: 'category-header', category, categoryForms });
       categoryForms.forEach(form => {
@@ -81,7 +91,7 @@ export default function FormsScreen() {
     return items;
   }, [displayedGroups]);
 
-  const renderItem = useCallback(({ item }: { item: any }) => {
+  const renderItem = useCallback(({ item }: { item: FormListItem }) => {
     if (item.type === 'category-header') {
       return (
         <View style={styles.categorySection}>
@@ -134,8 +144,8 @@ export default function FormsScreen() {
         <CategoryChips
           items={categories.map(c => ({ id: c, label: c }))}
           selectedId={selectedCategory === 'All' ? 'all' : selectedCategory}
-          onSelect={(id) => setSelectedCategory(id === 'all' ? 'All' : id)}
-          style={{ marginHorizontal: -spacing.md, marginBottom: spacing.md }}
+          onSelect={(id) => handleCategoryChange(id === 'all' ? 'All' : id)}
+          style={{ marginHorizontal: -spacing.md, marginBottom: spacing.md, opacity: isPending ? 0.7 : 1 }}
         />
       )}
 
@@ -144,24 +154,21 @@ export default function FormsScreen() {
         Once you recognize the structure, the music becomes easier to follow.
       </Text>
     </>
-  ), [isStitch, categories, selectedCategory, t.colors.textSecondary]);
+  ), [isStitch, categories, selectedCategory, handleCategoryChange, isPending, t.colors.textSecondary]);
 
   return (
-    <FlatList
-      style={[styles.container, { backgroundColor: t.colors.background }]}
-      contentContainerStyle={styles.content}
-      data={flatListData}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
-      scrollEnabled={true}
-      removeClippedSubviews={true}
-      maxToRenderPerBatch={10}
-      updateCellsBatchingPeriod={50}
-      initialNumToRender={10}
-      showsVerticalScrollIndicator={false}
-      ListHeaderComponent={listHeader}
-      ListFooterComponent={<View style={{ height: spacing.xxl }} />}
-    />
+    <View style={[styles.container, { backgroundColor: t.colors.background }]}>
+      <FlashList
+        contentContainerStyle={styles.content}
+        data={flatListData}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        estimatedItemSize={100}
+        showsScrollIndicator={false}
+        ListHeaderComponent={listHeader}
+        ListFooterComponent={<View style={{ height: spacing.xxl }} />}
+      />
+    </View>
   );
 }
 

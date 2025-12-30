@@ -84,29 +84,23 @@ export function getSupabaseClient(): SupabaseClient {
 }
 
 /**
- * Get Supabase service role client (for server-side operations)
- * Only use this in trusted environments
+ * Get Supabase service role client (for server-side operations ONLY)
+ *
+ * SECURITY WARNING: This function should NEVER be called from client code.
+ * Service keys bypass Row Level Security (RLS) and can access all data.
+ *
+ * For admin operations in mobile/web apps, use Supabase Edge Functions instead:
+ * https://supabase.com/docs/guides/functions
+ *
+ * @deprecated This function is deprecated for client-side use.
+ * Service key is no longer available in client config for security.
  */
 export function getSupabaseServiceClient(): SupabaseClient | null {
-  try {
-    const config = getSupabaseConfig();
+  Logger.warn('SupabaseClient', 'getSupabaseServiceClient called - service keys should only be used in server-side contexts (Edge Functions, backend APIs)');
 
-    if (!config.serviceKey) {
-      Logger.warn('SupabaseClient', 'Service key not configured');
-      return null;
-    }
-
-    return createClient(config.url, config.serviceKey, {
-      auth: {
-        persistSession: false,
-      },
-    });
-  } catch (error) {
-    Logger.error('SupabaseClient', 'Failed to create service client', {
-      error: error instanceof Error ? error.message : String(error)
-    });
-    return null;
-  }
+  // Service key is intentionally not available in client builds
+  // Use Supabase Edge Functions for admin operations
+  return null;
 }
 
 /**

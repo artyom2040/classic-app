@@ -6,6 +6,9 @@
 // Atoms
 export * from './atoms/Typography';
 export * from './atoms/Button';
+export * from './atoms/IconButton';
+export * from './atoms/AnimatedPressable';
+export * from './atoms/AnimatedScreen';
 
 // Molecules
 export * from './molecules/Card';

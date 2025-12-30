@@ -99,18 +99,23 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [themeName, accentColorName]);
 
   const isDark = theme.isDark;
-  const isGlass = false; // Removed liquidglass theme
+  // Derive isGlass from theme name for future extensibility
+  // Currently no glass themes are available
+  const isGlass = themeName.toLowerCase().includes('glass');
+
+  // Memoize provider value to prevent unnecessary re-renders
+  const contextValue = useMemo(() => ({
+    theme,
+    themeName,
+    setTheme,
+    isDark,
+    isGlass,
+    accentColorName,
+    setAccentColor,
+  }), [theme, themeName, isDark, isGlass, accentColorName]);
 
   return (
-    <ThemeContext.Provider value={{
-      theme,
-      themeName,
-      setTheme,
-      isDark,
-      isGlass,
-      accentColorName,
-      setAccentColor,
-    }}>
+    <ThemeContext.Provider value={contextValue}>
       {children}
     </ThemeContext.Provider>
   );

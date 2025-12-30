@@ -15,8 +15,9 @@ export default function ConcertHallDetailScreen() {
   const { theme, themeName, isDark } = useTheme();
   const t = theme;
   const isBrutal = false;
+  const hallId = route.params?.hallId ?? '';
 
-  const hall = (albumsData as any).concertHalls.find((h: ConcertHall) => h.id === route.params.hallId) as ConcertHall | undefined;
+  const hall = (albumsData as any).concertHalls.find((h: ConcertHall) => h.id === hallId) as ConcertHall | undefined;
   if (!hall) {
     return (
       <View style={[styles.container, { backgroundColor: t.colors.background, justifyContent: 'center', alignItems: 'center' }]}>

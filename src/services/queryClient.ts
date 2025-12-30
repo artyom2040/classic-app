@@ -65,9 +65,25 @@ export const queryKeys = {
     // Albums
     albums: {
         weekly: ['albums', 'weekly'] as const,
+        weeklyAll: ['albums', 'weekly', 'all'] as const,
         monthly: ['albums', 'monthly'] as const,
-        newReleases: ['albums', 'new'] as const,
-        concertHalls: ['albums', 'halls'] as const,
+        monthlyAll: ['albums', 'monthly', 'all'] as const,
+    },
+
+    // Kickstart
+    kickstart: {
+        all: ['kickstart'] as const,
+        byDay: (day: number) => ['kickstart', day] as const,
+    },
+
+    // Concert Halls
+    concertHalls: {
+        all: ['concertHalls'] as const,
+    },
+
+    // New Releases
+    newReleases: {
+        all: ['newReleases'] as const,
     },
 };
 

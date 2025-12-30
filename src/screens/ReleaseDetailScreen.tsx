@@ -19,8 +19,9 @@ export default function ReleaseDetailScreen() {
   const t = theme;
   const isBrutal = false;
   const preferredService = (musicService === 'apple' ? 'appleMusic' : musicService) as 'spotify' | 'appleMusic' | 'youtube';
+  const releaseId = route.params?.releaseId ?? '';
 
-  const release = (albumsData as any).newReleases.find((r: NewRelease) => r.id === route.params.releaseId) as NewRelease | undefined;
+  const release = (albumsData as any).newReleases.find((r: NewRelease) => r.id === releaseId) as NewRelease | undefined;
   if (!release) {
     return (
       <View style={[styles.container, { backgroundColor: t.colors.background, justifyContent: 'center', alignItems: 'center' }]}>

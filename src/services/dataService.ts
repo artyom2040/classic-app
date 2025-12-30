@@ -67,8 +67,6 @@ const DATA_SOURCE: DataSourceConfig = {
 class DataServiceClass {
   private config: DataSourceConfig;
   private provider: DataProvider;
-  private cache: Map<string, { data: unknown; timestamp: number }> = new Map();
-  private cacheTTL = 5 * 60 * 1000; // 5 minutes cache
 
   constructor(config: DataSourceConfig, provider?: DataProvider) {
     this.config = config;
@@ -215,57 +213,40 @@ class DataServiceClass {
   // UTILITY METHODS
   // ---------------------------------------------------------------------------
 
+  /**
+   * Fetch data from provider with fallback to local if primary fails.
+   * Note: Caching is handled by React Query at the hook level.
+   */
   private async fetchData<T>(key: string, fetcher: () => Promise<T>): Promise<T> {
-    // Check cache first
-    const cached = this.cache.get(key);
-    if (cached && Date.now() - cached.timestamp < this.cacheTTL) {
-      return cached.data as T;
-    }
-
-    // Fetch fresh data
     try {
-      const data = await fetcher();
-      this.cache.set(key, { data, timestamp: Date.now() });
-      return data;
+      return await fetcher();
     } catch (error) {
       // If primary provider fails and it's NOT local, try falling back to local
-      // This mimics the original fetchWithSupabaseFallback behavior but more generically
       if (this.config.type !== 'local') {
         console.warn(`[DataService] Primary provider failed for ${key}, falling back to local.`, error);
         const localProvider = new LocalProvider();
-        // We need to map the key to the method name dynamically or switch
-        // For simplicity in this refactor, we'll implement a basic fallback strategy
-        // In a full implementation, we might want the Provider interface to support generic 'getCollection'
-        
+
         try {
-           // Basic fallback mapping
-           let fallbackData: any;
-           switch(key) {
-             case 'composers': fallbackData = await localProvider.getComposers(); break;
-             case 'periods': fallbackData = await localProvider.getPeriods(); break;
-             case 'forms': fallbackData = await localProvider.getForms(); break;
-             case 'terms': fallbackData = await localProvider.getTerms(); break;
-             case 'weeklyAlbums': fallbackData = await localProvider.getWeeklyAlbums(); break;
-             case 'monthlySpotlights': fallbackData = await localProvider.getMonthlySpotlights(); break;
-             case 'newReleases': fallbackData = await localProvider.getNewReleases(); break;
-             case 'concertHalls': fallbackData = await localProvider.getConcertHalls(); break;
-             case 'kickstart': fallbackData = await localProvider.getKickstartDays(); break;
-             default: throw error;
-           }
-           return fallbackData;
-        } catch (fallbackError) {
-          throw error; // If fallback also fails, throw original or new error
+          // Basic fallback mapping
+          let fallbackData: unknown;
+          switch(key) {
+            case 'composers': fallbackData = await localProvider.getComposers(); break;
+            case 'periods': fallbackData = await localProvider.getPeriods(); break;
+            case 'forms': fallbackData = await localProvider.getForms(); break;
+            case 'terms': fallbackData = await localProvider.getTerms(); break;
+            case 'weeklyAlbums': fallbackData = await localProvider.getWeeklyAlbums(); break;
+            case 'monthlySpotlights': fallbackData = await localProvider.getMonthlySpotlights(); break;
+            case 'newReleases': fallbackData = await localProvider.getNewReleases(); break;
+            case 'concertHalls': fallbackData = await localProvider.getConcertHalls(); break;
+            case 'kickstart': fallbackData = await localProvider.getKickstartDays(); break;
+            default: throw error;
+          }
+          return fallbackData as T;
+        } catch {
+          throw error;
         }
       }
       throw error;
-    }
-  }
-
-  clearCache(key?: string) {
-    if (key) {
-      this.cache.delete(key);
-    } else {
-      this.cache.clear();
     }
   }
 }

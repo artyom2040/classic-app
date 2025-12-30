@@ -3,21 +3,28 @@
  * Modern button with variants, sizes, and animations
  */
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   TouchableOpacity,
   TouchableOpacityProps,
-  View,
   StyleSheet,
   ActivityIndicator,
   ViewStyle,
   TextStyle,
+  GestureResponderEvent,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from 'react-native-reanimated';
 import { useTheme } from '../../context/ThemeContext';
 import { ButtonText, ButtonTextLarge, ButtonTextSmall } from './Typography';
 import { hapticSelection } from '../../utils/haptics';
+
+const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
 type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'gradient';
 type ButtonSize = 'small' | 'medium' | 'large';
@@ -41,7 +48,19 @@ interface EnhancedButtonProps extends Omit<TouchableOpacityProps, 'style'> {
   style?: ViewStyle;
   /** Custom text style */
   textStyle?: TextStyle;
+  /** Accessibility hint describing the action */
+  accessibilityHint?: string;
+  /** Enable scale animation on press (default: true) */
+  animated?: boolean;
+  /** Scale amount when pressed (default: 0.97) */
+  pressScale?: number;
 }
+
+const springConfig = {
+  damping: 15,
+  stiffness: 400,
+  mass: 0.5,
+};
 
 export function EnhancedButton({
   title,
@@ -55,15 +74,42 @@ export function EnhancedButton({
   style,
   textStyle,
   onPress,
+  accessibilityLabel,
+  accessibilityHint,
+  animated = true,
+  pressScale = 0.97,
   ...props
 }: EnhancedButtonProps) {
   const { theme } = useTheme();
+  const scale = useSharedValue(1);
 
-  const handlePress = (e: any) => {
+  const handlePressIn = useCallback(() => {
+    if (animated) {
+      scale.value = withSpring(pressScale, springConfig);
+    }
+  }, [animated, pressScale, scale]);
+
+  const handlePressOut = useCallback(() => {
+    if (animated) {
+      scale.value = withSpring(1, springConfig);
+    }
+  }, [animated, scale]);
+
+  const handlePress = (e: GestureResponderEvent) => {
     if (!disabled && !loading) {
       hapticSelection();
       onPress?.(e);
     }
+  };
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  // Accessibility state for screen readers
+  const accessibilityState = {
+    disabled: disabled || loading,
+    busy: loading,
   };
 
   // Size configurations
@@ -176,10 +222,17 @@ export function EnhancedButton({
 
   if (variant === 'gradient') {
     return (
-      <TouchableOpacity
+      <AnimatedTouchable
         onPress={handlePress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
         disabled={disabled || loading}
-        activeOpacity={0.8}
+        activeOpacity={0.9}
+        accessibilityRole="button"
+        accessibilityLabel={accessibilityLabel || title}
+        accessibilityHint={accessibilityHint}
+        accessibilityState={accessibilityState}
+        style={animated ? animatedStyle : undefined}
         {...props}
       >
         <LinearGradient
@@ -190,20 +243,26 @@ export function EnhancedButton({
         >
           {content}
         </LinearGradient>
-      </TouchableOpacity>
+      </AnimatedTouchable>
     );
   }
 
   return (
-    <TouchableOpacity
+    <AnimatedTouchable
       onPress={handlePress}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
       disabled={disabled || loading}
-      activeOpacity={0.8}
-      style={[buttonStyle, style, disabled && styles.disabled]}
+      activeOpacity={0.9}
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel || title}
+      accessibilityHint={accessibilityHint}
+      accessibilityState={accessibilityState}
+      style={[buttonStyle, style, disabled && styles.disabled, animated && animatedStyle]}
       {...props}
     >
       {content}
-    </TouchableOpacity>
+    </AnimatedTouchable>
   );
 }
 

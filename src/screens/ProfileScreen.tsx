@@ -208,6 +208,9 @@ export default function ProfileScreen() {
           <TouchableOpacity
             style={[styles.editButton, { backgroundColor: t.colors.primary + '20' }]}
             onPress={() => navigation.navigate('EditProfile')}
+            accessibilityRole="button"
+            accessibilityLabel="Edit profile"
+            accessibilityHint="Opens the profile editing screen"
           >
             <Ionicons name="pencil" size={16} color={t.colors.primary} />
           </TouchableOpacity>
@@ -237,6 +240,9 @@ export default function ProfileScreen() {
         <TouchableOpacity
           style={[styles.kickstartCard, { backgroundColor: t.colors.primary + '20', borderColor: t.colors.primary + '40' }]}
           onPress={() => navigation.navigate('Kickstart')}
+          accessibilityRole="button"
+          accessibilityLabel="Continue 5-Day Kickstart"
+          accessibilityHint="Opens the kickstart learning journey"
         >
           <View style={styles.kickstartContent}>
             <Ionicons name="rocket" size={24} color={t.colors.primary} />
@@ -288,6 +294,9 @@ export default function ProfileScreen() {
       <TouchableOpacity
         style={[styles.badgesCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}
         onPress={() => navigation.navigate('Badges')}
+        accessibilityRole="button"
+        accessibilityLabel={`Badges, ${badgesEarned} earned`}
+        accessibilityHint="View all your earned badges"
       >
         <View style={styles.badgesHeader}>
           <Ionicons name="ribbon" size={24} color={t.colors.secondary} />
@@ -304,6 +313,9 @@ export default function ProfileScreen() {
       <TouchableOpacity
         style={[styles.badgesCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}
         onPress={() => navigation.navigate('Leaderboard')}
+        accessibilityRole="button"
+        accessibilityLabel="Leaderboard"
+        accessibilityHint="View community rankings"
       >
         <View style={styles.badgesHeader}>
           <Ionicons name="trophy" size={24} color={t.colors.warning} />
@@ -319,17 +331,34 @@ export default function ProfileScreen() {
       {/* Settings */}
       <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Settings</Text>
       <View style={[styles.settingsCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
-        <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('Settings')}>
+        <TouchableOpacity
+          style={styles.settingItem}
+          onPress={() => navigation.navigate('Settings')}
+          accessibilityRole="button"
+          accessibilityLabel="Theme and Preferences"
+        >
           <Ionicons name="color-palette" size={20} color={t.colors.primary} />
           <Text style={[styles.settingText, { color: t.colors.text }]}>Theme & Preferences</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.settingItem} onPress={handleRestartKickstart}>
+        <TouchableOpacity
+          style={styles.settingItem}
+          onPress={handleRestartKickstart}
+          accessibilityRole="button"
+          accessibilityLabel="Restart 5-Day Kickstart"
+          accessibilityHint="Resets your kickstart progress to start fresh"
+        >
           <Ionicons name="rocket" size={20} color={t.colors.secondary} />
           <Text style={[styles.settingText, { color: t.colors.text }]}>
             Restart 5-Day Kickstart
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.settingItem} onPress={handleReset}>
+        <TouchableOpacity
+          style={styles.settingItem}
+          onPress={handleReset}
+          accessibilityRole="button"
+          accessibilityLabel="Reset All Progress"
+          accessibilityHint="Warning: This will delete all your learning progress"
+        >
           <Ionicons name="refresh" size={20} color={t.colors.error} />
           <Text style={[styles.settingText, { color: t.colors.error }]}>
             Reset All Progress
@@ -340,6 +369,9 @@ export default function ProfileScreen() {
       {/* Sign Out */}
       <TouchableOpacity
         style={[styles.signOutButton, { borderColor: t.colors.error }]}
+        accessibilityRole="button"
+        accessibilityLabel={signingOut ? 'Signing out' : 'Sign out'}
+        accessibilityState={{ busy: signingOut }}
         onPress={async () => {
           const doSignOut = async () => {
             setSigningOut(true);

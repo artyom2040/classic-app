@@ -14,7 +14,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 // LinearGradient import removed - was only used for glass theme which is disabled
 
 import { useTheme } from '../context/ThemeContext';
-import { useCardStyle } from '../hooks/useCardStyle';
 import { useResponsive } from '../hooks/useResponsive';
 import { useExpensiveCalculation } from '../utils/performance';
 import { spacing } from '../theme';
@@ -161,8 +160,6 @@ export default function HomeScreen() {
     setRefreshing(false);
   }, [loadProgress]);
 
-  const { cardStyle } = useCardStyle();
-
   return (
     <ScrollView
       style={[styles.container, { backgroundColor: t.colors.background }]}
@@ -207,7 +204,9 @@ export default function HomeScreen() {
             <TouchableOpacity
               style={[styles.headerButton, { backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : t.colors.surfaceLight }]}
               onPress={() => navigation.navigate('Search')}
+              accessibilityRole="button"
               accessibilityLabel="Search"
+              accessibilityHint="Opens the search screen"
             >
               <Ionicons name="search" size={22} color={t.colors.text} />
             </TouchableOpacity>
@@ -299,134 +298,7 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   content: { padding: 16 },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
-  greeting: { fontSize: 14 },
-  title: { fontSize: 26, fontWeight: '700' },
-  headerButtons: { flexDirection: 'row', gap: 8 },
   headerButton: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
-
-  // Stitch-specific header styles
   stitchHeaderLeft: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   avatarCircle: { width: 40, height: 40, borderRadius: 20, borderWidth: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.05)' },
-  stitchGreeting: { fontSize: 14, fontWeight: '500', letterSpacing: 1 }, // Reference: tracking-wide
-  stitchGreetingSmall: { fontSize: 10, fontWeight: '500', letterSpacing: 1.5, marginBottom: 2 },
-  stitchUserName: { fontSize: 18, fontWeight: '700' },
-  stitchTitle: { fontSize: 30, fontWeight: '300', fontStyle: 'italic', marginBottom: 8, opacity: 0.9 }, // Reference: text-3xl font-light italic text-white/90
-  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, paddingHorizontal: 8 },
-  sectionLink: { fontSize: 12, fontWeight: '500', textTransform: 'uppercase', letterSpacing: 1 }, // Reference: tracking-wide
-
-  // Featured grid styles moved to extracted components
-
-  sectionTitle: { fontSize: 20, fontWeight: '700', marginBottom: 12 },
-
-  heroCard: { marginBottom: 16, overflow: 'hidden' },
-  heroAccent: { height: 4 },
-  heroContent: { padding: 16 },
-  heroHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
-  badge: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, gap: 4 },
-  badgeText: { fontSize: 11, fontWeight: '600' },
-  categoryBadge: { fontSize: 10, fontWeight: '500', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8, overflow: 'hidden' },
-  heroTitle: { fontSize: 28, fontWeight: '700', marginBottom: 6 },
-  heroDescription: { fontSize: 14, lineHeight: 20 },
-  heroFooter: { marginTop: 12, flexDirection: 'row', alignItems: 'center', gap: 6 },
-  exampleLabel: { fontSize: 11 },
-  exampleText: { fontSize: 12, fontWeight: '500', flex: 1 },
-
-  statsRow: { flexDirection: 'row', marginBottom: 20 },
-  stat: { flex: 1, alignItems: 'center' },
-  statNumber: { fontSize: 24, fontWeight: '700' },
-  statLabel: { fontSize: 11, marginTop: 2 },
-  statDivider: { width: 1, marginVertical: 4 },
-
-  // Explore and Release styles moved to extracted components
-
-  composerTeaser: { flexDirection: 'row', padding: 16, alignItems: 'center' },
-  composerContent: { flex: 1 },
-  composerLabel: { fontSize: 11, marginBottom: 4 },
-  composerName: { fontSize: 18, fontWeight: '700' },
-  composerDates: { fontSize: 12, marginBottom: 6 },
-  composerBio: { fontSize: 12, lineHeight: 18 },
-  composerArrow: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', marginLeft: 12 },
-
-  // Stitch: Knowledge Bite Card (exact reference matching)
-  stitchKnowledgeCard: {
-    flexDirection: 'row',
-    backgroundColor: '#261e35', // Reference: bg-[#261e35]
-    borderRadius: 16, // Reference: rounded-2xl
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.05)',
-    overflow: 'hidden',
-    marginBottom: 24, // Reference: mb-10 section spacing
-    padding: 4, // Reference: p-1
-  },
-  stitchKnowledgeVisual: {
-    width: '33%',
-    backgroundColor: '#000',
-    overflow: 'hidden',
-    borderRadius: 12, // Reference: rounded-xl for inner visual
-  },
-  stitchVisualGradient: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  stitchVisualOverlay: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    // Background handled by LinearGradient
-  },
-  stitchKnowledgeContent: {
-    flex: 1,
-    padding: 16,
-    paddingLeft: 20,
-    justifyContent: 'center',
-  },
-  stitchKnowledgeLabel: {
-    fontSize: 10,
-    fontWeight: '500',
-    letterSpacing: 1.5,
-    color: '#a593c8', // text-secondary
-    marginBottom: 4,
-  },
-  stitchKnowledgeTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    marginBottom: 6,
-  },
-  stitchKnowledgeDesc: {
-    fontSize: 13,
-    color: '#9ca3af', // gray-400
-    lineHeight: 18,
-  },
-  stitchKnowledgeLink: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    marginTop: 10,
-  },
-  stitchKnowledgeLinkText: {
-    fontSize: 12,
-    fontWeight: '700',
-  },
-
-  // Stitch Spotlight Section
-  stitchSpotlightSection: {
-    marginBottom: 24,
-  },
-  stitchSectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  stitchSectionTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    fontStyle: 'italic',
-  },
-  stitchSectionLink: {
-    fontSize: 14,
-    fontWeight: '600',
-  },
 });

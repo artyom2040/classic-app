@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode, useTransition } from 'react';
 import { haptic } from '../utils/haptics';
 import { STORAGE_KEYS } from '../constants';
 import { getStorageItem, setStorageItem, removeStorageItem } from '../utils/storageUtils';
@@ -62,11 +62,11 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     return setStorageItem(FAVORITES_KEY, newFavorites);
   };
 
-  const isFavorite = (id: string, type: FavoriteType): boolean => {
+  const isFavorite = useCallback((id: string, type: FavoriteType): boolean => {
     return favorites.some(f => f.id === id && f.type === type);
-  };
+  }, [favorites]);
 
-  const toggleFavorite = async (id: string, type: FavoriteType): Promise<boolean> => {
+  const toggleFavorite = useCallback(async (id: string, type: FavoriteType): Promise<boolean> => {
     const existing = favorites.find(f => f.id === id && f.type === type);
     const previousFavorites = [...favorites];
 
@@ -104,29 +104,30 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     }
 
     return wasAdded;
-  };
+  }, [favorites]);
 
-  const getFavoritesByType = (type: FavoriteType): FavoriteItem[] => {
+  const getFavoritesByType = useCallback((type: FavoriteType): FavoriteItem[] => {
     return favorites.filter(f => f.type === type);
-  };
+  }, [favorites]);
 
-  const clearFavorites = async () => {
+  const clearFavorites = useCallback(async () => {
     setFavorites([]);
     await removeStorageItem(FAVORITES_KEY);
-  };
+  }, []);
+
+  // Memoize provider value to prevent unnecessary re-renders
+  const contextValue = useMemo(() => ({
+    favorites,
+    isLoaded,
+    isFavorite,
+    toggleFavorite,
+    getFavoritesByType,
+    clearFavorites,
+    favoritesCount: favorites.length,
+  }), [favorites, isLoaded, isFavorite, toggleFavorite, getFavoritesByType, clearFavorites]);
 
   return (
-    <FavoritesContext.Provider
-      value={{
-        favorites,
-        isLoaded,
-        isFavorite,
-        toggleFavorite,
-        getFavoritesByType,
-        clearFavorites,
-        favoritesCount: favorites.length,
-      }}
-    >
+    <FavoritesContext.Provider value={contextValue}>
       {children}
     </FavoritesContext.Provider>
   );
@@ -145,6 +146,12 @@ export function useFavoriteItem(id: string, type: FavoriteType) {
   const { isFavorite, toggleFavorite, isLoaded } = useFavorites();
   const [isPending, setIsPending] = useState(false);
 
+  // Memoize the favorite check to prevent unnecessary re-renders
+  const isFavorited = useMemo(
+    () => isFavorite(id, type),
+    [isFavorite, id, type]
+  );
+
   const toggle = useCallback(async () => {
     setIsPending(true);
     try {
@@ -154,10 +161,13 @@ export function useFavoriteItem(id: string, type: FavoriteType) {
     }
   }, [id, type, toggleFavorite]);
 
-  return {
-    isFavorite: isFavorite(id, type),
-    toggle,
-    isLoaded,
-    isPending,
-  };
+  return useMemo(
+    () => ({
+      isFavorite: isFavorited,
+      toggle,
+      isLoaded,
+      isPending,
+    }),
+    [isFavorited, toggle, isLoaded, isPending]
+  );
 }

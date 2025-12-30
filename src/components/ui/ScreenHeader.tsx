@@ -89,6 +89,7 @@ export function ScreenHeader({
                     onPress={handleBack}
                     accessibilityRole="button"
                     accessibilityLabel="Go back"
+                    accessibilityHint="Returns to the previous screen"
                     hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                 >
                     <Ionicons name="arrow-back" size={20} color={t.colors.text} />
@@ -106,6 +107,7 @@ export function ScreenHeader({
                             { color: t.colors.text },
                         ]}
                         numberOfLines={1}
+                        accessibilityRole="header"
                     >
                         {title}
                     </Text>

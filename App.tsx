@@ -3,9 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons as _Ionicons } from '@expo/vector-icons';
 import { View, ActivityIndicator } from 'react-native';
-import { BlurView as _BlurView } from 'expo-blur';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryClientProvider } from '@tanstack/react-query';
 
@@ -20,6 +18,7 @@ import MiniPlayer from './src/components/MiniPlayer';
 import { RootStackParamList, TabParamList } from './src/types';
 import { getProgress } from './src/utils/storage';
 import { queryClient } from './src/services/queryClient';
+import { navigationRef } from './src/services/navigationService';
 
 // Screens
 import HomeScreen from './src/screens/HomeScreenV2';
@@ -77,9 +76,8 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
 
 function TabNavigator() {
-  const { theme, isDark, isGlass, themeName: _themeName } = useTheme();
+  const { theme, isGlass } = useTheme();
   const t = theme;
-  const _isStitch = isDark;
 
   return (
     <Tab.Navigator
@@ -188,6 +186,7 @@ function AppNavigator() {
 
   return (
     <NavigationContainer
+      ref={navigationRef}
       theme={navTheme}
       initialState={initialState}
       onStateChange={onStateChange}

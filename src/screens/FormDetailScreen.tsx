@@ -6,6 +6,7 @@ import { useRoute, RouteProp } from '@react-navigation/native';
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
 import { RootStackParamList, MusicalForm } from '../types';
+import { AnimatedScreen } from '../design-system';
 import { markFormViewed } from '../utils/storage';
 
 import formsData from '../data/forms.json';
@@ -17,7 +18,7 @@ export default function FormDetailScreen() {
   const { theme, themeName, isDark } = useTheme();
   const t = theme;
   const isBrutal = false;
-  const { formId } = route.params;
+  const formId = route.params?.formId ?? '';
   const form = formsData.forms.find(f => f.id === formId) as MusicalForm | undefined;
 
   useEffect(() => {
@@ -29,62 +30,66 @@ export default function FormDetailScreen() {
   }
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: t.colors.background }]} contentContainerStyle={styles.content}>
-      <View style={styles.header}>
-        <Text style={[styles.title, { color: t.colors.text }]}>{form.name}</Text>
-        <Text style={[styles.category, { color: t.colors.primary }]}>{form.category} • {form.period}</Text>
-      </View>
-      
-      <Text style={[styles.description, { color: t.colors.textSecondary }]}>{form.description}</Text>
+    <AnimatedScreen animation="fadeSlideUp" delay={50}>
+      <ScrollView style={[styles.container, { backgroundColor: t.colors.background }]} contentContainerStyle={styles.content}>
+        <View style={styles.header}>
+          <Text style={[styles.title, { color: t.colors.text }]}>{form.name}</Text>
+          <Text style={[styles.category, { color: t.colors.primary }]}>{form.category} • {form.period}</Text>
+        </View>
 
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Structure</Text>
-        {form.structure.map((item, idx) => (
-          <View key={idx} style={styles.structureItem}>
-            <View style={[styles.structureNumber, { backgroundColor: t.colors.primary + '30' }]}>
-              <Text style={[styles.structureNumberText, { color: t.colors.primary }]}>{idx + 1}</Text>
-            </View>
-            <View style={styles.structureContent}>
-              <Text style={[styles.structureTitle, { color: t.colors.text }]}>
-                {item.movement ? `Movement ${item.movement}` : item.section || item.component || item.aspect}
-              </Text>
-              <Text style={[styles.structureSubtitle, { color: t.colors.textSecondary }]}>
-                {item.typical || item.description || item.form || item.text || ''}
-              </Text>
-            </View>
-          </View>
-        ))}
-      </View>
+        <Text style={[styles.description, { color: t.colors.textSecondary }]}>{form.description}</Text>
 
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Key Works</Text>
-        {form.keyWorks.map((work, idx) => (
-          <TouchableOpacity
-            key={idx}
-            style={[styles.workCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}
-            onPress={() => Linking.openURL(`https://www.youtube.com/results?search_query=${encodeURIComponent(work.composer + ' ' + work.work)}`)}
-          >
-            <View style={styles.workInfo}>
-              <Text style={[styles.workTitle, { color: t.colors.text }]}>{work.work}</Text>
-              <Text style={[styles.workComposer, { color: t.colors.primary }]}>{work.composer}</Text>
-              <Text style={[styles.workWhy, { color: t.colors.textSecondary }]}>{work.why}</Text>
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Structure</Text>
+          {form.structure.map((item, idx) => (
+            <View key={idx} style={styles.structureItem}>
+              <View style={[styles.structureNumber, { backgroundColor: t.colors.primary + '30' }]}>
+                <Text style={[styles.structureNumberText, { color: t.colors.primary }]}>{idx + 1}</Text>
+              </View>
+              <View style={styles.structureContent}>
+                <Text style={[styles.structureTitle, { color: t.colors.text }]}>
+                  {item.movement ? `Movement ${item.movement}` : item.section || item.component || item.aspect}
+                </Text>
+                <Text style={[styles.structureSubtitle, { color: t.colors.textSecondary }]}>
+                  {item.typical || item.description || item.form || item.text || ''}
+                </Text>
+              </View>
             </View>
-            <Ionicons name="play-circle-outline" size={24} color={t.colors.primary} />
-          </TouchableOpacity>
-        ))}
-      </View>
+          ))}
+        </View>
 
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, { color: t.colors.text }]}>What to Listen For</Text>
-        {form.listenFor.map((tip, idx) => (
-          <View key={idx} style={styles.tipItem}>
-            <Ionicons name="ear" size={16} color={t.colors.primary} />
-            <Text style={[styles.tipText, { color: t.colors.textSecondary }]}>{tip}</Text>
-          </View>
-        ))}
-      </View>
-      <View style={{ height: spacing.xxl }} />
-    </ScrollView>
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: t.colors.text }]}>Key Works</Text>
+          {form.keyWorks.map((work, idx) => (
+            <TouchableOpacity
+              key={idx}
+              style={[styles.workCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}
+              onPress={() => Linking.openURL(`https://www.youtube.com/results?search_query=${encodeURIComponent(work.composer + ' ' + work.work)}`)}
+              accessibilityRole="button"
+              accessibilityLabel={`Play ${work.work} by ${work.composer} on YouTube`}
+            >
+              <View style={styles.workInfo}>
+                <Text style={[styles.workTitle, { color: t.colors.text }]}>{work.work}</Text>
+                <Text style={[styles.workComposer, { color: t.colors.primary }]}>{work.composer}</Text>
+                <Text style={[styles.workWhy, { color: t.colors.textSecondary }]}>{work.why}</Text>
+              </View>
+              <Ionicons name="play-circle-outline" size={24} color={t.colors.primary} />
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: t.colors.text }]}>What to Listen For</Text>
+          {form.listenFor.map((tip, idx) => (
+            <View key={idx} style={styles.tipItem}>
+              <Ionicons name="ear" size={16} color={t.colors.primary} />
+              <Text style={[styles.tipText, { color: t.colors.textSecondary }]}>{tip}</Text>
+            </View>
+          ))}
+        </View>
+        <View style={{ height: spacing.xxl }} />
+      </ScrollView>
+    </AnimatedScreen>
   );
 }
 

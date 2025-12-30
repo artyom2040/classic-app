@@ -10,6 +10,11 @@ import { Logger } from '../utils/logger';
 export interface SupabaseConfig {
   url: string;
   anonKey: string;
+  /**
+   * @deprecated Service keys should NEVER be exposed in client code.
+   * Use server-side functions (Supabase Edge Functions) for admin operations.
+   * This field is kept for backwards compatibility but will be undefined in client builds.
+   */
   serviceKey?: string;
 }
 
@@ -97,13 +102,22 @@ export function createConfig(): AppConfig {
   // Merge base config with environment-specific overrides
   const baseConfig = configs[environment];
 
+  // SECURITY: Service keys should NEVER be bundled into client code.
+  // They bypass RLS and could allow unauthorized data access.
+  // Use Supabase Edge Functions for admin operations instead.
+  const hasServiceKeyExposed = !!process.env.EXPO_PUBLIC_SUPABASE_SERVICE_KEY;
+  if (hasServiceKeyExposed && environment === 'production') {
+    Logger.error('Config', 'SECURITY WARNING: Service key exposed via EXPO_PUBLIC prefix. Remove EXPO_PUBLIC_SUPABASE_SERVICE_KEY from your environment.');
+  }
+
   return {
     environment,
     apiUrl: process.env.EXPO_PUBLIC_API_URL || baseConfig.apiUrl!,
     supabase: {
       url: process.env.EXPO_PUBLIC_SUPABASE_URL || '',
       anonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '',
-      serviceKey: process.env.EXPO_PUBLIC_SUPABASE_SERVICE_KEY,
+      // Service key intentionally omitted from client config for security
+      serviceKey: undefined,
     },
     features: baseConfig.features!,
     debug: baseConfig.debug!,

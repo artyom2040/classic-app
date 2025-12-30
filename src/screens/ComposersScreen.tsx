@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useState, useTransition } from 'react';
 import {
   View,
   Text,
@@ -15,14 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList, Composer, Period } from '../types';
 import { hapticSelection } from '../utils/haptics';
-import { useAsyncData } from '../hooks';
-import { DataService } from '../services/dataService';
-import { createLogger } from '../utils/logger';
-
-import composersData from '../data/composers.json';
-import periodsData from '../data/periods.json';
-
-const log = createLogger('ComposersScreen');
+import { useComposers, usePeriods } from '../hooks';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -35,39 +28,33 @@ interface ComposerSection {
 
 export default function ComposersScreen() {
   const navigation = useNavigation<NavigationProp>();
-  const { theme, themeName, isDark } = useTheme();
+  const { theme } = useTheme();
   const t = theme;
-  const isBrutal = false;
   const [selectedPeriod, setSelectedPeriod] = useState<string>('all');
   const [refreshing, setRefreshing] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
-  // Fetch composers and periods with error handling
-  const fetchComposers = useCallback(() => DataService.getComposers(), []);
-  const fetchPeriods = useCallback(() => DataService.getPeriods(), []);
-
+  // Fetch composers and periods using React Query hooks
+  // DataService handles fallback to local JSON data if fetch fails
   const {
-    data: composers,
+    data: composers = [],
     error: composersError,
     isLoading: composersLoading,
-    retry: retryComposers,
-  } = useAsyncData(fetchComposers, composersData.composers as Composer[], {
-    onError: (err) => log.error('Failed to load composers', { error: err.message }),
-  });
+    refetch: refetchComposers,
+  } = useComposers();
 
   const {
-    data: periods,
+    data: periods = [],
     error: periodsError,
     isLoading: periodsLoading,
-    retry: retryPeriods,
-  } = useAsyncData(fetchPeriods, periodsData.periods as Period[], {
-    onError: (err) => log.error('Failed to load periods', { error: err.message }),
-  });
+    refetch: refetchPeriods,
+  } = usePeriods();
 
   const isLoading = composersLoading || periodsLoading;
   const error = composersError || periodsError;
   const handleRetry = () => {
-    if (composersError) retryComposers();
-    if (periodsError) retryPeriods();
+    if (composersError) refetchComposers();
+    if (periodsError) refetchPeriods();
   };
 
   const sections: ComposerSection[] = useMemo(() => {
@@ -87,10 +74,11 @@ export default function ComposersScreen() {
     return filtered.filter(s => s.data.length > 0);
   }, [composers, periods, selectedPeriod]);
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     hapticSelection();
     setRefreshing(true);
-    setTimeout(() => setRefreshing(false), 250);
+    await Promise.all([refetchComposers(), refetchPeriods()]);
+    setRefreshing(false);
   };
 
   const renderComposer = ({ item, section }: { item: Composer; section: ComposerSection }) => (
@@ -144,16 +132,15 @@ export default function ComposersScreen() {
       <ScreenHeader title="Composers" />
 
       {/* Period Filters */}
-      <View style={styles.filterRow}>
+      <View style={[styles.filterRow, isPending && styles.filterRowPending]}>
         <TouchableOpacity
           style={[
             styles.filterChip,
             { backgroundColor: selectedPeriod === 'all' ? t.colors.primary + '20' : t.colors.surface },
-            isBrutal && { borderWidth: 2, borderColor: t.colors.border },
           ]}
           onPress={() => {
             hapticSelection();
-            setSelectedPeriod('all');
+            startTransition(() => setSelectedPeriod('all'));
           }}
         >
           <Text style={[styles.filterText, { color: t.colors.text }]}>All</Text>
@@ -164,11 +151,10 @@ export default function ComposersScreen() {
             style={[
               styles.filterChip,
               { backgroundColor: selectedPeriod === period.id ? period.color + '25' : t.colors.surface },
-              isBrutal && { borderWidth: 2, borderColor: t.colors.border },
             ]}
             onPress={() => {
               hapticSelection();
-              setSelectedPeriod(period.id);
+              startTransition(() => setSelectedPeriod(period.id));
             }}
           >
             <Text style={[styles.filterText, { color: selectedPeriod === period.id ? period.color : t.colors.text }]}>{period.name}</Text>
@@ -204,7 +190,10 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: spacing.xs,
     padding: spacing.md,
-    paddingBottom: 0
+    paddingBottom: 0,
+  },
+  filterRowPending: {
+    opacity: 0.7,
   },
   filterChip: {
     paddingHorizontal: spacing.md,

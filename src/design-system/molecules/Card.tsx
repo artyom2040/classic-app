@@ -37,6 +37,10 @@ interface CardProps {
   onPress?: () => void;
   /** Disable press feedback */
   activeOpacity?: number;
+  /** Accessibility label for screen readers (required for pressable cards) */
+  accessibilityLabel?: string;
+  /** Accessibility hint describing the action */
+  accessibilityHint?: string;
 }
 
 export function Card({
@@ -50,6 +54,8 @@ export function Card({
   padding = 16,
   onPress,
   activeOpacity = 0.8,
+  accessibilityLabel,
+  accessibilityHint,
 }: CardProps) {
   const { theme } = useTheme();
 
@@ -96,6 +102,9 @@ export function Card({
         }}
         activeOpacity={activeOpacity}
         style={[cardStyle, style]}
+        accessibilityRole="button"
+        accessibilityLabel={accessibilityLabel}
+        accessibilityHint={accessibilityHint}
       >
         {content}
       </TouchableOpacity>

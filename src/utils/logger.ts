@@ -156,6 +156,32 @@ export class Logger {
   }
 
   /**
+   * Log debug message (only in development)
+   *
+   * @param module Module/component name
+   * @param message Debug message
+   * @param context Additional context
+   *
+   * @example
+   * Logger.debug('AuthContext', 'Verifying OTP');
+   */
+  static debug(module: string, message: string, context?: LogContext): void {
+    // Only log debug messages in development
+    if (process.env.NODE_ENV === 'production') {
+      return;
+    }
+
+    const formattedMessage = this.formatMessage(module, `[DEBUG] ${message}`);
+    const sanitizedContext = this.sanitizeContext(this.formatContext(context));
+
+    if (sanitizedContext) {
+      console.log(formattedMessage, sanitizedContext);
+    } else {
+      console.log(formattedMessage);
+    }
+  }
+
+  /**
    * Log performance metric
    *
    * @param module Module/component name
@@ -269,6 +295,8 @@ export class Logger {
         this.warn(moduleName, message, context),
       info: (message: string, context?: LogContext) =>
         this.info(moduleName, message, context),
+      debug: (message: string, context?: LogContext) =>
+        this.debug(moduleName, message, context),
       performance: (operation: string, duration: number, context?: LogContext) =>
         this.performance(moduleName, operation, duration, context),
       network: (method: string, url: string, status: number, duration: number) =>

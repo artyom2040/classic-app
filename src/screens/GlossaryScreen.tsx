@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useTransition } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -62,6 +63,16 @@ export default function GlossaryScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [featuredDismissed, setFeaturedDismissed] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  // Wrap filter updates in transition for smoother UX
+  const handleSearchChange = useCallback((text: string) => {
+    startTransition(() => setSearchQuery(text));
+  }, []);
+
+  const handleCategoryChange = useCallback((category: string) => {
+    startTransition(() => setSelectedCategory(category));
+  }, []);
 
   // Merge static colors with theme-dependent ones
   const getCategoryColor = useCallback((category: string): string => {
@@ -141,19 +152,19 @@ export default function GlossaryScreen() {
       <ScreenHeader title="Glossary" subtitle={`${filteredTerms.length} musical terms`} />
 
       {/* Search Bar */}
-      <View style={[styles.searchContainer, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
+      <View style={[styles.searchContainer, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm, isPending && styles.searchPending]}>
         <Ionicons name="search" size={20} color={t.colors.textMuted} />
         <TextInput
           style={[styles.searchInput, { color: t.colors.text }]}
           placeholder="Search terms..."
           placeholderTextColor={t.colors.textMuted}
           value={searchQuery}
-          onChangeText={setSearchQuery}
+          onChangeText={handleSearchChange}
           autoCapitalize="none"
           autoCorrect={false}
         />
         {searchQuery.length > 0 && (
-          <TouchableOpacity onPress={() => setSearchQuery('')}>
+          <TouchableOpacity onPress={() => handleSearchChange('')}>
             <Ionicons name="close-circle" size={20} color={t.colors.textMuted} />
           </TouchableOpacity>
         )}
@@ -200,7 +211,7 @@ export default function GlossaryScreen() {
         <CategoryChips
           items={CATEGORIES.filter(c => c !== 'All').map(c => ({ id: c, label: c }))}
           selectedId={selectedCategory === 'All' ? 'all' : selectedCategory}
-          onSelect={(id) => setSelectedCategory(id === 'all' ? 'All' : id)}
+          onSelect={(id) => handleCategoryChange(id === 'all' ? 'All' : id)}
           style={{ marginVertical: spacing.sm }}
         />
       ) : (
@@ -217,7 +228,7 @@ export default function GlossaryScreen() {
                   styles.categoryChip,
                   { backgroundColor: selectedCategory === item ? t.colors.primary : t.colors.surface },
                 ]}
-                onPress={() => setSelectedCategory(item)}
+                onPress={() => handleCategoryChange(item)}
                 accessibilityRole="button"
                 accessibilityState={{ selected: selectedCategory === item }}
                 accessibilityLabel={`Filter by ${item}`}
@@ -236,13 +247,14 @@ export default function GlossaryScreen() {
         </View>
       )}
 
-      {/* Terms List */}
-      <FlatList
+      {/* Terms List - FlashList for better performance */}
+      <FlashList
         data={filteredTerms}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderTerm}
         contentContainerStyle={styles.listContent}
-        showsVerticalScrollIndicator={false}
+        showsScrollIndicator={false}
+        estimatedItemSize={isStitch ? 80 : 72}
         ListEmptyComponent={
           <View style={styles.emptyState}>
             <Ionicons name="search-outline" size={48} color={t.colors.textMuted} />
@@ -262,7 +274,10 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.lg,
     marginHorizontal: spacing.md,
     paddingHorizontal: spacing.md,
-    height: 48
+    height: 48,
+  },
+  searchPending: {
+    opacity: 0.7,
   },
   searchInput: {
     flex: 1,

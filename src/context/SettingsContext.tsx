@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo, useCallback, ReactNode } from 'react';
 import { STORAGE_KEYS } from '../constants';
 import { getStorageItem, setStorageItem } from '../utils/storageUtils';
 
@@ -44,18 +44,26 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     return setStorageItem(SETTINGS_STORAGE_KEY, current);
   };
 
-  const setIconPack = (pack: IconPack) => {
+  const setIconPack = useCallback((pack: IconPack) => {
     setIconPackState(pack);
     saveSettings({ iconPack: pack });
-  };
+  }, []);
 
-  const setMusicService = (service: MusicService) => {
+  const setMusicService = useCallback((service: MusicService) => {
     setMusicServiceState(service);
     saveSettings({ musicService: service });
-  };
+  }, []);
+
+  // Memoize provider value to prevent unnecessary re-renders
+  const contextValue = useMemo(() => ({
+    iconPack,
+    setIconPack,
+    musicService,
+    setMusicService,
+  }), [iconPack, setIconPack, musicService, setMusicService]);
 
   return (
-    <SettingsContext.Provider value={{ iconPack, setIconPack, musicService, setMusicService }}>
+    <SettingsContext.Provider value={contextValue}>
       {children}
     </SettingsContext.Provider>
   );

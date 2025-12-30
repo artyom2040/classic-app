@@ -104,40 +104,46 @@ export default function ListeningGuidePlayerScreen() {
     const [activeAnnotationIndex, setActiveAnnotationIndex] = useState(0);
     const [manualTimeOffset, setManualTimeOffset] = useState(0);
 
-    const guide = getGuideById(route.params.guideId);
+    // Refs to track state inside interval callbacks without causing recreation
+    const isPlayingRef = useRef(isPlaying);
+    isPlayingRef.current = isPlaying;
+
+    const guide = getGuideById(route.params?.guideId ?? '');
 
     // Calculate player dimensions
     const contentWidth = Math.min(width - 32, maxContentWidth);
     const playerHeight = isWeb ? Math.round(contentWidth * 9 / 16) : 220;
 
-    // For native: Update current time periodically
+    // For native: Update current time periodically (stable interval)
     useEffect(() => {
         if (isWeb) return; // Skip for web
 
         const interval = setInterval(async () => {
-            if (playerRef.current && isPlaying) {
+            if (playerRef.current && isPlayingRef.current) {
                 try {
                     const time = await playerRef.current.getCurrentTime();
                     setCurrentTime(time);
-                } catch (e) {
+                } catch {
                     // Player might not be ready
                 }
             }
         }, 500);
 
         return () => clearInterval(interval);
-    }, [isPlaying, isWeb]);
+    }, [isWeb]); // Only depends on isWeb, not isPlaying
 
     // For web: Manual time tracking when "playing"
     useEffect(() => {
-        if (!isWeb || !isPlaying) return;
+        if (!isWeb) return;
 
         const interval = setInterval(() => {
-            setCurrentTime(prev => prev + 1);
+            if (isPlayingRef.current) {
+                setCurrentTime(prev => prev + 1);
+            }
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [isWeb, isPlaying]);
+    }, [isWeb]); // Only depends on isWeb, not isPlaying
 
     // Update active annotation based on current time
     useEffect(() => {

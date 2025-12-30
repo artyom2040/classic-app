@@ -1,14 +1,17 @@
 import React, { useMemo, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
 import { useSettings } from '../context/SettingsContext';
 import { openInMusicService } from '../utils/musicLinks';
-import { NewRelease, ListenerLevel } from '../types';
+import { NewRelease, ListenerLevel, RootStackParamList } from '../types';
 
 import albumsData from '../data/albums.json';
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 const LEVEL_FILTERS: Array<{ label: string; value: ListenerLevel | 'all' }> = [
   { label: 'All', value: 'all' },
@@ -17,7 +20,7 @@ const LEVEL_FILTERS: Array<{ label: string; value: ListenerLevel | 'all' }> = [
   { label: 'Advanced', value: 'advanced' },
 ];
 
-export default function NewReleasesScreen({ navigation }: any) {
+export default function NewReleasesScreen({ navigation }: { navigation: NavigationProp }) {
   const { theme, themeName, isDark } = useTheme();
   const { musicService } = useSettings();
   const t = theme;

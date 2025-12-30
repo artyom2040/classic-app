@@ -33,7 +33,7 @@ export default function ConductorDetailScreen() {
     const route = useRoute<ConductorDetailRouteProp>();
     const { theme, isDark } = useTheme();
     const t = theme;
-    const { conductorId } = route.params;
+    const conductorId = route.params?.conductorId ?? '';
     const conductor = conductorsData.conductors.find(c => c.id === conductorId) as Conductor | undefined;
 
     const { isDesktop, maxContentWidth } = useResponsive();

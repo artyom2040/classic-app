@@ -21,7 +21,7 @@ export default function KickstartDayScreen() {
   const t = theme;
   const isBrutal = false;
   const isStitch = isDark;
-  const { day: dayNumber } = route.params;
+  const dayNumber = route.params?.day ?? 1;
 
   const dayData = kickstartData.days.find(d => d.day === dayNumber) as KickstartDay | undefined;
 

@@ -63,8 +63,8 @@ export function FloatingTabBar({
                     />
                 )}
 
-                <View style={styles.tabsRow}>
-                    {tabs.map((tab) => {
+                <View style={styles.tabsRow} accessibilityRole="tablist">
+                    {tabs.map((tab, index) => {
                         const isActive = tab.name === activeTab;
                         const iconName = isActive && tab.iconFilled ? tab.iconFilled : tab.icon;
                         const activeColor = theme.colors.primary;
@@ -76,6 +76,10 @@ export function FloatingTabBar({
                                 style={styles.floatingTab}
                                 onPress={() => onTabPress(tab.name)}
                                 activeOpacity={0.7}
+                                accessibilityRole="tab"
+                                accessibilityLabel={tab.label}
+                                accessibilityState={{ selected: isActive }}
+                                accessibilityHint={`Navigate to ${tab.label} tab`}
                             >
                                 <Ionicons
                                     name={iconName}

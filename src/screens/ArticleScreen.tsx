@@ -44,7 +44,7 @@ export default function ArticleScreen() {
     const navigation = useNavigation<NavigationProp>();
     const { theme: t, isDark } = useTheme();
     const { isDesktop, maxContentWidth } = useResponsive();
-    const { articleId } = route.params;
+    const articleId = route.params?.articleId ?? '';
 
     const articles = articlesData.articles as Article[];
 

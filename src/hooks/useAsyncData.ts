@@ -1,23 +1,24 @@
 /**
  * useAsyncData Hook
  *
- * Standardized pattern for fetching async data with:
- * - Loading state
- * - Error state with error message
- * - Fallback data while loading
- * - Automatic retry capability
- * - Type safety with generics
+ * @deprecated This hook is deprecated. Use React Query hooks from useDataService.ts instead.
  *
- * Usage:
+ * React Query provides better caching, background refetching, and DevTools support.
+ *
+ * Migration example:
+ * ```typescript
+ * // Before (deprecated)
  * const { data, error, isLoading, retry } = useAsyncData(
  *   () => DataService.getComposers(),
- *   [],
- *   { onError: (err) => showToast(`Error: ${err.message}`) }
+ *   []
  * );
  *
- * if (isLoading) return <SkeletonLoader />;
- * if (error) return <ErrorUI onRetry={retry} />;
- * return <Content data={data} />;
+ * // After (recommended)
+ * import { useComposers } from '../hooks';
+ * const { data, error, isLoading, refetch } = useComposers();
+ * ```
+ *
+ * This hook is kept for backward compatibility but may be removed in a future version.
  */
 
 import { useEffect, useState, useCallback, useRef } from 'react';
@@ -79,21 +80,13 @@ export interface UseAsyncDataResult<T> {
 /**
  * Hook for fetching async data with automatic error handling and retry
  *
+ * @deprecated Use React Query hooks from useDataService.ts instead (e.g., useComposers, usePeriods).
+ *
  * @template T The type of data being fetched
  * @param fetchFn Function that returns a Promise of the data
  * @param fallback Default value to use while loading or on error
  * @param options Configuration options
  * @returns Object with data, error, loading states, and retry function
- *
- * @example
- * const { data, error, isLoading, retry } = useAsyncData(
- *   async () => {
- *     const response = await fetch('/api/composers');
- *     return response.json();
- *   },
- *   [],
- *   { maxRetries: 3, onError: (err) => alert(err.message) }
- * );
  */
 export function useAsyncData<T>(
   fetchFn: () => Promise<T>,

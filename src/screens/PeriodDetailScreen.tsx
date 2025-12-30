@@ -25,7 +25,7 @@ export default function PeriodDetailScreen() {
   const t = theme;
   const isBrutal = false;
   const isStitch = isDark;
-  const { periodId } = route.params;
+  const periodId = route.params?.periodId ?? '';
 
   const period = periodsData.periods.find(p => p.id === periodId) as Period | undefined;
   const composers = composersData.composers.filter(c => c.period === periodId) as Composer[];

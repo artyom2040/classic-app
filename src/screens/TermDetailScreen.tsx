@@ -9,6 +9,7 @@ import { useResponsive } from '../hooks/useResponsive';
 import { useFavorites } from '../context/FavoritesContext';
 import { RootStackParamList, Term } from '../types';
 import { ScreenContainer, ScreenHeader } from '../components/ui';
+import { AnimatedScreen } from '../design-system';
 import { markTermViewed } from '../utils/storage';
 import { getLongDefinition, getShortDefinition } from '../utils/terms';
 
@@ -23,7 +24,7 @@ export default function TermDetailScreen() {
   const { isFavorite, toggleFavorite } = useFavorites();
   const t = theme;
   const isBrutal = false;
-  const { termId } = route.params;
+  const termId = route.params?.termId ?? '';
   // Compare as strings since termId is string but JSON has number IDs
   const term = glossaryData.terms.find(item => String(item.id) === termId);
   const isLiked = isFavorite(termId, 'term');
@@ -56,47 +57,50 @@ export default function TermDetailScreen() {
   return (
     <ScreenContainer padded={false}>
       <ScreenHeader title={term.term} />
-      <ScrollView
-        contentContainerStyle={[
-          styles.content,
-          isDesktop && { maxWidth: maxContentWidth, alignSelf: 'center', width: '100%' }
-        ]}
-      >
-        <View style={styles.header}>
-          <View style={styles.titleRow}>
-            <Text style={[styles.term, { color: t.colors.text }]}>{term.term}</Text>
-            <TouchableOpacity
-              style={[styles.favoriteButton, { backgroundColor: isLiked ? t.colors.error + '20' : t.colors.surfaceLight }]}
-              onPress={() => toggleFavorite(termId, 'term')}
-            >
-              <Ionicons
-                name={isLiked ? 'heart' : 'heart-outline'}
-                size={22}
-                color={isLiked ? t.colors.error : t.colors.textMuted}
-              />
-            </TouchableOpacity>
+      <AnimatedScreen animation="fadeSlideUp" delay={50}>
+        <ScrollView
+          contentContainerStyle={[
+            styles.content,
+            isDesktop && { maxWidth: maxContentWidth, alignSelf: 'center', width: '100%' }
+          ]}
+        >
+          <View style={styles.header}>
+            <View style={styles.titleRow}>
+              <Text style={[styles.term, { color: t.colors.text }]}>{term.term}</Text>
+              <TouchableOpacity
+                style={[styles.favoriteButton, { backgroundColor: isLiked ? t.colors.error + '20' : t.colors.surfaceLight }]}
+                onPress={() => toggleFavorite(termId, 'term')}
+                accessibilityRole="button"
+                accessibilityLabel={isLiked ? 'Remove from favorites' : 'Add to favorites'}
+                accessibilityState={{ selected: isLiked }}
+              >
+                <Ionicons
+                  name={isLiked ? 'heart' : 'heart-outline'}
+                  size={22}
+                  color={isLiked ? t.colors.error : t.colors.textMuted}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={[styles.categoryBadge, { backgroundColor: categoryColor + '30' }]}>
+              <Text style={[styles.categoryText, { color: categoryColor }]}>{term.category}</Text>
+            </View>
           </View>
-          <View style={[styles.categoryBadge, { backgroundColor: categoryColor + '30' }]}>
-            <Text style={[styles.categoryText, { color: categoryColor }]}>{term.category}</Text>
+
+          {shortDefinition && (
+            <View style={[styles.exampleCard, { backgroundColor: t.colors.surfaceLight }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
+              <Text style={[styles.exampleLabel, { color: t.colors.textMuted }]}>Quick definition</Text>
+              <Text style={[styles.exampleText, { color: t.colors.textSecondary }]}>{shortDefinition}</Text>
+            </View>
+          )}
+
+          <View style={[styles.definitionCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
+            <Ionicons name="book-outline" size={20} color={t.colors.primary} />
+            <Text style={[styles.definition, { color: t.colors.text }]}>{longDefinition}</Text>
           </View>
-        </View>
 
-        {shortDefinition && (
-          <View style={[styles.exampleCard, { backgroundColor: t.colors.surfaceLight }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
-            <Text style={[styles.exampleLabel, { color: t.colors.textMuted }]}>Quick definition</Text>
-            <Text style={[styles.exampleText, { color: t.colors.textSecondary }]}>{shortDefinition}</Text>
-          </View>
-        )}
-
-        <View style={[styles.definitionCard, { backgroundColor: t.colors.surface }, isBrutal ? { borderWidth: 2, borderColor: t.colors.border } : t.shadows.sm]}>
-          <Ionicons name="book-outline" size={20} color={t.colors.primary} />
-          <Text style={[styles.definition, { color: t.colors.text }]}>{longDefinition}</Text>
-        </View>
-
-
-
-        <View style={{ height: spacing.xxl }} />
-      </ScrollView>
+          <View style={{ height: spacing.xxl }} />
+        </ScrollView>
+      </AnimatedScreen>
     </ScreenContainer>
   );
 }

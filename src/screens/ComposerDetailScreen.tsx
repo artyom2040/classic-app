@@ -43,7 +43,7 @@ export default function ComposerDetailScreen() {
   const t = theme;
   const isBrutal = false;
   const isStitch = isDark;
-  const { composerId } = route.params;
+  const composerId = route.params?.composerId ?? '';
   const isLiked = isFavorite(composerId, 'composer');
   const [loading, setLoading] = React.useState(true);
   const [selectedTab, setSelectedTab] = useState<StitchTab>('biography');
@@ -293,6 +293,9 @@ export default function ComposerDetailScreen() {
               <TouchableOpacity
                 style={[styles.stitchShuffleButton, { backgroundColor: t.colors.primary }]}
                 onPress={handleShufflePlay}
+                accessibilityRole="button"
+                accessibilityLabel="Shuffle play"
+                accessibilityHint="Plays a random track from this composer"
               >
                 <Ionicons name="shuffle" size={18} color="#FFF" />
                 <Text style={styles.stitchShuffleText}>Shuffle Play</Text>
@@ -358,6 +361,9 @@ export default function ComposerDetailScreen() {
             <TouchableOpacity
               style={[styles.favoriteButton, { backgroundColor: isLiked ? t.colors.error + '20' : t.colors.surfaceLight }]}
               onPress={() => toggleFavorite(composerId, 'composer')}
+              accessibilityRole="button"
+              accessibilityLabel={isLiked ? 'Remove from favorites' : 'Add to favorites'}
+              accessibilityState={{ selected: isLiked }}
             >
               <Ionicons
                 name={isLiked ? 'heart' : 'heart-outline'}
@@ -428,11 +434,23 @@ export default function ComposerDetailScreen() {
           <Text style={[styles.listenTitle, { color: t.colors.text }]}>🎧 More on Streaming</Text>
           <Text style={[styles.listenText, { color: t.colors.textSecondary }]}>{composer.listenFirst}</Text>
           <View style={styles.listenButtons}>
-            <TouchableOpacity style={[styles.listenButton, { backgroundColor: t.colors.surfaceLight }]} onPress={openSpotify}>
+            <TouchableOpacity
+              style={[styles.listenButton, { backgroundColor: t.colors.surfaceLight }]}
+              onPress={openSpotify}
+              accessibilityRole="button"
+              accessibilityLabel={`Listen to ${composer.name} on Spotify`}
+              accessibilityHint="Opens Spotify in your browser"
+            >
               <Ionicons name="play-circle" size={20} color="#1DB954" />
               <Text style={[styles.listenButtonText, { color: t.colors.text }]}>Spotify</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.listenButton, { backgroundColor: t.colors.surfaceLight }]} onPress={openYouTube}>
+            <TouchableOpacity
+              style={[styles.listenButton, { backgroundColor: t.colors.surfaceLight }]}
+              onPress={openYouTube}
+              accessibilityRole="button"
+              accessibilityLabel={`Watch ${composer.name} videos on YouTube`}
+              accessibilityHint="Opens YouTube in your browser"
+            >
               <Ionicons name="logo-youtube" size={20} color="#FF0000" />
               <Text style={[styles.listenButtonText, { color: t.colors.text }]}>YouTube</Text>
             </TouchableOpacity>

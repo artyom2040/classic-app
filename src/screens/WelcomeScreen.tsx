@@ -61,7 +61,8 @@ export default function WelcomeScreen() {
     const { width: screenWidth, height: screenHeight } = useWindowDimensions();
     const [activeIndex, setActiveIndex] = useState(0);
     const flatListRef = useRef<FlatList>(null);
-    const autoplayRef = useRef<NodeJS.Timeout | null>(null);
+    const autoplayRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const resumeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const isUserInteracting = useRef(false);
 
     // Autoplay carousel every 5 seconds
@@ -84,17 +85,26 @@ export default function WelcomeScreen() {
             if (autoplayRef.current) {
                 clearInterval(autoplayRef.current);
             }
+            if (resumeTimeoutRef.current) {
+                clearTimeout(resumeTimeoutRef.current);
+            }
         };
     }, []);
 
     // Pause autoplay when user interacts
     const handleScrollBeginDrag = () => {
         isUserInteracting.current = true;
+        // Clear any pending resume timeout
+        if (resumeTimeoutRef.current) {
+            clearTimeout(resumeTimeoutRef.current);
+            resumeTimeoutRef.current = null;
+        }
     };
 
     const handleScrollEndDrag = () => {
-        setTimeout(() => {
+        resumeTimeoutRef.current = setTimeout(() => {
             isUserInteracting.current = false;
+            resumeTimeoutRef.current = null;
         }, 3000);
     };
 

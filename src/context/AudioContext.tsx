@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useRef, ReactNode, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState, useRef, ReactNode, useCallback, useEffect, useMemo } from 'react';
 import { Platform } from 'react-native';
 import { createAudioPlayer, AudioPlayer, AudioStatus } from 'expo-audio';
 import { useToast } from '../components';
@@ -242,24 +242,39 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     setQueue([]);
   }, []);
 
+  // Memoize provider value to prevent unnecessary re-renders
+  const contextValue = useMemo(() => ({
+    currentTrack,
+    isPlaying,
+    isLoading,
+    position,
+    duration,
+    playTrack,
+    pause,
+    resume,
+    stop,
+    seekTo,
+    queue,
+    addToQueue,
+    clearQueue,
+  }), [
+    currentTrack,
+    isPlaying,
+    isLoading,
+    position,
+    duration,
+    playTrack,
+    pause,
+    resume,
+    stop,
+    seekTo,
+    queue,
+    addToQueue,
+    clearQueue,
+  ]);
+
   return (
-    <AudioContext.Provider
-      value={{
-        currentTrack,
-        isPlaying,
-        isLoading,
-        position,
-        duration,
-        playTrack,
-        pause,
-        resume,
-        stop,
-        seekTo,
-        queue,
-        addToQueue,
-        clearQueue,
-      }}
-    >
+    <AudioContext.Provider value={contextValue}>
       {children}
     </AudioContext.Provider>
   );

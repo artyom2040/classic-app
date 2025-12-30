@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {
   View,
   Text,
@@ -41,7 +41,7 @@ interface SearchResult {
   title: string;
   subtitle: string;
   icon: string;
-  color: string;
+  periodColor?: string; // Only for period type - stable color from data
 }
 
 export default function SearchScreen() {
@@ -52,10 +52,32 @@ export default function SearchScreen() {
   const isBrutal = false;
 
   const [query, setQuery] = useState('');
+  const [debouncedQuery, setDebouncedQuery] = useState('');
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [isFocused, setIsFocused] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [recentsLoading, setRecentsLoading] = useState(true);
+  const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Debounce search query to prevent excessive search operations
+  useEffect(() => {
+    // Clear existing timeout
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
+
+    // Set new timeout
+    debounceTimeoutRef.current = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 300); // 300ms debounce delay
+
+    // Cleanup on unmount
+    return () => {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+    };
+  }, [query]);
 
   // Load recent searches
   const loadRecentSearches = useCallback(async () => {
@@ -92,11 +114,22 @@ export default function SearchScreen() {
     setRefreshing(false);
   }, [loadRecentSearches]);
 
-  // Search logic with fuzzy matching
-  const searchResults = useMemo(() => {
-    if (!query.trim()) return [];
+  // Get color for result type - computed at render time, not memoization
+  const getResultColor = useCallback((result: SearchResult): string => {
+    switch (result.type) {
+      case 'composer': return t.colors.primary;
+      case 'term': return t.colors.secondary;
+      case 'form': return t.colors.warning;
+      case 'period': return result.periodColor || t.colors.primary;
+      default: return t.colors.primary;
+    }
+  }, [t.colors.primary, t.colors.secondary, t.colors.warning]);
 
-    const q = query.toLowerCase().trim();
+  // Search logic with fuzzy matching - uses debounced query for performance
+  const searchResults = useMemo(() => {
+    if (!debouncedQuery.trim()) return [];
+
+    const q = debouncedQuery.toLowerCase().trim();
     const results: SearchResult[] = [];
 
     // Search composers
@@ -109,7 +142,6 @@ export default function SearchScreen() {
           title: composer.name,
           subtitle: `${composer.period} • ${composer.years}`,
           icon: 'person',
-          color: t.colors.primary,
         });
       }
     });
@@ -124,7 +156,6 @@ export default function SearchScreen() {
           title: term.term,
           subtitle: term.category,
           icon: 'book',
-          color: t.colors.secondary,
         });
       }
     });
@@ -139,7 +170,6 @@ export default function SearchScreen() {
           title: form.name,
           subtitle: `${form.category} • ${form.period}`,
           icon: 'musical-notes',
-          color: t.colors.warning,
         });
       }
     });
@@ -154,13 +184,13 @@ export default function SearchScreen() {
           title: period.name,
           subtitle: period.years,
           icon: 'time',
-          color: period.color,
+          periodColor: period.color,
         });
       }
     });
 
     return results.slice(0, 30); // Limit results
-  }, [query, t.colors]);
+  }, [debouncedQuery]);
 
   // Simple fuzzy match scoring
   function getMatchScore(query: string, fields: string[]): number {
@@ -403,26 +433,29 @@ export default function SearchScreen() {
                   ))}
                 </View>
 
-                {searchResults.map((result, index) => (
-                  <TouchableOpacity
-                    key={`${result.type}-${result.id}`}
-                    style={[styles.resultItem, isStitch ? stitchCardStyle : cardStyle]}
-                    onPress={() => navigateToResult(result)}
-                  >
-                    <View style={[styles.resultIcon, { backgroundColor: result.color + '25' }]}>
-                      <Ionicons name={result.icon as any} size={20} color={result.color} />
-                    </View>
-                    <View style={styles.resultContent}>
-                      <Text style={[styles.resultTitle, { color: isStitch ? '#FFFFFF' : t.colors.text }]}>{result.title}</Text>
-                      <Text style={[styles.resultSubtitle, { color: isStitch ? 'rgba(255,255,255,0.5)' : t.colors.textMuted }]}>{result.subtitle}</Text>
-                    </View>
-                    <View style={[styles.resultType, { backgroundColor: result.color + '20' }]}>
-                      <Text style={[styles.resultTypeText, { color: result.color }]}>
-                        {result.type}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                ))}
+                {searchResults.map((result) => {
+                  const color = getResultColor(result);
+                  return (
+                    <TouchableOpacity
+                      key={`${result.type}-${result.id}`}
+                      style={[styles.resultItem, isStitch ? stitchCardStyle : cardStyle]}
+                      onPress={() => navigateToResult(result)}
+                    >
+                      <View style={[styles.resultIcon, { backgroundColor: color + '25' }]}>
+                        <Ionicons name={result.icon as any} size={20} color={color} />
+                      </View>
+                      <View style={styles.resultContent}>
+                        <Text style={[styles.resultTitle, { color: isStitch ? '#FFFFFF' : t.colors.text }]}>{result.title}</Text>
+                        <Text style={[styles.resultSubtitle, { color: isStitch ? 'rgba(255,255,255,0.5)' : t.colors.textMuted }]}>{result.subtitle}</Text>
+                      </View>
+                      <View style={[styles.resultType, { backgroundColor: color + '20' }]}>
+                        <Text style={[styles.resultTypeText, { color }]}>
+                          {result.type}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })}
               </>
             ) : (
               <View style={styles.emptyState}>

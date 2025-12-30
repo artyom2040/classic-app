@@ -41,6 +41,11 @@ export default function LoginScreen() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Inline validation
+  const [emailTouched, setEmailTouched] = useState(false);
+  const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const emailError = emailTouched && email.length > 0 && !isValidEmail(email) ? 'Please enter a valid email' : null;
+
   const handleEmailLogin = async () => {
     if (!email.trim() || !password.trim()) {
       setError('Please enter email and password');
@@ -136,19 +141,30 @@ export default function LoginScreen() {
 
             <View style={styles.inputGroup}>
               <Text style={[styles.label, { color: t.colors.textSecondary }]}>Email</Text>
-              <View style={[styles.inputContainer, { borderColor: t.colors.border }]}>
-                <Ionicons name="mail-outline" size={20} color={t.colors.textMuted} />
+              <View style={[
+                styles.inputContainer,
+                { borderColor: emailError ? t.colors.error : t.colors.border }
+              ]}>
+                <Ionicons name="mail-outline" size={20} color={emailError ? t.colors.error : t.colors.textMuted} />
                 <TextInput
                   style={[styles.input, { color: t.colors.text }]}
                   placeholder="your@email.com"
                   placeholderTextColor={t.colors.textMuted}
                   value={email}
                   onChangeText={setEmail}
+                  onBlur={() => setEmailTouched(true)}
                   keyboardType="email-address"
                   autoCapitalize="none"
                   autoCorrect={false}
+                  accessibilityLabel="Email address"
                 />
+                {email.length > 0 && !emailError && emailTouched && (
+                  <Ionicons name="checkmark-circle" size={20} color={t.colors.success} />
+                )}
               </View>
+              {emailError && (
+                <Text style={[styles.fieldError, { color: t.colors.error }]}>{emailError}</Text>
+              )}
             </View>
 
             <View style={styles.inputGroup}>
@@ -162,11 +178,13 @@ export default function LoginScreen() {
                   value={password}
                   onChangeText={setPassword}
                   secureTextEntry={!showPassword}
+                  accessibilityLabel="Password"
                 />
                 <TouchableOpacity
                   onPress={() => setShowPassword(!showPassword)}
                   // @ts-expect-error - tabIndex is valid for web
                   tabIndex={-1}
+                  accessibilityRole="button"
                   accessibilityLabel={showPassword ? "Hide password" : "Show password"}
                 >
                   <Ionicons
@@ -209,6 +227,9 @@ export default function LoginScreen() {
                 style={[styles.socialButton, { backgroundColor: '#000' }]}
                 onPress={handleAppleLogin}
                 disabled={loading}
+                accessibilityRole="button"
+                accessibilityLabel="Sign in with Apple"
+                accessibilityState={{ disabled: loading }}
               >
                 <Ionicons name="logo-apple" size={24} color="#fff" />
                 <Text style={[styles.socialButtonText, { color: '#fff' }]}>Apple</Text>
@@ -218,6 +239,9 @@ export default function LoginScreen() {
               style={[styles.socialButton, { backgroundColor: t.colors.surface, borderWidth: 1, borderColor: t.colors.border }]}
               onPress={handleGoogleLogin}
               disabled={loading}
+              accessibilityRole="button"
+              accessibilityLabel="Sign in with Google"
+              accessibilityState={{ disabled: loading }}
             >
               <Ionicons name="logo-google" size={24} color={t.colors.text} />
               <Text style={[styles.socialButtonText, { color: t.colors.text }]}>Google</Text>
@@ -227,6 +251,9 @@ export default function LoginScreen() {
                 style={[styles.socialButton, { backgroundColor: '#1877F2' }]}
                 onPress={handleFacebookLogin}
                 disabled={loading}
+                accessibilityRole="button"
+                accessibilityLabel="Sign in with Facebook"
+                accessibilityState={{ disabled: loading }}
               >
                 <Ionicons name="logo-facebook" size={24} color="#fff" />
                 <Text style={[styles.socialButtonText, { color: '#fff' }]}>Facebook</Text>
@@ -272,6 +299,7 @@ const styles = StyleSheet.create({
   label: { fontSize: fontSize.sm, fontWeight: '500', marginBottom: spacing.xs },
   inputContainer: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderRadius: borderRadius.md, paddingHorizontal: spacing.md, height: 48, gap: spacing.sm },
   input: { flex: 1, fontSize: fontSize.md },
+  fieldError: { fontSize: fontSize.xs, marginTop: spacing.xs },
   forgotPassword: { alignSelf: 'flex-end', marginBottom: spacing.lg },
   forgotPasswordText: { fontSize: fontSize.sm, fontWeight: '500' },
   divider: { flexDirection: 'row', alignItems: 'center', marginVertical: spacing.xl },

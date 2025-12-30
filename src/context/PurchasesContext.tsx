@@ -2,7 +2,7 @@
  * Purchases Context
  * Provides subscription state and actions across the app
  */
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react';
 import {
     initializePurchases,
     getSubscriptionStatus,
@@ -111,18 +111,19 @@ export function PurchasesProvider({ children }: PurchasesProviderProps) {
         }
     }, [refreshStatus]);
 
+    // Memoize provider value to prevent unnecessary re-renders
+    const contextValue = useMemo(() => ({
+        isPremium,
+        isLoading,
+        subscriptionStatus,
+        packages,
+        purchase,
+        restore,
+        refreshStatus,
+    }), [isPremium, isLoading, subscriptionStatus, packages, purchase, restore, refreshStatus]);
+
     return (
-        <PurchasesContext.Provider
-            value={{
-                isPremium,
-                isLoading,
-                subscriptionStatus,
-                packages,
-                purchase,
-                restore,
-                refreshStatus,
-            }}
-        >
+        <PurchasesContext.Provider value={contextValue}>
             {children}
         </PurchasesContext.Provider>
     );

@@ -77,9 +77,9 @@ CREATE POLICY "Admins can read audit logs" ON public.audit_logs
     FOR SELECT
     USING (
         EXISTS (
-            SELECT 1 FROM public.user_profiles
-            WHERE user_profiles.id = auth.uid()
-            AND user_profiles.role = 'admin'
+            SELECT 1 FROM public.profiles
+            WHERE profiles.id = auth.uid()
+            AND profiles.role = 'admin'
         )
     );
 
@@ -92,9 +92,9 @@ CREATE POLICY "Admins can read versions" ON public.content_versions
     FOR SELECT
     USING (
         EXISTS (
-            SELECT 1 FROM public.user_profiles
-            WHERE user_profiles.id = auth.uid()
-            AND user_profiles.role = 'admin'
+            SELECT 1 FROM public.profiles
+            WHERE profiles.id = auth.uid()
+            AND profiles.role = 'admin'
         )
     );
 
@@ -102,9 +102,9 @@ CREATE POLICY "Admins can insert versions" ON public.content_versions
     FOR INSERT
     WITH CHECK (
         EXISTS (
-            SELECT 1 FROM public.user_profiles
-            WHERE user_profiles.id = auth.uid()
-            AND user_profiles.role = 'admin'
+            SELECT 1 FROM public.profiles
+            WHERE profiles.id = auth.uid()
+            AND profiles.role = 'admin'
         )
     );
 
@@ -112,14 +112,14 @@ CREATE POLICY "Admins can insert versions" ON public.content_versions
 GRANT SELECT, INSERT ON public.audit_logs TO authenticated;
 GRANT SELECT, INSERT ON public.content_versions TO authenticated;
 
--- 6. Add role column to user_profiles if not exists
+-- 6. Add role column to profiles if not exists
 DO $$
 BEGIN
     IF NOT EXISTS (
-        SELECT 1 FROM information_schema.columns 
-        WHERE table_name = 'user_profiles' AND column_name = 'role'
+        SELECT 1 FROM information_schema.columns
+        WHERE table_name = 'profiles' AND column_name = 'role'
     ) THEN
-        ALTER TABLE public.user_profiles ADD COLUMN role TEXT DEFAULT 'user' CHECK (role IN ('user', 'admin'));
+        ALTER TABLE public.profiles ADD COLUMN role TEXT DEFAULT 'user' CHECK (role IN ('user', 'admin'));
     END IF;
 END $$;
 

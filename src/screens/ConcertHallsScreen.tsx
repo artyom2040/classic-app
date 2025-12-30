@@ -1,14 +1,17 @@
 import React, { useCallback, useMemo } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { spacing, fontSize, borderRadius } from '../theme';
 import { useTheme } from '../context/ThemeContext';
-import { ConcertHall } from '../types';
+import { ConcertHall, RootStackParamList } from '../types';
 
 import albumsData from '../data/albums.json';
 
-export default function ConcertHallsScreen({ navigation }: any) {
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
+export default function ConcertHallsScreen({ navigation }: { navigation: NavigationProp }) {
   const { theme, themeName, isDark } = useTheme();
   const t = theme;
   const isBrutal = false;

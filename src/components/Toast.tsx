@@ -117,6 +117,8 @@ export function Toast({
           opacity,
         },
       ]}
+      accessibilityLiveRegion="polite"
+      accessibilityRole="alert"
     >
       <View style={[
         styles.toast,
@@ -127,7 +129,10 @@ export function Toast({
         isBrutal
           ? { borderRadius: 0, borderWidth: 2, borderColor: t.colors.border }
           : { borderRadius: borderRadius.lg, ...t.shadows.lg },
-      ]}>
+      ]}
+      accessible={true}
+      accessibilityLabel={`${type} notification: ${message}`}
+      >
         <View style={[styles.iconContainer, { backgroundColor: color + '20' }]}>
           <Ionicons name={ICONS[type]} size={24} color={color} />
         </View>
@@ -152,6 +157,8 @@ export function Toast({
           style={styles.closeButton}
           onPress={hideToast}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          accessibilityRole="button"
+          accessibilityLabel="Dismiss notification"
         >
           <Ionicons name="close" size={20} color={t.colors.textMuted} />
         </TouchableOpacity>

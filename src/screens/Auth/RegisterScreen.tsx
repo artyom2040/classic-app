@@ -44,6 +44,19 @@ export default function RegisterScreen() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
+  // Inline validation state
+  const [touched, setTouched] = useState({
+    email: false,
+    password: false,
+    confirmPassword: false,
+  });
+
+  // Validation helpers
+  const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const emailError = touched.email && email.length > 0 && !isValidEmail(email) ? 'Please enter a valid email' : null;
+  const passwordError = touched.password && password.length > 0 && password.length < 6 ? 'Password must be at least 6 characters' : null;
+  const confirmError = touched.confirmPassword && confirmPassword.length > 0 && password !== confirmPassword ? 'Passwords do not match' : null;
+
   const handleRegister = async () => {
     if (!email.trim() || !password.trim()) {
       setError('Please fill in all required fields');
@@ -158,37 +171,56 @@ export default function RegisterScreen() {
 
             <View style={styles.inputGroup}>
               <Text style={[styles.label, { color: t.colors.textSecondary }]}>Email *</Text>
-              <View style={[styles.inputContainer, { borderColor: t.colors.border }]}>
-                <Ionicons name="mail-outline" size={20} color={t.colors.textMuted} />
+              <View style={[
+                styles.inputContainer,
+                { borderColor: emailError ? t.colors.error : t.colors.border }
+              ]}>
+                <Ionicons name="mail-outline" size={20} color={emailError ? t.colors.error : t.colors.textMuted} />
                 <TextInput
                   style={[styles.input, { color: t.colors.text }]}
                   placeholder="your@email.com"
                   placeholderTextColor={t.colors.textMuted}
                   value={email}
                   onChangeText={setEmail}
+                  onBlur={() => setTouched(prev => ({ ...prev, email: true }))}
                   keyboardType="email-address"
                   autoCapitalize="none"
                   autoCorrect={false}
+                  accessibilityLabel="Email address"
+                  accessibilityHint="Enter your email address"
                 />
+                {email.length > 0 && !emailError && touched.email && (
+                  <Ionicons name="checkmark-circle" size={20} color={t.colors.success} />
+                )}
               </View>
+              {emailError && (
+                <Text style={[styles.fieldError, { color: t.colors.error }]}>{emailError}</Text>
+              )}
             </View>
 
             <View style={styles.inputGroup}>
               <Text style={[styles.label, { color: t.colors.textSecondary }]}>Password *</Text>
-              <View style={[styles.inputContainer, { borderColor: t.colors.border }]}>
-                <Ionicons name="lock-closed-outline" size={20} color={t.colors.textMuted} />
+              <View style={[
+                styles.inputContainer,
+                { borderColor: passwordError ? t.colors.error : t.colors.border }
+              ]}>
+                <Ionicons name="lock-closed-outline" size={20} color={passwordError ? t.colors.error : t.colors.textMuted} />
                 <TextInput
                   style={[styles.input, { color: t.colors.text }]}
                   placeholder="At least 6 characters"
                   placeholderTextColor={t.colors.textMuted}
                   value={password}
                   onChangeText={setPassword}
+                  onBlur={() => setTouched(prev => ({ ...prev, password: true }))}
                   secureTextEntry={!showPassword}
+                  accessibilityLabel="Password"
+                  accessibilityHint="Enter a password with at least 6 characters"
                 />
                 <TouchableOpacity
                   onPress={() => setShowPassword(!showPassword)}
                   // @ts-expect-error - tabIndex is valid for web
                   tabIndex={-1}
+                  accessibilityRole="button"
                   accessibilityLabel={showPassword ? "Hide password" : "Show password"}
                 >
                   <Ionicons
@@ -198,21 +230,39 @@ export default function RegisterScreen() {
                   />
                 </TouchableOpacity>
               </View>
+              {passwordError && (
+                <Text style={[styles.fieldError, { color: t.colors.error }]}>{passwordError}</Text>
+              )}
+              {!passwordError && password.length >= 6 && (
+                <Text style={[styles.fieldSuccess, { color: t.colors.success }]}>✓ Password meets requirements</Text>
+              )}
             </View>
 
             <View style={styles.inputGroup}>
               <Text style={[styles.label, { color: t.colors.textSecondary }]}>Confirm Password *</Text>
-              <View style={[styles.inputContainer, { borderColor: t.colors.border }]}>
-                <Ionicons name="lock-closed-outline" size={20} color={t.colors.textMuted} />
+              <View style={[
+                styles.inputContainer,
+                { borderColor: confirmError ? t.colors.error : t.colors.border }
+              ]}>
+                <Ionicons name="lock-closed-outline" size={20} color={confirmError ? t.colors.error : t.colors.textMuted} />
                 <TextInput
                   style={[styles.input, { color: t.colors.text }]}
                   placeholder="Repeat password"
                   placeholderTextColor={t.colors.textMuted}
                   value={confirmPassword}
                   onChangeText={setConfirmPassword}
+                  onBlur={() => setTouched(prev => ({ ...prev, confirmPassword: true }))}
                   secureTextEntry={!showPassword}
+                  accessibilityLabel="Confirm password"
+                  accessibilityHint="Re-enter your password to confirm"
                 />
+                {confirmPassword.length > 0 && !confirmError && password === confirmPassword && (
+                  <Ionicons name="checkmark-circle" size={20} color={t.colors.success} />
+                )}
               </View>
+              {confirmError && (
+                <Text style={[styles.fieldError, { color: t.colors.error }]}>{confirmError}</Text>
+              )}
             </View>
 
             <EnhancedButton
@@ -256,6 +306,8 @@ const styles = StyleSheet.create({
   label: { fontSize: fontSize.sm, fontWeight: '500', marginBottom: spacing.xs },
   inputContainer: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderRadius: borderRadius.md, paddingHorizontal: spacing.md, height: 48, gap: spacing.sm },
   input: { flex: 1, fontSize: fontSize.md },
+  fieldError: { fontSize: fontSize.xs, marginTop: spacing.xs },
+  fieldSuccess: { fontSize: fontSize.xs, marginTop: spacing.xs },
   footer: { flexDirection: 'row', justifyContent: 'center', marginTop: spacing.xl },
   footerText: { fontSize: fontSize.md },
   footerLink: { fontSize: fontSize.md, fontWeight: '600' },

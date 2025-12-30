@@ -2,7 +2,7 @@
  * Font Context for Stitch theme custom fonts
  * Loads Noto Serif (display) and Work Sans (body) for premium typography
  */
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, useContext, useMemo, ReactNode } from 'react';
 import { useFonts } from 'expo-font';
 import {
     NotoSerif_400Regular,
@@ -62,8 +62,14 @@ export function FontProvider({ children }: { children: ReactNode }) {
         }
         : defaultFonts;
 
+    // Memoize provider value to prevent unnecessary re-renders
+    const contextValue = useMemo(() => ({
+        fontsLoaded,
+        fontFamily,
+    }), [fontsLoaded, fontFamily]);
+
     return (
-        <FontContext.Provider value={{ fontsLoaded, fontFamily }}>
+        <FontContext.Provider value={contextValue}>
             {children}
         </FontContext.Provider>
     );

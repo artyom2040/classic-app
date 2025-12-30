@@ -1,0 +1,23 @@
+{
+    "mcpServers": {
+        "sequentialthinking": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-sequential-thinking"
+            ],
+            "disabled": false
+        },
+        "context7": {
+            "command": "node",
+            "args": [
+                "./node_modules/@upstash/context7-mcp/dist/index.js"
+            ],
+            "env": {
+                "CONTEXT7_API_KEY": ""
+            },
+            "disabled": false,
+            "autoApprove": []
+        }
+    }
+}
